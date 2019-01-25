@@ -1,0 +1,223 @@
+﻿@model CCARE.Models.CustomerAddress
+
+@{
+    ViewBag.Title = "Edit";
+    if (Request.IsAjaxRequest())
+    {
+        Layout = null;
+    }
+    else
+    {
+        Layout = "~/Views/Shared/_LayoutEntity.cshtml";
+    }
+}
+
+@section entityLogo
+{
+    <img class="crm-logo" src="~/assets/images/ico_lrg_112.gif" />
+}
+
+@section formTitle
+{
+    <div class="text_title">
+        <h1>Address</h1>
+        @Model.AddressTypeLabel
+    </div>
+}
+
+@section navHeader
+{
+
+}
+
+@section footerStatus
+{
+    <div class="footer_text">Status: @{ if (Model.DeletionStateCode == 0) { <text>Existing</text> } else { <text></text> } }</div>
+}
+
+@section sidebarMenu
+{
+}
+
+<div id="page_content" class="container-fluid">
+    <!-- tabs -->
+    <div class="row">
+        <div class="col-sm-12 panel panel-default panel_form_parent">
+            <ul id="myTab" class="nav nav-tabs crm-padding-top-10">
+                <li class="active"><a href="#general" id="general-tab" data-toggle="tab">General</a></li>
+            </ul>
+            <br />
+            @*<div class="alert alert-warning alert-dismissible fade in" role="alert">
+              <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>
+              <strong>Alert Message!</strong>
+            </div>*@
+            <div class="tab-content myTabContent">
+                <div class="tab-pane fade active in" id="general" aria-labelledby="general-tab">
+                @using (Html.BeginForm("Edit", "CustomerAddress", FormMethod.Post, new { id = "form_customeraddress" }))
+                {
+                    @Html.Hidden("hidden_displayStatus", "", new { @id = "hidden_displayStatus" })
+
+                    <!-- panel content -->
+                    <div class="col-sm-12">
+                        <!-- Temporary row, CSS problem -->
+                        <div class="row form_text">
+                            <form class="form-horizontal">
+                            </form>
+                        </div>
+
+                        <!-- title 1 -->
+                        <div class="row form_text">
+                            <div class="panel panel-default panel_form_child">
+                                <div class="panel-body">
+                                    <form class="form-horizontal">
+                                        <div class="row">
+                                            <div class="col-sm-6">
+                                                <div class="form-group">
+                                                    <label class="col-sm-4 control-label">Address Type</label>
+                                                    <div class="col-sm-8">
+                                                        @Html.HiddenFor(x => x.CustomerAddressId)
+                                                        @Html.DropDownListFor(x => x.AddressTypeCode, (SelectList)ViewBag.SL_AddressType, "", new { @class = "form-control" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <div class="form-group">
+                                                    <label class="col-sm-4 control-label">City</label>
+                                                    <div class="col-sm-8">
+                                                        @Html.TextBoxFor(x => x.City, new { @class = "form-control" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-6">
+                                                <div class="form-group">
+                                                    <label class="col-sm-4 control-label">Street 1</label>
+                                                    <div class="col-sm-8">
+                                                        @Html.TextBoxFor(x => x.Line1, new { @class = "form-control" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <div class="form-group">
+                                                    <label class="col-sm-4 control-label">State/Province</label>
+                                                    <div class="col-sm-8">
+                                                        @Html.TextBoxFor(x => x.StateOrProvince, new { @class = "form-control" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-6">
+                                                <div class="form-group">
+                                                    <label class="col-sm-4 control-label">Street 2</label>
+                                                    <div class="col-sm-8">
+                                                        @Html.TextBoxFor(x => x.Line2, new { @class = "form-control" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <div class="form-group">
+                                                    <label class="col-sm-4 control-label">ZIP/Postal Code</label>
+                                                    <div class="col-sm-8">
+                                                        @Html.TextBoxFor(x => x.PostalCode, new { @class = "form-control" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-6">
+                                                <div class="form-group">
+                                                    <label class="col-sm-4 control-label">Street 3</label>
+                                                    <div class="col-sm-8">
+                                                        @Html.TextBoxFor(x => x.Line3, new { @class = "form-control" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <div class="form-group">
+                                                    <label class="col-sm-4 control-label">Country/Region</label>
+                                                    <div class="col-sm-8">
+                                                        @Html.TextBoxFor(x => x.Country, new { @class = "form-control" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-6">
+                                                <div class="form-group">
+                                                    <label class="col-sm-4 control-label">Credit Card Customer No</label>
+                                                    <div class="col-sm-8">
+                                                        @Html.TextBoxFor(x => x.CreditCardCustomerNo, new { @class = "form-control" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- title 2 -->
+                        <div class="row form_text">
+                            <div class="panel panel-default panel_form_child">
+                                <div class="panel-heading">
+                                    <label class="control-label"><strong>Phone Numbers</strong></label>
+                                </div>
+                                <div class="panel-body">
+                                    <form class="form-horizontal">
+                                        <div class="row">
+                                            <div class="col-sm-6">
+                                                <div class="form-group">
+                                                    <label class="col-sm-4 control-label">Main Phone</label>
+                                                    <div class="col-sm-8">
+                                                        @Html.TextBoxFor(x => x.Telephone1, new { @class = "form-control" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <div class="form-group">
+                                                    <label class="col-sm-4 control-label">Fax</label>
+                                                    <div class="col-sm-8">
+                                                        @Html.TextBoxFor(x => x.Telephone1, new { @class = "form-control" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-6">
+                                                <div class="form-group">
+                                                    <label class="col-sm-4 control-label">Address Line 2</label>
+                                                    <div class="col-sm-8">
+                                                        @Html.TextBoxFor(x => x.Telephone1, new { @class = "form-control" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row form_text">
+
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#myTab a').click(function (e) {
+            e.preventDefault()
+            $(this).tab('show')
+        })
+
+        $("#btn_save").click(function () {
+            formSubmit("save", $("#form_customer"));
+        });
+
+    });
+</script>

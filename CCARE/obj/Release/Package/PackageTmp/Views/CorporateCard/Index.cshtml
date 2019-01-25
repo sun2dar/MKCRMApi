@@ -1,0 +1,307 @@
+﻿@{
+    if (Request.IsAjaxRequest())
+    {
+        Layout = null;
+    }
+}
+
+<style>
+    .panel_form_parent
+    {
+        border-color: #d3d4d8;
+        position: absolute;
+        width: 100%;
+    }
+
+    .panel_form_child
+    {
+        background-color: #ecf1f5;
+        padding-bottom: 20px;
+    }
+</style>
+
+<ul class="nav nav-stacked nav-pills">
+    <li class="titleBar font-crm4"><a></a></li>
+</ul>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="container-fluid content_container">
+                <div class="row">
+                    <div class="col-sm-12">
+
+                        <br />
+                        <div class="tab-content myContent_Tab">
+                            <div class="tab-pane fade active in" aria-labelledby="history-tab">
+
+                                <ol class="breadcrumb">
+                                    <li class="active">Search</li>
+                                    <li class="active">Inquiry</li>
+                                    <li class="active"><a href="#">Corporate Card</a></li>
+                                </ol>
+
+                                <div class="form-horizontal pad-eb-trx" id ="inquiry">
+                                    <div id="inquiry-corporate-card-bycardno">
+                                        <div class="row">
+                                            <div class="col-sm-6">
+                                                <div class="form-group">
+                                                    <label class="col-sm-4 control-label">Search By : </label>
+                                                    <div class="col-sm-8">
+                                                        <select id="inquiry_trxType" class="form-control">
+                                                            <option value="compName">Company Name</option>
+                                                            <option value="cardNo">Card Number</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-6">
+                                                <div class="form-group">
+                                                    <label class="col-sm-4 control-label">Input</label>
+                                                    <div class="col-sm-8">
+                                                        <input type="text" id="_val" class="form-control" maxlength="22"/>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-6">
+                                                <div class="form-group">
+                                                    <div class="col-sm-4"></div>
+                                                    <div class="col-sm-8">
+                                                        <div id="inquiry-button-bycardno">
+                                                            <div class="input-group">
+                                                                <button type="button" id="btn_search_inquiry" class="btn btn-primary btn-crm-layout" data-loading-text="Inquiry...">
+                                                                    <span class="glyphicon glyphicon-search glyp-space" aria-hidden="true"></span>
+                                                                    Search
+                                                                </button>
+                                                                <button type="button" id="btn_clear" class="btn btn-danger btn-crm-layout">
+                                                                    <span class="glyphicon glyphicon-erase glyp-space" aria-hidden="true"></span>
+                                                                    Clear
+                                                                </button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>  
+                                </div>
+
+                                <br />
+
+                                <div class="row">
+                                    <div class="col-sm-12" >
+                                        <div class="panel panel-default">
+                            
+                                            <div class="panel-heading panel_heading">
+                                                <label class="control-label sv-header">
+                                                    <strong>Search Result</strong>
+                                                </label>
+                                            </div>
+                                            
+                                            <div class="panel-body" id="inquiry-detail">
+                                                <div class="form-horizontal pad-eb-trx">
+                                                    <div class="row">
+                                                        <div class="col-sm-6">                                        
+                                                            <div class="form-group">
+                                                                <label class="col-sm-4 control-label">Kode Perusahaan</label>
+                                                                <div class="col-sm-8">
+                                                                    <input type="text" id="_corpId" class="form-control" readonly="readonly"/>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-sm-6"></div> 
+                                                    </div>
+
+                                                    <div class="row">
+                                                        <div class="col-sm-6">
+                                                            <div class="form-group">
+                                                                <label class="col-sm-4 control-label">Nama Perusahaan</label>
+                                                                <div class="col-sm-8">
+                                                                    <input type="text" id="_corpName" class="form-control" readonly="readonly" />
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-sm-6"></div> 
+                                                    </div>
+
+                                                    <div class="row">
+                                                        <div class="col-sm-6">
+                                                            <div class="form-group">
+                                                                <label class="col-sm-4 control-label">Kode Pengenal</label>
+                                                                <div class="col-sm-8">
+                                                                    <input type="text" id="_uniqueKey" class="form-control" maxlength="20"/>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-sm-6"></div> 
+                                                    </div>
+
+                                                    <div class="row">
+                                                        <div class="col-sm-6">
+                                                            <div class="form-group">
+                                                                <label class="col-sm-4 control-label"></label>
+                                                                <div class="col-sm-8">
+                                                                    <button type="button" id="btn_search_inquiry_detail" class="btn btn-primary" data-loading-text="Inquiry...">Search</button>
+                                                                    <button type="button" id="btn_clear_detail" class="btn btn-default">Clear</button>  
+                                                                </div>
+                                                            </div>
+                                                             
+                                                        </div>
+                                                        <div class="col-sm-6"></div> 
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="panel-body">
+                                                <div id="partialViewList"></div>
+                                                <div id="partialViewDetail"></div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        var gridId = "#gridTable";
+        var entityName = '@ViewContext.RouteData.Values["Controller"].ToString()';
+        $("#inquiry-detail").hide();
+
+        $(".form-horizontal").find("input").addClass("rm-padding");
+        $(".form-horizontal").find("select").addClass("rm-padding");
+        $(".form-horizontal").find(":radio").removeClass("rm-padding");
+        
+        $("#btn_search_inquiry_detail").click(function () {
+            (event.preventDefault) ? event.preventDefault() : event.returnValue = false;
+            var $btn = $(this);
+            var CorpId = $("#_corpId").val();
+            var UniqueKey = $("#_uniqueKey").val();
+            var url = "/CorporateCard/CorporateCardPartial/";
+
+            if (UniqueKey == "") {
+                alert("Kode Pengenal harus diisi");
+                return false;
+            }
+
+            var postData = {
+                _type: "unique",
+                _corpId: CorpId,
+                _uniqueKey: UniqueKey
+            };
+
+            $.ajax({
+                type: "GET",
+                url: url,
+                data: postData,
+                cache: false,
+                contentType: "application/html; charset=utf-8",
+                dataType: "html",
+                beforeSend: function () {
+                    $btn.button('loading');
+                },
+                success: function (viewHTML) {
+                    $("#partialViewDetail").html(viewHTML);
+                },
+                error: function (errorData) {
+                    //onError(errorData);
+                },
+                complete: function () {
+                    $btn.button('reset');
+                }
+            });
+        });
+        
+        $("#btn_clear_detail").click(function () {
+            $("#_uniqueKey").val('').removeAttr("disabled");
+            $("#partialViewDetail").html('');
+        });
+
+        $("#btn_search_inquiry").click(function () {
+            (event.preventDefault) ? event.preventDefault() : event.returnValue = false;
+
+            $("#partialViewList").html('');
+            $("#partialViewDetail").html('');
+            $("#inquiry-detail").hide();
+
+            var $btn = $(this);
+            var url = "";
+            var postData = "";
+            var val = $("#_val").val();
+            var type = $("#inquiry_trxType").val();
+
+            if (type == "compName")
+            {
+                if (val == "") {
+                    alert("Nama Perusahaan harus diisi");
+                    return false;
+                } else if (val.length < 3) {
+                    alert("Nama Perusahaan minimal 3 karakter");
+                    return false;
+                }
+
+                url = "/CorporateCard/CompanyListPartial/";
+                postData = {
+                    _corpName: val
+                };
+            }
+            else
+            {
+                if (val == "") {
+                    alert("Nomor Kartu harus diisi");
+                    return false;
+                }
+                url = "/CorporateCard/CorporateCardPartial/";
+                postData = {
+                    _type: "card",
+                    _cardNo: val
+                };
+            }
+
+            $.ajax({
+                type: "GET",
+                url: url,
+                data: postData,
+                cache: false,
+                contentType: "application/html; charset=utf-8",
+                dataType: "html",
+                beforeSend: function () {
+                    $btn.button('loading');
+                },
+                success: function (viewHTML) {
+                    if (type == "compName") {
+                        $("#partialViewList").html(viewHTML);
+                    }
+                    else {
+                        $("#partialViewDetail").html(viewHTML);
+                    }
+                },
+                error: function (errorData) {
+                    //onError(errorData);
+                },
+                complete: function () {
+                    $btn.button('reset');
+                }
+            });
+        });
+
+        $("#btn_clear").click(function () {
+            $("input[type=text]").val('').removeAttr("disabled");
+            $("#inquiry-detail").hide();
+            $("#partialViewList").html('');
+            $("#partialViewDetail").html('');
+        });
+    });
+</script>

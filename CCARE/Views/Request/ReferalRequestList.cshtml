@@ -1,0 +1,159 @@
+﻿@{
+    ViewBag.Title = "Referal Request List";
+    if (Request.IsAjaxRequest())
+    {
+        Layout = null;
+    }
+    else
+    {
+        Layout = "~/Views/Shared/_LayoutEntity.cshtml";
+    }
+}
+
+@section navHeader
+{
+    <ul class="nav navbar-nav navbar- left">
+        <li><a id="btn_save" href="#">Save</a></li>
+        <li><a id="btn_savenclose" href="#">Save & Close</a></li>
+        <li id="btn_FinancialTransaction" role="presentation" class="dropdown">
+            <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+                Layanan Prioritas <span class="caret"></span>
+            </a>
+            <ul class="dropdown-menu">
+                <li><a id="btn_fundtransfer" href="#">Fund Transfer</a></li>
+                <li><a id="btn_payment" class="btn_assignto" href="#">Payment</a></li>
+                <li><a id="btn_purchase" class="btn_assignto" href="#">Purchase</a></li>
+                <li><a id="btn_transferlist" class="btn_assignto" href="#">Transfer List</a></li>
+            </ul>
+        </li>
+    </ul>
+}
+
+@section footerStatus
+{
+    <div class="footer_text">Status: New</div>
+}
+
+@section sidebarMenu
+{
+    
+}
+
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-12 panel panel-default panel_form_parent scroll-y">
+            <br />
+            <div class="col-sm-12">
+                <!-- title 1 -->
+                <div class="row form_text">
+                    <div class="panel panel-default panel_form_child">
+                        
+                        <div class="panel-heading">
+                            <label class="control-label sv-header">
+                                <strong>Refferal Request</strong>
+                            </label>
+                        </div>
+
+                        <br />
+
+                        <div class="panel-body">
+                            <form class="form-horizontal">
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <div class="divGrid">
+                                            <table id="gridTable"></table>
+                                            <div id="jqGridPager"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    
+                    </div>
+                </div>
+            
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        var gridId = "#gridTable";
+        var entityName = 'Request';
+
+        var postData = {
+            _requestId: function () { return "@(ViewBag.RequestId)"; }
+        };
+        loadJqgrid(postData);
+
+        function loadJqgrid(postData) {
+            $.jgrid.gridUnload(gridId);
+            var colModels = getColModels("Request");
+            var customVal = getCustomVal("Request");
+            var url = '/Request/LoadReferalRequestGrid';
+            $(gridId).jqGrid({
+                url: url,
+                mtype: "POST",
+                datatype: "json",
+                postData: postData,
+                colModel: colModels,
+                shrinkToFit: false,
+                width: '100%',
+                autowidth: true,
+                height: '100%',
+                rowNum: customVal.rowNum,
+                rowList: [20, 30],
+                rownumbers: true,
+                pager: $("#jqGridPager"),
+                sortname: 'Id',
+                viewrecords: true,
+                sortorder: "desc",
+                loadComplete: function (data) {
+                    //Remove total page on footer
+                    $("#sp_1_jqGridPager").hide();
+                    $("#input_jqGridPager").contents().filter(function () { return this.nodeType == 3; }).remove();
+                    $("#input_jqGridPager").prepend("<text>Page  </text>");
+
+                    //Hide First and last on paging
+                    $("#first_jqGridPager").hide();
+                    $("#last_jqGridPager").hide();
+
+                    // Disabled input page number in jqgrid paging
+                    $("#input_jqGridPager").find("input").attr('disabled', 'disabled');
+
+                    /* Remove rm padding from selbox */
+                    $(".ui-pg-selbox").removeClass("rm-padding");
+
+                    //Hide records per page
+                    //$(".ui-pg-selbox").hide();
+
+                    if (data.rows.length == 0) {
+                    //if (data.records == 0) {
+                        var emptyText = '';
+                        emptyText += '<table class="ui-jqgrid-btable"><tr><td>&nbsp;&nbsp;&nbsp;</td><td><center><h2>No Records Found</h2><center></td></tr></table>';
+                        var grid = $(gridId);
+                        var container = grid.parents('.ui-jqgrid-view');
+                        container.find('.ui-jqgrid-bdiv').children("table").remove();
+                        container.find('.ui-jqgrid-bdiv').append(emptyText);
+                    }
+                },
+                jsonreader: {
+                    root: "rows", //array containing actual data
+                    page: "page", //current page
+                    total: "total", //total pages for the query
+                    records: "records", //total number of records
+                    cell: 'cell',
+                    repeatitems: false,
+                    id: "Id" //index of the column with the pk in it
+                },
+                ondblClickRow: function (rowid, iRow, iCol) {
+                    var url = '@Url.Action("Edit", "Request")';
+                    openWindow(url + '?id=' + rowid);
+                }
+            })
+            .navGrid("#jqGridPager", { edit: false, add: false, del: false, search: false });
+        }
+    });
+</script>

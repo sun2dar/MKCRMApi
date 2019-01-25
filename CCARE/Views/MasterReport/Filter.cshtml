@@ -1,0 +1,603 @@
+﻿@model IEnumerable<CCARE.Models.ReportFilters>
+
+@{
+    ViewBag.Title = "Report Filters";
+    string actionPage = ViewContext.Controller.ControllerContext.RouteData.Values["action"].ToString();
+    
+    if (Request.IsAjaxRequest())
+    {
+        Layout = null;
+    }
+    else{
+        Layout = "~/Views/Shared/_LayoutEntity.cshtml";
+    }
+}
+
+@section entityLogo
+{
+    <img class="crm-logo" src="~/assets/images/ico_lrg_112.gif" />
+}
+
+@section formTitle
+{
+    <div class="text_title">
+        <h1>Report Mapping</h1>
+        Report : @(Model.FirstOrDefault().masterReport.ReportName)
+    </div>
+}
+
+@section navHeader
+{
+    
+}
+
+@section footerStatus
+{
+    <div class="footer_text"></div>
+}
+
+@section sidebarMenu
+{
+    <li><a data-ajax="true" data-ajax-mode="replace" data-ajax-update="#page_content" href="#">Report Filters</a></li>
+}
+
+@using (Html.BeginForm("Execute", "ReportFilters", FormMethod.Post, new { id = "form_reportfilters" }))
+{
+    <div class="container-fluid">
+        <!-- tabs -->
+        <div class="row">
+            <div class="col-sm-12 panel panel-default panel_form_parent">
+                <!-- Tab panes -->
+                <div class="myContent_noTab">
+                    <!--General tab-->
+                    <div class="tab-pane fade active in" id="divGeneral">
+                        <div class="panel panel-default panel_form_child">
+                            <!--Panel Header for section title-->
+                            <div class="panel-heading submenuStyle">
+                                <label class="control-label sv-header"><strong>Filter</strong></label>
+                            </div>
+                            <!--Body panel for input form-->
+                            <br />
+                            <div class="panel-body">
+                                <div class="form-horizontal">
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                        
+                                            <input type="hidden" id="ReportFiltersID" name="ReportFiltersID" />
+                                            <input type="hidden" id="FilterValue" name="FilterValue" />
+                                            <input type="hidden" id="FilterGUID" name="FilterGUID" />
+                                            <input type="hidden" id="ReportID" name="ReportID" value='@(ViewBag.ReportID)' />
+                                            <input type="hidden" id="IsEditable" name="IsEditable" value="1" />
+
+                                            <div class="form-group">
+                                                <label class="col-sm-3 control-label">Filter Type</label>
+                                                <div class="col-sm-9">
+                                                    <select id="FilterType" name="FilterType" class="form-control">
+                                                        <option value="">- Pilih Filter -</option>
+                                                        <option value="Branch">Branch</option>
+                                                        <option value="Category">Category</option>
+                                                        <option value="CreatedBy">CreatedBy</option>
+                                                        <option value="Product">Product</option>
+                                                        <option value="Owner">Owner</option>
+                                                        <option value="PerformedByNames">Performed By Names</option>
+                                                        <option value="StateCode">State</option>
+                                                        <option value="StatusCode">Status</option>
+                                                        <option value="Workgroup">Workgroup</option>
+                                                        <option value="Action">Action</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <label class="col-sm-3 control-label">Filter Value</label>
+                                                <div class="col-sm-9">
+                                                    @* ==========================================================================================================*@
+                                                    <div id="TypeBranch">
+                                                        <input type="hidden" id="BranchID" class="form-control" />
+                                                        <div class="input-group" id="BranchID-Group">
+                                                            <input type="text" id="BranchIDName" class="form-control" />
+                                                            <div tabindex="0" id="BranchIDName-label" class="form-control typeahead-label hide">
+                                                            </div>
+                                                            <div tabindex="0" class="input-group-addon btn" id="BranchIDName-popup">
+                                                                <i class="fa fa-search"></i>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    @* ==========================================================================================================*@
+                                                    <div id="TypeCategory">
+                                                        <input type="hidden" id="CategoryID" class="form-control" />
+                                                        <div class="input-group" id="CategoryID-Group">
+                                                            <input type="text" id="CategoryIDName" class="form-control" />
+                                                            <div tabindex="1" id="CategoryIDName-label" class="form-control typeahead-label hide">
+                                                            </div>
+                                                            <div tabindex="1" class="input-group-addon btn" id="CategoryIDName-popup">
+                                                                <i class="fa fa-search"></i>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    @* ==========================================================================================================*@
+                                                    <div id="TypeProduct">
+                                                        <input type="hidden" id="ProductID" class="form-control" />
+                                                        <div class="input-group" id="ProductID-Group">
+                                                            <input type="text" id="ProductIDName" class="form-control" />
+                                                            <div tabindex="0" id="ProductIDName-label" class="form-control typeahead-label hide">
+                                                            </div>
+                                                            <div tabindex="0" class="input-group-addon btn" id="ProductIDName-popup">
+                                                                <i class="fa fa-search"></i>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    @* ==========================================================================================================*@
+                                                    <div id="TypeState">
+                                                        <select id="StateDd" class="form-control">
+                                                            <option value="">- Pilih -</option>
+                                                            <option value="0">Open</option>
+                                                            <option value="1">Completed</option>
+                                                            <option value="2">Canceled</option>
+                                                        </select>
+                                                    </div>
+                                                    @* ==========================================================================================================*@
+                                                    <div id="TypeStatus">
+                                                        <select id="StatusDd" class="form-control">
+                                                            <option value="">- Pilih -</option>
+                                                            <option value="1">New</option>
+                                                            <option value="2">Assigned</option>
+                                                            <option value="3">Owned</option>
+                                                            <option value="4">Incomplete</option>
+                                                            <option value="5">Closed</option>
+                                                            <option value="6">Canceled</option>
+                                                        </select>
+                                                    </div>
+                                                    @* ==========================================================================================================*@
+                                                    <div id="TypeIsDisabledStatus">
+                                                        <select id="IsDisabledStatusDd" class="form-control">
+                                                            <option value="">- Pilih -</option>
+                                                            <option value="0">Active</option>
+                                                            <option value="1">Inactive</option>
+                                                        </select>
+                                                    </div>
+                                                    @* ==========================================================================================================*@
+                                                    <div id="TypeContactMethod">
+                                                        <select id="ContactMethodDd" class="form-control">
+                                                            <option value="">- Pilih -</option>
+                                                            <option value="1">Phone</option>
+                                                            <option value="2">Mail</option>
+                                                            <option value="3">Fax</option>
+                                                            <option value="4">Email</option>
+                                                            <option value="5">Web Chat</option>
+                                                            <option value="6">Media Cetak</option>
+                                                            <option value="7">Media Elektronik</option>
+                                                            <option value="8">Walk-in</option>
+                                                            <option value="9">Cabang</option>
+                                                            <option value="10">Video Banking</option>
+                                                            <option value="11">Video Calls</option>
+                                                            <option value="12">Social Media</option>
+                                                        </select>
+                                                    </div>
+                                                    @* ==========================================================================================================*@
+                                                    <div id="TypeUser">
+                                                        <input type="hidden" id="UserID" class="form-control" />
+                                                        <div class="input-group" id="UserID-Group">
+                                                            <input type="text" id="UserIDName" class="form-control" />
+                                                            <div tabindex="0" id="UserIDName-label" class="form-control typeahead-label hide">
+                                                            </div>
+                                                            <div tabindex="0" class="input-group-addon btn" id="UserIDName-popup">
+                                                                <i class="fa fa-search"></i>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    @* ==========================================================================================================*@
+                                                    <div id="TypeWorkgroup">
+                                                        <input type="hidden" id="WorkgroupID" class="form-control" />
+                                                        <div class="input-group" id="WorkgroupID-Group">
+                                                            <input type="text" id="WorkgroupIDName" class="form-control" />
+                                                            <div tabindex="2" id="WorkgroupIDName-label" class="form-control typeahead-label hide">
+                                                            </div>
+                                                            <div tabindex="2" class="input-group-addon btn" id="WorkgroupIDName-popup">
+                                                                <i class="fa fa-search"></i>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    @* ==========================================================================================================*@
+                                                    <div id="TypeAction">
+                                                        <input type="hidden" id="ActionID" class="form-control" />
+                                                        <div class="input-group" id="ActionID-Group">
+                                                            <input type="text" id="ActionIDName" class="form-control" />
+                                                            <div tabindex="0" id="ActionIDName-label" class="form-control typeahead-label hide">
+                                                            </div>
+                                                            <div tabindex="0" class="input-group-addon btn" id="ActionIDName-popup">
+                                                                <i class="fa fa-search"></i>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    @* ==========================================================================================================*@
+                                                    <div id="TypeCustomerNo">
+                                                        <input type="text" id="CustomerNo" class="form-control" maxlength="16"/>
+                                                    </div>
+                                                    @* ==========================================================================================================*@
+                                                    <div id="TypeAccountNo">
+                                                        <input type="text" id="AccountNo" class="form-control" maxlength="16"/>
+                                                    </div>
+                                                    @* ==========================================================================================================*@
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <h2></h2>
+                            <!--Button div-->
+                            <div class="panel-body">
+                                <div class="row">
+                                    <span class="col-sm-12" style="text-align:center" id="ReportFilterGroupButton">
+                                        <button id="btnAddFilter" class="btn btn-primary" type="button">Add Filter</button>&nbsp;
+                                        <button id="btnDeleteFilter" class="btn btn-primary" type="button">Delete Filter</button>&nbsp;
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="panel panel-default panel_form_child">
+                            <!--Panel Header for girdlist-->
+                            <div class="panel-heading submenuStyle">
+                                <label class="control-label sv-header"><strong>Report Filters List</strong></label>
+                            </div>
+
+                            <div class="panel-body">
+                                <div class="divGrid">
+                                    <table id="gridTable"></table>
+                                    <div id="jqGridPager"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        </div>
+    <div id="response-modal"></div>
+}
+
+<script type="text/javascript">
+    function SetFilters() {
+        var postData = { _reportID: '@(ViewBag.ReportID)' };
+        var url = '/ReportFilters/GetFilters';
+
+        $.ajax({
+            type: "POST",
+            url: url,
+            data: postData,
+            beforeSend: function () { },
+            success: function (data) {
+                $("#FilterType option").remove();
+                $("#FilterType").append($("<option></option>").text("- Pilih Filter -").val(""));
+                $.each(data, function (i, value) {
+                    $("#FilterType").append($('<option>').text(value.Text).attr('value', value.Value));
+                });
+            },
+            error: function (xhr, textStatus, errorThrown) { },
+            complete: function () { }
+        });
+    }
+
+    function hideFilterValue() {
+        $("#TypeBranch").hide();
+        $("#TypeCategory").hide();
+        $("#TypeProduct").hide();
+        $("#TypeState").hide();
+        $("#TypeStatus").hide();
+        $("#TypeIsDisabledStatus").hide();
+        $("#TypeContactMethod").hide();
+        $("#TypeUser").hide();
+        $("#TypeWorkgroup").hide();
+        $("#TypeAction").hide();
+        $("#TypeCustomerNo").hide();
+        $("#TypeAccountNo").hide();
+    }
+
+    function defaultState() {
+        hideFilterValue();
+        $("#FilterType").val('');
+        $("#FilterType option:selected").text("- Pilih Filter -");
+    }
+
+    $(document).ready(function () {
+        $('#btnDeleteFilter').hide();
+
+        var checkButtonClient = "false";
+
+        @if (Session["RoleID"] != null)
+        {
+            string entity = "ReportFilters";
+            Guid roleID = new Guid(Session["RoleID"].ToString());
+            bool checkButton = CCARE.App_Function.RoleNPrivilege.checkEntityButtonByRoleID(roleID, "ReportMapping", "Write");
+
+            if (checkButton == false)
+            {
+                <text>
+                    $('#ReportFilterGroupButton').hide();
+                </text>
+            }
+            else
+            {
+                <text>
+                    checkButtonClient = '@(checkButton)';
+                </text>
+            }
+        }
+
+        var gridId = "#gridTable";
+        var entityName = 'ReportFilters';
+        var ReportID = '@(ViewBag.ReportID)';
+        var postData = {
+            _val: function () { return ReportID; },
+        };
+
+        function loadReportFiltersGrid() {
+            loadJqgrid(gridId, postData, entityName);
+            $(gridId).jqGrid('setGridParam', {
+                ondblClickRow: function (rowid, iRow, iCol) {
+                },
+                onSelectRow: function (rowid, iRow, iCol) {
+                    var rowData = jQuery(gridId).getRowData(rowid);
+                    var editable = rowData['Editable'];
+                    $('#ReportFiltersID').val(rowData['Id']);
+                    if (editable == "Yes") {
+                        if (checkButtonClient == 'true' || checkButtonClient == 'True') {
+                            $('#btnDeleteFilter').show();
+                        }
+                    } else {
+                        $('#btnDeleteFilter').hide();
+                    }
+
+                }
+            });
+        }
+
+        loadReportFiltersGrid();
+        defaultState();
+        SetFilters();
+
+        @* ==========================================================================================================*@
+
+        $("#FilterType").change(function () {
+            hideFilterValue();
+            var type = $(this).val();
+            switch (type) {
+                case "Branch": $("#TypeBranch").show(); break;
+                case "Category": $("#TypeCategory").show(); break;
+                case "CreatedBy": $("#TypeUser").show(); break;
+                case "Product": $("#TypeProduct").show(); break;
+                case "Owner": $("#TypeUser").show(); break;
+                case "PerformedByNames": $("#TypeUser").show(); break;
+                case "StateCode": $("#TypeState").show(); break;
+                case "StatusCode": $("#TypeStatus").show(); break;
+                case "IsDisabledStatus": $("#TypeIsDisabledStatus").show(); break;
+                case "ContactMethod": $("#TypeContactMethod").show(); break;
+                case "Workgroup": $("#TypeWorkgroup").show(); break;
+                case "Action": $("#TypeAction").show(); break;
+                case "CustomerNo": $("#TypeCustomerNo").show(); break;
+                case "AccountNo": $("#TypeAccountNo").show(); break;
+                default: break;
+            }
+        });
+
+        $('#btnAddFilter').click(function () {
+            var e = jQuery.Event("keydown", { keyCode: 46 });
+            var ftype = $("#FilterType").val();
+            var fguid = "00000000-0000-0000-0000-000000000000";
+            var fvalue = "";
+
+            if (ftype == "") {
+                alert("@Resources.ReportFilters.TypeMandatory");
+                return false;
+            }
+
+
+            switch (ftype) {
+                case "Branch": fguid = $("#BranchID").val(); fvalue = $("#BranchIDName").val(); break;
+                case "Category": fguid = $("#CategoryID").val(); fvalue = $("#CategoryIDName").val(); $('#CategoryIDName-label').focus(); $("#CategoryIDName-label").trigger(e); break;
+                case "CreatedBy": fguid = $("#UserID").val(); fvalue = $("#UserIDName").val(); $('#UserIDName-label').focus(); $("#UserIDName-label").trigger(e); break;
+                case "Product": fguid = $("#ProductID").val(); fvalue = $("#ProductIDName").val(); $('#ProductIDName-label').focus(); $("#ProductIDName-label").trigger(e); break;
+                case "Owner": fguid = $("#UserIDName").val(); fvalue = $("#UserIDName").val(); $('#UserIDName-label').focus(); $("#UserIDName-label").trigger(e); break;
+                case "PerformedByNames": fguid = $("#UserID").val(); fvalue = $("#UserIDName").val(); break;
+                case "StateCode": fguid = $("#StateDd option:selected").val(); fvalue = $("#StateDd option:selected").val(); break;
+                case "StatusCode": fguid = $("#StatusDd option:selected").val(); fvalue = $("#StatusDd option:selected").val(); break;
+                case "IsDisabledStatus": fguid = $("#IsDisabledStatusDd option:selected").val(); fvalue = $("#IsDisabledStatusDd option:selected").val(); break;
+                case "ContactMethod": fguid = $("#ContactMethodDd option:selected").val(); fvalue = $("#ContactMethodDd option:selected").val(); break;
+                case "Workgroup": fguid = $("#WorkgroupID").val(); fvalue = $("#WorkgroupIDName").val(); $('#WorkgroupIDName-label').focus(); $("#WorkgroupIDName-label").trigger(e); break;
+                case "Action": fguid = $("#ActionID").val(); fvalue = $("#ActionIDName").val(); $('#ActionIDName-label').focus(); $("#ActionIDName-label").trigger(e); break;
+                case "CustomerNo": fvalue = $("#CustomerNo").val(); break;
+                case "AccountNo": fvalue = $("#AccountNo").val(); break;
+                default: break;
+            }
+
+            $('#FilterGUID').val(fguid);
+            $('#FilterValue').val(fvalue);
+
+
+            if ($('#FilterValue').val() == "") {
+                alert("@Resources.ReportFilters.ValueMandatory");
+                return false;
+            }
+
+            Execute("Create");
+            loadReportFiltersGrid();
+            defaultState();
+        });
+
+        $('#btnDeleteFilter').click(function () {
+            Execute("Delete");
+            loadReportFiltersGrid();
+        });
+
+        function Execute(action) {
+            var postData = JSON.stringify({ model: $('#form_reportfilters').serializeObject(), action: action });
+            var url = '/ReportFilters/Execute';
+
+            $.ajax({
+                type: "POST",
+                url: url,
+                data: postData,
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (msg) {
+                    if (msg.flag == true) {
+
+                    }
+                    alert(msg.Message);
+                    loadReportFiltersGrid();
+                    $('#FilterValue').val('');
+                    $('#btnDeleteFilter').hide();
+                },
+                error: function (xhr, status, err) {
+                    $(selectID).get(0).options.length = 0;
+                    alert("List tidak berhasil diload");
+                }
+            });
+        }
+
+        @* ==========================================================================================================*@
+        @* ============================================ POP UP SECTION ============================================= *@
+        @* ==========================================================================================================*@
+        $('#BranchIDName-popup').on('click', function (e) {
+            if ($(this).attr('disabled') == 'disabled') return false;
+            urlModalPopup = '@Url.Action("_popupContent", "Popup", new { type = "branch", _entity = "" })';
+            colModelsName = [
+                { label: 'ID', name: 'Id', index: 'Id', key: true, width: 75, hidden: true },
+                { label: 'Nama Kantor', name: 'Name', width: 250 },
+                { label: 'Kode Kantor', name: 'OfficeCode', width: 250 },
+                { label: 'Alamat', name: 'Address', width: 250 },
+                { label: 'Fax', name: 'Fax', width: 250 },
+                { label: 'Inisial', name: 'Initials', width: 60 },
+                { label: 'Kode Pos', name: 'Zipcode', width: 60 },
+                { label: 'Kota', name: 'City', width: 60 },
+                { label: 'Telephone 1', name: 'Telephone1', width: 60 },
+                { label: 'Telephone 2', name: 'Telephone2', width: 60 },
+                { label: 'Kanwil', name: 'RegionName', width: 60 }
+            ];
+            var id = $(this).parent().find('input:last').attr('id');
+            $('#' + id).trigger("blur");
+            e.preventDefault();
+        });
+
+        var branch = new PopupClass();
+        branch.setId("BranchIDName");
+        branch.setUrl('@Url.Action("Branch", "Popup")');
+        branch.setHiddenId("BranchID");
+        branch.init();
+
+        @* ==========================================================================================================*@
+        $('#CategoryIDName-popup').on('click', function (e) {
+            if ($(this).attr('disabled') == 'disabled') return false;
+            urlModalPopup = '@Url.Action("_popupContent", "Popup", new { type = "categories", _entity = "" })';
+            colModelsName = [
+                { label: 'ID', name: 'Id', index: 'Id', key: true, width: 75, hidden: true },
+                { label: 'Category Name', name: 'Name', index: 'Name', width: 250 },
+                { label: 'Parent Name', name: 'ParentName', width: 250 },
+                { label: 'Description Tree', name: 'Description', width: 400 }
+            ];
+            var id = $(this).parent().find('input:last').attr('id');
+            $('#' + id).trigger("blur");
+            e.preventDefault();
+        });
+
+        var categories = new PopupClass();
+        categories.setId("CategoryIDName");
+        categories.setUrl('@Url.Action("Category", "Popup")');
+        categories.setHiddenId("CategoryID");
+        categories.init();
+
+        @* ==========================================================================================================*@
+
+        $('#ProductIDName-popup').on('click', function (e) {
+            if ($(this).attr('disabled') == 'disabled') return false;
+            urlModalPopup = '@Url.Action("_popupContent", "Popup", new { type = "products", _entity = "" })';
+            colModelsName = [
+                { label: 'ID', name: 'Id', index: 'Id', key: true, width: 75, hidden: true },
+                { label: 'Product Name', name: 'Name', index: 'Name', width: 250 },
+                { label: 'Parent Name', name: 'ParentName', width: 250 },
+                { label: 'Description Tree', name: 'Description', width: 400 }
+            ];
+            var id = $(this).parent().find('input:last').attr('id');
+            $('#' + id).trigger("blur");
+            e.preventDefault();
+        });
+
+        var products = new PopupClass();
+        products.setId("ProductIDName");
+        products.setUrl('@Url.Action("Product", "Popup")');
+        products.setHiddenId("ProductID");
+        products.init();
+
+        @* ==========================================================================================================*@
+
+        $('#ActionIDName-popup').on('click', function (e) {
+            if ($(this).attr('disabled') == 'disabled') return false;
+            urlModalPopup = '@Url.Action("_popupContent", "Popup", new { type = "cause", _entity = "" })';
+            colModelsName = [
+                { label: 'ID', name: 'Id', index: 'Id', key: true, width: 75, hidden: true },
+                { label: 'Name', name: 'Name', width: 250 },
+                { label: 'Created On', name: 'CreatedOn', width: 150, formatter: "date", formatoptions: { srcformat: "ISO8601Long", newformat: "d/m/Y H:i" } }
+            ];
+            var id = $(this).parent().find('input:last').attr('id');
+            $('#' + id).trigger("blur");
+            e.preventDefault();
+        });
+
+        var Actions = new PopupClass();
+        Actions.setId("ActionIDName");
+        Actions.setUrl('@Url.Action("Cause", "Popup")');
+        Actions.setHiddenId("ActionID");
+        Actions.init();
+
+        @* ==========================================================================================================*@
+
+        $('#WorkgroupIDName-popup').on('click', function (e) {
+            if ($(this).attr('disabled') == 'disabled') return false;
+            urlModalPopup = '@Url.Action("_popupContent", "Popup", new { type = "workgroup", _entity = "" })';
+            colModelsName = [
+                { label: 'ID', name: 'Id', index: 'Id', key: true, width: 75, hidden: true },
+                { label: 'Name', name: 'Name', width: 300 },
+                { label: 'E-Mail', name: 'EMailAddress', width: 300 },
+                { label: 'Business Unit', name: 'BusinessUnitName', width: 300 }
+            ];
+            var id = $(this).parent().find('input:last').attr('id');
+            $('#' + id).trigger("blur");
+            e.preventDefault();
+        });
+
+        var workgroup = new PopupClass();
+        workgroup.setId("WorkgroupIDName");
+        workgroup.setUrl('@Url.Action("WorkGroup", "Popup")');
+        workgroup.setHiddenId("WorkgroupID");
+        workgroup.init();
+
+        @* ==========================================================================================================*@
+
+        $('#UserName-popup').on('click', function (e) {
+            if ($(this).attr('disabled') == 'disabled') return false;
+            urlModalPopup = '@Url.Action("_popupContent", "Popup", new { type = "User", _entity = "" })';
+            colModelsName = [
+                { label: 'ID', name: 'Id', index: 'Id', key: true, width: 75, hidden: true },
+                { label: 'Name', name: 'Name', width: 100 },
+                { label: 'Phone', name: 'Phone', width: 100 },
+                { label: 'Business Unit', name: 'BusinessUnitName', width: 150 }
+            ];
+            var id = $(this).parent().find('input:last').attr('id');
+            $('#' + id).trigger("blur");
+            e.preventDefault();
+        });
+
+        var users = new PopupClass();
+        users.setId("UserIDName");
+        users.setUrl('@Url.Action("User", "Popup")');
+        users.setHiddenId("UserID");
+        users.init();
+
+        @* ==========================================================================================================*@
+        $('#divActionButton').hide();
+    });
+</script>

@@ -1,0 +1,47 @@
+﻿<div class="panel-body" id="messagebox"></div>
+
+@if (ViewBag.searchResultsCount > 0)
+{
+    <div class="row form_text">
+        <div class="panel panel-default panel_form_child">
+            <div class="panel-heading" id="contentHeaderDiv">
+                <label class="control-label sv-header">
+                    <strong>Koneksi Kartu Kredit</strong>
+                </label>
+                <a class="pull-right" data-toggle="collapse" href="#collapseContentDiv" aria-expanded="true" aria-controls="collapseContentDiv">
+                    <i class="fa fa-angle-double-up fa-lg"></i>
+                </a>
+            </div>
+            <br />
+            <div id="collapseContentDiv" class="panel-collapse collapse in" aria-labelledby="headingOne">
+                <div class="panel-body">
+                    <form class="form-horizontal">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="divGrid">
+                                    <table id="gridCCConnection"></table>
+                                    <div id="gridCCConnectionPager"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $(".form-horizontal").find("input").attr("disabled", "disabled");//.css('background-color', 'white');
+            if (set(@Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(@ViewBag.searchResultsCount))) > 0) {
+                var ccConnectionList = set(@Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(@ViewBag.searchResults)));
+                loadLocalJqgrid("#gridCCConnection", ccConnectionList, "CCConnection");
+            }
+        });
+    </script>
+}
+else
+{
+    <div class="panel-body" id="no-record-found"></div>
+    <script type="text/javascript">$("#no-record-found").html(NoRecordFound());</script>
+}

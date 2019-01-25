@@ -1,0 +1,648 @@
+﻿@{
+    if (Request.IsAjaxRequest())
+    {
+        Layout = null;
+    }
+}
+
+<ul class="nav nav-stacked nav-pills">
+    <li class="titleBar font-crm4"><a><span class="sr-only"></span></a></li>
+</ul>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-12">
+            <!-- Content -->
+            <div class="container-fluid content_container">
+                <div class="row ">
+                    <div class="col-sm-12">
+                        <form id="form_inquiry" class="form-horizontal">
+                            <div class="form-group rm-margin-bottom">
+                                
+                                <div class="col-sm-12">
+                                    <br />
+                                    <ol class="breadcrumb">
+                                        <li class="active">Service</li>
+                                        <li class="active">Customer Management</li>
+                                        <li class="active"><a href="#">Customer</a></li>
+                                    </ol>
+                                    <table id="customer-search" class="table">                                        
+                                        <colgroup>
+                                            <col width="30px" />
+                                            <col width="150px" />
+                                            <col width="300px" />
+                                            <col width="200px" />
+                                            <col width="250px" />
+                                            <col width="150px" />
+                                            <col width="100px" />
+                                        </colgroup>
+                                        <tr id="tr-radio-1">
+                                            <td><input type="radio" id="radio-1" name="criteriagrp" value="fullname" /></td>
+                                            <td>Fullname</td>
+                                            <td><input type="text" id="fullname" name="fullname" class="form-control radio-click" value="" /></td>
+                                            <td>Birth Date</td>
+                                            <td>
+                                                <div class="input-group date">
+                                                    <input type="text" id="birthdate" name="birthdate" class="form-control">
+                                                    <span id="birthdate-icon" class="input-group-addon">
+                                                        <i class="fa fa-calendar fa-lg"></i>
+                                                    </span>
+                                                </div>
+                                            </td>
+                                            <td>Gender</td>
+                                            <td>
+                                                <div class="input-group">
+                                                    <span class="input-group-addon">
+                                                        <input type="radio" name="gender" value="M">
+                                                    </span>
+                                                    <input type="text" id="gM" class="form-control cust-search-gender" value="Male" readonly="readonly">
+                                                    <span class="input-group-addon">
+                                                        <input type="radio" name="gender" value="F">
+                                                    </span>
+                                                    <input type="text" id="gF" class="form-control cust-search-gender" value="Female" readonly="readonly">
+                                                    <span class="input-group-addon">
+                                                        <input type="radio" name="gender" value="O">
+                                                    </span>
+                                                    <input type="text" id="gC" class="form-control cust-search-gender" value="Corporate" readonly="readonly">
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr id="tr-radio-2">
+                                            <td><input type="radio" id="radio-2" name="criteriagrp" value="cisnumber" /></td>
+                                            <td>CIS Number</td>
+                                            <td><input type="text" id="cisnumber" name="cisnumber" maxlength="11" class="form-control radio-click" value="" /></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                        </tr>
+                                        <tr id="tr-radio-3">
+                                            <td><input type="radio" id="radio-3" name="criteriagrp" value="product" /></td>
+                                            <td>Product</td>
+                                            <td>
+                                                <select id="product" name="product" class="form-control radio-click rm-padding">                                                    
+                                                    <option value=""></option>
+                                                    <option value="Credit Card">Credit Card</option>
+                                                    <option value="Deposit">Deposit</option>
+                                                    <option value="Loan">Loan</option>
+                                                </select>
+                                            </td>
+                                            <td>Parameter</td>
+                                            <td>
+                                                <select id="productParameter" name="productParameter" class="form-control rm-padding">
+                                                    <option value=""></option>
+                                                </select>
+                                            </td>
+                                            <td>Value</td>
+                                            <td><input type="text" id="productValue" name="productValue" maxlength="60" class="form-control" /></td>
+                                        </tr>
+                                        <tr id="tr-radio-4">
+                                            <td><input type="radio" id="radio-4" name="criteriagrp" value="ebanking" /></td>
+                                            <td>eBanking</td>
+                                            <td>
+                                                <select id="ebanking" name="ebanking" class="form-control radio-click rm-padding">                                                    
+                                                    <option value=""></option>
+                                                    <option value="KlikBCA Individu">KlikBCA Individu</option>
+                                                    <option value="KlikBCA Bisnis">KlikBCA Bisnis</option>
+                                                    <option value="m-BCA">m-BCA</option>
+                                                    <option value="BCA by Phone">BCA by Phone</option>
+                                                    <option value="SMS BCA">SMS BCA</option>
+                                                    <option value="SMS Top Up">SMS Top Up</option>
+                                                </select>
+                                            </td>
+                                            <td>Parameter</td>
+                                            <td>
+                                                <select id="ebankingParameter" name="ebankingParameter" class="form-control rm-padding">                                                    
+                                                    <option value=""></option>
+                                                </select>
+                                            </td>
+                                            <td>Value</td>
+                                            <td><input type="text" id="ebankingValue" name="ebankingValue" maxlength="60" class="form-control" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+                            <!-- row 2 -->
+                            <div class="form-group rm-margin-top">
+                                <div class="col-sm-offset-7 col-sm-5" id="btn-cust-search">
+                                    <button type="reset" id="btn_reset" class="btn btn-danger btn-crm-layout"><span class="glyphicon glyphicon-erase glyp-space" aria-hidden="true"></span>Reset</button>
+                                    <button type="submit" id="btn_search" class="btn btn-primary btn-crm-layout"><span class="glyphicon glyphicon-globe glyp-space" aria-hidden="true"></span>Search Customer</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-sm-12 panel panel-default panel_form_parent scroll-y">
+            <br />
+            <div class="col-sm-12">
+                <div class="row form_text">
+                    <div class="panel panel-default panel_form_child">
+                        
+                        <div class="panel-heading">
+                            <label class="control-label sv-header">
+                                <strong>Search Result Customer</strong>
+                            </label>
+                        </div>
+                        <div class="panel-body">
+                            <form class="form-horizontal">
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <div class="divGrid">
+                                            <table id="gridTable"></table>
+                                            <div id="jqGridPager"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        var gridId = "#gridTable";
+        var entityName = 'Customer';
+
+        $('#form_inquiry').submit(function (e) {
+            e.preventDefault();
+            var inputRadio = $("input[name='criteriagrp']:checked");
+            if (inputRadio.length == 0) {
+                e.preventDefault();
+                return false;
+            } else {
+                var errMsg = [];
+                var input = inputRadio.parent().parent().find("input,select");
+                input.each(function (index, Element) {
+                    var type = $(this).prop("type");
+                    if (type == "select-one") {
+                        if ($(this).val() == "") {
+                            var textField = $(this).closest('td').prev('td').text();
+                            var msg = "Please select " + textField;
+                            var err = {
+                                Key: textField,
+                                Value: msg
+                            };
+                            errMsg.push(err);
+                            return false;
+                        }
+                    }
+                    if (type == "text") {
+                        if ($(this).val().length == 0) {
+                            var textField = $(this).closest('td').prev('td').text();
+                            var msg = "Please enter " + textField;
+                            var err = {
+                                Key: textField,
+                                Value: msg
+                            };
+                            errMsg.push(err);
+                            return false;
+                        }
+                    }
+                    if (type == "radio") {
+                        if ($('input[name=' + $(this).attr("name") + ']:checked').length == 0) {
+                            var textField = $(this).closest('td').prev('td').text();
+                            var msg = "Please select " + textField;
+                            var err = {
+                                Key: textField,
+                                Value: msg
+                            };
+                            errMsg.push(err);
+                            return false;
+                        }
+                    }
+                });
+                if (errMsg.length > 0) {
+                    alert(errMsg[0].Value);
+                    return false;
+                }
+            };
+            
+            //(event.preventDefault) ? event.preventDefault() : event.returnValue = false;
+            var str = leftPadding($("input[name='cisnumber']").val(), '0', 11);
+            $("input[name='cisnumber']").val(str);
+
+            var postData = {
+                _criteria: function () { return $("input[name=criteriagrp]:checked").val(); },
+                _fullname: function () { return $("#fullname").val(); },
+                _birthdate: function () { return $("#birthdate").val(); },
+                _gender: function () { return $("input[name='gender']:checked").val(); },
+                _cisnumber: function () { return $("#cisnumber").val(); },
+                _product: function () { return $("#product").val(); },
+                _productparam: function () { return $("#productParameter").val(); },
+                _productparamval: function () { return $("#productValue").val(); },
+                _ebanking: function () { return $("#ebanking").val(); },
+                _ebankingparam: function () { return $("#ebankingParameter").val(); },
+                _ebankingparamval: function () { return $("#ebankingValue").val(); }
+            };
+
+            loadJqgrid(gridId, postData, entityName);
+            $(gridId).jqGrid('setGridParam', {
+                gridComplete: function () {
+                    if ($(gridId).jqGrid('getGridParam', 'reccount') == 1)
+                    {
+                        var rowid = $(gridId).jqGrid('getDataIDs')[0];
+                        openWindow('/' + entityName + '/Edit?id=' + rowid);
+                    };
+                }
+            });
+            
+        });
+
+        $('.input-group.date').datepicker({
+            format: "dd/mm/yyyy",
+            autoclose: true
+        });
+
+        function setGender() {
+            $("#gM").val("Male");
+            $("#gF").val("Female");
+            $("#gC").val("Corporate");
+        }
+
+        function changeInputChild(id) {
+            var inputFocus = $("#" + id);
+            switch (id) {
+                case "product":
+                    var text = inputFocus.children(':selected').text();
+                    inputFocus.parent().parent().find("td:nth-child(4)").html(text);
+                    var value = inputFocus.val();
+                    switch (value) {
+                        case "Credit Card":
+                            var childSelect = inputFocus.parent().parent().find("select:eq(1)");
+                            childSelect.empty();
+                            var newOptions = {
+                                'Card No': 'Card No',
+                                'Customer No': 'Customer No'
+                            };
+                            for (var key in newOptions) {
+                                var opt = document.createElement('option');
+                                opt.value = key;
+                                opt.innerHTML = newOptions[key];
+                                childSelect.append(opt);
+                            }
+                            childSelect.trigger("change");
+                            break;
+                        case "Deposit":
+                            var childSelect = inputFocus.parent().parent().find("select:eq(1)");
+                            childSelect.empty();
+                            var newOptions = {
+                                'Account No': 'Account No',
+                                'Card No': 'Card No'
+                            };
+                            for (var key in newOptions) {
+                                var opt = document.createElement('option');
+                                opt.value = key;
+                                opt.innerHTML = newOptions[key];
+                                childSelect.append(opt);
+                            }
+                            childSelect.trigger("change");
+                            break;
+                        case "Loan":
+                            var childSelect = inputFocus.parent().parent().find("select:eq(1)");
+                            childSelect.empty();
+                            var newOptions = {
+                                'Account No': 'Account No'
+                            };
+                            for (var key in newOptions) {
+                                var opt = document.createElement('option');
+                                opt.value = key;
+                                opt.innerHTML = newOptions[key];
+                                childSelect.append(opt);
+                            }
+                            childSelect.trigger("change");
+                            break;
+                    }
+                    break;
+                case "ebanking":
+                    var text = inputFocus.children(':selected').text();
+                    inputFocus.parent().parent().find("td:nth-child(4)").html(text);
+                    var value = inputFocus.val();
+                    switch (value) {
+                        case "KlikBCA Individu":
+                            var childSelect = inputFocus.parent().parent().find("select:eq(1)");
+                            childSelect.empty();
+                            var newOptions = {
+                                'Card No': 'Card No',
+                                'User ID': 'User ID',
+                                'E-Mail': 'E-Mail',
+                                'S/N Key BCA': 'S/N Key BCA'
+                            };
+                            for (var key in newOptions) {
+                                var opt = document.createElement('option');
+                                opt.value = key;
+                                opt.innerHTML = newOptions[key];
+                                childSelect.append(opt);
+                            }
+                            childSelect.trigger("change");
+                            break;
+                        case "KlikBCA Bisnis":
+                            var childSelect = inputFocus.parent().parent().find("select:eq(1)");
+                            childSelect.empty();
+                            var newOptions = {
+                                'Corporate ID': 'Corporate ID',
+                                'E-Mail': 'E-Mail',
+                                'S/N Key BCA': 'S/N Key BCA'
+                            };
+                            for (var key in newOptions) {
+                                var opt = document.createElement('option');
+                                opt.value = key;
+                                opt.innerHTML = newOptions[key];
+                                childSelect.append(opt);
+                            }
+                            childSelect.trigger("change");
+                            break;
+                        case "m-BCA":
+                            var childSelect = inputFocus.parent().parent().find("select:eq(1)");
+                            childSelect.empty();
+                            var newOptions = {
+                                'Card No': 'Card No',
+                                'Handphone No': 'Handphone No'
+                            };
+                            for (var key in newOptions) {
+                                var opt = document.createElement('option');
+                                opt.value = key;
+                                opt.innerHTML = newOptions[key];
+                                childSelect.append(opt);
+                            }
+                            childSelect.trigger("change");
+                            break;
+                        case "BCA by Phone":
+                            var childSelect = inputFocus.parent().parent().find("select:eq(1)");
+                            childSelect.empty();
+                            var newOptions = {
+                                'Customer ID': 'Customer ID',
+                                'Account No': 'Account No',
+                                'S/N Key BCA': 'S/N Key BCA'
+                            };
+                            for (var key in newOptions) {
+                                var opt = document.createElement('option');
+                                opt.value = key;
+                                opt.innerHTML = newOptions[key];
+                                childSelect.append(opt);
+                            }
+                            childSelect.trigger("change");
+                            break;
+                        case "SMS BCA":
+                            var childSelect = inputFocus.parent().parent().find("select:eq(1)");
+                            childSelect.empty();
+                            var newOptions = {
+                                'Card No': 'Card No',
+                                'Handphone No': 'Handphone No'
+                            };
+                            for (var key in newOptions) {
+                                var opt = document.createElement('option');
+                                opt.value = key;
+                                opt.innerHTML = newOptions[key];
+                                childSelect.append(opt);
+                            }
+                            childSelect.trigger("change");
+                            break;
+                        case "SMS Top Up":
+                            var childSelect = inputFocus.parent().parent().find("select:eq(1)");
+                            childSelect.empty();
+                            var newOptions = {
+                                'Card No': 'Card No',
+                                'Handphone No': 'Handphone No'
+                            };
+                            for (var key in newOptions) {
+                                var opt = document.createElement('option');
+                                opt.value = key;
+                                opt.innerHTML = newOptions[key];
+                                childSelect.append(opt);
+                            }
+                            childSelect.trigger("change");
+                            break;
+                    }
+                    break;
+                case "productParameter":
+                    var text = inputFocus.children(':selected').text();
+                    inputFocus.parent().parent().find("td:nth-child(6)").html(text);
+                    break;
+                case "ebankingParameter":
+                    var text = inputFocus.children(':selected').text();
+                    inputFocus.parent().parent().find("td:nth-child(6)").html(text);
+                    break;
+            }
+        }
+
+        $("#product, #productParameter, #ebanking, #ebankingParameter").change(function () {
+            changeInputChild($(this).attr("id"));
+        });
+
+        $("td>input:text, td>input:radio, td>select, td>.input-group.date>input:text, td>.input-group.date>.input-group-addon").click(function () {
+            //var inputRadio = $(this).parent().parent().find("input[type='radio']:first");
+            if ($(this).attr("id") == "birthdate" || $(this).attr("id") == "birthdate-icon") {
+                var inputRadio = $(this).parent().parent().parent().find("input[type='radio']:first");
+            } else {
+                var inputRadio = $(this).parent().parent().find("input[type='radio']:first");
+            }
+            var parentBox = $(this).parent().parent().find(".radio-click:first");
+            inputRadio.prop('checked', true);
+            if (inputRadio.is(':focus')) {
+                parentBox.focus();
+            }
+            if (parentBox.is(':focus')) {
+                if (parentBox.attr("name") == "product") {
+                    switch (parentBox.val()) {
+                        case "":
+                            $(this).parent().parent().find("td:nth-child(4)").html("Parameter");
+                            var r = $(this).parent().parent().find("select:eq(1)");
+                            r.empty();
+                            $(this).parent().parent().find("td:nth-child(6)").html("Value");
+                            break;
+                        case "Credit Card":
+                            break;
+                        case "Deposit":
+                            break;
+                        default:
+                            break;
+                    }
+                }
+            }
+
+
+            $(".radio-click").each(function (index, Element) {
+                var currentRadio = $(this).parent().parent().find("input[type='radio']:first");
+                if (currentRadio.attr("id") == inputRadio.attr("id")) {
+                    return "continue";
+                }
+                if (currentRadio.attr("id") == "radio-4" || currentRadio.attr("id") == "radio-3") {
+                    //alert(currentRadio.attr("id"));
+                    $(this).parent().parent().find("td:nth-child(4)").html("Parameter");
+                    $(this).parent().parent().find("td:nth-child(6)").html("Value");
+                }
+                var input = $(this).parent().parent().find("input,select");
+                input.each(function (index, Element) {
+                    var type = $(this).prop("type");
+                    if (type == "select-one") {
+                        if ($(this).hasClass("radio-click")) {
+                            $(this).val("");
+                        } else {
+                            $(this).empty();
+                        }
+                    }
+                    if (type == "text") {
+                        $(this).val("")
+                    }
+                    if (type == "radio") {
+                        $(this).prop('checked', false)
+                    }
+                    //type == "radio" ? $(this).prop('checked', false) : $(this).val("");                    
+                });
+
+                setGender();
+                
+            });
+        });
+
+        var Validationo = {
+
+            setSelectionRange: function (input, selectionStart, selectionEnd) {
+                if (input.setSelectionRange) {
+                    input.focus();
+                    input.setSelectionRange(selectionStart, selectionEnd);
+                }
+                else if (input.createTextRange) {
+                    var range = input.createTextRange();
+                    range.collapse(true);
+                    range.moveEnd('character', selectionEnd);
+                    range.moveStart('character', selectionStart);
+                    range.select();
+                }
+            },
+
+            // validate Number
+            validateNumber: function (input) {
+                var c = input.selectionStart,
+                r = /[^0-9]/gi,
+                //r = /^[0-9].{6,7}$/gi,
+                v = input.val();
+                if (r.test(v)) {
+                    input.val(v.replace(r, ''));
+                    c--;
+                }
+                this.setSelectionRange(input, c, c);
+            },
+
+            // validate AlphaNumeric
+            validateAlphaNumeric: function (input) {
+                var c = input.selectionStart,
+                r = /[^a-zA-Z0-9]/gi,
+                v = input.val();
+                if (r.test(v)) {
+                    input.val(v.replace(r, ''));
+                    c--;
+                }
+                this.setSelectionRange(input, c, c);
+            },
+
+            // validate AlphaNumeric With Dash
+            validateAlphaNumericWithDash: function (input) {
+                var c = input.selectionStart,
+                r = /[^a-zA-Z0-9-]/gi,
+                v = input.val();
+                if (r.test(v)) {
+                    input.val(v.replace(r, ''));
+                    c--;
+                }
+                this.setSelectionRange(input, c, c);
+            },
+
+            // validate special for ebanking
+            validateForEbankinng: function (input) {
+                var c = input.selectionStart,
+                r = /[^a-zA-Z0-9-._@Html.Encode("@")]/gi,
+                v = input.val();
+                if (r.test(v)) {
+                    input.val(v.replace(r, ''));
+                    c--;
+                }
+                this.setSelectionRange(input, c, c);
+            },
+
+            validateForInputEmpty: function (name) {
+                var error = 0;
+                var input = $("#" + name).parent().parent().find("input,select");
+                input.each(function (index, Element) {
+                    var type = $(this).prop("type");
+                    if (type == "select-one") {
+                        //alert($(this).val());
+                        if ($(this).val() == "") {
+                            var textField = $(this).closest('td').prev('td').text();
+                            alert(textField + " cannot be blank!");
+                            error++;
+                            
+                            event.returnValue = false;
+                            return false;
+                        }
+                    }
+                    if (type == "text") {
+                        if ($(this).val().length == 0) {
+                            var textField = $(this).closest('td').prev('td').text();
+                            alert(textField + " cannot be blank!");
+                            error++;
+                            return "faefaefa";
+                            event.returnValue = false;
+                            return false;
+                        }
+                    }
+                    if (type == "radio") {
+                        //$(this).prop('checked', false)
+                        if ($('input[name=' + $(this).attr("name") + ']:checked').length == 0) {
+                            var textField = $(this).closest('td').prev('td').text();
+                            alert(textField + " cannot be blank!");
+                            error++;
+                            event.returnValue = false;
+                            return false;
+                        }
+                    }
+                    //type == "radio" ? $(this).prop('checked', false) : $(this).val("");                    
+                });
+            }
+        };
+
+        $("input[name='cisnumber']").bind('keyup input', function () {
+            Validationo.validateNumber($(this));
+        });
+        
+        $("input[name='productValue']").bind('keyup input', function () {
+            Validationo.validateAlphaNumericWithDash($(this));
+        });
+
+        $("input[name='ebankingValue']").bind('keyup input', function () {
+            Validationo.validateForEbankinng($(this));
+        });
+
+        $("#btn_reset").click(function () {
+            //ebankingParameter productParameter
+            //$("#radio-3, #radio-4").
+            $("#radio-3, #radio-4").parent().parent().find("td:nth-child(4)").html("Parameter");
+            $("#radio-3, #radio-4").parent().parent().find("td:nth-child(6)").html("Value");
+            $("#ebankingParameter").empty();
+            $("#productParameter").empty();
+            $.jgrid.gridUnload(gridId);
+        });
+    });   
+
+    
+</script>

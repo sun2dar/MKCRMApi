@@ -1,0 +1,762 @@
+﻿@using CCARE.App_Function;
+
+@{
+    if (Request.IsAjaxRequest())
+    {
+        Layout = null;
+    }
+}
+
+<ul class="nav nav-stacked nav-pills">
+    <li class="titleBar font-crm4"><a></a></li>
+</ul>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-12">
+            <!-- Content -->
+            <div class="container-fluid content_container">
+                <div class="row">
+                    <div class="col-sm-12">
+                        
+                        <br />
+                        <div class="tab-content myContent_Tab">
+                            <div class="tab-pane fade active in" id="history" aria-labelledby="history-tab">
+                                    
+                                <ol class="breadcrumb">
+                                    <li class="active">Search</li>
+                                    <li class="active">Product Transactions</li>
+                                    <li class="active"><a href="#">Credit Card</a></li>
+                                </ol>
+
+                                <div class="form-horizontal">
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <label class="col-sm-6 control-label">Jenis Transaksi</label>
+                                                <div class="col-sm-6">
+                                                    <select id="inquiry_trxType" class="form-control rm-padding">
+                                                        <option value="outstanding">KK - Tagihan Gantung</option>
+                                                        <option value="current">KK - Transaksi Berjalan</option>
+                                                        <option value="history">KK - Histori Tagihan</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6"></div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <label class="col-sm-6 control-label mandatory"><span id="lblparam">No Kartu Kredit / No Customer</span></label>
+                                                <div class="col-sm-6">
+                                                    <input type="text" id="inquiry_val" class="form-control" maxlength="16" value=""/>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6"></div>
+                                    </div>
+                                        
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <label class="col-sm-6 control-label"></label>
+                                            <div class="col-sm-6">
+                                                <div class="input-group">
+                                                    <button id="btn_search" class="btn btn-primary btn-crm-layout" type="button" data-loading-text="Inquiry...">
+                                                        <span class="glyphicon glyphicon-search glyp-space" aria-hidden="true"></span>
+                                                        Search
+                                                    </button>
+                                                    <button id="btn_clear" class="btn btn-danger btn-crm-layout" type="button">
+                                                        <span class="glyphicon glyphicon-erase glyp-space" aria-hidden="true"></span>
+                                                        Clear
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6"></div>
+                                    </div>
+
+                                </div>
+                            </div>                                
+                        </div>
+                        
+                    </div>
+                </div>
+
+                <br /><br />
+                
+                <!-- Table result -->
+                <div class="row">
+                    <div class="col-sm-12" >
+                        <div class="panel panel-default">
+                            
+                            <div class="panel-heading panel_heading">
+                                <label class="control-label sv-header">
+                                    <strong>Search Result</strong>
+                                </label>
+                            </div>
+
+                            <div class="panel-body" id="information">
+                                <div class="form-horizontal">
+                                    <div class="row">
+                                        
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <label class="col-sm-3 control-label">No Customer</label>
+                                                <div class="col-sm-9">
+                                                    <input type="text" class="form-control" id="custNo" readonly="readonly" />
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <label class="col-sm-3 control-label">Total</label>
+                                                <div class="col-sm-9">
+                                                    <input type="text" class="form-control" id="total" readonly="readonly" />
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="panel-body" id="information-detail">
+                                <div class="form-horizontal pad-eb-trx">
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <label class="col-sm-3 control-label">Pilih Tanggal</label>
+                                                <div class="col-sm-9">
+                                                    <select id="statement-dates" class="form-control rm-padding">
+                                                    </select>
+                                                    <input type="hidden" id="customerNo" />
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-sm-6"></div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <label class="col-sm-3 control-label">Name</label>
+                                                <div class="col-sm-9">
+                                                    <input type="text" class="form-control" id="hist-name" readonly="readonly" />
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <label class="col-sm-3 control-label">Address</label>
+                                                <div class="col-sm-9">
+                                                    <input type="text" class="form-control" id="hist-address" readonly="readonly" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <label class="col-sm-3 control-label">No Customer</label>
+                                                <div class="col-sm-9">
+                                                    <input type="text" class="form-control" id="hist-cust-no" readonly="readonly" />
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <label class="col-sm-3 control-label">Tanggal Rekening</label>
+                                                <div class="col-sm-9">
+                                                    <input type="text" class="form-control" id="hist-account-date" readonly="readonly" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <label class="col-sm-3 control-label">Saldo Baru / Total</label>
+                                                <div class="col-sm-9">
+                                                    <input type="text" class="form-control" id="hist-new-balance" readonly="readonly" />
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <label class="col-sm-3 control-label">Pembayaran Minimum</label>
+                                                <div class="col-sm-9">
+                                                    <input type="text" class="form-control" id="hist-minimum-payment" readonly="readonly" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <label class="col-sm-3 control-label">Tanggal Jatuh Tempo</label>
+                                                <div class="col-sm-9">
+                                                    <input type="text" class="form-control" id="hist-maturity-date" readonly="readonly" />
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <label class="col-sm-3 control-label">Saldo Lama</label>
+                                                <div class="col-sm-9">
+                                                    <input type="text" class="form-control" id="hist-old-balance" readonly="readonly" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <label class="col-sm-3 control-label">Kredit</label>
+                                                <div class="col-sm-9">
+                                                    <input type="text" class="form-control" id="hist-credit" readonly="readonly" />
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <label class="col-sm-3 control-label">Tagihan Baru</label>
+                                                <div class="col-sm-9">
+                                                    <input type="text" class="form-control" id="hist-new-bill" readonly="readonly" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    
+                                </div>
+                            </div>
+
+                            <div class="panel-body" id="infomration-grid">
+                                <table id="list">
+                                </table>
+                                <div id="pager">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        var entityName = '@ViewContext.RouteData.Values["Controller"].ToString()';
+
+        $("#information").hide();
+        $("#information-detail").hide();
+
+        $("#inquiry_val").keyup(function (event) {
+            if (event.keyCode == 13) {
+                $("#btn_search").click();
+            }
+        });
+
+        $("#btn_search").click(function () {
+            (event.preventDefault) ? event.preventDefault() : event.returnValue = false;
+
+            if ($("#inquiry_val").val() == '') {
+                alert("No Kartu Kredit / No Customer harus diisi");
+                return false;
+            }
+            
+            var trxType = $("#inquiry_trxType").val();
+            var postData = {
+                _val: function () { return $("#inquiry_val").val(); },
+                _trxType: trxType
+            };
+
+            var url = '/' + entityName + '/' + 'Inquiry';
+
+            $.jgrid.gridUnload('#list');
+
+            var $btn = $(this);
+            
+            $.ajax({
+                type: "POST",
+                url: url,
+                data: postData,
+                beforeSend: function () {
+                    $btn.button('loading');
+                },
+                success: function (data) {
+                    $grid = $("#list");
+                    // ====================================================================================================================================================================================
+                    if (trxType == "current") {
+                        if (data.CustomerNo) {
+                            $("#custNo").val(data.CustomerNo);
+                            $("#total").val(data.Total);
+                            $("#information").show();
+                        }
+                        else {
+                            $("#information").hide();
+                        }
+                        
+                        $("#information-detail").hide();
+                        $("#infomration-grid").show();
+
+                       
+                        if (data.grid != '') {
+                            $grid.jqGrid({
+                                datatype: "local",
+                                data: data.grid,
+                                colNames: ["Credit Card No", "Cardholder Name", "Sub Total"],
+                                colModel: [
+                                    { name: "CreditCardNo", width: 400 },
+                                    { name: "CardholderName", width: 400 },
+                                    { name: "SubTotal", width: 200, align: 'right', formatter: 'number', formatoptions: { decimalSeparator: ",", thousandsSeparator: ".", decimalPlaces: 2 } },
+                                ],
+                                rowNum: 1,
+                                rowList: [1, 2],
+                                pager: "#pager",
+                                gridview: true,
+                                ignoreCase: true,
+                                rownumbers: true,
+                                viewrecords: true,
+                                height: "100%",
+                                subGrid: true,
+                                ajaxGridOptions: { cache: false },
+                                subGridRowExpanded: function (subgridId, rowid) {
+                                    var subgridTableId = subgridId + "_t";
+
+                                    if ($(this).jqGrid("getLocalRow", rowid).Trx != '') {
+                                        $("#" + subgridId).html("<table id='" + subgridTableId + "'></table>");
+                                        $("#" + subgridTableId).jqGrid({
+                                            datatype: "local",
+                                            data: $(this).jqGrid("getLocalRow", rowid).Trx,
+                                            colNames: ["Tgl. Posting", "Tgl. Transaksi", "Keterangan", "Kode Merchant", "TC", "No. Referensi", "Nominal"],
+                                            colModel: [
+                                                { name: "PostingDate", width: 100, align: 'left', formatter: "date", formatoptions: { srcformat: "ISO8601Long", newformat: "d/m/y" } },
+                                                { name: "TransactionDate", width: 100, align: 'left', formatter: "date", formatoptions: { srcformat: "ISO8601Long", newformat: "d/m/y" } },
+                                                { name: "Description", width: 250, align: 'left' },
+                                                { name: "MerchantCode", width: 150 },
+                                                { name: "TransactionCode", width: 50 },
+                                                { name: "ReferenceNumber", width: 150, align: 'left' },
+                                                { name: "Amount", width: 150, align: 'right', formatter: 'number', formatoptions: { decimalSeparator: ",", thousandsSeparator: ".", decimalPlaces: 2 } },
+                                            ],
+                                            height: "100%",
+                                            rowNum: 200,
+                                            idPrefix: "s_" + rowid + "_"
+                                        });
+                                    }
+                                    else {
+                                        $("#" + subgridId).html("<table id='" + subgridTableId + "'><tr><td>There are no transactions.</td></tr></table>");
+                                    }
+                                },
+                                gridComplete: function () {
+                                    var rowIds = $grid.getDataIDs();
+                                    $.each(rowIds, function (index, rowId) {
+                                        $grid.expandSubGridRow(rowId);
+                                    });
+                                }
+                            });
+                            $grid.jqGrid("navGrid", "#pager", { add: false, edit: false, del: false });
+                        }
+                        else {
+                            $grid.jqGrid({
+                                datatype: "local",
+                                data: '',
+                                colNames: ["Credit Card Transaction"],
+                                colModel: [
+                                    { name: "CreditCardTransaction", width: 1024 },
+                                ],
+                                shrinkToFit: false,
+                                width: '100%',
+                                autowidth: true,
+                                rowList: [20, 30],
+                                rownumbers: true,
+                                pager: $("#pager"),
+                                sortname: 'CreditCardNo',
+                                viewrecords: true,
+                                sortorder: "desc",
+                                loadComplete: function () {
+                                        var emptyText = '';
+                                        emptyText += '<table class="ui-jqgrid-btable"><tr><td>&nbsp;&nbsp;&nbsp;</td><td><center><h2>No Records Found</h2><center></td></tr></table>';
+                                        var container = $grid.parents('.ui-jqgrid-view');
+                                        container.find('.ui-jqgrid-bdiv').children("table").remove();
+                                        container.find('.ui-jqgrid-bdiv').append(emptyText);
+                                        /* Remove rm padding from selbox */
+                                        $(".ui-pg-selbox").removeClass("rm-padding");
+                                }
+                            });
+                        }
+                    }
+
+                    // ====================================================================================================================================================================================
+                    if (trxType == "outstanding") {
+                        if (data.CustomerNo) {
+                            $("#custNo").val(data.CustomerNo);
+                            $("#total").val(data.Total);
+                            $("#information").show();
+                        } else {
+                            $("#information").hide();
+                        }
+                        
+                        $("#information-detail").hide();
+                        $("#infomration-grid").show();
+
+                        if (data.grid != '') {
+                            $grid.jqGrid({
+                                datatype: "local",
+                                data: data.grid,
+                                colNames: ["Credit Card No", "Cardholder Name", "Avail. Credit", "Sub Total"],
+                                colModel: [
+                                    { name: "CreditCardNo", width: 350 },
+                                    { name: "CardholderName", width: 350 },
+                                    { name: "AvailableCredit", width: 150, align: 'right', formatter: 'number', formatoptions: { decimalSeparator: ",", thousandsSeparator: ".", decimalPlaces: 2 } },
+                                    { name: "SubTotal", width: 150, align: 'right', formatter: 'number', formatoptions: { decimalSeparator: ",", thousandsSeparator: ".", decimalPlaces: 2 } },
+                                ],
+                                rowNum: 1,
+                                rowList: [1, 2],
+                                pager: "#pager",
+                                gridview: true,
+                                ignoreCase: true,
+                                rownumbers: true,
+                                viewrecords: true,
+                                height: "100%",
+                                subGrid: true,
+                                ajaxGridOptions: { cache: false },
+                                subGridRowExpanded: function (subgridId, rowid) {
+                                    var subgridTableId = subgridId + "_t";
+
+                                    if ($(this).jqGrid("getLocalRow", rowid).Trx != '') {
+                                        $("#" + subgridId).html("<table id='" + subgridTableId + "'></table>");
+                                        $("#" + subgridTableId).jqGrid({
+                                            datatype: "local",
+                                            data: $(this).jqGrid("getLocalRow", rowid).Trx,
+                                            colNames: ["Tgl. Efektif", "Keterangan", "Jenis Transaksi", "Source", "Days", "Nominal"],
+                                            colModel: [
+                                                { name: "EffectiveDate", width: 100, align: 'left', formatter: "date", formatoptions: { srcformat: "ISO8601Long", newformat: "d/m/y" } },
+                                                { name: "Description", width: 250, align: 'left' },
+                                                { name: "TransactionType", width: 150 },
+                                                { name: "Source", width: 150 },
+                                                { name: "Days", width: 50 },
+                                                { name: "Nominal", width: 150, align: 'right', formatter: 'number', formatoptions: { decimalSeparator: ",", thousandsSeparator: ".", decimalPlaces: 2 } },
+                                            ],
+                                            height: "100%",
+                                            rowNum: 200,
+                                            idPrefix: "s_" + rowid + "_"
+                                        });
+                                    }
+                                    else {
+                                        $("#" + subgridId).html("<table id='" + subgridTableId + "'><tr><td>There are no transactions.</td></tr></table>");
+                                    }
+                                },
+                                gridComplete: function () {
+                                    var rowIds = $grid.getDataIDs();
+                                    $.each(rowIds, function (index, rowId) {
+                                        $grid.expandSubGridRow(rowId);
+                                    });
+                                }
+                            });
+                            $grid.jqGrid("navGrid", "#pager", { add: false, edit: false, del: false });
+                        }
+                        else {
+                            $grid.jqGrid({
+                                datatype: "local",
+                                data: '',
+                                colNames: ["Credit Card Transaction"],
+                                colModel: [
+                                    { name: "CreditCardTransaction", width: 1024 },
+                                ],
+                                shrinkToFit: false,
+                                width: '100%',
+                                autowidth: true,
+                                rowList: [20, 30],
+                                rownumbers: true,
+                                pager: $("#pager"),
+                                sortname: 'CreditCardNo',
+                                viewrecords: true,
+                                sortorder: "desc",
+                                loadComplete: function () {
+                                    var emptyText = '';
+                                    emptyText += '<table class="ui-jqgrid-btable"><tr><td>&nbsp;&nbsp;&nbsp;</td><td><center><h2>No Records Found</h2><center></td></tr></table>';
+                                    var container = $grid.parents('.ui-jqgrid-view');
+                                    container.find('.ui-jqgrid-bdiv').children("table").remove();
+                                    container.find('.ui-jqgrid-bdiv').append(emptyText);
+                                    /* Remove rm padding from selbox */
+                                    $(".ui-pg-selbox").removeClass("rm-padding");
+                                }
+                            });
+                        }
+                    }
+                    // ====================================================================================================================================================================================
+                    if (trxType == "history") {
+
+                        $("#statement-dates option").remove();
+
+                        if (data.Information.CustomerNo) {
+                            $.each(data.StatementDates, function (index, item) {
+                                $("#statement-dates").append(
+                                    $("<option></option>")
+                                        .text(ddMMMyyyy(JsonDate(item.StatementDate)))
+                                        .val(item.StatementDateInJulianFormat)
+                                );
+                            });
+                            $("#customerNo").val(data.Information.CustomerNo);
+
+                            $("#hist-name").val(data.Information.Name ? data.Information.Name : "");
+                            $("#hist-address").val(data.Information.Address ? data.Information.Address : "");
+                            $("#hist-cust-no").val(data.Information.CustomerNo ? data.Information.CustomerNo : "");
+                            $("#hist-account-date").val(data.Information.AccountDate ? JsonDate(data.Information.AccountDate) : "");
+                            $("#hist-new-balance").val(data.Information.NewBalance ? convertToRupiah(data.Information.NewBalance) : convertToRupiah(0));
+                            $("#hist-minimum-payment").val(data.Information.MinimumPayment ? convertToRupiah(data.Information.MinimumPayment) : convertToRupiah(0));
+                            $("#hist-maturity-date").val(data.Information.MaturityDate ? JsonDate(data.Information.MaturityDate) : "");
+                            $("#hist-old-balance").val(data.Information.OldBalance ? convertToRupiah(data.Information.OldBalance) : convertToRupiah(0));
+                            $("#hist-credit").val(data.Information.Credit ? convertToRupiah(data.Information.Credit) : convertToRupiah(0));
+                            $("#hist-new-bill").val(data.Information.NewBill ? convertToRupiah(data.Information.NewBill) : convertToRupiah(0));
+                            $("#information-detail").show();
+                        }
+                        else {
+                            $("#information-detail").hide();
+                        }
+
+                        $("#information").hide();
+                        $("#infomration-grid").show();
+
+                        if (data.grid != '') {
+                            $grid.jqGrid({
+                                datatype: "local",
+                                data: data.grid,
+                                colNames: ["Credit Card No", "Cardholder Name", "Previous Balance","Sub Total"],
+                                colModel: [
+                                    { name: "CreditCardNo", width: 350 },
+                                    { name: "CardholderName", width: 350 },
+                                    { name: "PreviousBalance", width: 150, align: 'right', formatter: 'number', formatoptions: { decimalSeparator: ",", thousandsSeparator: ".", decimalPlaces: 2 } },
+                                    { name: "SubTotal", width: 150, align: 'right', formatter: 'number', formatoptions: { decimalSeparator: ",", thousandsSeparator: ".", decimalPlaces: 2 } },
+                                ],
+                                rowNum: 1,
+                                rowList: [1, 2],
+                                pager: "#pager",
+                                gridview: true,
+                                ignoreCase: true,
+                                rownumbers: true,
+                                viewrecords: true,
+                                height: "100%",
+                                subGrid: true,
+                                ajaxGridOptions: { cache: false },
+                                subGridRowExpanded: function (subgridId, rowid) {
+                                    var subgridTableId = subgridId + "_t";
+
+                                    if ($(this).jqGrid("getLocalRow", rowid).Trx != '') {
+                                        $("#" + subgridId).html("<table id='" + subgridTableId + "'></table>");
+                                        $("#" + subgridTableId).jqGrid({
+                                            datatype: "local",
+                                            data: $(this).jqGrid("getLocalRow", rowid).Trx,
+                                            colNames: ["TC", "No. Referensi", "Tgl", "Keterangan", "Nominal"],
+                                            colModel: [
+                                                { name: "TransactionCode", width: 50 },
+                                                { name: "ReferenceNumber", width: 150, align: 'left' },
+                                                { name: "PostingDate", width: 100, align: 'left', formatter: "date", formatoptions: { srcformat: "ISO8601Long", newformat: "d/m/y" } },
+                                                { name: "Description", width: 500, align: 'left' },
+                                                { name: "Amount", width: 150, align: 'right', formatter: 'number', formatoptions: { decimalSeparator: ",", thousandsSeparator: ".", decimalPlaces: 2 } },
+                                            ],
+                                            height: "100%",
+                                            rowNum: 200,
+                                            idPrefix: "s_" + rowid + "_"
+                                        });
+                                    }
+                                    else {
+                                        $("#" + subgridId).html("<table id='" + subgridTableId + "'><tr><td>There are no transactions.</td></tr></table>");
+                                    }
+                                },
+                                gridComplete: function () {
+                                    var rowIds = $grid.getDataIDs();
+                                    $.each(rowIds, function (index, rowId) {
+                                        $grid.expandSubGridRow(rowId);
+                                    });
+                                }
+                            });
+                            $grid.jqGrid("navGrid", "#pager", { add: false, edit: false, del: false });
+                        }
+                        else {
+                            $grid.jqGrid({
+                                datatype: "local",
+                                data: '',
+                                colNames: ["Credit Card Transaction"],
+                                colModel: [
+                                    { name: "CreditCardTransaction", width: 1024 },
+                                ],
+                                shrinkToFit: false,
+                                width: '100%',
+                                autowidth: true,
+                                rowList: [20, 30],
+                                rownumbers: true,
+                                pager: $("#pager"),
+                                sortname: 'CreditCardNo',
+                                viewrecords: true,
+                                sortorder: "desc",
+                                loadComplete: function () {
+                                    var emptyText = '';
+                                    emptyText += '<table class="ui-jqgrid-btable"><tr><td>&nbsp;&nbsp;&nbsp;</td><td><center><h2>No Records Found</h2><center></td></tr></table>';
+                                    var container = $grid.parents('.ui-jqgrid-view');
+                                    container.find('.ui-jqgrid-bdiv').children("table").remove();
+                                    container.find('.ui-jqgrid-bdiv').append(emptyText);
+                                    /* Remove rm padding from selbox */
+                                    $(".ui-pg-selbox").removeClass("rm-padding");
+                                }
+                            });
+                        }
+
+                    }
+                    // ====================================================================================================================================================================================
+                },
+                error: function (xhr, textStatus, errorThrown) { },
+                complete: function () {
+                    $btn.button('reset');
+                }
+            });
+        });
+                
+        $("#btn_clear").click(function () {
+            $("input[type=text]").val('');
+            $("#information").hide();
+            $("#information-detail").hide();
+            $("#infomration-grid").hide();
+        });
+
+        $("#statement-dates").change(function () {
+            var $btn = $("#btn_search");
+            
+            $.jgrid.gridUnload('#list');
+
+            var postData = { _no: $("#customerNo").val(), _statementDate: $(this).val() };
+            var url = '/CreditCardTransaction/TransactionsByStatement';
+            
+            $.ajax({
+                type: "POST",
+                url: url,
+                data: postData,
+                beforeSend: function () {
+                    $btn.button('loading');
+                },
+                success: function (data) {
+                    $grid = $("#list");
+
+                    $("#hist-cust-no").val(data.Information.CustomerNo);
+                    $("#hist-account-date").val(JsonDate(data.Information.AccountDate));
+                    $("#hist-new-balance").val(convertToRupiah(data.Information.NewBalance));
+                    $("#hist-minimum-payment").val("");
+                    $("#hist-maturity-date").val(JsonDate(data.Information.MaturityDate));
+                    $("#hist-old-balance").val(convertToRupiah(data.Information.OldBalance));
+                    $("#hist-credit").val(convertToRupiah(data.Information.Credit));
+                    $("#hist-new-bill").val(convertToRupiah(data.Information.NewBill));
+
+                    $("#information").hide();
+                    $("#information-detail").show();
+                    $("#infomration-grid").show();
+
+                    if (data.grid != '') {
+                        $grid.jqGrid({
+                            datatype: "local",
+                            data: data.grid,
+                            colNames: ["Credit Card No", "Cardholder Name", "Previous Balance","Sub Total"],
+                            colModel: [
+                                { name: "CreditCardNo", width: 350 },
+                                { name: "CardholderName", width: 350 },
+                                { name: "PreviousBalance", width: 150, align: 'right', formatter: 'number', formatoptions: { decimalSeparator: ",", thousandsSeparator: ".", decimalPlaces: 2 } },
+                                { name: "SubTotal", width: 150, align: 'right', formatter: 'number', formatoptions: { decimalSeparator: ",", thousandsSeparator: ".", decimalPlaces: 2 } },
+                            ],
+                            rowNum: 1,
+                            rowList: [1, 2],
+                            pager: "#pager",
+                            gridview: true,
+                            ignoreCase: true,
+                            rownumbers: true,
+                            viewrecords: true,
+                            height: "100%",
+                            subGrid: true,
+                            ajaxGridOptions: { cache: false },
+                            subGridRowExpanded: function (subgridId, rowid) {
+                                var subgridTableId = subgridId + "_t";
+
+                                if ($(this).jqGrid("getLocalRow", rowid).Trx != '') {
+                                    $("#" + subgridId).html("<table id='" + subgridTableId + "'></table>");
+                                    $("#" + subgridTableId).jqGrid({
+                                        datatype: "local",
+                                        data: $(this).jqGrid("getLocalRow", rowid).Trx,
+                                        colNames: ["TC", "No. Referensi", "Tgl", "Keterangan", "Nominal"],
+                                        colModel: [
+                                            { name: "TransactionCode", width: 50 },
+                                            { name: "ReferenceNumber", width: 150, align: 'left' },
+                                            { name: "PostingDate", width: 100, align: 'left', formatter: "date", formatoptions: { srcformat: "ISO8601Long", newformat: "d/m/y" } },
+                                            { name: "Description", width: 500, align: 'left' },
+                                            { name: "Amount", width: 150, align: 'right', formatter: 'number', formatoptions: { decimalSeparator: ",", thousandsSeparator: ".", decimalPlaces: 2 } },
+                                        ],
+                                        height: "100%",
+                                        rowNum: 200,
+                                        idPrefix: "s_" + rowid + "_"
+                                    });
+                                }
+                                else {
+                                    $("#" + subgridId).html("<table id='" + subgridTableId + "'><tr><td>There are no transactions.</td></tr></table>");
+                                }
+                            },
+                            gridComplete: function () {
+                                var rowIds = $grid.getDataIDs();
+                                $.each(rowIds, function (index, rowId) {
+                                    $grid.expandSubGridRow(rowId);
+                                });
+                            }
+                        });
+                        $grid.jqGrid("navGrid", "#pager", { add: false, edit: false, del: false });
+                    }
+                    else {
+                        $grid.jqGrid({
+                            datatype: "local",
+                            data: '',
+                            colNames: ["Credit Card Transaction"],
+                            colModel: [
+                                { name: "CreditCardTransaction", width: 1024 },
+                            ],
+                            shrinkToFit: false,
+                            width: '100%',
+                            autowidth: true,
+                            rowList: [20, 30],
+                            rownumbers: true,
+                            pager: $("#pager"),
+                            sortname: 'CreditCardNo',
+                            viewrecords: true,
+                            sortorder: "desc",
+                            loadComplete: function () {
+                                var emptyText = '';
+                                emptyText += '<table class="ui-jqgrid-btable"><tr><td>&nbsp;&nbsp;&nbsp;</td><td><center><h2>No Records Found</h2><center></td></tr></table>';
+                                var container = $grid.parents('.ui-jqgrid-view');
+                                container.find('.ui-jqgrid-bdiv').children("table").remove();
+                                container.find('.ui-jqgrid-bdiv').append(emptyText);
+
+                                /* Remove rm padding from selbox */
+                                $(".ui-pg-selbox").removeClass("rm-padding");
+                            }
+                        });
+                    }
+                },
+                error: function (xhr, textStatus, errorThrown) { },
+                complete: function () {
+                    $btn.button('reset');
+                }
+            });
+        });
+    });
+</script>

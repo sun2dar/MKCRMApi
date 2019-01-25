@@ -1,0 +1,512 @@
+﻿@model List<CCARE.Models.BroadcastMessageDetail>
+
+<style type="text/css">
+    td
+    {
+        background-color: white;
+        cursor: pointer;
+    }
+
+    td.selected
+    {
+        background-color: #ff0000;
+    }
+</style>
+
+<!-- Modal -->
+<div class="modal fade bs-example-modal-lg" id="myBroadcastModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title sv-header" id="myModalLabel">Broadcast Message</h4>
+            </div>
+
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="form-horizontal">
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label class="col-sm-3 control-label">Look For :</label>
+                                        <div class="col-sm-9">
+                                            <select id="lookFor" name="lookFor" class="form-control">
+                                                <option value="workgroup">WorkGroup</option>
+                                                <option value="user">User</option>
+                                                <option value="all">All Team</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="input-group">
+                                        <input type="text" id="searchText" name="" class="form-control" value="">
+                                        <div class="input-group-addon btn" id="searchBtn">
+                                            <i class="fa fa-search"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row body-create-bm">
+                    <div class="col-sm-12 x-of-auto">
+                        <div class="col-sm-5 content-create-bm">
+                            <div class="col-sm-12" id="available-records">
+                                <ul class="nav nav-pills nav-stacked">
+                                    <li class="">
+                                        <input type="hidden" value="home" />
+                                        <a href="#">
+                                            <i class="fa fa-user"></i>Home
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <input type="hidden" value="profile" />
+                                        <a href="#">
+                                            <i class="fa fa-user"></i>Profile
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <input type="hidden" value="messages" />
+                                        <a href="#">
+                                            <i class="fa fa-user"></i>Messages
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-2">
+                            <button type="button" id="undo_redo_rightAll" class="btn btn-default btn-block"><i class="glyphicon glyphicon-forward"></i></button>
+                            <button type="button" id="undo_redo_leftAll" class="btn btn-default btn-block"><i class="glyphicon glyphicon-backward"></i></button>
+                        </div>
+
+                        <div class="col-sm-5 content-create-bm">
+                            <div class="col-sm-12" id="select-records">
+                                <ul class="nav nav-pills nav-stacked max-width-300">
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="form-horizontal">
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <ol class="breadcrumb">
+                                        <li class="active"><a href="#" class="cont-header-bm">Content</a></li>
+                                    </ol>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <textarea id="broadcastMessage" name="broadcastMessage" class="form-control" rows="3"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <br />
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="form-horizontal">
+                            <div class="row">
+                                <div class="col-sm-4">
+                                    <div class="form-group">
+                                        <label class="control-label col-sm-4 hide" for="inputSuccess3">Send On</label>
+                                        <div class="col-sm-8">
+                                            <div class="input-group date hide">
+                                                <input type="text" id="sendOn" name="sendOn" class="form-control" value="">
+                                                <span class="input-group-addon">
+                                                    <i class="fa fa-calendar fa-lg"></i>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-4">
+                                    <div class="form-group">
+                                        <label class="control-label col-sm-4 hide" for="inputGroupSuccess2">Expires On</label>
+                                        <div class="col-sm-8">
+                                            <div class="input-group date hide">
+                                                <input type="text" id="expiresOn" name="expiresOn" class="form-control" value="">
+                                                <span class="input-group-addon">
+                                                    <i class="fa fa-calendar fa-lg"></i>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-4">
+                                    <div class="form-group">
+                                        <label class="control-label col-sm-3" for="inputSuccess3">Severity</label>
+                                        <div class="col-sm-9">
+                                            <select id="severity" name="severity" class="form-control">
+                                                <option value="4">Medium</option>
+                                                <option value="5">Low</option>
+                                                <option value="1">High</option>
+                                                <option value="3">Special</option>
+                                                <option value="2">Critical</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button id="popupDelete" type="button" class="btn btn-default btn-crm-layout" data-dismiss="modal">Cancel</button>
+                <button id="popupSave" type="button" data-loading-text="Sending Broadcast" class="btn btn-primary btn-crm-layout">OK</button>
+            </div>
+        </div>
+    </div>
+    <input type="hidden" id="jTeam" name="jTeam" value="@ViewBag.Team" />
+    <input type="hidden" id="jUser" name="jUser" value="@ViewBag.User" />
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        $(".form-horizontal").find("input").addClass("rm-padding");
+        $(".form-horizontal").find("select").addClass("rm-padding");
+        $(".form-horizontal").find(":radio").removeClass("rm-padding");
+
+        if (!Array.prototype.indexOf) {
+            Array.prototype.indexOf = function (elt /*, from*/) {
+                var len = this.length >>> 0;
+
+                var from = Number(arguments[1]) || 0;
+                from = (from < 0) ? Math.ceil(from) : Math.floor(from);
+                if (from < 0)
+                    from += len;
+
+                for (; from < len; from++) {
+                    if (from in this && this[from] === elt)
+                        return from;
+                }
+                return -1;
+            };
+        }
+
+
+        @{
+            var jss = new System.Web.Script.Serialization.JavaScriptSerializer() { MaxJsonLength = 2147483644 };
+            var teamJson = jss.Serialize(ViewBag.Team);
+            var userJson = jss.Serialize(ViewBag.User);
+            var teamAllJson = jss.Serialize(ViewBag.TeamAll);
+            var javascriptJson = Newtonsoft.Json.JsonConvert.DeserializeObject(ViewBag.Team);
+        }
+
+        var team = JSON.parse(@(Html.Raw(teamJson)));
+        var user = JSON.parse(@(Html.Raw(userJson)));
+        var teamAll = JSON.parse(@(Html.Raw(teamAllJson)));
+
+
+        function changeType(type) {
+            switch (type) {
+                case "workgroup":
+                    $('#available-records>ul').html("");
+                    $.each(team, function (index, element) {
+                        var content = '<input type="hidden" value="' + element.TeamID + '" data-type="b-team" />' +
+                                '<a href="#">' +
+                                '<i class="fa fa-user"></i> <label>' + element.Name +
+                                '</label></a>';
+                        $('#available-records>ul').append($("<li>").html(content));
+                    });
+                    break;
+                case "user":
+                    $('#available-records>ul').html("");
+                    $.each(user, function (index, element) {
+                        var content = '<input type="hidden" value="' + element.SystemUserId + '" data-type="b-user" />' +
+                                '<a href="#">' +
+                                '<i class="fa fa-user"></i> <label>' + element.FullName +
+                                '</label></a>';
+                        $('#available-records>ul').append($("<li>").html(content));
+                    });
+                    break;
+                case "all":
+                    $('#available-records>ul').html("");
+                    $.each(team, function (index, element) {
+                        var content = '<input type="hidden" value="' + element.TeamID + '" data-type="b-team" />' +
+                                '<a href="#">' +
+                                '<i class="fa fa-user"></i> <label>' + element.Name +
+                                '</label></a>';
+                        $('#available-records>ul').append($("<li>").html(content));
+                    });
+                    break;
+            }
+        }
+        var type = $("#lookFor").val();
+        changeType(type);
+        $("#lookFor").change(function () {
+            changeType($(this).val());
+        });
+
+        $.expr[":"].contains = $.expr.createPseudo(function (arg) {
+            return function (elem) {
+                return $(elem).text().toUpperCase().indexOf(arg.toUpperCase()) >= 0;
+            };
+        });
+        $.extend($.expr[":"], {
+            "containsNC": function (elem, i, match, array) {
+                return (elem.textContent || elem.innerText || "").toLowerCase().indexOf((match[3] || "").toLowerCase()) >= 0;
+            }
+        });
+        $("#searchText").bind('keyup input', function (e) {
+            if ($("#lookFor").val() == "all") {
+                return false;
+            }
+            var searchText = $(this).val();
+            var avr = $('#available-records>ul>li').find("label:containsNC(" + searchText + ")");
+            $('#available-records>ul').html("");
+
+            var type = $("#lookFor").val()
+            switch (type) {
+                case "workgroup":
+                    $.each(team, function (index, element) {
+                        var r = element.Name;
+                        var t = r.toUpperCase().indexOf(searchText.toUpperCase()) >= 0;
+                        if (t) {
+                            var content = '<input type="hidden" value="' + element.TeamID + '" data-type="b-team" />' +
+                                        '<a href="#">' +
+                                        '<i class="fa fa-user"></i> <label>' + element.Name +
+                                        '</label></a>';
+                            $('#available-records>ul').append($("<li>").html(content));
+                        }
+                    });
+                    break;
+                case "user":
+                    $.each(user, function (index, element) {
+                        var r = element.FullName;
+                        var t = r.toUpperCase().indexOf(searchText.toUpperCase()) >= 0;
+                        if (t) {
+                            var content = '<input type="hidden" value="' + element.SystemUserId + '" data-type="b-user" />' +
+                                        '<a href="#">' +
+                                        '<i class="fa fa-user"></i> <label>' + element.FullName +
+                                        '</label></a>';
+                            $('#available-records>ul').append($("<li>").html(content));
+                        }
+                    });
+                    break;
+            }
+        });
+
+        $("#popupSave").click(function () {
+            var $btn = $(this);
+            var listError = [];
+            if ($("#broadcastMessage").val() == '') {
+                var error = {};
+                error["field"] = $("#broadcastMessage").attr("id");
+                error["message"] = "Please provide values before sending Message.";
+                listError.push(error);
+            }
+
+
+            var checkActive = $('#select-records>ul>li');
+            if ($("#lookFor").val() == "all") {
+                checkActive = $('#available-records>ul>li');
+            }
+
+            if (checkActive.length < 1) {
+                var error = {};
+                error["field"] = 'list active';
+                error["message"] = "Please provide values before sending Message.";
+                listError.push(error);
+            }
+
+            if (listError.length > 0) {
+                alert("Please provide values before sending Message.");
+                return false;
+            }
+
+            var listParam = [];
+            $.each(checkActive, function (index, element) {
+                var param = {};
+                var dataType = $(element).find("input:first").data("type");
+                switch (dataType) {
+                    case "b-team":
+                        param.TeamID = $(this).find("input:first").val();
+                        break;
+                    case "b-user":
+                        param.UserID = $(this).find("input:first").val();
+                        break;
+                }
+                param.Content = $("#broadcastMessage").val();
+                var v1 = $("#sendOn").val();
+                if (v1.length > 0) {
+                    var s1 = js_yyyy_mm_dd_hh_mm_ss(stringToDate(v1, 'dd/mm/yyyy', '/'));
+                    param.StartDate = s1;
+                }
+                var v2 = $("#expiresOn").val();
+                if (v2.length > 0) {
+                    var s2 = js_yyyy_mm_dd_hh_mm_ss(stringToDate(v2, 'dd/mm/yyyy', '/'));
+                    param.ExpireDate = s2;
+                }
+                param.Severity = $("#severity").val();
+                listParam.push(param);
+            });
+
+            $.ajax({
+                url: '@Url.Action("formSubmitBroadcastMessageInsert", "Popup")',
+                data: { data: JSON.stringify(listParam) },
+                type: 'POST',
+                dataType: 'JSON',
+                beforeSend: function (jqXHR, settings) {
+                    $btn.button('loading');
+                },
+                success: function (data, textStatus, jqXHR) {
+                    setTimeout(function () {
+                        $('#myBroadcastModal').modal('hide');
+                    }, 1000);
+                },
+                error: function (xhr, status, err) {
+                    alert("Error");
+                },
+                complete: function () {
+                    setTimeout(function () {
+                        $btn.button('reset');
+                    }, 1000);
+                }
+            });
+
+        });
+
+        $('.input-group.date').datepicker({
+            format: "dd/mm/yyyy",
+            autoclose: true
+        });
+
+        var modalOptions = {
+            backdrop: 'static',
+            keyboard: false
+        };
+        $('#myBroadcastModal').modal(modalOptions);
+
+
+        $('#available-records>ul').delegate("li", "click", function (e) {
+            e.preventDefault();
+            var $this = $(this);
+
+            // Detecting ctrl (windows) / meta (mac) key.
+            if (e.ctrlKey || e.metaKey) {
+                if ($this.hasClass('active')) {
+                    $this.removeClass('active');
+                }
+                else {
+                    $this.addClass('active')
+                }
+            }
+                // Detecting shift key
+            else if (e.shiftKey) {
+                var currentSelectedIndex = $('#available-records>ul>li.active').eq(0).index();
+                var selectedElementIndex = $('#available-records>ul>li').index($this);
+
+                // Mark selected between them
+
+                if (currentSelectedIndex < selectedElementIndex) {
+                    for (var indexOfRows = currentSelectedIndex; indexOfRows <= selectedElementIndex; indexOfRows++) {
+                        $('#available-records>ul>li').eq(indexOfRows).addClass('active');
+                    }
+                }
+                else {
+                    for (var indexOfRows = selectedElementIndex; indexOfRows <= currentSelectedIndex; indexOfRows++) {
+                        $('#available-records>ul>li').eq(indexOfRows).addClass('active');
+                    }
+                }
+            }
+            else {
+                $('#available-records>ul>li').removeClass('active');
+                $this.addClass('active');
+            }
+        });
+
+        $('#undo_redo_rightAll').click(function () {
+            if ($("#lookFor").val() == "all") {
+                return false;
+            }
+            var listSelectRecords = [];
+
+            var selectRecords = $('#select-records>ul>li>input');
+            $.each(selectRecords, function () {
+                listSelectRecords.push($(this).val());
+            });
+            var x = $('#available-records>ul>li.active>input');
+            $.each(x, function () {
+                var checkList = listSelectRecords.indexOf($(this).val());
+                if (checkList == -1) {
+                    $('#select-records>ul').append($("<li>").html($(this).parent().html()));
+                }
+            });
+            var checkActive = $('#select-records>ul>li.active');
+            if (checkActive.length == 1) {
+                return;
+            }
+            var currentSelect = $('#select-records>ul>li').eq(0);
+            currentSelect.trigger("click");
+        });
+
+        $("#undo_redo_leftAll").click(function () {
+            if ($("#lookFor").val() == "all") {
+                return false;
+            }
+            var listSelect = $('#select-records>ul>li.active');
+            $.each(listSelect, function () {
+                $(this).remove();
+            });
+            var checkActive = $('#select-records>ul>li.active');
+            if (checkActive.length == 1) {
+                return;
+            }
+            var currentSelect = $('#select-records>ul>li').eq(0);
+            currentSelect.trigger("click");
+        });
+
+        $('#select-records>ul').delegate("li", "click", function (e) {
+            e.preventDefault();
+            var $this = $(this);
+
+            // Detecting ctrl (windows) / meta (mac) key.
+            if (e.ctrlKey || e.metaKey) {
+                if ($this.hasClass('active')) {
+                    $this.removeClass('active');
+                }
+                else {
+                    $this.addClass('active')
+                }
+            }
+                // Detecting shift key
+            else if (e.shiftKey) {
+
+                var currentSelectedIndex = $('#select-records>ul>li.active').eq(0).index();
+
+                var selectedElementIndex = $('#select-records>ul>li').index($this);
+
+                // Mark selected between them
+
+                if (currentSelectedIndex < selectedElementIndex) {
+                    for (var indexOfRows = currentSelectedIndex; indexOfRows <= selectedElementIndex; indexOfRows++) {
+                        $('#select-records>ul>li').eq(indexOfRows).addClass('active');
+                    }
+                }
+                else {
+                    for (var indexOfRows = selectedElementIndex; indexOfRows <= currentSelectedIndex; indexOfRows++) {
+                        $('#select-records>ul>li').eq(indexOfRows).addClass('active');
+                    }
+                }
+            }
+            else {
+                $('#select-records>ul>li').removeClass('active');
+                $this.addClass('active');
+            }
+        });
+
+    });
+</script>

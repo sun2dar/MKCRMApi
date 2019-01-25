@@ -1,0 +1,67 @@
+﻿
+@{
+    Layout = "~/Views/Shared/_LayoutInquiry.cshtml";
+}
+
+@section title
+{
+    
+}
+
+@section mainmenu{ Service }
+@section submenu{ Request Management }
+@section menu{ Request }
+
+<div class="col-lg-12 inquiry_left">
+    <div class="input-group">
+        <span class="input-group-btn inquiry_dropdown">
+            <select id="inquiry_param" class="form-control">
+                <option value="searchRequestId">Request Id</option>
+                <option value="searchNoCustomer">No Customer</option>
+                <option value="searchNoKartu">No Kartu</option>
+                <option value="searchNoRekening">No Rekening</option>
+            </select>
+        </span>
+        <span class="input-group-btn input_space"></span>
+        <input type="text" class="form-control" id="inquiry_val" >
+        <span class="input-group-btn">
+            <button id="btn_search" class="btn btn-primary" type="submit"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></button>
+        </span>
+    </div>
+</div>
+
+@section extraButton{
+    <li class="active float-right"><a id="btn_newletterentry" href="#"><span class="glyphicon glyphicon-list-alt glyp-space" aria-hidden="true"></span>New Letter Entry</a></li>
+    <li class="active float-right"><a id="btn_printticket" href="#"><span class="glyphicon glyphicon-print glyp-space" aria-hidden="true"></span>Print Ticket</a></li>
+}
+
+@section scriptExt{
+    $("#button_package").next("div .row").hide();
+
+    $("#btn_newletterentry").click(function (e) {
+        e.preventDefault();
+        var url = '@Url.Action("Create", "LetterEntry")';
+        var requestId = jQuery(gridId).getGridParam('selrow');
+
+        if (requestId) {
+            var temp = new Array();
+            temp.push(requestId);
+            openWindow(url + '?id=' + JSON.stringify(temp));
+        }
+        else
+            alert("No Request Selected");
+    });
+
+    $("#btn_printticket").click(function (e) {
+        e.preventDefault();
+        var url = '@Url.Action("Print", "Request")';
+        var requestId = jQuery(gridId).getGridParam('selrow');
+
+        if (requestId) {
+            openPrintWindow(url + '?id=' + requestId);
+        }
+        else
+            alert("No Request Selected");
+    });
+}
+

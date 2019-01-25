@@ -1,0 +1,284 @@
+﻿@{
+    if (Request.IsAjaxRequest())
+    {
+        Layout = null;
+    }
+}
+
+<ul class="nav nav-stacked nav-pills">
+    <li class="titleBar font-crm4"><a></a></li>
+</ul>
+
+<form id="form_inquiry" method="post">
+    <div class="modal fade" id="confirm-changestatus" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content" style="background-color:#ecf1f5;">
+                <div class="modal-header" style="background-color:#639CCE; color:white;">
+                    <h2>Choose New Status</h2>
+                    <h4></h4>
+                </div>
+                <div class="modal-body input-lg" style="height:80px;">
+                    <div class="container-fluid form-horizontal">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="form-group">
+                                    <div class="col-sm-3">
+                                        <label class="control-label">New Status</label>
+                                    </div>
+                                    <div class="col-sm-9">
+                                    
+                                        <select id="NewStatus" name="NewStatus" class="form-control">
+                                            <option>
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" id="btn_cancel" data-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-danger" id="btn_ok" data-dismiss="modal">Ok</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="confirm-delete" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content" style="background-color:#ecf1f5;">
+                <div class="modal-header" style="background-color:#639CCE; color:white;">
+                    <h2>Delete Status</h2>
+                </div>
+                <div class="modal-body input-lg" style="height:100px;">
+                    <h4>Are you sure to delete selected status?</h4>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" id="btn_cancel2" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                    <a class="btn btn-danger btn-ok">Ok</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-sm-12">
+                
+                <br />
+            
+                <ol class="breadcrumb">
+                    <li class="active">Administration</li>
+                    <li class="active">Master Data Application</li>
+                    <li class="active"><a href="#">Change Status Settings</a></li>
+                    <li class="active float-right"><a id="btn_newstatus" href="#" data-toggle="modal" data-target="#confirm-changestatus"><span class="glyphicon glyphicon-pencil glyp-space" aria-hidden="true"></span>New</a></li>
+
+                </ol>
+
+                <!-- Content -->
+                <div class="container-fluid content_container">
+                    <div class="row">
+                        <div class="col-sm-12 content_col">
+                            @*<form id="form_inquiry">*@
+                                <div class="form-horizontal">
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <label class="col-sm-3 control-label">Ebanking Type</label>
+                                                <div class="col-sm-9">
+                                                    @Html.DropDownList("eBanking", (SelectList)ViewBag.DDL_eBanking, "", new { @class = "form-control" })
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <label class="col-sm-3 control-label">Status Name</label>
+                                                <div class="col-sm-9">
+                                                    @Html.DropDownList("StatusType", (SelectList)ViewBag.DDL_StatusType, "", new { @class = "form-control" })
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <label class="col-sm-3 control-label">Current Status</label>
+                                                <div class="col-sm-9">
+                                                    @Html.DropDownList("CurrentStatus", (SelectList)ViewBag.DDL_CurrentStatus, "", new { @class = "form-control" })
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <div class="col-sm-offset-3 col-sm-9">
+                                                    <button type="submit" id="btn_search_inquiry" class="btn btn-primary btn-crm-layout">
+                                                        <span class="glyphicon glyphicon-search glyp-space" aria-hidden="true"></span>
+                                                        Search
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            @*</form>*@
+                        </div>
+                    </div>
+                    <br />
+                    <!-- Table result -->
+                    <div class="row">
+                        <div class="col-sm-12" >
+                            <div class="panel panel-default">
+                                
+                                <div class="panel-heading panel_heading">
+                                    <label class="control-label sv-header">
+                                        <strong>Search Result</strong>
+                                    </label>
+                                </div>
+
+                                <div class="panel-body">
+                                    <div class="divGrid">
+                                        <table id="gridTable"></table>
+                                        <div id="jqGridPager"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        var gridId = "#gridTable";
+        var entityName = '@ViewContext.RouteData.Values["Controller"].ToString()';
+
+        $(".form-horizontal").find("input").addClass("rm-padding");
+        $(".form-horizontal").find("select").addClass("rm-padding");
+        $(".form-horizontal").find(":radio").removeClass("rm-padding");
+
+        function setCurrentStatus(eBanking, StatusType) {
+            $.ajax({
+                url: "/" + entityName + "/setCurrentStatus",
+                data: {
+                    eBanking: eBanking,
+                    statusType: StatusType
+                },
+                dataType: 'json',
+                success: function (data) {
+                    $("#CurrentStatus").empty();
+                    $.each(data, function (i, value) {
+                        $("#CurrentStatus").append($('<option>').text(value.Text).attr('value', value.Value));
+                    });
+                }
+            });
+        }
+
+        $('#eBanking').change(function () {
+            var eBanking = $(this).val();
+            var StatusType = null;
+
+            $.ajax({
+                url: "/" + entityName + "/setStatusType",
+                data: {
+                    eBanking: eBanking
+                },
+                dataType: 'json',
+                success: function (data) {
+                    $("#StatusType").empty();
+                    $.each(data, function (i, value) {
+                        $("#StatusType").append($('<option>').text(value.Text).attr('value', value.Value));
+                        if (i == 0) StatusType = value.Value;
+                    });
+
+                    setCurrentStatus(eBanking, StatusType);
+                }
+            });
+        });
+
+        $('#btn_newstatus').click(function (e) {
+            e.preventDefault();
+            var eBanking = $("#eBanking").val();
+            var StatusType = $("#StatusType").val();
+            var CurrentStatus = $("#CurrentStatus").val();
+
+            if (eBanking != "" && StatusType != "") {
+                $.ajax({
+                    url: "/" + entityName + "/setNewStatus",
+                    data: {
+                        eBanking: eBanking,
+                        StatusType: StatusType,
+                        CurrentStatus: CurrentStatus
+                    },
+                    dataType: 'json',
+                    success: function (data) {
+                        $("#NewStatus").empty();
+                        $.each(data, function (i, value) {
+                            $("#NewStatus").append($('<option>').text(value.Text).attr('value', value.Value));
+                        });
+                    }
+                });
+            }
+            else {
+                alert("Please choose all fields.");
+            }
+        });
+
+        $("#confirm-changestatus").on('show.bs.modal', function (e) {
+            $(this).find('#btn_ok').unbind().click(function () {
+                $("#confirm-changestatus").find('#btn_cancel').click();
+                var postData = {
+                    _resolution: "",
+                    _description: ""
+                };
+                //otherAction($("#form_incident"), "/Request/Cancel", "changestatus", postData)
+
+                var serializedForm = $("#form_inquiry").serialize();
+                var eBanking = $("#eBanking").val();
+                var StatusType = $("#StatusType").val();
+                var CurrentStatus = $("#CurrentStatus").val();
+                $.ajax({
+                    type: "POST",
+                    url: "/StatusChange/formSubmit?actionType=Insert",//?eBanking=" + eBanking + "&StatusType=" + StatusType + "CurrentStatus=" + CurrentStatus,
+                    data: serializedForm,
+                    dataType: "json",
+                    success: function (data) {
+                        //alert("Succeed");
+                        var postData = {
+                            _mappingID: $("#CurrentStatus").val()
+                            //_filter: function () { return $("#inquiry_filter").val(); }
+                        };
+                        loadJqgrid(gridId, postData, entityName);
+                    },
+                    error: function (xhr, status, err) {
+                        alert("Error");
+                    }
+                });
+            });
+        });
+
+        $('#StatusType').change(function () {
+            var eBanking = $("#eBanking").val();
+            var StatusType = $(this).val();
+
+            setCurrentStatus(eBanking, StatusType);
+        });
+
+        $('#form_inquiry').submit(function (event) {
+            (event.preventDefault) ? event.preventDefault() : event.returnValue = false;
+
+            var postData = {
+                _mappingID: $("#CurrentStatus").val()
+                //_filter: function () { return $("#inquiry_filter").val(); }
+            };
+            loadJqgrid(gridId, postData, entityName);
+        });
+    });
+</script>

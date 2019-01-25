@@ -1,0 +1,363 @@
+﻿@*Author : SUN*@
+
+@model IEnumerable<CCARE.Models.Role.PrivilegeException>
+
+@{
+    ViewBag.Title = "Privilege Exception";
+    string actionPage = ViewContext.Controller.ControllerContext.RouteData.Values["action"].ToString();
+    
+    if (Request.IsAjaxRequest())
+    {
+        Layout = null;
+    }
+    else{
+        Layout = "~/Views/Shared/_LayoutEntity.cshtml";
+    }
+}
+
+@section entityLogo
+{
+    <img class="crm-logo" src="~/assets/images/ico_lrg_112.gif" />
+}
+
+@section formTitle
+{
+    <div class="text_title">
+        <h1>Privilege Exception</h1>
+        Security Role : @(Model.FirstOrDefault().SecurityRoleName)
+    </div>
+}
+
+@section navHeader
+{
+    
+}
+
+@section footerStatus
+{
+    <div class="footer_text"> </div>
+}
+
+@section sidebarMenu
+{
+    <li><a data-ajax="true" data-ajax-mode="replace" data-ajax-update="#page_content" href="/SecurityRole/Edit?id=@(Model.FirstOrDefault().SecurityRoleID)">Security Role</a></li>
+    <li><a data-ajax="true" data-ajax-mode="replace" data-ajax-update="#page_content" href="/PrivillegeException/Index?Roleid=@(Model.FirstOrDefault().SecurityRoleID)">Privillege Exceptions</a></li>
+}
+
+
+@using (Html.BeginForm("executePE", "PrivilegeException", FormMethod.Post, new { id = "form_privilegeexception" }))
+{
+    <div class="container-fluid">
+        <!-- tabs -->
+        <div class="row">
+            <div class="col-sm-12 panel panel-default panel_form_parent">
+                <!-- Tab panes -->
+                <div class="myContent_noTab">
+                    <!--General tab-->
+                    <div class="tab-pane fade active in" id="divGeneral">
+                        <div class="panel panel-default panel_form_child">
+                            <!--Panel Header for section title-->
+                            <div class="panel-heading submenuStyle">
+                                <label class="control-label sv-header"><strong>Privilege Exception</strong></label>
+                            </div>
+                            <!--Body panel for input form-->
+                            <div class="panel-body">
+                                <div class="row">
+                                    <div class="col-sm-6">                                        
+                                        <div class="form-group">
+                                            <input type="hidden" id="SecurityRoleID" name="SecurityRoleID" value="@(new Guid(ViewBag.RoleID.ToString()))" />
+                                            <input type="hidden" id="PrivilegeExceptionID" name="PrivilegeExceptionID" />
+                                            <input type="hidden" id="StatusChangeID" name="StatusChangeID" />
+                                            <label class="col-sm-4 control-label">Entity</label>
+                                            <div class="col-sm-8">
+                                                @Html.DropDownList("EntityName",(SelectList)ViewBag.Entity, "Choose Entity", new { @id="SelectEntity", @class = "form-control" })
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6">                                                                              
+                                        <div class="form-group">
+                                            <label class="col-sm-4 control-label">Action</label>
+                                            <div class="col-sm-8">
+                                                <select id="SelectStatus" name="StatusName" class="form-control"></select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                            </div>
+                            <br />
+                            <div class="panel-body">
+                                <div class="row">
+                                    <div class="col-sm-6">                                        
+                                        <div class="form-group">
+                                            <label class="col-sm-4 control-label">Old Value</label>
+                                            <div class="col-sm-8">
+                                                <select id="SelectValue" name="Key" class="form-control"></select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6">                                                                              
+                                        <div class="form-group">
+                                            <input type="hidden" id="NewKey" />
+                                            <label class="col-sm-4 control-label">New Value</label>
+                                            <div class="col-sm-8">
+                                                <select id="SelectNewValue" name="NewKey" class="form-control"></select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <br />
+                            <!--Button div-->
+                            <div class="panel-body">
+                                <div class="row">
+                                    <span class="col-sm-12" style="text-align:center" id="privilegeGroupButton">
+                                        <button id="btnSaveChange" class="btn btn-primary" type="button">Save</button>&nbsp;
+                                        <button id="btnDeletePriv" class="btn btn-primary" type="button">Delete</button>&nbsp;
+                                        <button id="btnReset" class="btn btn-primary" type="reset">Reset</button>&nbsp;
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="panel panel-default panel_form_child">
+                            <!--Panel Header for girdlist-->
+                            <div class="panel-heading submenuStyle">
+                                <label class="control-label sv-header"><strong>Privilege Exception List</strong></label>
+                            </div>
+                            <br />
+                            <div class="panel-body">
+                                <div class="divGrid">
+                                    <table id="gridTable"></table>
+                                    <div id="jqGridPager"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#divActionButton').hide();
+
+        $(".panel-body").find("input").addClass("rm-padding");
+        $(".panel-body").find("select").addClass("rm-padding");
+        $(".panel-body").find(":radio").removeClass("rm-padding");
+
+        var checkButtonClient = "false";
+
+        @if(Session["RoleID"] != null){
+            string entity = ViewContext.Controller.ControllerContext.RouteData.Values["controller"].ToString();
+            Guid roleID = new Guid(Session["RoleID"].ToString());
+            bool checkButton = CCARE.App_Function.RoleNPrivilege.checkEntityButtonByRoleID(roleID, "SecurityRole", "Write");
+
+            if(checkButton == false)
+            {
+                <text>
+                    $('#privilegeGroupButton').hide();
+                </text>
+            }
+            else{
+                <text>
+                    checkButtonClient = '@(checkButton)';
+                    showCreateButton();
+                </text>
+            }
+        }
+
+        var gridId = "#gridTable";
+        var entityName = '@ViewContext.RouteData.Values["Controller"].ToString()';
+
+
+        var roleId = '@(ViewBag.RoleID)';
+
+        var postData = {
+            _val: function () { return roleId; },
+        };
+
+        function loadPrivilegeGrid() {
+            loadJqgrid(gridId, postData, entityName);
+
+            $(gridId).jqGrid('setGridParam', {
+                ondblClickRow: function (rowid, iRow, iCol) {
+                    //do nothing on double click
+                },
+                onSelectRow: function (rowid, iRow, iCol) {
+                    var rowData = jQuery(gridId).getRowData(rowid);
+                    var colData = rowData['EntityType'] + ' ' + rowData['EntityName'];
+
+                    if (rowData['Inclusive'] == "true") {
+                        $("#Inclusive").prop('checked', true);
+                    }
+                    else {
+                        $("#Inclusive").prop('checked', false);
+                    }
+
+                    $('#SelectEntity').val(rowData['EntityName']);
+                    $('#StatusChangeID').val(rowData['StatusChangeID']);
+                    $('#PrivilegeExceptionID').val(rowData['Id']);
+
+                    if (checkButtonClient == 'true' || checkButtonClient == 'True') {
+                        $('#btnDeletePriv').show();
+                    }
+
+                    var postData = { entityName: rowData['EntityName'] };
+                    GetSelectList("#SelectStatus", postData, "/PrivilegeException/getActionList", "Select Action", rowData['StatusName']);
+
+                    var postData = { entityName: rowData['EntityName'], actionName: rowData['StatusName'] };
+                    GetSelectList("#SelectValue", postData, "/PrivilegeException/getValueList", "Select Value", rowData['ExKey']);
+
+                    var postData = { entityName: rowData['EntityName'], actionName: rowData['StatusName'], key: rowData['ExKey'] };
+                    GetSelectList("#SelectNewValue", postData, "/PrivilegeException/getNewValueList", "Select new Value", rowData['NewKey']);
+                }
+            });
+        }
+        //run load grid on load
+        loadPrivilegeGrid();
+
+        function showEditButton() {
+            $('#btnDeletePriv').show();
+        }
+
+        function showCreateButton() {
+            $('#btnDeletePriv').hide();
+            $('#PrivilegeExceptionID').val();
+        }
+
+        $('#btnReset').click(function () {
+            showCreateButton();
+            $("#SelectStatus").get(0).options.length = 0;
+            $("#SelectValue").get(0).options.length = 0;
+            $("#SelectNewValue").get(0).options.length = 0;
+        });
+
+
+        //Change value when dropdownlist value changed
+        $("#SelectEntity").bind("change", function () {
+            var postData = { entityName: $(this).val() };
+            GetSelectList("#SelectStatus", postData, "/PrivilegeException/getActionList", "Select Action", "");
+
+            $("#SelectValue").get(0).options.length = 0;
+            $("#SelectNewValue").get(0).options.length = 0;
+        });
+
+        $("#SelectStatus").bind("change", function () {
+            var postData = { entityName: $("#SelectEntity").val(), actionName: $(this).val() };
+            GetSelectList("#SelectValue", postData, "/PrivilegeException/getValueList", "Select Value", "");
+
+            $("#SelectNewValue").get(0).options.length = 0;
+        });
+
+        $("#SelectValue").bind("change", function () {
+            var postData = { entityName: $("#SelectEntity").val(), actionName: $("#SelectStatus").val(), key: $(this).val() };
+            GetSelectList("#SelectNewValue", postData, "/PrivilegeException/getNewValueList", "Select new Value", "");
+        });
+
+        ////Get related select list from selected value
+        //function GetSelectList(selectID, postData, url, maskingList, selectedKey) {
+        //    $(selectID).get(0).options.length = 0;
+        //    $(selectID).get(0).options[0] = new Option("Loading", "-1");
+
+        //    $.ajax({
+        //        type: "POST",
+        //        url: url,
+        //        data: JSON.stringify(postData),
+        //        contentType: "application/json; charset=utf-8",
+        //        dataType: "json",
+        //        success: function (msg) {
+        //            $(selectID).get(0).options.length = 0;
+        //            $(selectID).get(0).options[0] = new Option(maskingList, "-1");
+
+        //            $.each(msg, function (index, item) {
+        //                if (item.key == selectedKey) {
+        //                    $(selectID).get(0).options[$(selectID).get(0).options.length] = new Option(item.value, item.key, true, true);
+        //                }
+        //                else {
+        //                    $(selectID).get(0).options[$(selectID).get(0).options.length] = new Option(item.value, item.key);
+        //                }
+        //            });
+        //        },
+        //        error: function (xhr, status, err) {
+        //            $(selectID).get(0).options.length = 0;
+        //            alert("Failed to load select list");
+        //        }
+        //    });
+        //}
+
+        function executeEP(actionString) {
+            var postData = JSON.stringify({ model: $('#form_privilegeexception').serializeObject(), actionString: actionString });
+            var url = '/PrivilegeException/executePE';
+
+            $.ajax({
+                type: "POST",
+                url: url,
+                data: postData,
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (msg) {
+                    if (msg.flag == true) {
+                        switch (actionString) {
+                            case 'Create':
+                                $('#btnReset').trigger('click');
+                                break;
+
+                            case 'Edit':
+                                break;
+
+                            case 'Delete':
+                                $('#btnReset').trigger('click');
+                                break;
+                        }
+                    }
+
+                    alert(msg.Message);
+                    loadPrivilegeGrid();
+                },
+                error: function (xhr, status, err) {
+                    $(selectID).get(0).options.length = 0;
+                    alert("List tidak berhasil diload");
+                }
+            });
+        }
+
+        $('#btnDeletePriv').click(function () {
+            executeEP("Delete");
+            loadPrivilegeGrid();
+        });
+
+        //$('#btnAdd').click(function () {
+        //    executeEP("Create");
+        //    $(gridId).trigger("reloadGrid");
+        //});
+
+        $('#btnSaveChange').click(function () {
+            //Check if any selectbox is not selected
+            if ($('#SelectEntity').val() == '') {
+                alert('Entity belum dipilih');
+            }
+            else if ($('#SelectStatus').val() == '' || $('#SelectStatus').val() == -1) {
+                alert('Action belum dipilih');
+            }
+            else if ($('#SelectValue').val() == '' || $('#SelectValue').val() == -1) {
+                alert('Old value belum dipilih');
+            }
+            else if ($('#SelectNewValue').val() == '' || $('#SelectNewValue').val() == -1) {
+                alert('New value belum dipilih');
+            }
+            else {
+                if ($('#PrivilegeExceptionID').val() != '') {
+                    executeEP("Edit");
+                }
+                else {
+                    executeEP("Create");
+                }
+                loadPrivilegeGrid();
+            }
+        });
+
+    });
+</script>

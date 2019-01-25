@@ -1,0 +1,9 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<parameters>
+  <parameter name="CRMDb-Web.config Connection String" description="CRMDb Connection String used in web.config by the application to access the database." defaultValue="Data Source=10.20.201.139;Initial Catalog=BCAUAT_MSCRM;Persist Security Info=True;User ID=sa;Password=bcabca;" tags="SqlConnectionString">
+    <parameterEntry kind="XmlFile" scope="D:\\BCA\ Work\\NewCRM\\BCA\ CODE\\Code\\CCARE\\NewCRMReport\\obj\\Release\\Package\\PackageTmp\\Web\.config$" match="/configuration/connectionStrings/add[@name='CRMDb']/@connectionString" />
+  </parameter>
+  <parameter name="BCA_MSCRMEntities-Web.config Connection String" description="BCA_MSCRMEntities Connection String used in web.config by the application to access the database." defaultValue="metadata=res://*/Model.CRMDb.csdl|res://*/Model.CRMDb.ssdl|res://*/Model.CRMDb.msl;provider=System.Data.SqlClient;provider connection string=&quot;data source=localhost;initial catalog=BCAUAT_MSCRM_SUN;persist security info=True;user id=ucup;password=password123;MultipleActiveResultSets=True;App=EntityFramework&quot;" tags="SqlConnectionString">
+    <parameterEntry kind="XmlFile" scope="D:\\BCA\ Work\\NewCRM\\BCA\ CODE\\Code\\CCARE\\NewCRMReport\\obj\\Release\\Package\\PackageTmp\\Web\.config$" match="/configuration/connectionStrings/add[@name='BCA_MSCRMEntities']/@connectionString" />
+  </parameter>
+</parameters>

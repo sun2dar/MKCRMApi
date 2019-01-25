@@ -1,0 +1,243 @@
+﻿@model IEnumerable<CCARE.Models.Annotation>
+
+<input type="hidden" value="@(ViewBag.ObjectID)" id="field_ObjectId" />
+<input type="hidden" value="@(ViewBag.BusinessUnitID)" id="field_OwningBusinessUnit" />
+<br />
+<div class="form-horizontal">
+    <div class="row notes-padding">
+        <div class="col-sm-12">
+            <div class="form-group">
+                @if ((Model.Count() == 1 && Model.First() == null) || (Model.Where(x => x.IsDocument == false).Count() == 1 && Model.Where(x => x.IsDocument == false).First().NoteText == string.Empty))
+                {
+                    <input type="hidden" value="create" class="hidden_action" />
+                    <input type="hidden" value="" id="annotationID_create" />
+                    <textarea class="form-control txtArea textareaDisplay" rows="50" style="height:300px; min-height:300px; max-height:300px;"></textarea>
+                }
+                else 
+                {
+                    <input type="hidden" value="edit" class="hidden_action" />
+                    <input type="hidden" value="@(Model.Where(x => x.IsDocument == false).Last().AnnotationID)" id="annotationID_edit" />
+                    <textarea class="form-control txtArea textareaDisplay" rows="50" style="height:300px; min-height:300px; max-height:300px;">@Model.Where(x => x.IsDocument == false).Last().NoteText</textarea>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+<br />
+
+@*<div class="form-horizontal notes-padding">
+    <div class="row">
+        <div class="col-sm-6">                                                                              
+            <div class="form-group">
+                <label for="other">Note Type:</label>
+                <select id="note-type" class="form-control">
+                    <option value="">- Pilih-</option>
+                    <option value="address">Alamat</option>
+                    <option value="other">Lain-lain</option>
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <br />
+
+    <div id="note-address"> 
+        <div class="row">
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">Alamat 1</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" id="address-1" />
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">Alamat 2</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" id="address-2" />
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">Alamat 3</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" id="address-3" />
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">Kota</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" id="address-city" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div id="note-other">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="form-group">
+                    <label for="other">Lain-Lain:</label>
+                    <textarea class="form-control txtArea" id="textareaOther" style="height:57px; min-height:57px; max-height:57px;"></textarea>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>*@
+
+<div class="form-group">
+    <textarea class="form-control txtArea" id="textareaInput" style="height:57px; min-height:57px; max-height:57px;"></textarea>
+</div>
+<br />
+<div>
+    <input class="btn btn-primary" type="button" value="Submit" id="btnInputNotes" />
+</div>
+
+<script src="~/Scripts/jquery.signalR-1.1.4.js"></script>
+<script src="~/signalr/hubs"></script>
+<script type="text/javascript">
+    //function notetypedefaultstate() {
+    //    $("#note-address").hide();
+    //    $("#note-address :input").val('');
+
+    //    $("#note-other").hide();
+    //    $("#textareaOther").val('');
+
+    //    $("#textareaInput").hide();
+    //    $("#textareaInput").val('');
+    //    $("#textareaInput").empty();
+    //}
+
+    $(document).ready(function () {
+        // notetypedefaultstate();
+
+        //$("#note-type").change(function () {
+        //    notetypedefaultstate();
+        //    var v = $(this).val();
+        //    switch (v) {
+        //        case "address": $("#note-address").show(); break;
+        //        case "other": $("#note-other").show(); break;
+        //    }
+        //});
+
+
+
+        $(".textareaDisplay").attr("readonly", true);
+        var tempHiddenCreate;
+        var tempHiddenEdit = $("#annotationID_edit").val();
+        var flagCreated = 0;
+
+        var signalrnotes = $.connection.cCAREHub;
+        var gID = $("#field_ObjectId").val();
+        var Msg = "";
+
+        $.connection.hub.start().done(function () {
+            $("#btnInputNotes").click(function () {
+                //var v = $("#note-type").val();
+                //var note = "";
+                //switch (v) {
+                //    case "address":
+                //        note += $("#address-1").val() + "\n";
+                //        note += $("#address-2").val() + "\n";
+                //        note += $("#address-3").val() + "\n";
+                //        note += $("#address-city").val();
+                //        break;
+                //    case "other":
+                //        note = $("#textareaOther").val();
+                //        break;
+                //}
+
+                //$("#textareaInput").val(note);
+
+                if ($.trim($("#textareaInput").val()).length == 0) {
+                    alert("Tidak ada input"); return false;
+                }
+
+                var serializedForm;
+                var text = $("#textareaInput").val();
+
+                if ($(".hidden_action").val() == "create" && flagCreated == 0) {
+                    var objectId_val = $("#field_ObjectId").val();
+                    var OwningBusinessUnit_val = $("#field_OwningBusinessUnit").val();
+                    var tempData = { ObjectID: objectId_val, BusinessUnitID: OwningBusinessUnit_val };
+
+                    $.ajax({
+                        url: "/Note/CreateNote",
+                        type: "POST",
+                        data: JSON.stringify(tempData),
+                        contentType: "application/json; charset=utf-8",
+                        datatype: "json",
+                        success: function (result) {
+                            $("#annotationID_create").val(result.AnnotationID);
+                            tempHiddenCreate = result.AnnotationID;
+                            serializedForm = { annotationId: tempHiddenCreate, noteText: text };
+                            $.ajax({
+                                url: "/Note/EditNote",
+                                type: "POST",
+                                data: JSON.stringify(serializedForm),
+                                contentType: "application/json; charset=utf-8",
+                                datatype: "html",
+                                success: function (result) {
+                                    var temp = result.Data;
+                                    $(".textareaDisplay").val(temp);
+                                    $("#textareaInput").empty();
+                                    $("#textareaInput").focus();
+                                    Msg = result.Data;
+                                    signalrnotes.server.data(gID, Msg);
+                                },
+                                error: function (xhr, data, status) {
+                                    alert("error edit")
+                                }
+                            });
+                        },
+                        error: function (xhr, data, status) {
+                            alert("error create")
+                            alert("xhr, data, status: " + xhr.AnnotationID + "|" + data.AnnotationID + "|" + status.AnnotationID + "\n" + "tempdata: " + tempData.IncidentId + " and " + tempData.OwningBusinessUnit + "\nhidden: " + incidentId_val + " and " + OwningBusinessUnit_val);
+                        }
+                    });
+                    flagCreated = 1;
+                }
+                else {
+                    if (flagCreated == 1)
+                        tempHiddenEdit = tempHiddenCreate;
+
+                    serializedForm = { annotationId: tempHiddenEdit, noteText: text };
+                    $.ajax({
+                        url: "/Note/EditNote",
+                        type: "POST",
+                        data: JSON.stringify(serializedForm),
+                        contentType: "application/json; charset=utf-8",
+                        datatype: "html",
+                        success: function (result) {
+                            var temp = result.Data;
+                            $(".textareaDisplay").val(temp);
+                            $("#textareaInput").empty();
+                            $("#textareaInput").val('');
+                            $("#textareaInput").focus();
+                            Msg = result.Data;
+                            signalrnotes.server.data(gID, Msg);
+                        },
+                        error: function (xhr, data, status) {
+                            alert("error edit")
+                        }
+                    });
+                }
+                $(".txtArea").scrollTop(100);
+                notetypedefaultstate();
+            });
+        });
+    });
+</script>

@@ -1,0 +1,119 @@
+﻿@model CCARE.Models.SalesMarketing.Campaign
+
+<div class="divGrid">
+    <table id="gridTable"></table>
+    <div id="jqGridPager"></div>
+</div>
+
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        var gridId = "#gridTable";
+        var CampaignID = '@(Model.ID)';
+
+        var postData = {
+            _ID: CampaignID
+        };
+
+        try {
+            loadJqgrid(postData);
+        } catch (err) {
+            alert(err);
+        }
+
+
+        function loadJqgrid(postData) {
+
+            $.jgrid.gridUnload(gridId);
+            var colModels = [
+                { label: 'ID', name: 'Id', index: 'Id', key: true, width: 75, hidden: true },
+                { label: 'EntityID', name: 'EntityID', index: 'EntityID', width: 75, hidden: true },
+                { label: 'Name', name: 'name', index: 'name', width: 150 },
+                { label: 'Purpose', name: 'purpose', index: 'purpose', width: 150 },
+                { label: 'Description', name: 'description', width: 150 },
+                {
+                    name: 'Delete', width: 45, sortable: false, search: false,
+                    formatter: function () {
+                        return "<span class='glyphicon glyphicon-trash' title='Delete' style='cursor:pointer;'></span>"
+                    }, sortable: false
+                }
+            ];;
+            var customVal = getCustomVal("");
+            var url = '/Campaign/GetCMarketingList';
+            $(gridId).jqGrid({
+                url: url,
+                mtype: "POST",
+                datatype: "json",
+                postData: postData,
+                colModel: colModels,
+                shrinkToFit: false,
+                width: '100%',
+                autowidth: true,
+                height: '100%',
+                rowNum: customVal.rowNum,
+                rowList: [20, 30],
+                rownumbers: true,
+                pager: $("#jqGridPager"),
+                sortname: 'Id',
+                viewrecords: true,
+                sortorder: "desc",
+                loadComplete: function (data) {
+                    if (data.rows.length == 0) {
+                        //if (data.records == 0) {
+                        var emptyText = '';
+                        emptyText += '<table class="ui-jqgrid-btable"><tr><td>&nbsp;&nbsp;&nbsp;</td><td><center><h2>No Records Found</h2><center></td></tr></table>';
+                        var grid = $(gridId);
+                        var container = grid.parents('.ui-jqgrid-view');
+                        container.find('.ui-jqgrid-bdiv').children("table").remove();
+                        container.find('.ui-jqgrid-bdiv').append(emptyText);
+                    }
+                },
+                onCellSelect: function (rowid, iCol, cellContent, e) {
+                    var rowData = jQuery(gridId).getRowData(rowid);
+                    var gridLength = jQuery(gridId).find('tr').length - 1;
+                    var iRowReal = rowData['SeqNo'];
+
+                    //Reorder Workflow by up and down button
+                    if (iCol == 6) {
+                        if (iRowReal == 0) { }
+                        else {
+                            $.ajax({
+                                type: "POST",
+                                url: "/Campaign/doDeleteMarketingList?id=" + rowid,
+                                contentType: "application/json; charset=utf-8",
+                                dataType: "json",
+                                success: function (data) {
+                                    //$("#messagebox").html(MessageText('info', data.Message));
+                                    alert(data.Message);
+
+                                    if (data.flag == true) {
+                                        $('#CMarketingList span').trigger('click');
+                                    }
+                                },
+                                error: function (xhr, status, err) {
+                                    alert("Error");
+                                }
+                            });
+                        }
+                    }
+                },
+                jsonreader: {
+                    root: "rows", //array containing actual data
+                    page: "page", //current page
+                    total: "total", //total pages for the query
+                    records: "records", //total number of records
+                    cell: 'cell',
+                    repeatitems: false,
+                    id: "Id" //index of the column with the pk in it
+                },
+                ondblClickRow: function (rowid, iRow, iCol) {
+                    var data = jQuery("#gridTable").getRowData(rowid);
+                    var url = '@Url.Action("Edit", "MarketingList")';
+                    var marketingListID = data['EntityID'];
+                    openWindow(url + '?id=' + marketingListID);
+                }
+            })
+            .navGrid("#jqGridPager", { edit: false, add: false, del: false, search: false });
+        }
+    })
+</script>

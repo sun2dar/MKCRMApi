@@ -1,0 +1,203 @@
+﻿
+
+@model CCARE.Models.CallType
+
+@{
+    ViewBag.Title = "Edit";
+    Layout = "~/Views/Shared/_LayoutEntity.cshtml";
+}
+
+@section title
+{
+    CallType
+}
+
+@section entityLogo
+{
+    <img class="crm-logo" src="~/assets/images/ico_lrg_112.gif" />
+}
+
+@section formTitle
+{
+    <div class="text_title">
+        <h1>Information</h1>
+        CallType: @Model.Summary
+    </div>  
+}
+
+@section navHeader
+{
+    <ul class="nav navbar-nav navbar-left">
+        <li><a id="btn_save" href="#">Save</a></li>
+        <li><a id="btn_savenclose" href="#">Save & Close</a></li>
+        <li><a id="btn_del" href="#" data-toggle="modal" data-target="#confirm-delete">Delete</a></li>
+       
+    </ul>
+}
+
+@section footerStatus
+{
+    <div class="footer_text"> Status :
+
+        
+    </div>
+}
+
+@section sidebarMenu
+{
+    <li class="active"><a href="#">Information</a></li>
+}
+
+
+<div class="modal fade" id="confirm-delete" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1>Confirm Deletion</h1>
+            </div>
+            <div class="modal-body input-lg">
+                The system will delete this record. This action cannot be undone, To continue click "Delete".
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                <a class="btn btn-danger btn-ok">Delete</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container-fluid">
+    <!-- tabs -->
+    <div class="row">
+        <div class="col-sm-12 panel panel-default panel_form_parent">
+            <ul id="myTab2" class="nav nav-tabs crm-padding-top-10">
+                <li class="active"><a href="#general" id="general-tab" data-toggle="tab">General</a></li>
+                
+            </ul>             
+            <br />        
+                 
+            <div class="tab-content myContent_Tab">
+                <div class="tab-pane fade active in" id="general" aria-labelledby="general-tab">
+                    @using (Html.BeginForm("Edit", "CallWrapUp", FormMethod.Post, new { id = "form_CallType" }))
+                    {
+                        @Html.HiddenFor(x => x.CallTypeID)
+                        @Html.Hidden("hidden_displayStatus", "", new { @id = "hidden_displayStatus" })
+                        <!-- panel content -->
+                        <div class="col-sm-12">
+                            <!-- title 1 -->            
+                             <div class="row form_text">
+                                <div class="panel panel-default panel_form_child">
+                                    <div class="panel-heading">
+                                        <label class="control-label sv-header"><strong>General</strong></label>
+                                    </div>
+                                    <br />
+                                    <div class="panel-body">
+                                        <div class="form-horizontal">
+                                            <div class="row">
+                                                <div class="col-sm-6">                                        
+                                                    <div class="form-group">                                                  
+                                                        <label class="col-sm-4 control-label mandatory">Category</label>
+                                                        <div class="col-sm-8">
+                                                            <input type="hidden" id="CallWrapUpCategoryID" name="CallWrapUpCategoryID" class="form-control" style="margin-bottom:-50px;" />
+                                                            <div class="input-group">
+                                                                <input type="text" id="CategoryName" name="CategoryName" class="form-control" value="@Model.CategoryName">
+                                                                <div tabindex="0" id="CategoryName-label" class="form-control typeahead-label hide" style="border-top-left-radius:3px;border-bottom-left-radius:3px">
+                                                                </div>
+                                                                <div tabindex="0" class="input-group-addon btn" id="Category-popup">
+                                                                    <i class="fa fa-search"></i>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                             </div>                                        
+                                             <div class="row">
+                                                <div class="col-sm-6">                                        
+                                                    <div class="form-group">
+                                                        <label class="col-sm-4 control-label">Summary</label>
+                                                        <div class="col-sm-8">
+                                                            <input type="text" id="Summary" name="Summary" value ="@Model.Summary" class="form-control" />                                     
+                                                            <input type="hidden" id="flagcw" name="flagcw" value="flagct" /> 
+                                                            @Html.HiddenFor(x=>x.CallWrapUpID)
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>                               
+                                </div>
+                            </div>         
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>        
+    </div>    
+</div>
+<div class="row form_text">
+</div>
+
+<div id="response-modal"></div>
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        function validateForm(action, formName) {
+            if ($("#CallWrapUpCategoryID").val() == "") {
+                if ($("#CategoryName").val() == "")
+                    alert("@Resources.CallType.MandatoryCategory");
+                else
+                    alert("@Resources.CallType.MandatoryCategory2");
+                return false;
+            }
+            formSubmit(action, formName);
+        }
+
+
+        $("#btn_save").click(function () {
+            validateForm("save", $("#form_CallType"));
+        });
+
+        $("#btn_savenclose").click(function () {
+            validateForm("saveNClose", $("#form_CallType"));
+        });
+
+
+
+        $('#Category-popup').on('click', function (e) {
+            urlModalPopup = '@Url.Action("_popupContent", "Popup", new { type = "callwrapupcategory", _entity = "" })';
+            colModelsName = [
+            { label: 'ID', name: 'Id', index: 'Id', key: true, width: 175, hidden: true },
+            { label: 'Description', name: 'Name', width: 100 },
+            { label: 'Created On', name: 'Createdon', width: 175, formatter: "date", formatoptions: { srcformat: "ISO8601Long", newformat: "d/m/Y" } }
+
+            ];
+            var id = $(this).parent().find('input:last').attr('id');
+            $('#' + id).trigger("blur");
+            e.preventDefault();
+        });
+
+
+        var CategoryTypeahead = new PopupClass();
+        CategoryTypeahead.setId("CategoryName");
+        CategoryTypeahead.setUrl('@Url.Action("CallWrapUpCategory", "Popup")');
+        CategoryTypeahead.setHiddenId("CallWrapUpCategoryID");
+        CategoryTypeahead.init();
+
+        if ("@Model.CallWrapUpCategoryID".length > 0) {
+            popupCheckFirst("CategoryName", "@Model.CallWrapUpCategoryID", "@Model.CategoryName");
+        }
+
+        $("#confirm-delete").on('show.bs.modal', function (e) {
+            $(this).find('.btn-ok').click(function () {
+                var postData = {
+                    _resolution: "",
+                    _description: ""
+                };
+
+                otherAction($("#form_CallType"), "/CallType/Delete", "delete", postData)
+            });
+        });
+
+     
+    });
+</script>

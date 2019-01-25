@@ -1,0 +1,196 @@
+﻿@model CCARE.Models.QueueItem
+
+@{
+    ViewBag.Title = "Edit";
+    Layout = "~/Views/Shared/_LayoutEntity.cshtml";
+}
+
+@section entityLogo
+{
+    <img class="crm-logo" src="~/assets/images/ico_lrg_112.gif" />
+}
+
+@section formTitle
+{
+    <div class="text_title"><h1>Information</h1></div>
+}
+
+@section navHeader
+{
+    <ul class="nav navbar-nav navbar-left">
+        <li><a id="btn_assigntome" href="#">Assign To Me</a></li>
+        <li><a id="btn_assigntowg" href="#">Assign To Workgroup</a></li>
+    </ul>
+
+}
+
+@section footerStatus
+{
+    <div class="footer_text"> Status :
+    </div>
+}
+
+@section sidebarMenu
+{
+}
+
+
+<div class="container-fluid">
+    <!-- tabs -->
+    <div class="row">
+        <div class="col-sm-12 panel panel-default panel_form_parent">
+           <ul id="myTab2" class="nav nav-tabs crm-padding-top-10">
+                <li class="active"><a href="#general" id="general-tab" data-toggle="tab">General</a></li>
+           </ul>
+
+            <br />
+            @using (Html.BeginForm("Edit", "RequestQueue", FormMethod.Post, new { id = "form_QueueItem" }))
+            {
+
+            <div class="tab-content myTabContent">
+                <div class="tab-pane fade active in" id="general" aria-labelledby="general-tab">
+                    @Html.HiddenFor(x=>x.QueueItemId)
+                    @Html.Hidden("hidden_displayStatus", "", new { @id = "hidden_displayStatus" })
+
+                    <!-- panel content -->
+                    <div class="col-sm-12">
+                        <!-- Temporary row, CSS problem -->
+                        <div class="row form_text">
+                            <form class="form-horizontal">
+                            </form>
+                        </div>
+
+                        <!-- title 1 -->
+                        <div class="row form_text">
+                            <div class="panel panel-default panel_form_child">
+                                <div class="panel-heading">
+                                    <label class="control-label"><strong>General</strong></label>
+                                </div>
+                                <div class="panel-body">
+                                    <div class="form-horizontal">
+                                        <div class="row">
+                                            <div class="col-sm-6">
+                                                <div class="form-group">
+                                                    <label class="col-sm-4 control-label">ModifiedBy</label>
+                                                    <div class="col-sm-8">
+                                                        @Html.TextAreaFor(x => x.ModifiedByName, new { @class = "form-control" })
+                                                        <input type="hidden" id="ObjectId" name="ObjectId" class="form-control" value="@Model.ObjectId" />
+                                                        <input type="hidden" id="ObjectTypeCode" name="ObjectTypeCode" class="form-control" value="@Model.ObjectTypeCode" />
+                                                        <input type="hidden" id="BusinessUnitID" name="BusinessUnitID" class="form-control" value="@Model.BusinessUnitID" />
+                                                        <input type="hidden" id="entityname" name="entityname" class="form-control" value="queueitem" />
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <div class="form-group">
+                                                    <label class="col-sm-4 control-label">Owner</label>
+                                                    <div class="col-sm-8">
+                                                         <input type="hidden" id="OwnerID" name="OwnerID" class="form-control" style="margin-bottom:-50px;" />
+
+                                                         <div class="input-group" id="Owner-Group">
+                                                            <input type="text" id="OwnerName" name="OwnerName" class="form-control" value="">
+                                                            <div tabindex="0" id="OwnerName-label" class="form-control typeahead-label hide" style="border-top-left-radius:3px;border-bottom-left-radius:3px">
+                                                            </div>
+                                                            <div tabindex="0" class="input-group-addon btn" id="OwnerName-popup">
+                                                                <i class="fa fa-search"></i>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+                }
+        </div>
+    </div>
+    </div>
+    <div class="row form_text">
+
+    </div>
+
+    <div id="response-modal"></div>
+<script type="text/javascript">
+    $(document).ready(function () {
+
+
+        $("#btn_close").click(function () {
+            formSubmit("Close", $("#form_QueueItem"));
+        });
+
+        $("#btn_cancel").click(function () {
+            formSubmit("Cancel", $("#form_QueueItem"));
+        });
+
+
+        $("#btn_assigntome").click(function () {
+            var serializedForm = $("#form_QueueItem").serialize();
+            $.ajax({
+                type: "POST",
+                url: "/QueueItem/AssignToMe",
+                data: serializedForm,
+                dataType: "json",
+                success: function (data) {
+                    if (data.flag == true) {
+                        window.location.replace(data.Message);
+                    }
+                    else {
+                        alert(data.Message);
+                        $(".divFormMessage").text(data.Message);
+                    }
+                },
+                error: function (xhr, status, err) {
+                    alert("Error");
+                }
+            });
+        });
+
+        $("#btn_assigntowg").click(function () {
+            $('#OwnerName-popup').focus();
+            $('#OwnerName-popup').click();
+        });
+
+
+
+        $('#OwnerName-popup').on('click', function (e) {
+            urlModalPopup = '@Url.Action("_popupContent", "Popup", new { type = "owner", _entity = "" })';
+            colModelsName = [
+                { label: 'ID', name: 'Id', index: 'Id', key: true, width: 75, hidden: true },
+                { label: 'Name', name: 'name', width: 100 },
+                { label: 'Phone', name: 'phone', width: 100 },
+                { label: 'Business Unit', name: 'businessunit', width: 150 }
+            ];
+            var id = $(this).parent().find('input:last').attr('id');
+            $('#' + id).trigger("blur");
+            e.preventDefault();
+        });
+
+        var workgroupTypeahead = new PopupClass();
+        workgroupTypeahead.setId("OwnerName");
+        workgroupTypeahead.setUrl('@Url.Action("Workgroup", "Popup")');
+        workgroupTypeahead.setHiddenId("OwnerID");
+        workgroupTypeahead.init();
+
+
+
+        if ("@Model.ObjectOwnerID".length > 0) {
+            popupCheckFirst("OwnerName", "@Model.ObjectOwnerID", "@Model.ObjectOwnerName");
+        }
+
+
+
+
+
+
+
+
+
+    });
+</script>

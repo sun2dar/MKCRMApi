@@ -1,0 +1,337 @@
+﻿@{
+    if (Request.IsAjaxRequest())
+    {
+        Layout = null;
+    }    
+}
+
+<ul class="nav nav-stacked nav-pills">
+    <li class="titleBar font-crm4"><a></a></li>
+</ul>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-12">
+            <!-- Content -->
+            <div class="container-fluid content_container">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <form id="form_inquiry">
+                            <br />
+                            <div class="tab-content myContent_Tab">
+                                <div class="tab-pane fade active in" id="history" aria-labelledby="history-tab">
+                                    
+                                    <ol class="breadcrumb">
+                                        <li class="active">Search</li>
+                                        <li class="active">E-Banking Transactions</li>
+                                        <li class="active"><a href="#">BCA By Phone</a></li>
+                                    </ol>
+
+                                    <div class="form-horizontal pad-eb-trx">
+                                        <div class="row">
+                                            <div class="col-sm-6">
+                                                <div class="form-group">
+                                                    <label class="col-sm-6 control-label">No Rekening / Customer ID</label>
+                                                    <div class="col-sm-6">
+                                                        <input type="text" class="form-control" id="inputParamBBP" />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <div class="form-group">
+                                                    <label class="col-sm-3 control-label">FIID</label>
+                                                    <div class="col-sm-9">
+                                                        <input type="text" class="form-control" id="FIID" value="BCA"/>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-sm-6">                                        
+                                                <div class="form-group">
+                                                    <label class="col-sm-6 control-label">Tgl Trx (ddmmyyyy)</label>
+                                                    <div class="col-sm-6">
+                                                        <div class="input-group date">
+                                                            <input type="text" id="startDate" class="form-control" value="" />
+                                                            <span class="input-group-addon">
+                                                                <i class="fa fa-calendar fa-lg"></i>
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-6">                                                                              
+                                                <div class="form-group">
+                                                    <label class="col-sm-3 control-label">LNET</label>
+                                                    <div class="col-sm-9">
+                                                        <input type="text" id="LNET" class="form-control" value="PRO1" />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-sm-6">
+                                                <div class="form-group">
+                                                    <label class="col-sm-6 control-label"></label>
+                                                    <div class="col-sm-6">
+                                                        <div class="input-group">
+                                                            <button id="btn_search" class="btn btn-primary btn-crm-layout" type="submit">
+                                                                <span class="glyphicon glyphicon-search glyp-space" aria-hidden="true"></span>
+                                                                Search
+                                                            </button>
+                                                            <button id="btn_clear" class="btn btn-danger btn-crm-layout" type="button">
+                                                                <span class="glyphicon glyphicon-erase glyp-space" aria-hidden="true"></span>
+                                                                Clear
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-6"></div>
+                                        </div>
+
+                                    </div>
+                                </div>                                
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                
+                <br /><br />
+                
+                <div class="panel-body" id="information">
+                    <!-- Table result -->
+                    <div class="row">
+                        <div class="col-sm-12" >
+                            <div class="panel panel-default">
+                            
+                                <div class="panel-heading panel_heading">
+                                    <label class="control-label sv-header">
+                                        <strong>Transaksi</strong>
+                                    </label>
+                                </div>
+
+                                <div class="panel-body">
+                                    <div class="divGrid">
+                                        <table id="gridTable"></table>
+                                        <div id="jqGridPager"></div>
+                                    </div>
+                                </div>
+                                                               
+                                <div class="container-fluid">
+                                    <span class="input-group-btn">
+                                        <button id="btn_next" class="btn btn-primary" type="button">Next</button>
+                                    </span>
+                                </div>
+                                <br />
+                                
+                                @*<span class="input-group-btn">
+                                    <button id="btn_prev" class="btn btn-primary" type="button">Prev</button>
+                                </span>*@
+                                <input type="hidden" class="form-control" id="additionalNextPos" />
+                                <input type="hidden" class="form-control" id="additionalPrevPos" />
+                                <input type="hidden" class="form-control" id="additionalCurrPos" />
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        var gridId = "#gridTable";
+        var entityName = '@ViewContext.RouteData.Values["Controller"].ToString()';
+
+        $("#form_inquiry").find("input").addClass("rm-padding");
+        $("#form_inquiry").find("select").addClass("rm-padding");
+        $("#form_inquiry").find(":radio").removeClass("rm-padding");
+
+        $("#information").hide();
+
+        LoadJqGrid("", 0);
+
+        $("#btn_search").click(function () {
+            (event.preventDefault) ? event.preventDefault() : event.returnValue = false;
+            var startDate = $("#startDate").val();
+
+            if ($("#inputParamBBP").val() == '') {
+                alert("Field No Rekening/Customer ID harus diisi");
+                return false;
+            }
+            if ($("#FIID").val() == '') {
+                alert("Field FIID harus diisi");
+                return false;
+            }
+            if ($("#startDate").val() == '') {
+                alert("Field Tgl Trx harus diisi");
+                return false;
+            }
+            if ($("#LNET").val() == '') {
+                alert("Field LNET harus diisi");
+                return false;
+            }
+
+            var postData = {
+                _inputParamBBP: function () { return $("#inputParamBBP").val(); },
+                _startDate: startDate,
+                _FIID: function () { return $("#FIID").val(); },
+                _LNET: function () { return $("#LNET").val(); }
+            };
+
+            GetData(postData);
+
+            $("#inputParamBBP").prop("readonly", true);
+            $("#FIID").prop("readonly", true);
+            $("#startDate").prop("readonly", true);
+            $("#LNET").prop("readonly", true);
+            $("#btn_search").attr('disabled', 'disabled');
+        });
+
+        $("#btn_next").click(function () {
+            (event.preventDefault) ? event.preventDefault() : event.returnValue = false;
+            var startDate = $("#startDate").val();
+
+            var postData = {
+                _inputParamBBP: function () { return $("#inputParamBBP").val(); },
+                _startDate: startDate,
+                _FIID: function () { return $("#FIID").val(); },
+                _LNET: function () { return $("#LNET").val(); },
+                _nextPos: function () { return $("#additionalNextPos").val(); },
+                _prevPos: function () { return $("#additionalPrevPos").val(); },
+                _currPos: function () { return $("#additionalCurrPos").val(); },
+                _searchCondition: "next"
+            };
+
+            GetData(postData);
+        });
+
+        //$("#btn_prev").click(function () {
+        //    (event.preventDefault) ? event.preventDefault() : event.returnValue = false;
+        //    var startDate = $("#startDate").val();
+
+        //    var postData = {
+        //        _inputParamBBP: function () { return $("#inputParamBBP").val(); },
+        //        _startDate: startDate,
+        //        _FIID: function () { return $("#FIID").val(); },
+        //        _LNET: function () { return $("#LNET").val(); },
+        //        _nextPos: function () { return $("#additionalNextPos").val(); },
+        //        _prevPos: function () { return $("#additionalPrevPos").val(); },
+        //        _currPos: function () { return $("#additionalCurrPos").val(); },
+        //        _searchCondition: "prev"
+        //    };
+        //});
+
+        $("#startDate").datepicker({
+            format: 'dd/mm/yyyy',
+            todayHighlight: true,
+            orientation: "top auto",
+            autoclose: true
+        })
+
+
+        $("#btn_clear").click(function () {
+            $("#inputParamBBP").prop("readonly", false);
+            $("#FIID").prop("readonly", false);
+            $("#startDate").prop("readonly", false);
+            $("#LNET").prop("readonly", false);
+
+            $("input[type=text]").val('');
+            $("#FIID").val('BCA');
+            $("#LNET").val('PRO1');
+            $("#information").hide();
+            $("#btn_search").removeAttr('disabled');
+            $.jgrid.gridUnload(gridId);
+            LoadJqGrid("", 0);
+        });
+    });
+
+    function GetData(postData) {
+        jQuery.blockUI({ message: '<h4>Loading data...</h4>' });
+        $.ajax({
+            url: '@Url.Action("LoadJqGrid")',
+            type: "POST",
+            data: postData,
+            success: function (data) {
+                if (data.Value.length > 0) {
+                    var grid = jQuery('#gridTable');
+                    var rowCount = grid.getGridParam("reccount");
+                    for (var i = 0; i < data.Value.length; i++) {
+                        rowCount += 1;
+                        LoadJqGrid(data.Value[i], rowCount);
+                    }
+
+                    var container = grid.parents('.ui-jqgrid-view');
+                    container.find('.ui-jqgrid-bdiv').children("table").remove();
+
+                    if (data.Response != null) {
+                        var dt = data.Response.split("<#>");
+                        $("#additionalNextPos").val(dt[0]);
+                        $("#additionalPrevPos").val(dt[1]);
+                        $("#additionalCurrPos").val(dt[2]);
+                    }
+                    $("#btn_next").show();
+                }
+                else {
+                    LoadJqGrid("", 0);
+                }
+
+                if (jQuery('#gridTable').getGridParam("reccount") > 0)
+                    $("#btn_next").show();
+                else
+                    $("#btn_next").hide();
+
+            },
+            complete: function (data) {
+                jQuery.unblockUI();
+                $("#information").show();
+            }
+        });
+    }
+
+    function LoadJqGrid(rowData, rowCount) {
+        var grid = jQuery('#gridTable');
+        
+        if (grid[0].grid) {            
+            var updateRow = grid.jqGrid('addRowData', rowCount, rowData);
+        } else {
+            grid.jqGrid({
+                datatype: 'local',
+                mtype: 'POST',
+			    colModel: [
+                    { label: 'CustomerID/No Rek', name: 'CustomerIDOrAccountNo', width: 180 },
+                    { label: 'Tgl Trans', name: 'TransactionDate', width: 180 },
+                    { label: 'Jam', name: 'TransactionTime', width: 180 },
+                    { label: 'Deskripsi Trans.', name: 'TransactionDescription', width: 180 },
+                    { label: 'Resp Code', name: 'ResponseCode', width: 180 }
+			    ],
+			    shrinkToFit: false,
+			    autowidth: true,
+			    height: $(document).height() - 340,
+			    rownumbers: true,
+			    pager: $("#jqGridPager"),
+			    sortname: 'Id',
+			    viewrecords: true,
+			    loadComplete: function (data) {
+			        $('#jqGridPager_center').hide();
+			        if (grid.getGridParam("reccount") == 0) {
+			            var emptyText = '<table class="ui-jqgrid-btable" id="tableNoRecordFound"><tr><td>&nbsp;&nbsp;&nbsp;</td><td><center><h2>No Records Found</h2><center></td></tr></table>';
+			            var container = grid.parents('.ui-jqgrid-view');
+			            container.find('.ui-jqgrid-bdiv').children("table").remove();
+			            container.find('.ui-jqgrid-bdiv').append(emptyText);
+			        }
+
+			        /* Remove rm padding from selbox */
+			        $(".ui-pg-selbox").removeClass("rm-padding");
+			    }
+			});
+        }
+        
+    }
+</script>

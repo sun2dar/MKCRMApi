@@ -1,0 +1,432 @@
+﻿@{
+    if (Request.IsAjaxRequest())
+    {
+        Layout = null;
+    }
+}
+
+<ul class="nav nav-stacked nav-pills">
+    <li class="titleBar font-crm4"><a></a></li>
+</ul>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-12">
+            
+            <br />
+            
+            <ol class="breadcrumb">
+                <li class="active">Search</li>
+                <li class="active">Product Transactions</li>
+                <li class="active"><a href="#">Koreksi</a></li>
+            </ol>
+
+            <!-- Content -->
+            <div class="container-fluid content_container">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <form id="form_inquiry">
+                            <input type="hidden" id="Date2" value=""/>
+                            <input type="hidden" id="RowNo" value=""/>
+                            <div class="tab-content myContent_Tab">
+                                <div class="tab-pane fade active in" id="history" aria-labelledby="history-tab">
+                                    <ol class="breadcrumb br-trx">
+                                        <li class="active"><a href="#" id="linkUpdate">Update</a><span id="labelUpdate">Update</span></li>
+                                        <li class="active"><a href="#" id="linkClear">Clear</a></li>
+                                        <li class="active"><a href="#" id="linkSearch">Quick Search</a><span id="labelSearch">Quick Search</span></li>
+                                    </ol>
+                                    <div class="form-horizontal">
+                                        <div class="row">
+                                            <div class="col-sm-6">                                        
+                                                <div class="form-group">
+                                                    <label class="col-sm-3 control-label mandatory">No Rekening</label>
+                                                    <div class="col-sm-9">
+                                                        <input type="text" class="form-control" id="AccountNo"/>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-6">                                                                              
+                                                <div class="form-group">
+                                                    <label class="col-sm-3 control-label">Nama</label>
+                                                    <div class="col-sm-9">
+                                                        <input type="text" class="form-control" id="Name"/>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-6">                                        
+                                                <div class="form-group">
+                                                    <label class="col-sm-3 control-label">Cabang</label>
+                                                    <div class="col-sm-9">
+                                                        <input type="text" class="form-control" id="Branch"/>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-6">                                                                              
+                                                <div class="form-group">
+                                                    <label class="col-sm-3 control-label">Mata Uang</label>
+                                                    <div class="col-sm-9">
+                                                        <input type="text" class="form-control" id="Currency"/>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-6">                                                                              
+                                                <div class="form-group">
+                                                    <label class="col-sm-3 control-label mandatory2">Tgl Transaksi</label>
+                                                    <div class="col-sm-9">
+                                                        <div class="input-group" id="divDateTimePicker">
+                                                            <input type="text" class="form-control" id="TransDate1"/>
+                                                            <span class="input-group-addon">
+                                                                <i class="fa fa-calendar fa-lg"></i>
+                                                            </span>
+                                                            <span class="input-group-btn input_space"></span>
+                                                            <input type="text" class="form-control" id="TransDate2"/>
+                                                            <span class="input-group-addon">
+                                                                <i class="fa fa-calendar fa-lg"></i>
+                                                            </span>    
+                                                        </div>
+                                                        <div class="input-group" id="divDateTextBox">
+                                                            <input type="text" class="form-control" id="TransactionDate"/>
+                                                            <span class="input-group-addon">
+                                                                <i class="fa fa-calendar fa-lg"></i>
+                                                            </span>    
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-6">                                                                              
+                                                <div class="form-group">
+                                                    <label class="col-sm-3 control-label">Tgl Input</label>
+                                                    <div class="col-sm-9">
+                                                        <div class="input-group date">
+                                                            <input type="text" class="form-control" id="InputDate"/>
+                                                            <span class="input-group-addon">
+                                                                <i class="fa fa-calendar fa-lg"></i>
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-6">                                        
+                                                <div class="form-group">
+                                                    <label class="col-sm-3 control-label">Db/Cr</label>
+                                                    <div class="col-sm-9">
+                                                        <input type="text" class="form-control" id="DebitCredit"/>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-6">                                                                              
+                                                <div class="form-group">
+                                                    <label class="col-sm-3 control-label">Tgl Proses</label>
+                                                    <div class="col-sm-9">
+                                                        <div class="input-group date">
+                                                            <input type="text" class="form-control" id="ProsesDate"/>
+                                                            <span class="input-group-addon">
+                                                                <i class="fa fa-calendar fa-lg"></i>
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-6">                                        
+                                                <div class="form-group">
+                                                    <label class="col-sm-3 control-label">WSID</label>
+                                                    <div class="col-sm-9">
+                                                        <input type="text" class="form-control" id="WSID"/>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-6">                                                                              
+                                                <div class="form-group">
+                                                    <label class="col-sm-3 control-label">Slid</label>
+                                                    <div class="col-sm-9">
+                                                        <input type="text" class="form-control" id="Slid"/>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-6">                                        
+                                                <div class="form-group">
+                                                    <label class="col-sm-3 control-label">Kt</label>
+                                                    <div class="col-sm-9">
+                                                        <input type="text" class="form-control" id="Kt"/>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-6">                                                                              
+                                                <div class="form-group">
+                                                    <label class="col-sm-3 control-label">Kurs</label>
+                                                    <div class="col-sm-9">
+                                                        <input type="text" class="form-control" id="Rate"/>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-6">                                        
+                                                <div class="form-group">
+                                                    <label class="col-sm-3 control-label">Nilai Kor IDR</label>
+                                                    <div class="col-sm-9">
+                                                        <input type="text" class="form-control" id="NilaiIDR"/>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-6">                                                                              
+                                                <div class="form-group">
+                                                    <label class="col-sm-3 control-label">Nilai Kor VAL</label>
+                                                    <div class="col-sm-9">
+                                                        <input type="text" class="form-control" id="NilaiVAL"/>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-6">                                        
+                                                <div class="form-group">
+                                                    <label class="col-sm-3 control-label">Hasil Kor IDR</label>
+                                                    <div class="col-sm-9">
+                                                        <input type="text" class="form-control" id="HasilIDR"/>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-6">                                                                              
+                                                <div class="form-group">
+                                                    <label class="col-sm-3 control-label">Hasil Kor VAL</label>
+                                                    <div class="col-sm-9">
+                                                        <input type="text" class="form-control" id="HasilVAL"/>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-6">                                        
+                                                <div class="form-group">
+                                                    <label class="col-sm-3 control-label">Gagal Kor IDR</label>
+                                                    <div class="col-sm-9">
+                                                        <input type="text" class="form-control" id="GagalIDR"/>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-6">                                                                              
+                                                <div class="form-group">
+                                                    <label class="col-sm-3 control-label">Gagal Kor VAL</label>
+                                                    <div class="col-sm-9">
+                                                        <input type="text" class="form-control" id="GagalVAL"/>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-6">                                        
+                                                <div class="form-group">
+                                                    <label class="col-sm-3 control-label">Keterangan</label>
+                                                    <div class="col-sm-9">
+                                                        <input type="text" class="form-control" id="Description"/>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-6">                                                                              
+                                                <div class="form-group">
+                                                    <label class="col-sm-3 control-label">Request ID</label>
+                                                    <div class="col-sm-9">
+                                                        @* ==========================================================================================================*@
+                                                        <input type="hidden" id="RequestID" name="" class="form-control"/>
+                                                        <div class="input-group" id="Request-Group">
+                                                            <input type="text" id="TicketNumber" name="RequestID" class="form-control" value="">
+                                                            <div tabindex="0" id="TicketNumber-label" class="form-control typeahead-label hide">
+                                                            </div>
+                                                            <div tabindex="0" class="input-group-addon btn" id="TicketNumber-popup">
+                                                                <i class="fa fa-search"></i>
+                                                            </div>
+                                                        </div>
+                                                        @* ==========================================================================================================*@
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <br />
+                
+                <!-- Table result -->
+                <div class="row" id="DivResult">
+                    <div class="col-sm-12" >
+                        <div class="panel panel-default">
+                            <div class="panel-heading panel_heading">
+                                <label class="control-label sv-header">
+                                    <strong>Search Result</strong>
+                                </label>
+                            </div>
+                            <div class="panel-body">
+                                <div class="divGrid">
+                                    <table id="gridTable"></table>
+                                    <div id="jqGridPager"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="response-modal"></div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        var gridId = "#gridTable";
+        var entityName = '@ViewContext.RouteData.Values["Controller"].ToString()';
+        $("#DivResult").hide();
+        $("#divDateTextBox").hide();
+        $("input[name=RequestID]").prop("disabled", true);
+
+        $("#labelSearch").hide();
+        $("#linkUpdate").hide();
+        $("input[type=text]").prop("readonly", true);
+        $("#AccountNo").prop("readonly", false);
+        $("#TransDate1").prop("readonly", false);
+        $("#TransDate2").prop("readonly", false);
+
+        $('#linkSearch').click(function (event) {
+            (event.preventDefault) ? event.preventDefault() : event.returnValue = false;
+
+            if ($("#AccountNo").val() == "") {
+                alert("@Resources.ProductTransactions.MandatoryAccountNo");
+                return false;
+            }
+            @*if ($("#TransDate1").val() == $("#TransDate2").val()) {
+                alert("@Resources.ProductTransactions.DifferentDate");
+                return false;
+            }*@
+            if ($("#TransDate1").val() == "") {
+                alert("@Resources.ProductTransactions.MandatoryStartDate");
+                return false;
+            }
+            //if (Date.parse($("#TransDate1").val()) > Date.parse($("#TransDate2").val())) {
+            if (CheckRangeDate($("#TransDate1").val(), $("#TransDate2").val())) {
+                alert("@Resources.ProductTransactions.DateIsNotValid");
+                return false;
+            }
+
+            $("#DivResult").show();
+            var postData = {
+                TransDate1: function () { return $("#TransDate1").val(); },
+                TransDate2: function () { return $("#TransDate2").val(); },
+                AccountNo: function () { return $("#AccountNo").val(); }
+            };
+            loadJqgrid(gridId, postData, entityName);
+
+            //disable all textbox
+            $("input[type=text]").prop("readonly", true);
+            //$("input[name=RequestID]").prop("readonly", false);
+
+            $("#linkSearch").hide();
+            $("#labelSearch").show();
+            //$("#linkUpdate").show();
+            //$("#labelUpdate").hide();
+        });
+
+        $('#linkClear').click(function (event) {
+            $("#DivResult").hide();
+            $("input[type=text]").prop("readonly", true);
+            $("#AccountNo").prop("readonly", false);
+            $("#TransDate1").prop("readonly", false);
+            $("#TransDate2").prop("readonly", false);
+            $("#divDateTextBox").hide();
+            $("#divDateTimePicker").show();
+            $("input[type=text]").val("");
+            $("#TicketNumber-label").text("");
+            $("#linkSearch").show();
+            $("#labelSearch").hide();
+            $("#linkUpdate").hide();
+            $("#labelUpdate").show();
+        });
+
+        $('#linkUpdate').click(function (event) {
+            (event.preventDefault) ? event.preventDefault() : event.returnValue = false;
+
+            if ($("input[name=RequestID]").val() == "") {
+                alert("@Resources.ProductTransactions.MandatoryRequestID");
+                return false;
+            }
+
+            var postData = {
+                AccountNo: $("#AccountNo").val(),
+                TransactionDate: $("#Date2").val(),
+                RequestID: $("input[name=RequestID]").val(),
+                RowNo: $("#RowNo").val()
+            };
+
+            $.ajax({
+                type: "POST",
+                url: "/CorrectionTransaction/Update",
+                data: "&AccountNo=" + postData.AccountNo + "&TransactionDate=" + postData.TransactionDate + "&RowNo=" + postData.RowNo + "&RequestID=" + postData.RequestID,
+                dataType: "json",
+                success: function (data) {
+                    alert("Update Success");
+                },
+                error: function (xhr, status, err) {
+                    alert("Error");
+                }
+            });
+
+            $("#linkSearch").hide();
+            $("#labelSearch").show();
+            $("#linkUpdate").show();
+            $("#labelUpdate").hide();
+        });
+
+        $("#TransDate1").datepicker({
+            format: "dd/mm/yyyy",
+            autoclose: true
+        });
+
+        $("#TransDate2").datepicker({
+            format: "dd/mm/yyyy",
+            autoclose: true
+        });
+
+        @* =========================================Look Up Request=================================================*@
+        $('#TicketNumber-popup').on('click', function (e) {
+            urlModalPopup = '@Url.Action("_popupContent", "Popup", new { type = "requestTransaction", _entity = "" })';
+            colModelsName = [
+                { label: 'ID', name: 'Id', index: 'Id', key: true, width: 75, hidden: true },
+                { label: 'Summary', name: 'Title', width: 200 },
+                { label: 'Request ID', name: 'Name', width: 150 },
+                { label: 'Category', name: 'CategoryName', width: 200 },
+                { label: 'Product', name: 'ProductName', width: 200 },
+                { label: 'Status', name: 'StatusLabel', width: 70 },
+                { label: 'Created On', name: 'CreatedOn', width: 150, formatter: "date", formatoptions: { srcformat: "ISO8601Long", newformat: "d M Y h:i:s" } },
+                { label: 'Due Date', name: 'DueDate', width: 150, formatter: "date", formatoptions: { srcformat: "ISO8601Long", newformat: "d M Y h:i:s" } }
+            ];
+            var id = $(this).parent().find('input:last').attr('id');
+            $('#' + id).trigger("blur");
+            e.preventDefault();
+        });
+
+        var requestTypeahead = new PopupClass();
+        requestTypeahead.setId("TicketNumber");
+        requestTypeahead.setUrl('@Url.Action("RequestLookUp", "Popup")');
+        requestTypeahead.setHiddenId("RequestID");
+        requestTypeahead.init();
+
+        @* ==========================================================================================================*@
+        $("input[name=RequestID]").removeClass("tt-input");
+        $("input[type=text]").removeClass("tt-hint");
+
+    });
+</script>

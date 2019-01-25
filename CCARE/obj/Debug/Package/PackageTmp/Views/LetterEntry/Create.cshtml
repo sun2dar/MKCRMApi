@@ -1,0 +1,353 @@
+﻿@model CCARE.Models.LetterEntryView
+
+@{
+    ViewBag.Title = "Create";
+    Layout = "~/Views/Shared/_LayoutEntity.cshtml";
+}
+
+@section title
+{
+    Letter Entry
+}
+
+@section entityLogo
+{
+    <img class="crm-logo" src="~/assets/images/ico_lrg_112.gif" />
+}
+
+@section formTitle
+{
+    <div class="text_title">
+        <h1>Information</h1>
+        Letter Entry: New
+    </div>
+}
+
+@section navHeader
+{
+    <ul class="nav navbar-nav navbar-left">
+        <li><a id="btn_generateLetter" href="javascript:void(0)">Generate Letter</a></li>
+    </ul>
+}
+
+@section footerStatus
+{
+    <div class="footer_text">Status: New</div>
+}
+
+@section sidebarMenu
+{
+    <li class="active"><a href="#">Information</a></li>
+}
+
+<div class="container-fluid">
+    <!-- tabs -->
+    <div class="row">
+        <div class="col-sm-12 panel panel-default panel_form_parent">
+            <div class="myContent_noTab">
+                <div class="tab-pane fade active in" id="general" aria-labelledby="general-tab">
+                @using (Html.BeginForm("Create", "LetterEntry", FormMethod.Post, new { id = "form_createletterentry" }))
+                {               
+                    <!-- panel content -->
+                    <div class="col-sm-12">
+
+                        <!-- START title 1 -->
+                        <div class="row form_text">
+                            <div class="panel panel-default panel_form_child">
+                                <div class="panel-heading">
+                                    <label class="control-label sv-header"><strong>General</strong></label>
+                                </div>
+                                <br />
+                                @Html.HiddenFor(x => x.RequestIds, new { @class = "form-control" })
+                                <div class="panel-body">
+                                    <div class="form-horizontal">
+                                        <div class="row">
+                                            <div class="col-sm-6">                                        
+                                                <div class="form-group">
+                                                    <label class="col-sm-4 control-label mandatory">Template</label>
+                                                    <div class="col-sm-8">
+                                                        @Html.HiddenFor(x => x.LetterEntry.TemplateID, new { @class = "form-control" })
+                                                        <div class="input-group">
+                                                            @Html.TextBoxFor(x => x.LetterEntry.TemplateName, new { @class = "form-control" })
+                                                            <div tabindex="0" id="TemplateName-label" class="form-control typeahead-label hide" style="border-top-left-radius:3px;border-bottom-left-radius:3px"></div>
+                                                            <div tabindex="0" class="input-group-addon btn" id="TemplateName-popup">
+                                                                <i class="fa fa-search"></i>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-6">                                                                              
+                                                <div class="form-group">
+                                                    <label class="col-sm-4 control-label">ATM Attch?</label>
+                                                    <div class="col-sm-8">
+                                                        <label class="radio-inline">@Html.RadioButtonFor(x => x.LetterEntry.AttchATM, false, new { @checked = "checked" }) No</label>
+                                                        <label class="radio-inline">@Html.RadioButtonFor(x => x.LetterEntry.AttchATM, true) Yes</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-6">                                        
+                                                <div class="form-group">
+                                                    <label class="col-sm-4 control-label" id="LetterNo-label">No</label>
+                                                    <div class="col-sm-8" id="LetterNo-div">
+                                                        @Html.TextBoxFor(x => x.LetterEntry.LetterNo, new { @class = "form-control" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-6">                                                                              
+                                                <div class="form-group">
+                                                    <label class="col-sm-4 control-label">Debit Attch?</label>
+                                                    <div class="col-sm-8">
+                                                        <label class="radio-inline">@Html.RadioButtonFor(x => x.LetterEntry.AttchDebit, false, new { @checked = "checked" }) No</label>
+                                                        <label class="radio-inline">@Html.RadioButtonFor(x => x.LetterEntry.AttchDebit, true) Yes</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-6">                                        
+                                                <div class="form-group">
+                                                    <label class="col-sm-4 control-label">Attch Duration</label>
+                                                    <div class="col-sm-8">
+                                                        @Html.DropDownListFor(x => x.LetterEntry.AttchDuration, (List<SelectListItem>)ViewBag.ddl_durations, new { @class = "form-control" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-6">                                                                              
+                                                <div class="form-group">
+                                                    <label class="col-sm-4 control-label">Cirrus Attch?</label>
+                                                    <div class="col-sm-8">
+                                                        <label class="radio-inline">@Html.RadioButtonFor(x => x.LetterEntry.AttchCirrus, false, new { @checked = "checked" }) No</label>
+                                                        <label class="radio-inline">@Html.RadioButtonFor(x => x.LetterEntry.AttchCirrus, true) Yes</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-6">                                        
+                                                <div class="form-group">
+                                                    <label class="col-sm-4 control-label">Date</label>
+                                                    <div class="col-sm-8">
+                                                        <div class="input-group">
+                                                            @Html.TextBoxFor(x => x.LetterEntry.LetterDate, new { @class = "form-control" })
+                                                            <div tabindex="0" id="LetterDate-label" class="form-control typeahead-label hide" style="border-top-left-radius:3px;border-bottom-left-radius:3px"></div>
+                                                            <div tabindex="0" class="input-group-addon">
+                                                                <i class="fa fa-calendar"></i>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-6">                                                                              
+                                                <div class="form-group" style="/*display:none*/">
+                                                    <label class="col-sm-4 control-label">Maestro Attch?</label>
+                                                    <div class="col-sm-8">
+                                                        <label class="radio-inline">@Html.RadioButtonFor(x => x.LetterEntry.AttchMaestro, false, new { @checked = "checked" }) No</label>
+                                                        <label class="radio-inline">@Html.RadioButtonFor(x => x.LetterEntry.AttchMaestro, true) Yes</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-6">                                        
+                                                <div class="form-group">
+                                                    @if (!Model.IsMultipleLetter)
+                                                    {
+                                                    <label class="col-sm-4 control-label">CC</label>
+                                                    <div class="col-sm-8">
+                                                        @Html.HiddenFor(x => x.LetterEntry.CC_ID, new { @class = "form-control" })
+                                                        <div class="input-group">
+                                                            @Html.TextBoxFor(x => x.LetterEntry.CC_Name, new { @class = "form-control" })
+                                                            <div tabindex="0" id="CC_Name-label" class="form-control typeahead-label hide" style="border-top-left-radius:3px;border-bottom-left-radius:3px">
+                                                            </div>
+                                                            <div tabindex="0" class="input-group-addon btn" id="CC_Name-popup">
+                                                                <i class="fa fa-search"></i>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    }
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-6">                                                                              
+                                                <div class="form-group" style="/*display:none*/">
+                                                    <label class="col-sm-4 control-label">ATM Switching Attch?</label>
+                                                    <div class="col-sm-8">
+                                                        <label class="radio-inline">@Html.RadioButtonFor(x => x.LetterEntry.AttchATMSwitching, false, new { @checked = "checked" }) No</label>
+                                                        <label class="radio-inline">@Html.RadioButtonFor(x => x.LetterEntry.AttchATMSwitching, true) Yes</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-12">                                        
+                                                <div class="form-group">
+                                                    <label class="col-sm-2 control-label" id="lblDesc1">Description 1</label>
+                                                    <div class="col-sm-10">
+                                                        @Html.TextBoxFor(x => x.LetterEntry.Description1, new { @class = "form-control" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-12">                                        
+                                                <div class="form-group">
+                                                    <label class="col-sm-2 control-label" id="lblDesc2">Description 2</label>
+                                                    <div class="col-sm-10">
+                                                        @Html.TextBoxFor(x => x.LetterEntry.Description2, new { @class = "form-control" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-12">                                        
+                                                <div class="form-group">
+                                                    <label class="col-sm-2 control-label" id="lblDesc3">Description 3</label>
+                                                    <div class="col-sm-10">
+                                                        @Html.TextBoxFor(x => x.LetterEntry.Description3, new { @class = "form-control" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-12">                                        
+                                                <div class="form-group">
+                                                    <label class="col-sm-2 control-label" id="lblDesc4">Description 4</label>
+                                                    <div class="col-sm-10">
+                                                        @Html.TextBoxFor(x => x.LetterEntry.Description4, new { @class = "form-control" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                            </div>
+                        </div>
+                        <!-- END title 1 -->
+                    </div>
+                }
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="response-modal"></div>
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        var entityName = '@ViewContext.RouteData.Values["Controller"].ToString()';
+
+        function GenerateLetter() {
+            var _templateId = $.trim($("#LetterEntry_TemplateID").val());
+            var _letterno = $.trim($("#LetterEntry_LetterNo").val());
+            var _branchId = $.trim($("#LetterEntry_CC_ID").val());
+            var _formName = $("#form_createletterentry");
+            var _action = _formName.attr("action");
+            var _serializedForm = _formName.serialize();
+
+            @*if (!_templateId) {
+                alert("@Resources.LetterEntry.Alert_Template");
+                return false;
+            }*@
+
+            if (_letterno && isNaN(_letterno)) {
+                alert("@Resources.LetterEntry.Alert_LetterNo");
+                return false;
+            }
+
+            jQuery.blockUI({ message: '<h4>Generate Letter...</h4>' });
+            jQuery.ajax({
+                url: _action,
+                type: 'POST',
+                dataType: "json",
+                data: _serializedForm,
+                success: function (data) {                    
+                    if (data.Value) {
+                        window.location.replace(data.Response);
+                    } else {
+                        alert($.trim(data.Response));
+                    }
+                },
+                complete: function (data) {
+                    jQuery.unblockUI();
+                }
+            });
+        }
+
+        $("#btn_generateLetter").click(GenerateLetter);
+
+        $("#LetterEntry_LetterDate").datepicker({
+            todayHighlight: true,
+            format: "dd/mm/yyyy",
+            autoclose: true,
+            clearBtn: true,
+            orientation: 'top left'
+        });
+
+        @* ===========================================POPUP TEMPLATE=======================================*@
+        $('#TemplateName-popup').on('click', function (e) {
+            urlModalPopup = '@Url.Action("_popupContent", "Popup", new { type = "templates", _entity = "" })';
+            colModelsName = [
+                { label: 'ID', name: 'Id', index: 'Id', key: true, width: 75, hidden: true },
+                { label: 'Name', name: 'Name', index: 'Name', width: 250 },
+                { label: 'ID', name: 'AutoID', index: 'AutoID', width: 100 },
+                { label: 'Type', name: 'TypeLabel', index: 'TypeLabel', width: 150 },
+                { label: 'Created On', name: 'CreatedOn', index: 'CreatedOn', width: 250, formatter: "date", formatoptions: { srcformat: "ISO8601Long", newformat: "d/m/Y" } },
+                { label: 'Desc1', name: 'Desc1', index: 'Desc1', hidden: true },
+                { label: 'Desc2', name: 'Desc2', index: 'Desc2', hidden: true },
+                { label: 'Desc3', name: 'Desc3', index: 'Desc3', hidden: true },
+                { label: 'Desc4', name: 'Desc4', index: 'Desc4', hidden: true }
+            ];
+            var id = $(this).parent().find('input:last').attr('id');
+            $('#' + id).trigger("blur");
+            e.preventDefault();
+        });
+
+        var templates = new PopupClass();
+        templates.setId("LetterEntry_TemplateName");
+        templates.setUrl('@Url.Action("Template", "Popup")');
+        templates.setHiddenId("LetterEntry_TemplateID");
+        templates.init();
+
+        if ("@Model.LetterEntry.TemplateID".length > 0) {
+            popupCheckFirst("LetterEntry_TemplateName", "@Model.LetterEntry.TemplateID", "@Html.Raw(Model.LetterEntry.TemplateName)");
+        }
+        @* ===========================================POPUP TEMPLATE=======================================*@
+        
+
+        @* ===========================================POPUP BRANCH=======================================*@
+        $('#CC_Name-popup').on('click', function (e) {
+            urlModalPopup = '@Url.Action("_popupContent", "Popup", new { type = "branch", _entity = "" })';
+            colModelsName = [
+                { label: 'ID', name: 'Id', index: 'Id', key: true, width: 75, hidden: true },
+                { label: 'Nama Kantor', name: 'Name', width: 250 },
+                { label: 'Kode Kantor', name: 'OfficeCode', width: 250 },
+                { label: 'Alamat', name: 'Address', width: 250 },
+                { label: 'Fax', name: 'Fax', width: 250 },
+                { label: 'Inisial', name: 'Initials', width: 60 },
+                { label: 'Kode Pos', name: 'Zipcode', width: 60 },
+                { label: 'Kota', name: 'City', width: 60 },
+                { label: 'Telephone 1', name: 'Telephone1', width: 60 },
+                { label: 'Telephone 2', name: 'Telephone2', width: 60 },
+                { label: 'Kanwil', name: 'RegionName', width: 60 }
+            ];
+            var id = $(this).parent().find('input:last').attr('id');
+            $('#' + id).trigger("blur");
+            e.preventDefault();
+        });
+
+        var templates = new PopupClass();
+        templates.setId("LetterEntry_CC_Name");
+        templates.setUrl('@Url.Action("Branch", "Popup")');
+        templates.setHiddenId("LetterEntry_CC_ID");
+        templates.init();
+
+        if ("@Model.LetterEntry.CC_ID".length > 0) {
+            popupCheckFirst("LetterEntry_CC_Name", "@Model.LetterEntry.CC_ID", "@Html.Raw(Model.LetterEntry.CC_Name)");
+        }
+        @* ===========================================POPUP BRANCH=======================================*@
+
+    });
+</script>

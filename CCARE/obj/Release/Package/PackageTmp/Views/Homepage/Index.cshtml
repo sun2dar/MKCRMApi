@@ -1,0 +1,45 @@
+﻿@{
+    ViewBag.Title = "Homepage";
+    if (Request.IsAjaxRequest())
+    {
+        Layout = null;
+    }
+    else{
+        Layout = "~/Views/Shared/_Layout.cshtml";
+    }
+}
+<div class="row">
+    <div class="col-md-12 col-centered">
+        <div class="row col-centered"> @*width951 *@
+            <div class="col-md-12 remove-padding">
+                <div class="panel panel-default rm-border" style="overflow:hidden;">
+                    <br /><br /><br /><br /><br /><br /><br /><br />
+                    <div class="panel-body rm-border">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-horizontal">
+                                    <div class="row form-group">
+                                        <div class="col-sm-12 text-right">
+                                            <br /><br /><br />
+                                            <img src="@Url.Content("~/assets/images/crm.jpg")" alt="bg" height="100"/>
+                                        </div>
+                                    </div>
+                                    <div class="row form-group">
+                                        <div class="col-sm-12 text-right">
+                                            <br />
+                                            <h1 class="welcome-text">Selamat Datang di Aplikasi MK CRM</h1>
+                                            <h3><b>@Session["Fullname"].ToString() </b>-@* @Session["BusinessUnitName"].ToString() *@- @Session["RoleName"].ToString()</h3>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <img src="@Url.Content("~/assets/images/octopus.png")" alt="homeup" id="octopus"/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

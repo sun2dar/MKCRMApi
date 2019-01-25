@@ -1,0 +1,1292 @@
+﻿@{
+    if (Request.IsAjaxRequest())
+    {
+        Layout = null;
+    }
+}
+
+<style>
+    .panel_form_parent
+    {
+        border-color: #d3d4d8;
+        position: absolute;
+        width: 100%;
+    }
+
+    .panel_form_child
+    {
+        background-color: #ecf1f5;
+        padding-bottom: 20px;
+    }
+</style>
+
+<ul class="nav nav-stacked nav-pills">
+    <li class="titleBar font-crm4"><a></a></li>
+</ul>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="container-fluid content_container">
+                <div class="row">
+                    <div class="col-sm-12">
+
+                        <br />
+                        <div class="tab-content myContent_Tab">
+                            <div class="tab-pane fade active in" aria-labelledby="history-tab">
+
+                                <ol class="breadcrumb">
+                                    <li class="active">Search</li>
+                                    <li class="active">Inquiry</li>
+                                    <li class="active"><a href="#">E-Banking & Products</a></li>
+                                </ol>
+
+                                <div class="form-horizontal pad-eb-trx">
+
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <label class="col-sm-5 control-label">Inquiry Type</label>
+                                                <div class="col-sm-7">
+                                                    <select id="inquiry-type" class="form-control">
+                                                        <option selected="selected" value="default">Select Type</option>
+                                                        @if (CCARE.App_Function.RoleNPrivilege.checkEntityButtonByRoleID(new Guid(Session["RoleID"].ToString()), "SearchInquiry", "Product") == true)
+                                                        {
+                                                            <text>
+                                                                <option value="product">Product</option>
+                                                            </text>
+                                                        }
+                                                        @if (CCARE.App_Function.RoleNPrivilege.checkEntityButtonByRoleID(new Guid(Session["RoleID"].ToString()), "SearchInquiry", "eBanking") == true)
+                                                        {
+                                                            <text>
+                                                                <option value="ebanking">eBanking</option>
+                                                            </text>
+                                                        }
+                                                        @if (CCARE.App_Function.RoleNPrivilege.checkEntityButtonByRoleID(new Guid(Session["RoleID"].ToString()), "SearchInquiry", "KeyBCA") == true)
+                                                        {
+                                                            <text>
+                                                                <option value="keybca">Key BCA</option>
+                                                            </text>
+                                                        }
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <label class="col-sm-5 control-label"><span id="inqType">Product</span></label>
+                                                <div class="col-sm-7">
+                                                    <select id="inquiry-product" class="form-control">
+                                                        <option value="atmcard">ATM Card</option>
+                                                        <option value="creditcard">Credit Card</option>
+                                                        <option value="account">Account</option>
+                                                        <option value="loan">Loan</option>
+                                                    </select>
+
+                                                    <select id="inquiry-channel" class="form-control ninja">
+                                                        <option value="ib">KlikBCA Individu</option>
+                                                        <option value="connectib">Koneksi Kartu Kredit IB</option>
+                                                        <option value="requestib">Status Permohonan Kartu Kredit IB</option>
+                                                        <option value="mbca">m-BCA</option>
+                                                        <option value="smstopup">SMS Top Up</option>
+                                                        <option value="bbp">BCA by Phone</option>
+                                                        <option value="kbb">KlikBCA Bisnis</option>
+                                                        <option value="smsbca">SMS BCA</option>
+                                                    </select>
+
+                                                    <select id="inquiry-keybca" class="form-control ninja">
+                                                        <option value="keybcaconnectib">Koneksi KeyBCA Individu</option>
+                                                        <option value="keybcarequestib">Status Permohonan KeyBCA Individu</option>
+                                                        <option value="keybcaconnectkbb">Koneksi KeyBCA Bisnis</option>
+                                                        <option value="keybcarequestkbb">Status Permohonan KeyBCA Bisnis</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    @* ============================================================================================================================================== *@
+                                    @* ============================================================================================================================================== *@
+                                    @* ============================================================================================================================================== *@
+
+                                    <div id="inquiry-product-atm">
+                                        <div class="row">
+                                            <div class="col-sm-6">
+                                                <div class="form-group">
+                                                    <label class="col-sm-5 control-label">Input Parameters</label>
+                                                    <div class="col-sm-7">
+                                                        <select id="inquiry-product-atm-param" class="form-control">
+                                                            <option value="atmNo">ATM Card No</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-6">
+                                                <div class="form-group">
+                                                    <label class="col-sm-5 control-label">ATM Card No</label>
+                                                    <div class="col-sm-7">
+                                                        <input type="text" id="inquiry-product-atm-val" class="form-control" maxlength="50" value=""/>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div id="inquiry-product-creditcard">
+                                        <div class="row">
+                                            <div class="col-sm-6">
+                                                <div class="form-group">
+                                                    <label class="col-sm-5 control-label">Input Parameters</label>
+                                                    <div class="col-sm-7">
+                                                        <select id="inquiry-product-creditcard-param" class="form-control">
+                                                            <option value="cardNo">Credit Card No</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-6">
+                                                <div class="form-group">
+                                                    <label class="col-sm-5 control-label">Credit Card No</label>
+                                                    <div class="col-sm-7">
+                                                        <input type="text" id="inquiry-product-creditcard-val" class="form-control" maxlength="50" value=""/>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div id="inquiry-product-account">
+                                        <div class="row">
+                                            <div class="col-sm-6">
+                                                <div class="form-group">
+                                                    <label class="col-sm-5 control-label">Input Parameters</label>
+                                                    <div class="col-sm-7">
+                                                        <select id="inquiry-product-account-param" class="form-control">
+                                                            <option value="acctNo">Account No</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-6">
+                                                <div class="form-group">
+                                                    <label class="col-sm-5 control-label">Account No</label>
+                                                    <div class="col-sm-7">
+                                                        <input type="text" id="inquiry-product-account-val" class="form-control" maxlength="50" value=""/>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div id="inquiry-product-loan">
+                                        <div class="row">
+                                            <div class="col-sm-6">
+                                                <div class="form-group">
+                                                    <label class="col-sm-5 control-label">Input Parameters</label>
+                                                    <div class="col-sm-7">
+                                                        <select id="inquiry-product-loan-param" class="form-control">
+                                                            <option value="loanNo">Loan No</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-6">
+                                                <div class="form-group">
+                                                    <label class="col-sm-5 control-label">Loan No</label>
+                                                    <div class="col-sm-7">
+                                                        <input type="text" id="inquiry-product-loan-val" class="form-control" maxlength="50" value=""/>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-6">
+                                                <div class="form-group">
+                                                    <label class="col-sm-5 control-label">Account No</label>
+                                                    <div class="col-sm-7">
+                                                        <input type="text" id="inquiry-product-loan-val-2" class="form-control" maxlength="50" value=""/>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    @* ============================================================================================================================================== *@
+                                    @* ============================================================================================================================================== *@
+                                    @* ============================================================================================================================================== *@
+
+                                    <div id="inquiry-channel-ib">
+                                        <div class="row">
+                                            <div class="col-sm-6">
+                                                <div class="form-group">
+                                                    <label class="col-sm-5 control-label">Input Parameters</label>
+                                                    <div class="col-sm-7">
+                                                        <select id="inquiry-channel-ib-param" class="form-control">
+                                                            <option value="cardNo">No Kartu</option>
+                                                            <option value="userId">User ID</option>
+                                                            <option value="email">Email Address</option>
+                                                        </select>
+                                                        <script type="text/javascript">
+                                                            $("#inquiry-channel-ib-param").change(function () {
+                                                                $("input[type=text]").val(''); 
+                                                                var v = $(this).val();
+                                                                switch (v) {
+                                                                    case 'cardNo': ParameterState = "No Kartu"; break;
+                                                                    case 'userId': ParameterState = "User ID"; break;
+                                                                    case 'email': ParameterState = "Email Address"; break;
+                                                                }
+                                                                $("#inquiry-channel-ib-label").html(ParameterState);
+                                                            });
+                                                        </script>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-6">
+                                                <div class="form-group">
+                                                    <label class="col-sm-5 control-label"><span id="inquiry-channel-ib-label">No Kartu</span></label>
+                                                    <div class="col-sm-7">
+                                                        <input type="text" id="inquiry-channel-ib-val" class="form-control" maxlength="50" value=""/>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div id="inquiry-channel-connectib">
+                                        <div class="row">
+                                            <div class="col-sm-6">
+                                                <div class="form-group">
+                                                    <label class="col-sm-5 control-label">Input Parameters</label>
+                                                    <div class="col-sm-7">
+                                                        <select id="inquiry-channel-connectib-param" class="form-control">
+                                                            <option value="keyId">Key ID Yang Meregister</option>
+                                                            <option value="custNo">No Customer</option>
+                                                        </select>
+                                                        <script type="text/javascript">
+                                                            $("#inquiry-channel-connectib-param").change(function () {
+                                                                $("input[type=text]").val('');
+                                                                var v = $(this).val();
+                                                                switch (v) {
+                                                                    case 'keyId': ParameterState = "Key ID Yang Meregister"; break;
+                                                                    case 'custNo': ParameterState = "No Customer"; break;
+                                                                }
+                                                                $("#inquiry-channel-connectib-label").html(ParameterState);
+                                                            });
+                                                        </script>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-6">
+                                                <div class="form-group">
+                                                    <label class="col-sm-5 control-label"><span id="inquiry-channel-connectib-label">Key ID Yang Meregister</span></label>
+                                                    <div class="col-sm-7">
+                                                        <input type="text" id="inquiry-channel-connectib-val" class="form-control" maxlength="50" value=""/>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div id="inquiry-channel-requestib">
+                                        <div class="row">
+                                            <div class="col-sm-6">
+                                                <div class="form-group">
+                                                    <label class="col-sm-5 control-label">Input Parameters</label>
+                                                    <div class="col-sm-7">
+                                                        <select id="inquiry-channel-requestib-param" class="form-control">
+                                                            <option value="keyId">Key ID Yang Meregister</option>
+                                                            <option value="custNo">No Customer</option>
+                                                        </select>
+                                                        <script type="text/javascript">
+                                                            $("#inquiry-channel-requestib-param").change(function () {
+                                                                $("input[type=text]").val('');
+                                                                var v = $(this).val();
+                                                                switch (v) {
+                                                                    case 'keyId': ParameterState = "Key ID Yang Meregister"; break;
+                                                                    case 'custNo': ParameterState = "No Customer"; break;
+                                                                }
+                                                                $("#inquiry-channel-requestib-label").html(ParameterState);
+                                                            });
+                                                        </script>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-6">
+                                                <div class="form-group">
+                                                    <label class="col-sm-5 control-label"><span id="inquiry-channel-requestib-label">Key ID Yang Meregister</span></label>
+                                                    <div class="col-sm-7">
+                                                        <input type="text" id="inquiry-channel-requestib-val" class="form-control" maxlength="50" value=""/>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div id="inquiry-channel-mbca">
+                                        <div class="row">
+                                            <div class="col-sm-6">
+                                                <div class="form-group">
+                                                    <label class="col-sm-5 control-label">Input Parameters</label>
+                                                    <div class="col-sm-7">
+                                                        <select id="inquiry-channel-mbca-param" class="form-control">
+                                                            <option value="cardNo">No Kartu</option>
+                                                            <option value="mobileNo">Handphone No</option>
+                                                        </select>
+                                                        <script type="text/javascript">
+                                                            $("#inquiry-channel-mbca-param").change(function () {
+                                                                $("input[type=text]").val('');
+                                                                var v = $(this).val();
+                                                                switch (v) {
+                                                                    case 'cardNo': ParameterState = "No Kartu"; break;
+                                                                    case 'mobileNo': ParameterState = "Handphone No"; break;
+                                                                }
+                                                                $("#inquiry-channel-mbca-label").html(ParameterState);
+                                                            });
+                                                        </script>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-6">
+                                                <div class="form-group">
+                                                    <label class="col-sm-5 control-label"><span id="inquiry-channel-mbca-label">No Kartu</span></label>
+                                                    <div class="col-sm-7">
+                                                        <input type="text" id="inquiry-channel-mbca-val" class="form-control" maxlength="50" value=""/>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div id="inquiry-channel-smstopup">
+                                        <div class="row">
+                                            <div class="col-sm-6">
+                                                <div class="form-group">
+                                                    <label class="col-sm-5 control-label">Input Parameters</label>
+                                                    <div class="col-sm-7">
+                                                        <select id="inquiry-channel-smstopup-param" class="form-control">
+                                                            <option value="cardNo">No Kartu</option>
+                                                            <option value="mobileNo">Handphone No</option>
+                                                        </select>
+                                                        <script type="text/javascript">
+                                                            $("#inquiry-channel-smstopup-param").change(function () {
+                                                                $("input[type=text]").val('');
+                                                                var v = $(this).val();
+                                                                switch (v) {
+                                                                    case 'cardNo': ParameterState = "No Kartu"; break;
+                                                                    case 'mobileNo': ParameterState = "Handphone No"; break;
+                                                                }
+                                                                $("#inquiry-channel-smstopup-label").html(ParameterState);
+                                                            });
+                                                        </script>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-6">
+                                                <div class="form-group">
+                                                    <label class="col-sm-5 control-label"><span id="inquiry-channel-smstopup-label">No Kartu</span></label>
+                                                    <div class="col-sm-7">
+                                                        <input type="text" id="inquiry-channel-smstopup-val" class="form-control" maxlength="50" value=""/>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div id="inquiry-channel-bbp">
+                                        <div class="row">
+                                            <div class="col-sm-6">
+                                                <div class="form-group">
+                                                    <label class="col-sm-5 control-label">Input Parameters</label>
+                                                    <div class="col-sm-7">
+                                                        <select id="inquiry-channel-bbp-param" class="form-control">
+                                                            <option value="cardNo">No Kartu</option>
+                                                            <option value="acctNo">No Rekening</option>
+                                                        </select>
+                                                        <script type="text/javascript">
+                                                            $("#inquiry-channel-bbp-param").change(function () {
+                                                                $("input[type=text]").val('');
+                                                                var v = $(this).val();
+                                                                switch (v) {
+                                                                    case 'cardNo': ParameterState = "No Kartu"; break;
+                                                                    case 'acctNo': ParameterState = "No Rekening"; break;
+                                                                }
+                                                                $("#inquiry-channel-bbp-label").html(ParameterState);
+                                                            });
+                                                        </script>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-6">
+                                                <div class="form-group">
+                                                    <label class="col-sm-5 control-label"><span id="inquiry-channel-bbp-label">No Kartu</span></label>
+                                                    <div class="col-sm-7">
+                                                        <input type="text" id="inquiry-channel-bbp-val" class="form-control" maxlength="50" value=""/>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div id="inquiry-channel-kbb">
+                                        <div class="row">
+                                            <div class="col-sm-6">
+                                                <div class="form-group">
+                                                    <label class="col-sm-5 control-label">Input Parameters</label>
+                                                    <div class="col-sm-7">
+                                                        <select id="inquiry-channel-kbb-param" class="form-control">
+                                                            <option value="acctNo">Account No</option>
+                                                            <option value="corpId">Corp ID</option>
+                                                            <option value="email">Email Address</option>
+                                                        </select>
+                                                        <script type="text/javascript">
+                                                            $("#inquiry-channel-kbb-param").change(function () {
+                                                                $("input[type=text]").val('');
+                                                                $("#inquiry-channel-kbb-userid").hide();
+                                                                var v = $(this).val();
+                                                                switch (v) {
+                                                                    case 'acctNo': ParameterState = "Account No"; break;
+                                                                    case 'corpId': ParameterState = "Corp ID"; $("#inquiry-channel-kbb-userid").show(); break;
+                                                                    case 'email': ParameterState = "Email Address"; break;
+                                                                }
+                                                                $("#inquiry-channel-kbb-label").html(ParameterState);
+                                                            });
+                                                        </script>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-6">
+                                                <div class="form-group">
+                                                    <label class="col-sm-5 control-label"><span id="inquiry-channel-kbb-label">Account No</span></label>
+                                                    <div class="col-sm-7">
+                                                        <input type="text" id="inquiry-channel-kbb-val" class="form-control" maxlength="50" value=""/>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div id="inquiry-channel-kbb-userid" class="row ninja">
+                                            <div class="col-sm-6">
+                                                <div class="form-group">
+                                                    <label class="col-sm-5 control-label">User ID</label>
+                                                    <div class="col-sm-7">
+                                                        <input type="text" id="inquiry-channel-kbb-val-2" class="form-control" maxlength="50" value=""/>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div id="inquiry-channel-smsbca">
+                                        <div class="row">
+                                            <div class="col-sm-6">
+                                                <div class="form-group">
+                                                    <label class="col-sm-5 control-label">Input Parameters</label>
+                                                    <div class="col-sm-7">
+                                                        <select id="inquiry-channel-smsbca-param" class="form-control">
+                                                            <option value="cardNo">No Kartu</option>
+                                                            <option value="mobileNo">Handphone No</option>
+                                                        </select>
+                                                        <script type="text/javascript">
+                                                            $("#inquiry-channel-smsbca-param").change(function () {
+                                                                $("input[type=text]").val('');
+                                                                var v = $(this).val();
+                                                                switch (v) {
+                                                                    case 'cardNo': ParameterState = "No Kartu"; break;
+                                                                    case 'mobileNo': ParameterState = "Handphone No"; break;
+                                                                }
+                                                                $("#inquiry-channel-smsbca-label").html(ParameterState);
+                                                            });
+                                                        </script>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-6">
+                                                <div class="form-group">
+                                                    <label class="col-sm-5 control-label"><span id="inquiry-channel-smsbca-label">No Kartu</span></label>
+                                                    <div class="col-sm-7">
+                                                        <input type="text" id="inquiry-channel-smsbca-val" class="form-control" maxlength="50" value=""/>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    @* ============================================================================================================================================== *@
+                                    @* ============================================================================================================================================== *@
+                                    @* ============================================================================================================================================== *@
+
+                                    <div id="inquiry-keybca-connectib">
+                                        <div class="row">
+                                            <div class="col-sm-6">
+                                                <div class="form-group">
+                                                    <label class="col-sm-5 control-label">Input Parameters</label>
+                                                    <div class="col-sm-7">
+                                                        <select id="inquiry-keybca-connectib-param" class="form-control">
+                                                            <option value="snToken">SN Token</option>
+                                                            <option value="userId">User ID</option>
+                                                            <option value="cardNo">No Kartu</option>
+                                                        </select>
+                                                        <script type="text/javascript">
+                                                            $("#inquiry-keybca-connectib-param").change(function () {
+                                                                $("input[type=text]").val('');
+                                                                var v = $(this).val();
+                                                                switch (v) {
+                                                                    case 'snToken': ParameterState = "SN Token"; break;
+                                                                    case 'userId': ParameterState = "User ID"; break;
+                                                                    case 'cardNo': ParameterState = "No Kartu"; break;
+                                                                }
+                                                                $("#inquiry-keybca-connectib-label").html(ParameterState);
+                                                            });
+                                                        </script>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-6">
+                                                <div class="form-group">
+                                                    <label class="col-sm-5 control-label"><span id="inquiry-keybca-connectib-label">SN Token</span></label>
+                                                    <div class="col-sm-7">
+                                                        <input type="text" id="inquiry-keybca-connectib-val" class="form-control" maxlength="50" value=""/>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div id="inquiry-keybca-requestib">
+                                        <div class="row">
+                                            <div class="col-sm-6">
+                                                <div class="form-group">
+                                                    <label class="col-sm-5 control-label">Input Parameters</label>
+                                                    <div class="col-sm-7">
+                                                        <select id="inquiry-keybca-requestib-param" class="form-control">
+                                                            <option value="snToken">SN Token</option>
+                                                            <option value="userId">User ID</option>
+                                                            <option value="cardNo">No Kartu</option>
+                                                        </select>
+                                                        <script type="text/javascript">
+                                                            $("#inquiry-keybca-requestib-param").change(function () {
+                                                                $("input[type=text]").val('');
+                                                                var v = $(this).val();
+                                                                switch (v) {
+                                                                    case 'snToken': ParameterState = "SN Token"; break;
+                                                                    case 'userId': ParameterState = "User ID"; break;
+                                                                    case 'cardNo': ParameterState = "No Kartu"; break;
+                                                                }
+                                                                $("#inquiry-keybca-requestib-label").html(ParameterState);
+                                                            });
+                                                        </script>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-6">
+                                                <div class="form-group">
+                                                    <label class="col-sm-5 control-label"><span id="inquiry-keybca-requestib-label">SN Token</span></label>
+                                                    <div class="col-sm-7">
+                                                        <input type="text" id="inquiry-keybca-requestib-val" class="form-control" maxlength="50" value=""/>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div id="inquiry-keybca-connectkbb">
+                                        <div class="row">
+                                            <div class="col-sm-6">
+                                                <div class="form-group">
+                                                    <label class="col-sm-5 control-label">Input Parameters</label>
+                                                    <div class="col-sm-7">
+                                                        <select id="inquiry-keybca-connectkbb-param" class="form-control">
+                                                            <option value="snToken">SN Token</option>
+                                                            <option value="keyID">Key ID</option>
+                                                            <option value="corpID">Corp ID</option>
+                                                        </select>
+                                                        <script type="text/javascript">
+                                                            $("#inquiry-keybca-connectkbb-param").change(function () {
+                                                                $("input[type=text]").val('');
+                                                                $("#inquiry-keybca-connectkbb-userid").hide();
+                                                                var v = $(this).val();
+                                                                switch (v) {
+                                                                    case 'snToken': ParameterState = "SN Token"; break;
+                                                                    case 'keyID': ParameterState = "Key ID"; $("#inquiry-keybca-connectkbb-userid").show(); break;
+                                                                    case 'corpID': ParameterState = "Corp ID"; break;
+                                                                }
+                                                                $("#inquiry-keybca-connectkbb-label").html(ParameterState == "Key ID" ? "Corp ID" : ParameterState);
+                                                            });
+                                                        </script>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-6">
+                                                <div class="form-group">
+                                                    <label class="col-sm-5 control-label"><span id="inquiry-keybca-connectkbb-label">SN Token</span></label>
+                                                    <div class="col-sm-7">
+                                                        <input type="text" id="inquiry-keybca-connectkbb-val" class="form-control" maxlength="50" value=""/>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div id="inquiry-keybca-connectkbb-userid" class="row ninja">
+                                            <div class="col-sm-6">
+                                                <div class="form-group">
+                                                    <label class="col-sm-5 control-label">User ID</label>
+                                                    <div class="col-sm-7">
+                                                        <input type="text" id="inquiry-keybca-connectkbb-val-2" class="form-control" maxlength="50" value=""/>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div id="inquiry-keybca-requestkbb">
+                                        <div class="row">
+                                            <div class="col-sm-6">
+                                                <div class="form-group">
+                                                    <label class="col-sm-5 control-label">Input Parameters</label>
+                                                    <div class="col-sm-7">
+                                                        <select id="inquiry-keybca-requestkbb-param" class="form-control">
+                                                            <option value="snToken">SN Token</option>
+                                                            <option value="keyID">Key ID</option>
+                                                            <option value="corpID">Corp ID</option>
+                                                        </select>
+                                                        <script type="text/javascript">
+                                                            $("#inquiry-keybca-requestkbb-param").change(function () {
+                                                                $("input[type=text]").val('');
+                                                                $("#inquiry-keybca-requestkbb-userid").hide();
+                                                                var v = $(this).val();
+                                                                switch (v) {
+                                                                    case 'snToken': ParameterState = "SN Token"; break;
+                                                                    case 'keyID': ParameterState = "Key ID"; $("#inquiry-keybca-requestkbb-userid").show(); break;
+                                                                    case 'corpID': ParameterState = "Corp ID"; break;
+                                                                }
+                                                                $("#inquiry-keybca-requestkbb-label").html(ParameterState == "Key ID" ? "Corp ID" : ParameterState);
+                                                            });
+                                                        </script>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-6">
+                                                <div class="form-group">
+                                                    <label class="col-sm-5 control-label"><span id="inquiry-keybca-requestkbb-label">SN Token</span></label>
+                                                    <div class="col-sm-7">
+                                                        <input type="text" id="inquiry-keybca-requestkbb-val" class="form-control" maxlength="50" value=""/>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div id="inquiry-keybca-requestkbb-userid" class="row ninja">
+                                            <div class="col-sm-6">
+                                                <div class="form-group">
+                                                    <label class="col-sm-5 control-label">User ID</label>
+                                                    <div class="col-sm-7">
+                                                        <input type="text" id="inquiry-keybca-requestkbb-val-2" class="form-control" maxlength="50" value=""/>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    @* ============================================================================================================================================== *@
+                                    @* ============================================================================================================================================== *@
+                                    @* ============================================================================================================================================== *@
+
+                                    <div id="inquiry-button">
+                                        <div class="row">
+                                            <div class="col-sm-6">
+                                                <div class="form-group">
+                                                    <div class="col-sm-5"></div>
+                                                    <div class="col-sm-7">
+                                                        <button type="button" id="btn_search_inquiry" class="btn btn-primary btn-crm-layout" data-loading-text="Inquiry...">
+                                                            <span class="glyphicon glyphicon-search glyp-space" aria-hidden="true"></span>
+                                                            Search
+                                                        </button>
+                                                        <button type="button" id="btn_clear" class="btn btn-danger btn-crm-layout">
+                                                            <span class="glyphicon glyphicon-erase glyp-space" aria-hidden="true"></span>
+                                                            Clear
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-8">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <br />
+                                </div>
+
+                                <div id="inquiry-result">
+                                    <div class="row form_text">
+                                        <div class="col-sm-12 panel panel-default panel_form_parent">
+                                            <div class="tab-content myTabContent tab-content-custom1">
+                                                <div class="tab-pane fade active in" id="general" aria-labelledby="general-tab">
+                                                    <div class="col-sm-12">
+                                                        <div id="partialView" />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                
+                                @*<div id="partialView" />
+                                <br />*@
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    var TypeState = "Product";
+    var ProductState = "ATM Card";
+    var ParameterState = "ATM Card No";
+
+    $(document).ready(function () {
+        var gridId = "#gridTable";
+        var entityName = '@ViewContext.RouteData.Values["Controller"].ToString()';
+        $(".form-horizontal").find("select").addClass("rm-padding");
+        $("#btn_search_inquiry").click(function () {
+            (event.preventDefault) ? event.preventDefault() : event.returnValue = false;
+
+            var url = "";
+            var postData = "";
+
+            switch (TypeState) {
+                // ====================================================================================================
+                // ====================================================================================================
+                // ====================================================================================================
+                case "Default":
+                    return false;
+                    break;
+                case "Product":
+                    switch (ProductState) {
+                        case "ATM Card":
+                            url = "/Deposit/DepositCardNoPartial/";
+                            postData = {
+                                cardNo: $("#inquiry-product-atm-val").val()
+                            };
+                            break;
+                        case "Credit Card":
+                            url = "/CreditCard/CreditCardInfoPartial/";
+                            postData = {
+                                CreditCardNumber: $("#inquiry-product-creditcard-val").val()
+                            };
+                            break;
+                        case "Account":
+                            url = "/Deposit/DepositInfoPartial/";
+                            postData = {
+                                accountNo: $("#inquiry-product-account-val").val()
+                            };
+                            break;
+                        case "Loan":
+                            url = "/Loan/LoanPartial/";
+                            postData = {
+                                loanNumber: $("#inquiry-product-loan-val").val(),
+                                accountNo: $("#inquiry-product-loan-val-2").val()
+                            };
+                            break;
+                    }
+                    break;
+                // ====================================================================================================
+                // ====================================================================================================
+                // ====================================================================================================
+                case "eBanking":
+                    switch (ProductState) {
+                        case "KlikBCA Individu":
+                            url = "/KlikBCAIndividu/KBIKlikBCAIndividuPartial/";
+                            switch (ParameterState) {
+                                case "No Kartu":
+                                    postData = {
+                                        cardNo: $("#inquiry-channel-ib-val").val()
+                                    };
+                                    break;
+                                case "User ID":
+                                    postData = {
+                                        userId: $("#inquiry-channel-ib-val").val(),
+                                    };
+                                    break;
+                                case "Email Address":
+                                    postData = {
+                                        emailAddress: $("#inquiry-channel-ib-val").val()
+                                    };
+                                    break;
+                            }
+                            break;
+                        case "Koneksi Kartu Kredit IB":
+                            url = "/KlikBCAIndividu/KBICCConnectionPartial/";
+                            switch (ParameterState) {
+                                case "Key ID Yang Meregister":
+                                    postData = {
+                                        userId: $("#inquiry-channel-connectib-val").val()
+                                    };
+                                    break;
+                                case "No Customer":
+                                    postData = {
+                                        customerNo: $("#inquiry-channel-connectib-val").val(),
+                                    };
+
+                                    break;
+                            }
+                            break;
+                        case "Status Permohonan Kartu Kredit IB":
+                            url = "/KlikBCAIndividu/KBICCApplicationPartial/";
+                            switch (ParameterState) {
+                                case "Key ID Yang Meregister":
+                                    postData = {
+                                        userId: $("#inquiry-channel-requestib-val").val()
+                                    };
+                                    break;
+                                case "No Customer":
+                                    postData = {
+                                        customerNo: $("#inquiry-channel-requestib-val").val(),
+                                    };
+                                    break;
+                            }
+                            break;
+                        case "MBCA":
+                            url = "/MBCA/MBCAPartial/";
+                            switch (ParameterState) {
+                                case "No Kartu":
+                                    postData = {
+                                        CardNo: $("#inquiry-channel-mbca-val").val()
+                                    };
+                                    break;
+                                case "Handphone No":
+                                    postData = {
+                                        HpNo: $("#inquiry-channel-mbca-val").val(),
+                                    };
+                                    break;
+                            }
+                            break;
+                        case "SMS Top Up":
+                            url = "/SMSTopUp/SMSTopUpPartial/";
+                            switch (ParameterState) {
+                                case "No Kartu":
+                                    postData = {
+                                        CardNo: $("#inquiry-channel-smstopup-val").val()
+                                    };
+                                    break;
+                                case "Handphone No":
+                                    postData = {
+                                        HpNo: $("#inquiry-channel-smstopup-val").val(),
+                                    };
+                                    break;
+                            }
+                            break;
+                        case "BCA By Phone":
+                            url = "/BCAbyPhone/BCAbyPhonePartial";
+                            switch (ParameterState) {
+                                case "No Kartu":
+                                    postData = {
+                                        CardNo: $("#inquiry-channel-bbp-val").val()
+                                    };
+                                    break;
+                                case "No Rekening":
+                                    postData = {
+                                        AccountNo: $("#inquiry-channel-bbp-val").val(),
+                                    };
+                                    break;
+                            }
+                            break;
+                        case "KlikBCA Bisnis":
+                            url = "/KlikBCABisnis/KBBKlikBCABisnisPartial";
+                            switch (ParameterState) {
+                                case "Account No":
+                                    postData = {
+                                        AccountNo: $("#inquiry-channel-kbb-val").val()
+                                    };
+                                    break;
+                                case "Corp ID":
+                                    postData = {
+                                        CorpId: $("#inquiry-channel-kbb-val").val(),
+                                        userId: $("#inquiry-channel-kbb-val-2").val()
+                                    };
+                                    break;
+                                case "Email Address":
+                                    postData = {
+                                        EmailAddress: $("#inquiry-channel-kbb-val").val(),
+                                    };
+                                    break;
+                            }
+                            break;
+
+                            break;
+                        case "SMS BCA":
+                            url = "/SMSBCA/SMSBCAPartial/";
+                            switch (ParameterState) {
+                                case "No Kartu":
+                                    postData = {
+                                        CardNo: $("#inquiry-channel-smsbca-val").val()
+                                    };
+                                    break;
+                                case "Handphone No":
+                                    postData = {
+                                        HpNo: $("#inquiry-channel-smsbca-val").val(),
+                                    };
+                                    break;
+                            }
+                            break;
+                    }
+                    break;
+                // ====================================================================================================
+                // ====================================================================================================
+                // ====================================================================================================
+                case "Key BCA":
+                    switch (ProductState) {
+                        case "Koneksi KeyBCA Individu":
+                            url = "/KlikBCAIndividu/KBIKeyBCAConnectionPartial/";
+                            switch (ParameterState) {
+                                case "SN Token":
+                                    postData = {
+                                        SNKeyBCA: $("#inquiry-keybca-connectib-val").val()
+                                    };
+                                    break;
+                                case "User ID": 
+                                    postData = {
+                                        UserId: $("#inquiry-keybca-connectib-val").val(),
+                                    };
+                                    break;
+                                case "No Kartu":
+                                    postData = {
+                                        CardNo: $("#inquiry-keybca-connectib-val").val()
+                                    };
+                                    break;
+                            }
+                            break;
+                        case "Status Permohonan KeyBCA Individu":
+                            url = "/KlikBCAIndividu/KBIKeyBCAApplicationPartial/";
+                            switch (ParameterState) {
+                                case "SN Token": 
+                                    postData = {
+                                        SNKeyBCA: $("#inquiry-keybca-requestib-val").val()
+                                    };
+                                    break;
+                                case "User ID":
+                                    postData = {
+                                        UserId: $("#inquiry-keybca-requestib-val").val()
+                                    };
+                                    break;
+                                case "No Kartu":
+                                    postData = {
+                                        CardNo: $("#inquiry-keybca-requestib-val").val()
+                                    };
+                                    break;
+                            }
+                            break;
+                        case "Koneksi KeyBCA Bisnis":
+                            url = "/KlikBCABisnis/KBBKeyBCAConnectionPartial/";
+                            switch (ParameterState) {
+                                case "SN Token":
+                                    postData = {
+                                        SNKeyBCA: $("#inquiry-keybca-connectkbb-val").val()
+                                    };
+                                    break;
+                                case "Key ID":
+                                    postData = {
+                                        CorpId: $("#inquiry-keybca-connectkbb-val").val(),
+                                        UserId: $("#inquiry-keybca-connectkbb-val-2").val()
+                                    };
+                                    break;
+                                case "Corp ID":
+                                    postData = {
+                                        CorpId: $("#inquiry-keybca-connectkbb-val").val()
+                                    };
+                                    break;
+                            }
+                            break;
+                        case "Status Permohonan KeyBCA Bisnis":
+                            url = "/KlikBCABisnis/KBBKeyBCAApplicationPartial/";
+                            switch (ParameterState) {
+                                case "SN Token":
+                                    postData = {
+                                        SNKeyBCA: $("#inquiry-keybca-requestkbb-val").val()
+                                    };
+                                    break;
+                                case "Key ID":
+                                    postData = {
+                                        CorpId: $("#inquiry-keybca-requestkbb-val").val(),
+                                        UserId: $("#inquiry-keybca-requestkbb-val-2").val()
+                                    };
+                                    break;
+                                case "Corp ID":
+                                    postData = {
+                                        CorpId: $("#inquiry-keybca-requestkbb-val").val()
+                                    };
+                                    break;
+                            }
+                            break;
+                    }
+                    break;
+            }
+
+            var $btn = $(this);
+
+            $.ajax({
+                type: "GET",
+                url: url,
+                data: postData,
+                cache: false,
+                contentType: "application/html; charset=utf-8",
+                dataType: "html",
+                beforeSend: function () {
+                    $btn.button('loading');
+                },
+                success: function (viewHTML) {
+                    $("#partialView").html(viewHTML);
+                    //$(".form-horizontal").find("input").prop("disabled", false);
+                },
+                error: function (errorData) {
+                    //onError(errorData);
+                },
+                complete: function () {
+                    $btn.button('reset');
+                    //setTimeout(function () {
+                    //    $btn.button('reset');
+                    //}, 1000);
+                }
+            });
+        });
+
+        // ====================================================================================================
+        // ====================================================================================================
+        $("#inquiry-type").change(function(){
+            HideAll();
+            var v = $(this).val();
+            if(v == 'default'){
+                TypeState = "Default";
+                ProductState = "";
+                ParameterState = "";
+                HideAll();
+            }
+            else if(v == 'product'){
+                TypeState = "Product";
+                ProductState = "ATM Card";
+                $("#inquiry-product").show();
+                $("#inquiry-product").val('atmcard');
+                $("#inquiry-product-atm").show();
+            }
+            else if (v == 'ebanking') {
+                TypeState = "eBanking";
+                ProductState = "KlikBCA Individu";
+                ParameterState = "No Kartu";
+                $("#inquiry-channel").show();
+                $("#inquiry-channel").val('ib');
+                $("#inquiry-channel-ib").show();
+            }
+            else if(v == 'keybca'){
+                TypeState = "Key BCA";
+                ProductState = "Koneksi KeyBCA Individu";
+                ParameterState = "SN Token";
+                $("#inquiry-keybca").show();
+                $("#inquiry-keybca").val('keybcaconnectib');
+                $("#inquiry-keybca-connectib").show();
+            }
+
+            if (TypeState == 'Default') {
+                $("#inqType").html('');
+            }
+            else {
+                $("#inqType").html(TypeState);
+            }
+            clsTxt();
+        });
+        // ====================================================================================================
+        // ====================================================================================================
+        $("#inquiry-product").change(function(){
+            HideProduct();
+            var v = $(this).val();
+            switch(v)
+            {
+                case 'atmcard':
+                    ProductState = "ATM Card";
+                    $("#inquiry-product-atm").show();
+                    break;
+                case 'creditcard':
+                    ProductState = "Credit Card";
+                    $("#inquiry-product-creditcard").show();
+                    break;
+                case 'account':
+                    ProductState = "Account";
+                    $("#inquiry-product-account").show();
+                    break;
+                case 'loan':
+                    ProductState = "Loan";
+                    $("#inquiry-product-loan").show();
+                    break;
+            }
+            clsTxt();
+        });
+
+        $("#inquiry-channel").change(function () {
+            HideChannel();
+            var v = $(this).val();
+            switch(v)
+            {
+                case 'ib':
+                    ProductState = "KlikBCA Individu";
+                    ParameterState = "No Kartu";
+                    $("#inquiry-channel-ib").show();
+                    break;
+                case 'connectib':
+                    ProductState = "Koneksi Kartu Kredit IB";
+                    ParameterState = "Key ID Yang Meregister";
+                    $("#inquiry-channel-connectib").show();
+                    break;
+                case 'requestib':
+                    ProductState = "Status Permohonan Kartu Kredit IB";
+                    ParameterState = "Key ID Yang Meregister";
+                    $("#inquiry-channel-requestib").show();
+                    break;
+                case 'mbca':
+                    ProductState = "MBCA";
+                    ParameterState = "No Kartu";
+                    $("#inquiry-channel-mbca").show();
+                    break;
+                case 'smstopup':
+                    ProductState = "SMS Top Up";
+                    ParameterState = "No Kartu";
+                    $("#inquiry-channel-smstopup").show();
+                    break;
+                case 'bbp':
+                    ProductState = "BCA By Phone";
+                    ParameterState = "No Kartu";
+                    $("#inquiry-channel-bbp").show();
+                    break;
+                case 'kbb':
+                    ProductState = "KlikBCA Bisnis";
+                    ParameterState = "Account No";
+                    $("#inquiry-channel-kbb").show();
+                    break;
+                case 'smsbca':
+                    ProductState = "SMS BCA";
+                    ParameterState = "No Kartu";
+                    $("#inquiry-channel-smsbca").show();
+                    break;
+            }
+            clsTxt();
+        });
+
+        $("#inquiry-keybca").change(function(){
+            HideKeyBCA();
+            var v = $(this).val();
+            switch(v)
+            {
+                case 'keybcaconnectib':
+                    ProductState = "Koneksi KeyBCA Individu";
+                    ParameterState = "SN Token";
+                    $("#inquiry-keybca-connectib").show();
+                    break;
+                case 'keybcarequestib':
+                    ProductState = "Status Permohonan KeyBCA Individu";
+                    ParameterState = "SN Token";
+                    $("#inquiry-keybca-requestib").show();
+                    break;
+                case 'keybcaconnectkbb':
+                    ProductState = "Koneksi KeyBCA Bisnis";
+                    ParameterState = "SN Token";
+                    $("#inquiry-keybca-connectkbb").show();
+                    break;
+                case 'keybcarequestkbb':
+                    ProductState = "Status Permohonan KeyBCA Bisnis";
+                    ParameterState = "SN Token";
+                    $("#inquiry-keybca-requestkbb").show();
+                    break;
+            }
+            clsTxt();
+        });
+        // ====================================================================================================
+        // ====================================================================================================
+        $("#btn_clear").click(function () {
+            $("#partialView").html('');
+            clsTxt();
+        });
+
+        function clsTxt() {
+            $("input[type=text]").val('');
+            $(".form-horizontal").find("input").prop("disabled", false);
+        }
+        
+        function Init() {
+            HideAll();
+            $("#inquiry-type").trigger('change');
+        }
+        Init();
+        // ====================================================================================================
+        // ====================================================================================================
+        function HideAll() {
+            HideParam();
+            HideProduct();
+            HideChannel();
+            HideKeyBCA();
+        }
+
+        function HideParam(){
+            $("#inquiry-product").hide();
+            $("#inquiry-channel").hide();
+            $("#inquiry-keybca").hide();
+        }
+
+        function HideProduct() {
+            $("#inquiry-product-atm").hide();
+            $("#inquiry-product-creditcard").hide();
+            $("#inquiry-product-account").hide();
+            $("#inquiry-product-loan").hide();
+        }
+
+        function HideChannel() {
+            $("#inquiry-channel-ib").hide();
+            $("#inquiry-channel-connectib").hide();
+            $("#inquiry-channel-requestib").hide();
+            $("#inquiry-channel-mbca").hide();
+            $("#inquiry-channel-smstopup").hide();
+            $("#inquiry-channel-bbp").hide();
+            $("#inquiry-channel-kbb").hide();
+            $("#inquiry-channel-smsbca").hide();
+        }
+
+        function HideKeyBCA() {
+            $("#inquiry-keybca-connectib").hide();
+            $("#inquiry-keybca-requestib").hide();
+            $("#inquiry-keybca-connectkbb").hide();
+            $("#inquiry-keybca-requestkbb").hide();
+        }
+    });
+</script>

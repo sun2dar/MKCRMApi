@@ -1,0 +1,46 @@
+﻿@{
+    Layout = "~/Views/Shared/_LayoutInquiry.cshtml";
+}
+
+@section title
+{
+    
+}
+
+@section mainmenu{ Service }
+@section submenu{ Request Management }
+@section menu{ Letter Entries }
+
+
+    <div class="col-lg-9 inquiry_left">
+    <div class="input-group">
+        <span class="input-group-btn inquiry_dropdown">
+            <select id="inquiry_param" class="form-control">
+                <option value="searchTemplate">Template</option>
+                <option value="searchRequestID">Request ID</option>
+                <option value="searchFullName">Full Name</option>
+                <option value="searchAccountNo">Account No</option>
+                <option value="searchCardNo">Card No</option>
+            </select>
+        </span>
+        <span class="input-group-btn input_space"></span>
+        <input type="text" class="form-control" id="inquiry_val">
+        <span class="input-group-btn">
+            <button id="btn_search" class="btn btn-primary" type="submit"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></button>
+        </span>
+    </div>
+    </div>
+    <div class="col-lg-3 inquiry_right">
+    <div class="input-group col-lg-12">
+        <span class="inquiry_dropdown">
+            <select id="inquiry_filter" class="form-control">
+                <option value="1">Active Letter Entries</option>
+                <option value="2">Inactive Letter Entries</option>
+            </select>
+        </span>
+    </div>
+    </div>
+
+@section scriptExt{
+    $("#btn_new").hide();
+}

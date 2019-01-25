@@ -1,0 +1,643 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="CCAREModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'CCARE.CRM.ActivityView' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="ActivityView">
+          <Key>
+            <PropertyRef Name="ActivityID" />
+            <PropertyRef Name="ActivityTypeCode" />
+            <PropertyRef Name="StateCode" />
+            <PropertyRef Name="DeletionStateCode" />
+          </Key>
+          <Property Name="ActivityID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Subject" Type="nvarchar" MaxLength="200" />
+          <Property Name="Description" Type="nvarchar(max)" />
+          <Property Name="RegardingContactID" Type="uniqueidentifier" />
+          <Property Name="FullName" Type="nvarchar" MaxLength="160" />
+          <Property Name="RegardingObjectID" Type="uniqueidentifier" />
+          <Property Name="ObjectTypeCode" Type="int" />
+          <Property Name="ObjectTypeName" Type="nvarchar" MaxLength="100" />
+          <Property Name="ActivityTypeCode" Type="int" Nullable="false" />
+          <Property Name="ActivityTypeName" Type="nvarchar" MaxLength="1000" />
+          <Property Name="Content" Type="nvarchar" MaxLength="100" />
+          <Property Name="ScheduledStart" Type="datetime" />
+          <Property Name="ScheduledEnd" Type="datetime" />
+          <Property Name="ActualEnd" Type="datetime" />
+          <Property Name="Remark" Type="nvarchar(max)" />
+          <Property Name="OwnerID" Type="uniqueidentifier" />
+          <Property Name="BusinessUnitID" Type="uniqueidentifier" />
+          <Property Name="CreatedBy" Type="uniqueidentifier" />
+          <Property Name="CreatedByName" Type="nvarchar" MaxLength="160" />
+          <Property Name="CreatedOn" Type="datetime" />
+          <Property Name="ModifiedBy" Type="uniqueidentifier" />
+          <Property Name="ModifiedByName" Type="nvarchar" MaxLength="160" />
+          <Property Name="ModifiedOn" Type="datetime" />
+          <Property Name="StateCode" Type="int" Nullable="false" />
+          <Property Name="StateLabel" Type="nvarchar" MaxLength="1000" />
+          <Property Name="StatusCode" Type="int" />
+          <Property Name="DeletionStateCode" Type="int" Nullable="false" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'CCARE.CRM.ContactView' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="ContactView">
+          <Key>
+            <PropertyRef Name="ContactID" />
+            <PropertyRef Name="StateCode" />
+            <PropertyRef Name="StatusCode" />
+            <PropertyRef Name="DeletionStateCode" />
+          </Key>
+          <Property Name="ContactID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="CustomerTypeCode" Type="int" />
+          <Property Name="CustomerTypeLabel" Type="nvarchar" MaxLength="1000" />
+          <Property Name="FullName" Type="nvarchar" MaxLength="160" />
+          <Property Name="Salutation" Type="nvarchar" MaxLength="100" />
+          <Property Name="GenderCode" Type="int" />
+          <Property Name="GenderLabel" Type="nvarchar" MaxLength="1000" />
+          <Property Name="BirthDate" Type="datetime" />
+          <Property Name="MobilePhone" Type="nvarchar" MaxLength="50" />
+          <Property Name="Telephone1" Type="nvarchar" MaxLength="50" />
+          <Property Name="Telephone2" Type="nvarchar" MaxLength="50" />
+          <Property Name="Fax" Type="nvarchar" MaxLength="50" />
+          <Property Name="EMailAddress1" Type="nvarchar" MaxLength="100" />
+          <Property Name="AddressTypeCode" Type="int" />
+          <Property Name="AddressTypeLabel" Type="nvarchar" MaxLength="1000" />
+          <Property Name="City" Type="nvarchar" MaxLength="50" />
+          <Property Name="Country" Type="nvarchar" MaxLength="50" />
+          <Property Name="Line1" Type="nvarchar" MaxLength="250" />
+          <Property Name="Line2" Type="nvarchar" MaxLength="250" />
+          <Property Name="Line3" Type="nvarchar" MaxLength="250" />
+          <Property Name="PostalCode" Type="nvarchar" MaxLength="20" />
+          <Property Name="StateOrProvince" Type="nvarchar" MaxLength="50" />
+          <Property Name="CreatedBy" Type="uniqueidentifier" />
+          <Property Name="CreatedOn" Type="datetime" />
+          <Property Name="ModifiedBy" Type="uniqueidentifier" />
+          <Property Name="ModifiedOn" Type="datetime" />
+          <Property Name="BusinessUnit" Type="uniqueidentifier" />
+          <Property Name="StateCode" Type="int" Nullable="false" />
+          <Property Name="StateLabel" Type="nvarchar" MaxLength="1000" />
+          <Property Name="StatusCode" Type="int" Nullable="false" />
+          <Property Name="DeletionStateCode" Type="int" Nullable="false" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'CCARE.CRM.LeadView' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="LeadView">
+          <Key>
+            <PropertyRef Name="LeadID" />
+            <PropertyRef Name="StateCode" />
+            <PropertyRef Name="DeletionStateCode" />
+            <PropertyRef Name="City" />
+          </Key>
+          <Property Name="LeadID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="ContactID" Type="uniqueidentifier" />
+          <Property Name="AccountID" Type="uniqueidentifier" />
+          <Property Name="CampaignID" Type="uniqueidentifier" />
+          <Property Name="ProductID" Type="uniqueidentifier" />
+          <Property Name="ProductName" Type="nvarchar" MaxLength="100" />
+          <Property Name="Topic" Type="nvarchar" MaxLength="100" />
+          <Property Name="Salutation" Type="nvarchar" MaxLength="100" />
+          <Property Name="GenderCode" Type="int" />
+          <Property Name="GenderLabel" Type="nvarchar" MaxLength="1000" />
+          <Property Name="FullName" Type="nvarchar" MaxLength="160" />
+          <Property Name="BirthDate" Type="datetime" />
+          <Property Name="MobilePhone" Type="nvarchar" MaxLength="50" />
+          <Property Name="Telephone" Type="nvarchar" MaxLength="50" />
+          <Property Name="Fax" Type="nvarchar" MaxLength="50" />
+          <Property Name="EmailAddress" Type="nvarchar" MaxLength="100" />
+          <Property Name="AddressTypeCode" Type="int" />
+          <Property Name="AddressTypeLabel" Type="nvarchar" MaxLength="1000" />
+          <Property Name="Address" Type="nvarchar" MaxLength="250" />
+          <Property Name="City" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Country" Type="nvarchar" MaxLength="50" />
+          <Property Name="CreatedOn" Type="datetime" />
+          <Property Name="CreatedBy" Type="uniqueidentifier" />
+          <Property Name="CreatedByName" Type="nvarchar" MaxLength="160" />
+          <Property Name="ModifiedOn" Type="datetime" />
+          <Property Name="ModifiedBy" Type="uniqueidentifier" />
+          <Property Name="ModifiedByName" Type="nvarchar" MaxLength="160" />
+          <Property Name="StateCode" Type="int" Nullable="false" />
+          <Property Name="StateLabel" Type="nvarchar" MaxLength="1000" />
+          <Property Name="StatusCode" Type="int" />
+          <Property Name="DeletionStateCode" Type="int" Nullable="false" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'CCARE.CRM.SMAcitivityPointer_ActivityType' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="SMAcitivityPointer_ActivityType">
+          <Key>
+            <PropertyRef Name="StringMapID" />
+          </Key>
+          <Property Name="EntityName" Type="nvarchar" MaxLength="100" />
+          <Property Name="AttributeName" Type="nvarchar" MaxLength="100" />
+          <Property Name="DisplayOrder" Type="int" />
+          <Property Name="AttributeValue" Type="int" />
+          <Property Name="Label" Type="nvarchar" MaxLength="1000" />
+          <Property Name="StringMapID" Type="uniqueidentifier" Nullable="false" />
+        </EntityType>
+        <Function Name="Contact_Insert" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="CRM">
+          <Parameter Name="ContactID" Type="uniqueidentifier" Mode="In" />
+          <Parameter Name="CustomerTypeCode" Type="int" Mode="In" />
+          <Parameter Name="Salutation" Type="varchar" Mode="In" />
+          <Parameter Name="GenderCode" Type="int" Mode="In" />
+          <Parameter Name="FullName" Type="varchar" Mode="In" />
+          <Parameter Name="BirthDate" Type="datetime" Mode="In" />
+          <Parameter Name="MobilePhone" Type="varchar" Mode="In" />
+          <Parameter Name="Telephone1" Type="varchar" Mode="In" />
+          <Parameter Name="Telephone2" Type="varchar" Mode="In" />
+          <Parameter Name="Fax" Type="varchar" Mode="In" />
+          <Parameter Name="EMailAddress1" Type="varchar" Mode="In" />
+          <Parameter Name="BusinessUnit" Type="uniqueidentifier" Mode="In" />
+          <Parameter Name="ModifiedBy" Type="uniqueidentifier" Mode="In" />
+          <Parameter Name="RetVal" Type="int" Mode="InOut" />
+          <Parameter Name="Message" Type="varchar" Mode="InOut" />
+        </Function>
+        <Function Name="Lead_Insert" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="CRM">
+          <Parameter Name="LeadID" Type="uniqueidentifier" Mode="In" />
+          <Parameter Name="Topic" Type="varchar" Mode="In" />
+          <Parameter Name="ContactID" Type="uniqueidentifier" Mode="In" />
+          <Parameter Name="CustomerTypeCode" Type="int" Mode="In" />
+          <Parameter Name="Salutation" Type="varchar" Mode="In" />
+          <Parameter Name="GenderCode" Type="int" Mode="In" />
+          <Parameter Name="FullName" Type="varchar" Mode="In" />
+          <Parameter Name="BirthDate" Type="datetime" Mode="In" />
+          <Parameter Name="MobilePhone" Type="varchar" Mode="In" />
+          <Parameter Name="Telephone" Type="varchar" Mode="In" />
+          <Parameter Name="Fax" Type="varchar" Mode="In" />
+          <Parameter Name="EMailAddress" Type="varchar" Mode="In" />
+          <Parameter Name="JobTitle" Type="varchar" Mode="In" />
+          <Parameter Name="Firstname" Type="varchar" Mode="In" />
+          <Parameter Name="Lastname" Type="varchar" Mode="In" />
+          <Parameter Name="Address" Type="varchar" Mode="In" />
+          <Parameter Name="City" Type="varchar" Mode="In" />
+          <Parameter Name="Country" Type="varchar" Mode="In" />
+          <Parameter Name="Company" Type="varchar" Mode="In" />
+          <Parameter Name="AccountID" Type="uniqueidentifier" Mode="In" />
+          <Parameter Name="CampaignID" Type="uniqueidentifier" Mode="In" />
+          <Parameter Name="ProductID" Type="uniqueidentifier" Mode="In" />
+          <Parameter Name="BusinessUnitID" Type="uniqueidentifier" Mode="In" />
+          <Parameter Name="OwnerID" Type="uniqueidentifier" Mode="In" />
+          <Parameter Name="ModifiedBy" Type="uniqueidentifier" Mode="In" />
+          <Parameter Name="RetVal" Type="int" Mode="InOut" />
+          <Parameter Name="Message" Type="varchar" Mode="InOut" />
+        </Function>
+        <EntityContainer Name="CCAREModelStoreContainer">
+          <EntitySet Name="ActivityView" EntityType="Self.ActivityView" store:Type="Views" store:Schema="CRM">
+            <DefiningQuery>SELECT 
+    [ActivityView].[ActivityID] AS [ActivityID], 
+    [ActivityView].[Subject] AS [Subject], 
+    [ActivityView].[Description] AS [Description], 
+    [ActivityView].[RegardingContactID] AS [RegardingContactID], 
+    [ActivityView].[FullName] AS [FullName], 
+    [ActivityView].[RegardingObjectID] AS [RegardingObjectID], 
+    [ActivityView].[ObjectTypeCode] AS [ObjectTypeCode], 
+    [ActivityView].[ObjectTypeName] AS [ObjectTypeName], 
+    [ActivityView].[ActivityTypeCode] AS [ActivityTypeCode], 
+    [ActivityView].[ActivityTypeName] AS [ActivityTypeName], 
+    [ActivityView].[Content] AS [Content], 
+    [ActivityView].[ScheduledStart] AS [ScheduledStart], 
+    [ActivityView].[ScheduledEnd] AS [ScheduledEnd], 
+    [ActivityView].[ActualEnd] AS [ActualEnd], 
+    [ActivityView].[Remark] AS [Remark], 
+    [ActivityView].[OwnerID] AS [OwnerID], 
+    [ActivityView].[BusinessUnitID] AS [BusinessUnitID], 
+    [ActivityView].[CreatedBy] AS [CreatedBy], 
+    [ActivityView].[CreatedByName] AS [CreatedByName], 
+    [ActivityView].[CreatedOn] AS [CreatedOn], 
+    [ActivityView].[ModifiedBy] AS [ModifiedBy], 
+    [ActivityView].[ModifiedByName] AS [ModifiedByName], 
+    [ActivityView].[ModifiedOn] AS [ModifiedOn], 
+    [ActivityView].[StateCode] AS [StateCode], 
+    [ActivityView].[StateLabel] AS [StateLabel], 
+    [ActivityView].[StatusCode] AS [StatusCode], 
+    [ActivityView].[DeletionStateCode] AS [DeletionStateCode]
+    FROM [CRM].[ActivityView] AS [ActivityView]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="ContactView" EntityType="Self.ContactView" store:Type="Views" store:Schema="CRM">
+            <DefiningQuery>SELECT 
+    [ContactView].[ContactID] AS [ContactID], 
+    [ContactView].[CustomerTypeCode] AS [CustomerTypeCode], 
+    [ContactView].[CustomerTypeLabel] AS [CustomerTypeLabel], 
+    [ContactView].[FullName] AS [FullName], 
+    [ContactView].[Salutation] AS [Salutation], 
+    [ContactView].[GenderCode] AS [GenderCode], 
+    [ContactView].[GenderLabel] AS [GenderLabel], 
+    [ContactView].[BirthDate] AS [BirthDate], 
+    [ContactView].[MobilePhone] AS [MobilePhone], 
+    [ContactView].[Telephone1] AS [Telephone1], 
+    [ContactView].[Telephone2] AS [Telephone2], 
+    [ContactView].[Fax] AS [Fax], 
+    [ContactView].[EMailAddress1] AS [EMailAddress1], 
+    [ContactView].[AddressTypeCode] AS [AddressTypeCode], 
+    [ContactView].[AddressTypeLabel] AS [AddressTypeLabel], 
+    [ContactView].[City] AS [City], 
+    [ContactView].[Country] AS [Country], 
+    [ContactView].[Line1] AS [Line1], 
+    [ContactView].[Line2] AS [Line2], 
+    [ContactView].[Line3] AS [Line3], 
+    [ContactView].[PostalCode] AS [PostalCode], 
+    [ContactView].[StateOrProvince] AS [StateOrProvince], 
+    [ContactView].[CreatedBy] AS [CreatedBy], 
+    [ContactView].[CreatedOn] AS [CreatedOn], 
+    [ContactView].[ModifiedBy] AS [ModifiedBy], 
+    [ContactView].[ModifiedOn] AS [ModifiedOn], 
+    [ContactView].[BusinessUnit] AS [BusinessUnit], 
+    [ContactView].[StateCode] AS [StateCode], 
+    [ContactView].[StateLabel] AS [StateLabel], 
+    [ContactView].[StatusCode] AS [StatusCode], 
+    [ContactView].[DeletionStateCode] AS [DeletionStateCode]
+    FROM [CRM].[ContactView] AS [ContactView]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="LeadView" EntityType="Self.LeadView" store:Type="Views" store:Schema="CRM">
+            <DefiningQuery>SELECT 
+    [LeadView].[LeadID] AS [LeadID], 
+    [LeadView].[ContactID] AS [ContactID], 
+    [LeadView].[AccountID] AS [AccountID], 
+    [LeadView].[CampaignID] AS [CampaignID], 
+    [LeadView].[ProductID] AS [ProductID], 
+    [LeadView].[ProductName] AS [ProductName], 
+    [LeadView].[Topic] AS [Topic], 
+    [LeadView].[Salutation] AS [Salutation], 
+    [LeadView].[GenderCode] AS [GenderCode], 
+    [LeadView].[GenderLabel] AS [GenderLabel], 
+    [LeadView].[FullName] AS [FullName], 
+    [LeadView].[BirthDate] AS [BirthDate], 
+    [LeadView].[MobilePhone] AS [MobilePhone], 
+    [LeadView].[Telephone] AS [Telephone], 
+    [LeadView].[Fax] AS [Fax], 
+    [LeadView].[EmailAddress] AS [EmailAddress], 
+    [LeadView].[AddressTypeCode] AS [AddressTypeCode], 
+    [LeadView].[AddressTypeLabel] AS [AddressTypeLabel], 
+    [LeadView].[Address] AS [Address], 
+    [LeadView].[City] AS [City], 
+    [LeadView].[Country] AS [Country], 
+    [LeadView].[CreatedOn] AS [CreatedOn], 
+    [LeadView].[CreatedBy] AS [CreatedBy], 
+    [LeadView].[CreatedByName] AS [CreatedByName], 
+    [LeadView].[ModifiedOn] AS [ModifiedOn], 
+    [LeadView].[ModifiedBy] AS [ModifiedBy], 
+    [LeadView].[ModifiedByName] AS [ModifiedByName], 
+    [LeadView].[StateCode] AS [StateCode], 
+    [LeadView].[StateLabel] AS [StateLabel], 
+    [LeadView].[StatusCode] AS [StatusCode], 
+    [LeadView].[DeletionStateCode] AS [DeletionStateCode]
+    FROM [CRM].[LeadView] AS [LeadView]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="SMAcitivityPointer_ActivityType" EntityType="Self.SMAcitivityPointer_ActivityType" store:Type="Views" store:Schema="CRM">
+            <DefiningQuery>SELECT 
+    [SMAcitivityPointer_ActivityType].[EntityName] AS [EntityName], 
+    [SMAcitivityPointer_ActivityType].[AttributeName] AS [AttributeName], 
+    [SMAcitivityPointer_ActivityType].[DisplayOrder] AS [DisplayOrder], 
+    [SMAcitivityPointer_ActivityType].[AttributeValue] AS [AttributeValue], 
+    [SMAcitivityPointer_ActivityType].[Label] AS [Label], 
+    [SMAcitivityPointer_ActivityType].[StringMapID] AS [StringMapID]
+    FROM [CRM].[SMAcitivityPointer_ActivityType] AS [SMAcitivityPointer_ActivityType]</DefiningQuery>
+          </EntitySet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="CCAREModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="LeadView">
+          <Key>
+            <PropertyRef Name="LeadID" />
+            <PropertyRef Name="City" />
+            <PropertyRef Name="StateCode" />
+            <PropertyRef Name="DeletionStateCode" />
+          </Key>
+          <Property Name="LeadID" Type="Guid" Nullable="false" />
+          <Property Name="ContactId" Type="Guid" />
+          <Property Name="AccountId" Type="Guid" />
+          <Property Name="CampaignId" Type="Guid" />
+          <Property Name="ProductId" Type="Guid" />
+          <Property Name="Topic" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Name" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Company" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="JobTitle" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Firstname" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Lastname" Type="String" MaxLength="60" FixedLength="false" Unicode="true" />
+          <Property Name="Fullname" Type="String" MaxLength="161" FixedLength="false" Unicode="true" />
+          <Property Name="BirthDate" Type="DateTime" Precision="3" />
+          <Property Name="Email" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Address" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="City" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Country" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Telephone" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Handphone" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="GenderCode" Type="Int32" />
+          <Property Name="GenderLabel" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="BusinessUnitID" Type="Guid" />
+          <Property Name="OwnerID" Type="Guid" />
+          <Property Name="CreatedOn" Type="DateTime" Precision="3" />
+          <Property Name="CreatedBy" Type="Guid" />
+          <Property Name="CreatedByName" Type="String" MaxLength="160" FixedLength="false" Unicode="true" />
+          <Property Name="ModifiedOn" Type="DateTime" Precision="3" />
+          <Property Name="ModifiedBy" Type="Guid" />
+          <Property Name="ModifiedByName" Type="String" MaxLength="160" FixedLength="false" Unicode="true" />
+          <Property Name="StateCode" Type="Int32" Nullable="false" />
+          <Property Name="StateLabel" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="StatusCode" Type="Int32" />
+          <Property Name="DeletionStateCode" Type="Int32" Nullable="false" />
+          <Property Name="ContactID" Type="Guid" />
+          <Property Name="AccountID" Type="Guid" />
+          <Property Name="CampaignID" Type="Guid" />
+          <Property Name="ProductID" Type="Guid" />
+          <Property Name="ProductName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Salutation" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="FullName" Type="String" MaxLength="160" FixedLength="false" Unicode="true" />
+          <Property Name="MobilePhone" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Fax" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="EmailAddress" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="AddressTypeCode" Type="Int32" />
+          <Property Name="AddressTypeLabel" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityContainer Name="CCAREEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="LeadViews" EntityType="Self.LeadView" />
+          <FunctionImport Name="Lead_Insert">
+            <Parameter Name="LeadID" Mode="In" Type="Guid" />
+            <Parameter Name="Topic" Mode="In" Type="String" />
+            <Parameter Name="ContactID" Mode="In" Type="Guid" />
+            <Parameter Name="CustomerTypeCode" Mode="In" Type="Int32" />
+            <Parameter Name="Salutation" Mode="In" Type="String" />
+            <Parameter Name="GenderCode" Mode="In" Type="Int32" />
+            <Parameter Name="FullName" Mode="In" Type="String" />
+            <Parameter Name="BirthDate" Mode="In" Type="DateTime" />
+            <Parameter Name="MobilePhone" Mode="In" Type="String" />
+            <Parameter Name="Telephone" Mode="In" Type="String" />
+            <Parameter Name="Fax" Mode="In" Type="String" />
+            <Parameter Name="EMailAddress" Mode="In" Type="String" />
+            <Parameter Name="JobTitle" Mode="In" Type="String" />
+            <Parameter Name="Firstname" Mode="In" Type="String" />
+            <Parameter Name="Lastname" Mode="In" Type="String" />
+            <Parameter Name="Address" Mode="In" Type="String" />
+            <Parameter Name="City" Mode="In" Type="String" />
+            <Parameter Name="Country" Mode="In" Type="String" />
+            <Parameter Name="Company" Mode="In" Type="String" />
+            <Parameter Name="AccountID" Mode="In" Type="Guid" />
+            <Parameter Name="CampaignID" Mode="In" Type="Guid" />
+            <Parameter Name="ProductID" Mode="In" Type="Guid" />
+            <Parameter Name="BusinessUnitID" Mode="In" Type="Guid" />
+            <Parameter Name="OwnerID" Mode="In" Type="Guid" />
+            <Parameter Name="ModifiedBy" Mode="In" Type="Guid" />
+            <Parameter Name="RetVal" Mode="InOut" Type="Int32" />
+            <Parameter Name="Message" Mode="InOut" Type="String" />
+          </FunctionImport>
+          <EntitySet Name="ContactViews" EntityType="CCAREModel.ContactView" />
+          <EntitySet Name="ActivityViews" EntityType="CCAREModel.ActivityView" />
+          <EntitySet Name="SMAcitivityPointer_ActivityType" EntityType="CCAREModel.SMAcitivityPointer_ActivityType" />
+          <FunctionImport Name="Contact_Insert">
+            <Parameter Name="ContactID" Mode="In" Type="Guid" />
+            <Parameter Name="CustomerTypeCode" Mode="In" Type="Int32" />
+            <Parameter Name="Salutation" Mode="In" Type="String" />
+            <Parameter Name="GenderCode" Mode="In" Type="Int32" />
+            <Parameter Name="FullName" Mode="In" Type="String" />
+            <Parameter Name="BirthDate" Mode="In" Type="DateTime" />
+            <Parameter Name="MobilePhone" Mode="In" Type="String" />
+            <Parameter Name="Telephone1" Mode="In" Type="String" />
+            <Parameter Name="Telephone2" Mode="In" Type="String" />
+            <Parameter Name="Fax" Mode="In" Type="String" />
+            <Parameter Name="EMailAddress1" Mode="In" Type="String" />
+            <Parameter Name="BusinessUnit" Mode="In" Type="Guid" />
+            <Parameter Name="ModifiedBy" Mode="In" Type="Guid" />
+            <Parameter Name="RetVal" Mode="InOut" Type="Int32" />
+            <Parameter Name="Message" Mode="InOut" Type="String" />
+          </FunctionImport>
+        </EntityContainer>
+        <EntityType Name="ContactView">
+          <Key>
+            <PropertyRef Name="ContactID" />
+            <PropertyRef Name="StateCode" />
+            <PropertyRef Name="StatusCode" />
+            <PropertyRef Name="DeletionStateCode" />
+          </Key>
+          <Property Name="ContactID" Type="Guid" Nullable="false" />
+          <Property Name="CustomerTypeCode" Type="Int32" />
+          <Property Name="CustomerTypeLabel" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="FullName" Type="String" MaxLength="160" FixedLength="false" Unicode="true" />
+          <Property Name="Salutation" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="GenderCode" Type="Int32" />
+          <Property Name="GenderLabel" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="BirthDate" Type="DateTime" Precision="3" />
+          <Property Name="MobilePhone" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Telephone1" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Telephone2" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Fax" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="EMailAddress1" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="AddressTypeCode" Type="Int32" />
+          <Property Name="AddressTypeLabel" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="City" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Country" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Line1" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="Line2" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="Line3" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="PostalCode" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="StateOrProvince" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="CreatedBy" Type="Guid" />
+          <Property Name="CreatedOn" Type="DateTime" Precision="3" />
+          <Property Name="ModifiedBy" Type="Guid" />
+          <Property Name="ModifiedOn" Type="DateTime" Precision="3" />
+          <Property Name="BusinessUnit" Type="Guid" />
+          <Property Name="StateCode" Type="Int32" Nullable="false" />
+          <Property Name="StateLabel" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="StatusCode" Type="Int32" Nullable="false" />
+          <Property Name="DeletionStateCode" Type="Int32" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ActivityView">
+          <Key>
+            <PropertyRef Name="ActivityID" />
+            <PropertyRef Name="ActivityTypeCode" />
+            <PropertyRef Name="StateCode" />
+            <PropertyRef Name="DeletionStateCode" />
+          </Key>
+          <Property Name="ActivityID" Type="Guid" Nullable="false" />
+          <Property Name="Subject" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="RegardingContactID" Type="Guid" />
+          <Property Name="FullName" Type="String" MaxLength="160" FixedLength="false" Unicode="true" />
+          <Property Name="RegardingObjectID" Type="Guid" />
+          <Property Name="ObjectTypeCode" Type="Int32" />
+          <Property Name="ObjectTypeName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="ActivityTypeCode" Type="Int32" Nullable="false" />
+          <Property Name="ActivityTypeName" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="Content" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="ScheduledStart" Type="DateTime" Precision="3" />
+          <Property Name="ScheduledEnd" Type="DateTime" Precision="3" />
+          <Property Name="ActualEnd" Type="DateTime" Precision="3" />
+          <Property Name="Remark" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="OwnerID" Type="Guid" />
+          <Property Name="BusinessUnitID" Type="Guid" />
+          <Property Name="CreatedBy" Type="Guid" />
+          <Property Name="CreatedByName" Type="String" MaxLength="160" FixedLength="false" Unicode="true" />
+          <Property Name="CreatedOn" Type="DateTime" Precision="3" />
+          <Property Name="ModifiedBy" Type="Guid" />
+          <Property Name="ModifiedByName" Type="String" MaxLength="160" FixedLength="false" Unicode="true" />
+          <Property Name="ModifiedOn" Type="DateTime" Precision="3" />
+          <Property Name="StateCode" Type="Int32" Nullable="false" />
+          <Property Name="StateLabel" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="StatusCode" Type="Int32" />
+          <Property Name="DeletionStateCode" Type="Int32" Nullable="false" />
+        </EntityType>
+        <EntityType Name="SMAcitivityPointer_ActivityType">
+          <Key>
+            <PropertyRef Name="StringMapID" />
+          </Key>
+          <Property Name="EntityName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="AttributeName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="DisplayOrder" Type="Int32" />
+          <Property Name="AttributeValue" Type="Int32" />
+          <Property Name="Label" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="StringMapID" Type="Guid" Nullable="false" />
+        </EntityType>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="CCAREModelStoreContainer" CdmEntityContainer="CCAREEntities">
+          <EntitySetMapping Name="LeadViews">
+            <EntityTypeMapping TypeName="CCAREModel.LeadView">
+              <MappingFragment StoreEntitySet="LeadView">
+                <ScalarProperty Name="AddressTypeLabel" ColumnName="AddressTypeLabel" />
+                <ScalarProperty Name="AddressTypeCode" ColumnName="AddressTypeCode" />
+                <ScalarProperty Name="EmailAddress" ColumnName="EmailAddress" />
+                <ScalarProperty Name="Fax" ColumnName="Fax" />
+                <ScalarProperty Name="MobilePhone" ColumnName="MobilePhone" />
+                <ScalarProperty Name="FullName" ColumnName="FullName" />
+                <ScalarProperty Name="Salutation" ColumnName="Salutation" />
+                <ScalarProperty Name="ProductName" ColumnName="ProductName" />
+                <ScalarProperty Name="ProductID" ColumnName="ProductID" />
+                <ScalarProperty Name="CampaignID" ColumnName="CampaignID" />
+                <ScalarProperty Name="AccountID" ColumnName="AccountID" />
+                <ScalarProperty Name="ContactID" ColumnName="ContactID" />
+                <ScalarProperty Name="LeadID" ColumnName="LeadID" />
+                <ScalarProperty Name="Topic" ColumnName="Topic" />
+                <ScalarProperty Name="BirthDate" ColumnName="BirthDate" />
+                <ScalarProperty Name="Address" ColumnName="Address" />
+                <ScalarProperty Name="City" ColumnName="City" />
+                <ScalarProperty Name="Country" ColumnName="Country" />
+                <ScalarProperty Name="Telephone" ColumnName="Telephone" />
+                <ScalarProperty Name="GenderCode" ColumnName="GenderCode" />
+                <ScalarProperty Name="GenderLabel" ColumnName="GenderLabel" />
+                <ScalarProperty Name="CreatedOn" ColumnName="CreatedOn" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="CreatedByName" ColumnName="CreatedByName" />
+                <ScalarProperty Name="ModifiedOn" ColumnName="ModifiedOn" />
+                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+                <ScalarProperty Name="ModifiedByName" ColumnName="ModifiedByName" />
+                <ScalarProperty Name="StateCode" ColumnName="StateCode" />
+                <ScalarProperty Name="StateLabel" ColumnName="StateLabel" />
+                <ScalarProperty Name="StatusCode" ColumnName="StatusCode" />
+                <ScalarProperty Name="DeletionStateCode" ColumnName="DeletionStateCode" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="Lead_Insert" FunctionName="CCAREModel.Store.Lead_Insert" />
+          <EntitySetMapping Name="ContactViews">
+            <EntityTypeMapping TypeName="CCAREModel.ContactView">
+              <MappingFragment StoreEntitySet="ContactView">
+                <ScalarProperty Name="DeletionStateCode" ColumnName="DeletionStateCode" />
+                <ScalarProperty Name="StatusCode" ColumnName="StatusCode" />
+                <ScalarProperty Name="StateLabel" ColumnName="StateLabel" />
+                <ScalarProperty Name="StateCode" ColumnName="StateCode" />
+                <ScalarProperty Name="BusinessUnit" ColumnName="BusinessUnit" />
+                <ScalarProperty Name="ModifiedOn" ColumnName="ModifiedOn" />
+                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+                <ScalarProperty Name="CreatedOn" ColumnName="CreatedOn" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="StateOrProvince" ColumnName="StateOrProvince" />
+                <ScalarProperty Name="PostalCode" ColumnName="PostalCode" />
+                <ScalarProperty Name="Line3" ColumnName="Line3" />
+                <ScalarProperty Name="Line2" ColumnName="Line2" />
+                <ScalarProperty Name="Line1" ColumnName="Line1" />
+                <ScalarProperty Name="Country" ColumnName="Country" />
+                <ScalarProperty Name="City" ColumnName="City" />
+                <ScalarProperty Name="AddressTypeLabel" ColumnName="AddressTypeLabel" />
+                <ScalarProperty Name="AddressTypeCode" ColumnName="AddressTypeCode" />
+                <ScalarProperty Name="EMailAddress1" ColumnName="EMailAddress1" />
+                <ScalarProperty Name="Fax" ColumnName="Fax" />
+                <ScalarProperty Name="Telephone2" ColumnName="Telephone2" />
+                <ScalarProperty Name="Telephone1" ColumnName="Telephone1" />
+                <ScalarProperty Name="MobilePhone" ColumnName="MobilePhone" />
+                <ScalarProperty Name="BirthDate" ColumnName="BirthDate" />
+                <ScalarProperty Name="GenderLabel" ColumnName="GenderLabel" />
+                <ScalarProperty Name="GenderCode" ColumnName="GenderCode" />
+                <ScalarProperty Name="Salutation" ColumnName="Salutation" />
+                <ScalarProperty Name="FullName" ColumnName="FullName" />
+                <ScalarProperty Name="CustomerTypeLabel" ColumnName="CustomerTypeLabel" />
+                <ScalarProperty Name="CustomerTypeCode" ColumnName="CustomerTypeCode" />
+                <ScalarProperty Name="ContactID" ColumnName="ContactID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ActivityViews">
+            <EntityTypeMapping TypeName="CCAREModel.ActivityView">
+              <MappingFragment StoreEntitySet="ActivityView">
+                <ScalarProperty Name="DeletionStateCode" ColumnName="DeletionStateCode" />
+                <ScalarProperty Name="StatusCode" ColumnName="StatusCode" />
+                <ScalarProperty Name="StateLabel" ColumnName="StateLabel" />
+                <ScalarProperty Name="StateCode" ColumnName="StateCode" />
+                <ScalarProperty Name="ModifiedOn" ColumnName="ModifiedOn" />
+                <ScalarProperty Name="ModifiedByName" ColumnName="ModifiedByName" />
+                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+                <ScalarProperty Name="CreatedOn" ColumnName="CreatedOn" />
+                <ScalarProperty Name="CreatedByName" ColumnName="CreatedByName" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="BusinessUnitID" ColumnName="BusinessUnitID" />
+                <ScalarProperty Name="OwnerID" ColumnName="OwnerID" />
+                <ScalarProperty Name="Remark" ColumnName="Remark" />
+                <ScalarProperty Name="ActualEnd" ColumnName="ActualEnd" />
+                <ScalarProperty Name="ScheduledEnd" ColumnName="ScheduledEnd" />
+                <ScalarProperty Name="ScheduledStart" ColumnName="ScheduledStart" />
+                <ScalarProperty Name="Content" ColumnName="Content" />
+                <ScalarProperty Name="ActivityTypeName" ColumnName="ActivityTypeName" />
+                <ScalarProperty Name="ActivityTypeCode" ColumnName="ActivityTypeCode" />
+                <ScalarProperty Name="ObjectTypeName" ColumnName="ObjectTypeName" />
+                <ScalarProperty Name="ObjectTypeCode" ColumnName="ObjectTypeCode" />
+                <ScalarProperty Name="RegardingObjectID" ColumnName="RegardingObjectID" />
+                <ScalarProperty Name="FullName" ColumnName="FullName" />
+                <ScalarProperty Name="RegardingContactID" ColumnName="RegardingContactID" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Subject" ColumnName="Subject" />
+                <ScalarProperty Name="ActivityID" ColumnName="ActivityID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SMAcitivityPointer_ActivityType">
+            <EntityTypeMapping TypeName="CCAREModel.SMAcitivityPointer_ActivityType">
+              <MappingFragment StoreEntitySet="SMAcitivityPointer_ActivityType">
+                <ScalarProperty Name="StringMapID" ColumnName="StringMapID" />
+                <ScalarProperty Name="Label" ColumnName="Label" />
+                <ScalarProperty Name="AttributeValue" ColumnName="AttributeValue" />
+                <ScalarProperty Name="DisplayOrder" ColumnName="DisplayOrder" />
+                <ScalarProperty Name="AttributeName" ColumnName="AttributeName" />
+                <ScalarProperty Name="EntityName" ColumnName="EntityName" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="Contact_Insert" FunctionName="CCAREModel.Store.Contact_Insert" />
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

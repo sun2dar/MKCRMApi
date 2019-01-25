@@ -1,0 +1,6 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<parameters>
+  <parameter name="CRMDb-Web.config Connection String" description="CRMDb Connection String used in web.config by the application to access the database." defaultValue="Data Source=localhost;Initial Catalog=CCARE;Persist Security Info=True;User ID=sa;Password=M1tr4c1d3ngbarat;" tags="SqlConnectionString">
+    <parameterEntry kind="XmlFile" scope="D:\\Code\\CCARE\(Tambah\ Kota\)\ Sebelum\ ganti\ Database\\NewApi\\obj\\Debug\\Package\\PackageTmp\\Web\.config$" match="/configuration/connectionStrings/add[@name='CRMDb']/@connectionString" />
+  </parameter>
+</parameters>

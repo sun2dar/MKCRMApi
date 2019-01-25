@@ -1,0 +1,1614 @@
+﻿@{
+    ViewBag.Title = "Report";
+    Layout = "~/Views/Shared/_LayoutInquiry.cshtml";
+}
+    <div class="col-lg-12 inquiry_left">
+        <div class="input-group">
+            <input type="text" class="form-control" id="inquiry_val" >
+            <span class="input-group-btn">
+                <button id="btn_search" class="btn btn-primary" type="submit"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></button>
+            </span>
+        </div>
+    </div>
+
+@section title
+{
+    Report NEW CRM
+}
+
+@section scriptExt{
+ 
+}
+
+@section ReportViewer{
+    <div class="container-fluid" id="ReportParameter">
+        <div id="response-modal"></div>
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="container-fluid content_container">
+                    <div class="row">
+                        <div class="col-sm-12" >
+                            <br />
+
+                            <ol class="breadcrumb">
+                                <li class="active">Report Parameter</li>
+                                <li class="active">Report Filter</li>
+                            </ol>
+
+                            <div class="form-horizontal">
+                                
+                                <div class="row">
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <label class="col-sm-3 control-label">Report Name</label>
+                                                <div class="col-sm-9">
+                                                    <input type="text" class="form-control" id="Selected-Report" readonly="readonly"/>
+                                                    <input type="hidden" class="form-control" id="Selected-Rdl" />
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-sm-6"></div>
+                                    </div>
+                                </div>
+
+                                <div class="row" id="Date">
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <label class="col-sm-3 control-label">Date</label>
+                                                <div class="col-sm-9">
+                                                    <div class="input-group" id="DateTP">
+                                                        <input type="text" class="form-control" id="StartDate" />
+                                                        <span class="input-group-addon">
+                                                            <i class="fa fa-calendar fa-lg"></i>
+                                                        </span>
+                                                        <span class="input-group-btn input_space"></span>
+                                                        <input type="text" class="form-control" id="EndDate" />
+                                                        <span class="input-group-addon">
+                                                            <i class="fa fa-calendar fa-lg"></i>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-sm-6">
+                                            <div class="btn-group" data-toggle="buttons">
+                                                <label class="btn btn-danger" id="DateLbl">
+                                                    <input type="checkbox" id="DateCB"> Choose
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row" id="CreatedOn">
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <label class="col-sm-3 control-label">Created On</label>
+                                                <div class="col-sm-9">
+                                                    <div class="input-group" id="CreatedOnDTP">
+                                                        <input type="text" class="form-control" id="StartCreatedOn" />
+                                                        <span class="input-group-addon">
+                                                            <i class="fa fa-calendar fa-lg"></i>
+                                                        </span>
+                                                        <span class="input-group-btn input_space"></span>
+                                                        <input type="text" class="form-control" id="EndCreatedOn" />
+                                                        <span class="input-group-addon">
+                                                            <i class="fa fa-calendar fa-lg"></i>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-sm-6">
+                                            <div class="btn-group" data-toggle="buttons">
+                                                <label class="btn btn-danger" id="CreatedOnLbl">
+                                                    <input type="checkbox" id="CreatedOnCB"> Choose
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row" id="Actual">
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <label class="col-sm-3 control-label">Actual Date</label>
+                                                <div class="col-sm-9">
+                                                    <div class="input-group" id="ActualDTP">
+                                                        <input type="text" class="form-control" id="StartActual" />
+                                                        <span class="input-group-addon">
+                                                            <i class="fa fa-calendar fa-lg"></i>
+                                                        </span>
+                                                        <span class="input-group-btn input_space"></span>
+                                                        <input type="text" class="form-control" id="EndActual" />
+                                                        <span class="input-group-addon">
+                                                            <i class="fa fa-calendar fa-lg"></i>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-sm-6">
+                                            <div class="btn-group" data-toggle="buttons">
+                                                <label class="btn btn-danger" id="ActualLbl">
+                                                    <input type="checkbox" id="ActualCB"> Choose
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row" id="ClosedOn">
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <label class="col-sm-3 control-label">Closed On</label>
+                                                <div class="col-sm-9">
+                                                    <div class="input-group" id="ClosedOnDTP">
+                                                        <input type="text" class="form-control" id="StartClosedOn" />
+                                                        <span class="input-group-addon">
+                                                            <i class="fa fa-calendar fa-lg"></i>
+                                                        </span>
+                                                        <span class="input-group-btn input_space"></span>
+                                                        <input type="text" class="form-control" id="EndClosedOn" />
+                                                        <span class="input-group-addon">
+                                                            <i class="fa fa-calendar fa-lg"></i>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <div class="btn-group" data-toggle="buttons">
+                                                <label class="btn btn-danger" id="ClosedOnLbl">
+                                                    <input type="checkbox" id="ClosedOnCB"> Choose
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row" id="DueDate">
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <label class="col-sm-3 control-label">Due Date</label>
+                                                <div class="col-sm-9">
+                                                    <div class="input-group" id="DueDateDTP">
+                                                        <input type="text" class="form-control" id="StartDueDate" />
+                                                        <span class="input-group-addon">
+                                                            <i class="fa fa-calendar fa-lg"></i>
+                                                        </span>
+                                                        <span class="input-group-btn input_space"></span>
+                                                        <input type="text" class="form-control" id="EndDueDate" />
+                                                        <span class="input-group-addon">
+                                                            <i class="fa fa-calendar fa-lg"></i>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <div class="btn-group" data-toggle="buttons">
+                                                <label class="btn btn-danger" id="DueDateLbl">
+                                                    <input type="checkbox" id="DueDateCB"> Choose
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row" id="ReopenOn">
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <label class="col-sm-3 control-label">Reopen On</label>
+                                                <div class="col-sm-9">
+                                                    <div class="input-group" id="ReopenOnDTP">
+                                                        <input type="text" class="form-control" id="StartReopenOn" />
+                                                        <span class="input-group-addon">
+                                                            <i class="fa fa-calendar fa-lg"></i>
+                                                        </span>
+                                                        <span class="input-group-btn input_space"></span>
+                                                        <input type="text" class="form-control" id="ReopenOnEnd" />
+                                                        <span class="input-group-addon">
+                                                            <i class="fa fa-calendar fa-lg"></i>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <div class="btn-group" data-toggle="buttons">
+                                                <label class="btn btn-danger" id="ReopenOnLbl">
+                                                    <input type="checkbox" id="ReopenOnCB"> Choose
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row" id="CategoryZone">
+                                    <div class="row">
+                                        <div class="col-sm-6">                                        
+                                            <div class="form-group">
+                                                <label class="col-sm-3 control-label">Category</label>
+                                                <div class="col-sm-9">
+                                                    @* ==========================================================================================================*@
+                                                    <input type="hidden" id="CategoryID" class="form-control" />
+                                                    <div class="input-group" id="CategoryID-Group">
+                                                        <input type="text" id="CategoryIDName" class="form-control" />
+                                                        <div tabindex="1" id="CategoryIDName-label" class="form-control typeahead-label hide">
+                                                        </div>
+                                                        <div tabindex="1" class="input-group-addon btn" id="CategoryIDName-popup">
+                                                            <i class="fa fa-search"></i>
+                                                        </div>
+                                                    </div>
+                                                    @* ==========================================================================================================*@
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <div class="btn-group" data-toggle="buttons">
+                                                <label class="btn btn-danger" id="CategoryLbl">
+                                                    <input type="checkbox" id="CategoryCB"> Choose
+                                                </label>
+                                                <span class="input-group-btn">
+                                                    <button class="btn btn-success" type="button" id="CategoryBtnAdd">ADD</button>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <label class="col-sm-3 control-label">Selected Category</label>
+                                                <div class="col-sm-9">
+                                                    <input type="text" class="form-control" id="Selected-Category" readonly="readonly"/>
+                                                    <input type="hidden" class="form-control" id="Selected-CategoryID" />
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-sm-6"></div>
+                                    </div>
+                                </div>
+
+                                <div class="row" id="ProductZone">
+                                    <div class="row">
+                                        <div class="col-sm-6">                                        
+                                            <div class="form-group">
+                                                <label class="col-sm-3 control-label">Product</label>
+                                                <div class="col-sm-9">
+                                                    @* ==========================================================================================================*@
+                                                    <input type="hidden" id="ProductID" class="form-control" />
+                                                    <div class="input-group" id="ProductID-Group">
+                                                        <input type="text" id="ProductIDName" class="form-control" />
+                                                        <div tabindex="0" id="ProductIDName-label" class="form-control typeahead-label hide">
+                                                        </div>
+                                                        <div tabindex="0" class="input-group-addon btn" id="ProductIDName-popup">
+                                                            <i class="fa fa-search"></i>
+                                                        </div>
+                                                    </div>
+                                                    @* ==========================================================================================================*@
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <div class="btn-group" data-toggle="buttons">
+                                                <label class="btn btn-danger" id="ProductLbl">
+                                                    <input type="checkbox" id="ProductCB"> Choose
+                                                </label>
+                                                <span class="input-group-btn">
+                                                    <button class="btn btn-success" type="button" id="ProductBtnAdd">ADD</button>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <label class="col-sm-3 control-label">Selected Product</label>
+                                                <div class="col-sm-9">
+                                                    <input type="text" class="form-control" id="Selected-Product" readonly="readonly"/>
+                                                    <input type="hidden" class="form-control" id="Selected-ProductID" />
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-sm-6"></div>
+                                    </div>
+                                </div>
+
+                                <div class="row" id="WorkgroupZone">
+                                    <div class="row">
+                                        <div class="col-sm-6">                                                                              
+                                            <div class="form-group">
+                                                <label class="col-sm-3 control-label">Workgroup</label>
+                                                <div class="col-sm-9">
+                                                    @* ==========================================================================================================*@
+                                                    <input type="hidden" id="WorkgroupID" class="form-control" />
+                                                    <div class="input-group" id="WorkgroupID-Group">
+                                                        <input type="text" id="WorkgroupIDName" class="form-control" />
+                                                        <div tabindex="2" id="WorkgroupIDName-label" class="form-control typeahead-label hide">
+                                                        </div>
+                                                        <div tabindex="2" class="input-group-addon btn" id="WorkgroupIDName-popup">
+                                                            <i class="fa fa-search"></i>
+                                                        </div>
+                                                    </div>
+                                                    @* ==========================================================================================================*@
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <div class="btn-group" data-toggle="buttons">
+                                                <label class="btn btn-danger" id="WorkgroupLbl">
+                                                    <input type="checkbox" id="WorkgroupCB"> Choose
+                                                </label>
+                                                <span class="input-group-btn">
+                                                    <button class="btn btn-success" type="button" id="WorkgroupBtnAdd">ADD</button>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <label class="col-sm-3 control-label">Selected Workgroup</label>
+                                                <div class="col-sm-9">
+                                                    <input type="text" class="form-control" id="Selected-Workgroup" readonly="readonly"/>
+                                                    <input type="hidden" class="form-control" id="Selected-WorkgroupID" />
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-sm-6"></div>
+                                    </div>
+                                </div>
+
+                                <div class="row" id="StatusZone">
+                                    <div class="row">
+                                        <div class="col-sm-6">                                                                              
+                                            <div class="form-group">
+                                                <label class="col-sm-3 control-label">Status</label>
+                                                <div class="col-sm-9">
+                                                    <select id="statusDd" class="form-control">
+                                                        <option value="">- Pilih -</option>
+                                                        <option value="1">New</option>
+                                                        <option value="2">Assigned</option>
+                                                        <option value="3">Owned</option>
+                                                        <option value="4">Incomplete</option>
+                                                        <option value="5">Closed</option>
+                                                        <option value="6">Canceled</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <div class="btn-group" data-toggle="buttons">
+                                                <label class="btn btn-danger" id="StatusLbl">
+                                                    <input type="checkbox" id="StatusCB"> Choose
+                                                </label>
+                                                <span class="input-group-btn">
+                                                    <button class="btn btn-success" type="button" id="StatusBtnAdd">ADD</button>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <label class="col-sm-3 control-label">Selected Status</label>
+                                                <div class="col-sm-9">
+                                                    <input type="text" class="form-control" id="Selected-Status" readonly="readonly"/>
+                                                    <input type="hidden" class="form-control" id="Selected-StatusID" />
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-sm-6"></div>
+                                    </div>
+                                </div>
+
+                                <div class="row" id="StateZone">
+                                    <div class="row">
+                                        <div class="col-sm-6">                                                                              
+                                            <div class="form-group">
+                                                <label class="col-sm-3 control-label">State</label>
+                                                <div class="col-sm-9">
+                                                    <select id="StateDd" class="form-control">
+                                                        <option value="">- Pilih -</option>
+                                                        <option value="0">Open</option>
+                                                        <option value="1">Completed</option>
+                                                        <option value="2">Canceled</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <div class="btn-group" data-toggle="buttons">
+                                                <label class="btn btn-danger" id="StateLbl">
+                                                    <input type="checkbox" id="StateCB"> Choose
+                                                </label>
+                                                <span class="input-group-btn">
+                                                    <button class="btn btn-success" type="button" id="StateBtnAdd">ADD</button>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <label class="col-sm-3 control-label">Selected State</label>
+                                                <div class="col-sm-9">
+                                                    <input type="text" class="form-control" id="Selected-State" readonly="readonly"/>
+                                                    <input type="hidden" class="form-control" id="Selected-StateID" />
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-sm-6"></div>
+                                    </div>
+                                </div>
+
+                                <div class="row" id="OwnerZone">
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <label class="col-sm-3 control-label">Owner</label>
+                                                <div class="col-sm-9">
+                                                    @* ==========================================================================================================*@
+                                                    <input type="hidden" id="OwnerID" class="form-control" />
+                                                    <div class="input-group" id="OwnerID-Group">
+                                                        <input type="text" id="OwnerIDName" class="form-control" />
+                                                        <div tabindex="0" id="OwnerIDName-label" class="form-control typeahead-label hide">
+                                                        </div>
+                                                        <div tabindex="0" class="input-group-addon btn" id="OwnerIDName-popup">
+                                                            <i class="fa fa-search"></i>
+                                                        </div>
+                                                    </div>
+                                                    @* ==========================================================================================================*@
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <div class="btn-group" data-toggle="buttons">
+                                                <label class="btn btn-danger" id="OwnerLbl">
+                                                    <input type="checkbox" id="OwnerCB"> Choose
+                                                </label>
+                                                <span class="input-group-btn">
+                                                    <button class="btn btn-success" type="button" id="OwnerBtnAdd">ADD</button>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <label class="col-sm-3 control-label">Selected Owner</label>
+                                                <div class="col-sm-9">
+                                                    <input type="text" class="form-control" id="Selected-Owner" readonly="readonly"/>
+                                                    <input type="hidden" class="form-control" id="Selected-OwnerID" />
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-sm-6"></div>
+                                    </div>
+                                </div>
+
+                                <div class="row" id="BranchZone">
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <label class="col-sm-3 control-label">Branch</label>
+                                                <div class="col-sm-9">
+                                                    @* ==========================================================================================================*@
+                                                    <input type="hidden" id="BranchID" class="form-control" />
+                                                    <div class="input-group" id="BranchID-Group">
+                                                        <input type="text" id="BranchIDName" class="form-control" />
+                                                        <div tabindex="0" id="BranchIDName-label" class="form-control typeahead-label hide">
+                                                        </div>
+                                                        <div tabindex="0" class="input-group-addon btn" id="BranchIDName-popup">
+                                                            <i class="fa fa-search"></i>
+                                                        </div>
+                                                    </div>
+                                                    @* ==========================================================================================================*@
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <div class="btn-group" data-toggle="buttons">
+                                                <label class="btn btn-danger" id="BranchLbl">
+                                                    <input type="checkbox" id="BranchCB"> Choose
+                                                </label>
+                                                <span class="input-group-btn">
+                                                    <button class="btn btn-success" type="button" id="BranchBtnAdd">ADD</button>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <label class="col-sm-3 control-label">Selected Branch</label>
+                                                <div class="col-sm-9">
+                                                    <input type="text" class="form-control" id="Selected-Branch" readonly="readonly"/>
+                                                    <input type="hidden" class="form-control" id="Selected-BranchID" />
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-sm-6"></div>
+                                    </div>
+                                </div>
+
+                                <div class="row" id="CreatedByZone">
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <label class="col-sm-3 control-label"><span id="createdbyslbl">CreatedBy</span></label>
+                                                <div class="col-sm-9">
+                                                    @* ==========================================================================================================*@
+                                                    <input type="hidden" id="CreatedByID" class="form-control" />
+                                                    <div class="input-group" id="CreatedByID-Group">
+                                                        <input type="text" id="CreatedByIDName" class="form-control" />
+                                                        <div tabindex="0" id="CreatedByIDName-label" class="form-control typeahead-label hide">
+                                                        </div>
+                                                        <div tabindex="0" class="input-group-addon btn" id="CreatedByIDName-popup">
+                                                            <i class="fa fa-search"></i>
+                                                        </div>
+                                                    </div>
+                                                    @* ==========================================================================================================*@
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <div class="btn-group" data-toggle="buttons">
+                                                <label class="btn btn-danger" id="CreatedByLbl">
+                                                    <input type="checkbox" id="CreatedByCB"> Choose
+                                                </label>
+                                                <span class="input-group-btn">
+                                                    <button class="btn btn-success" type="button" id="CreatedByBtnAdd">ADD</button>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <label class="col-sm-3 control-label">Selected Created By</label>
+                                                <div class="col-sm-9">
+                                                    <input type="text" class="form-control" id="Selected-CreatedBy" readonly="readonly"/>
+                                                    <input type="hidden" class="form-control" id="Selected-CreatedByID" />
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-sm-6"></div>
+                                    </div>
+                                </div>
+                                       
+                                <div class="row" id="Action">
+                                    <div class="row">
+                                        <div class="col-sm-offset-5 col-sm-1">
+                                            <div class="input-group">
+                                                @*<span class="input-group-btn">
+                                                    <button class="btn btn-primary" type="button" id="btnClear">Clear</button>
+                                                </span>
+                                                &nbsp;&nbsp;&nbsp;*@
+                                                <span class="input-group-btn">
+                                                    <button class="btn btn-primary" type="button" id="btnRunReport">Run Report</button>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container-fluid" id="ReportViewer">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="container-fluid content_container">
+                    <div class="row">
+                        <div class="col-sm-12 content_col" id="root">
+                            <div id="Reports-Location"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="text/javascript">
+        var ReportBU = "@ViewBag.ReportBU";
+        ReportBU = ReportBU == "Business Unit/Branch Support" ? "BUS" : ReportBU;
+
+        var scriptName = "/Scripts/ReportScript/";
+        scriptName +=
+            ReportBU == "BCA" ? "bca.js" :
+            ReportBU == "BCA Finance" ? "bcafinance.js" :
+            ReportBU == "BUS" ? "branchsupport.js" :
+            ReportBU == "Cabang" ? "cabang.js" :
+            ReportBU == "CAC" ? "cac.js" :
+            ReportBU == "CDC" ? "cdc.js" :
+            ReportBU == "DIB" ? "dib.js" :
+            ReportBU == "DIB DIV" ? "dibdiv.js" :
+            ReportBU == "DPC" ? "dpc.js" :
+            ReportBU == "DPOL" ? "dpol.js" :
+            ReportBU == "HALO" ? "halo.js" :
+            ReportBU == "PDJ DIV" ? "pdjdiv.js" :
+            ReportBU == "SCM" ? "scm.js" :
+            ReportBU == "SLEBC" ? "slebc.js" :
+            ReportBU == "SOPD" ? "sopd.js" :
+            ReportBU == "SOPE" ? "sope.js" :
+            ReportBU == "SPC" ? "spc.js" :
+            ReportBU == "TBB" ? "tbb.js" :
+            ReportBU == "Tresuri" ? "tresuri.js" :
+            ReportBU == "UBC DIV" ? "ubcdiv.js" :
+            ReportBU == "UBKK" ? "ubkk.js" :
+            ReportBU == "UBWM" ? "ubwm.js" :
+            "halo.js";
+
+        var oHead = document.getElementsByTagName('HEAD').item(0);
+        var oScript = document.createElement("script");
+        oScript.type = "text/javascript";
+        oScript.src = scriptName;
+        oHead.appendChild(oScript);
+
+        $("#ReportViewer").hide();
+        var reportH = $(document).height();
+        $("#Reports-Location").css("height", reportH - 150);
+
+        function default_state() {
+            uncheck_parameters();
+            hide_parameters();
+        }
+
+        function hide_parameters() {
+            $("#Date").hide();
+            $("#CreatedOn").hide();
+            $("#Actual").hide();
+            $("#ClosedOn").hide();
+            $("#DueDate").hide();
+            $("#ReopenOn").hide();
+            $("#CategoryZone").hide();
+            $("#ProductZone").hide();
+            $("#WorkgroupZone").hide();
+            $("#StatusZone").hide();
+            $("#StateZone").hide();
+            $("#OwnerZone").hide();
+            $("#BranchZone").hide();
+            $("#CreatedByZone").hide();
+
+            $("#Action").hide();
+        }
+
+        function uncheck_parameters() {
+            if ($("#DateCB").is(":checked")) $("#DateCB").trigger("click");
+            if ($("#CreatedOnCB").is(":checked")) $("#CreatedOnCB").trigger("click");
+            if ($("#ActualCB").is(":checked")) $("#ActualCB").trigger("click");
+            if ($("#ClosedOnCB").is(":checked")) $("#ClosedOnCB").trigger("click");
+            if ($("#DueDateCB").is(":checked")) $("#DueDateCB").trigger("click");
+            if ($("#ReopenOnCB").is(":checked")) $("#ReopenOnCB").trigger("click");
+            if ($("#CategoryCB").is(":checked")) $("#CategoryCB").trigger("click");
+            if ($("#ProductCB").is(":checked")) $("#ProductCB").trigger("click");
+            if ($("#WorkgroupCB").is(":checked")) $("#WorkgroupCB").trigger("click");
+            if ($("#StatusCB").is(":checked")) $("#StatusCB").trigger("click");
+            if ($("#StateCB").is(":checked")) $("#StateCB").trigger("click");
+            if ($("#OwnerCB").is(":checked")) $("#OwnerCB").trigger("click");
+            if ($("#BranchCB").is(":checked")) $("#BranchCB").trigger("click");
+            if ($("#CreatedByCB").is(":checked")) $("#CreatedByCB").trigger("click");
+        }
+
+        $(document).ready(function () {
+
+            @* ==========================================================================================================*@
+
+            $("#btnRunReport").click(function () {
+                var params = "&";
+                var limitdate = 90;
+
+                if ($("#DateCB").is(":checked")) {
+                    if ($("#StartDate").val() == "") {
+                        alert("Date Harus di isi!");
+                        return false;
+                    }
+                    if ($("#EndDate").val() == "" || !CheckRangeDate($("#StartDate").val(), $("#EndDate").val())) {
+
+                        limitdate = $("#Selected-Rdl").val() == "Report_HALO_Aktifitas_SA" ? 7 : limitdate;
+
+                        if (LimitRangeDate(limitdate, $("#StartDate").val(), $("#EndDate").val())) {
+                            params += "StartDate=" + ddmmyyyy_yyyymmdd($("#StartDate").val()) + "&" + "EndDate=" + ddmmyyyy_yyyymmdd($("#EndDate").val()) + "&";
+                        } else {
+                            alert("Range Tanggal MAX " + limitdate + " Hari!");
+                        }
+                    }
+                    else {
+                        alert("Start Date Harus Lebih Kecil dari pada End Date!");
+                        return false;
+                    }
+                }
+
+                if ($("#CreatedOnCB").is(":checked")) {
+                    if ($("#StartCreatedOn").val() == "") {
+                        alert("Created Date Harus di isi!");
+                        return false;
+                    }
+
+                    if ($("#EndCreatedOn").val() == "" || !CheckRangeDate($("#StartCreatedOn").val(), $("#EndCreatedOn").val())) {
+                        if (LimitRangeDate(limitdate, $("#StartCreatedOn").val(), $("#EndCreatedOn").val())) {
+                            params += "StartCreatedOn=" + ddmmyyyy_yyyymmdd($("#StartCreatedOn").val()) + "&" + "EndCreatedOn=" + ddmmyyyy_yyyymmdd($("#EndCreatedOn").val()) + "&";
+                        } else {
+                            alert("Range Tanggal MAX " + limitdate + " Hari!");
+                        }
+                    }
+                    else {
+                        alert("Start Created On Harus Lebih Kecil dari pada End Created On!");
+                        return false;
+                    }
+                }
+
+                if ($("#ActualCB").is(":checked")) {
+                    if ($("#StartActual").val() == "") {
+                        alert("Actual Date Harus di isi!");
+                        return false;
+                    }
+                    if ($("#EndActual").val() == "" || !CheckRangeDate($("#StartActual").val(), $("#EndActual").val())) {
+                        if (LimitRangeDate(limitdate, $("#StartActual").val(), $("#EndActual").val())) {
+                            params += "StartActual=" + ddmmyyyy_yyyymmdd($("#StartActual").val()) + "&" + "EndActual=" + ddmmyyyy_yyyymmdd($("#EndActual").val()) + "&";
+                        } else {
+                            alert("Range Tanggal MAX " + limitdate + " Hari!");
+                        }
+                    }
+                    else {
+                        alert("Start Actual Date Harus Lebih Kecil dari pada End Actual Date!");
+                        return false;
+                    }
+                }
+
+                if ($("#ClosedOnCB").is(":checked")) {
+                    if ($("#StartClosedOn").val() == "") {
+                        alert("Closed On Harus di isi!");
+                        return false;
+                    }
+                    if ($("#EndClosedOn").val() == "" || !CheckRangeDate($("#StartClosedOn").val(), $("#EndClosedOn").val())) {
+                        if (LimitRangeDate(limitdate, $("#StartClosedOn").val(), $("#EndClosedOn").val())) {
+                            params += "StartClosedOn=" + ddmmyyyy_yyyymmdd($("#StartClosedOn").val()) + "&" + "EndClosedOn=" + ddmmyyyy_yyyymmdd($("#EndClosedOn").val()) + "&";
+                        } else {
+                            alert("Range Tanggal MAX " + limitdate + " Hari!");
+                        }
+                    }
+                    else {
+                        alert("Start Closed On Harus Lebih Kecil dari pada End Closed On!");
+                        return false;
+                    }
+                }
+
+                if ($("#DueDateCB").is(":checked")) {
+                    if ($("#StartDueDate").val() == "") {
+                        alert("Due Date Harus di isi!");
+                        return false;
+                    }
+                    if ($("#EndDueDate").val() == "" || !CheckRangeDate($("#StartDueDate").val(), $("#EndDueDate").val())) {
+                        if (LimitRangeDate(limitdate, $("#StartDueDate").val(), $("#EndDueDate").val())) {
+                            params += "StartDueDate=" + ddmmyyyy_yyyymmdd($("#StartDueDate").val()) + "&" + "EndDueDate=" + ddmmyyyy_yyyymmdd($("#EndDueDate").val()) + "&";
+                        } else {
+                            alert("Range Tanggal MAX " + limitdate + " Hari!");
+                        }
+                    }
+                    else {
+                        alert("Start Due Date Harus Lebih Kecil dari pada End Due Date!");
+                        return false;
+                    }
+                }
+
+                if ($("#ReopenOnCB").is(":checked")) {
+                    if ($("#StartReopenOn").val() == "") {
+                        alert("Reopen Date Harus di isi!");
+                        return false;
+                    }
+                    if ($("#EndReopenOn").val() == "" || !CheckRangeDate($("#StartReopenOn").val(), $("#EndReopenOn").val())) {
+                        if (LimitRangeDate(limitdate, $("#StartReopenOn").val(), $("#EndReopenOn").val())) {
+                            params += "StartReopenOn=" + ddmmyyyy_yyyymmdd($("#StartReopenOn").val()) + "&" + "EndReopenOn=" + ddmmyyyy_yyyymmdd($("#EndReopenOn").val()) + "&";
+                        } else {
+                            alert("Range Tanggal MAX " + limitdate + " Hari!");
+                        }
+                    }
+                    else {
+                        alert("Start Reopen On Harus Lebih Kecil dari pada End Reopen On!");
+                        return false;
+                    }
+                }
+
+                if ($("#CategoryCB").is(":checked")) {
+                    if ($("#Selected-CategoryID").val() != "") {
+                        params += "CategoryIDs=" + $("#Selected-CategoryID").val() + "&";
+                    }
+                    else {
+                        alert("Category Harus di Pilih!");
+                        return false;
+                    }
+                }
+
+                if ($("#ProductCB").is(":checked")) {
+                    if ($("#Selected-ProductID").val() != "") {
+                        params += "ProductIDs=" + $("#Selected-ProductID").val() + "&";
+                    }
+                    else {
+                        alert("Product Harus di Pilih!");
+                        return false;
+                    }
+                }
+
+                if ($("#WorkgroupCB").is(":checked")) {
+                    if ($("#Selected-WorkgroupID").val() != "") {
+                        params += "WorkgroupIDs=" + $("#Selected-WorkgroupID").val() + "&";
+                    }
+                    else {
+                        alert("Workgroup Harus di Pilih!");
+                        return false;
+                    }
+                }
+
+                if ($("#StatusCB").is(":checked")) {
+                    if ($("#Selected-StatusID").val() != "") {
+                        params += "StatusCodes=" + $("#Selected-StatusID").val() + "&";
+                    }
+                    else {
+                        alert("Status Harus di Pilih!");
+                        return false;
+                    }
+                }
+
+                if ($("#StateCB").is(":checked")) {
+                    if ($("#Selected-StateID").val() != "") {
+                        params += "StateCodes=" + $("#Selected-StateID").val() + "&";
+                    }
+                    else {
+                        alert("State Harus di Pilih!");
+                        return false;
+                    }
+                }
+
+                if ($("#OwnerCB").is(":checked")) {
+                    if ($("#Selected-OwnerID").val() != "") {
+                        params += "OwnerIDs=" + $("#Selected-OwnerID").val() + "&";
+                    }
+                    else {
+                        alert("Owner Harus di Pilih!");
+                        return false;
+                    }
+                }
+
+                if ($("#BranchCB").is(":checked")) {
+                    if ($("#Selected-BranchID").val() != "") {
+                        params += "BranchIDs=" + $("#Selected-BranchID").val() + "&";
+                    }
+                    else {
+                        alert("Branch Harus di Pilih!");
+                        return false;
+                    }
+                }
+
+                if ($("#CreatedByCB").is(":checked")) {
+                    if ($("#Selected-CreatedByID").val() != "") {
+                        if ($("#Selected-Rdl").val() == "Report_HALO_Aktifitas_SA") {
+                            params += "CreatedBys=" + $("#Selected-CreatedBy").val() + "&";
+                        }
+                        else {
+                            params += "CreatedBys=" + $("#Selected-CreatedByID").val() + "&";
+                        }
+                    }
+                    else {
+                        alert("Created By Harus di Pilih!");
+                        return false;
+                    }
+                }
+
+                params += "BU=" + ReportBU;
+
+                var reports = "@System.Configuration.ConfigurationManager.AppSettings["ReportServer"]" + $("#Selected-Rdl").val() + params;
+                var iframe = "<iframe src='" + reports + "' id='iframe' scrolling='yes' seamless='seamless'></iframe>";
+                $("#ReportViewer").show();
+                $("#Reports-Location").html(iframe);
+            });
+
+            @* ==========================================================================================================*@
+
+            $("#StartDate").datepicker({ format: "dd/mm/yyyy", autoclose: true });
+            $("#EndDate").datepicker({ format: "dd/mm/yyyy", autoclose: true });
+            $("#StartDate").prop("disabled", true);
+            $("#EndDate").prop("disabled", true);
+            $("#DateCB").change(function () {
+                var check = true;
+                if ($(this).is(":checked")) {
+                    check = false;
+                    $("#DateLbl").removeClass("btn-danger").addClass("btn-primary");
+                } else {
+                    $("#DateLbl").removeClass("btn-primary").addClass("btn-danger");
+                }
+                $("#StartDate").prop("disabled", check);
+                $("#EndDate").prop("disabled", check);
+            });
+
+            @* ==========================================================================================================*@
+            
+            $("#StartCreatedOn").datepicker({ format: "dd/mm/yyyy", autoclose: true });
+            $("#EndCreatedOn").datepicker({ format: "dd/mm/yyyy", autoclose: true });
+            $("#StartCreatedOn").prop("disabled", true);
+            $("#EndCreatedOn").prop("disabled", true);
+            $("#CreatedOnCB").change(function () {
+                var check = true;
+                if ($(this).is(":checked")) {
+                    check = false;
+                    $("#CreatedOnLbl").removeClass("btn-danger").addClass("btn-primary");
+                } else {
+                    $("#CreatedOnLbl").removeClass("btn-primary").addClass("btn-danger");
+                }
+                $("#StartCreatedOn").prop("disabled", check);
+                $("#EndCreatedOn").prop("disabled", check);
+            });
+
+            @* ==========================================================================================================*@
+            
+            $("#StartActual").datepicker({ format: "dd/mm/yyyy", autoclose: true });
+            $("#EndActual").datepicker({ format: "dd/mm/yyyy", autoclose: true });
+            $("#StartActual").prop("disabled", true);
+            $("#EndActual").prop("disabled", true);
+            $("#ActualCB").change(function () {
+                var check = true;
+                if ($(this).is(":checked")) {
+                    check = false;
+                    $("#ActualLbl").removeClass("btn-danger").addClass("btn-primary");
+                } else {
+                    $("#ActualLbl").removeClass("btn-primary").addClass("btn-danger");
+                }
+                $("#StartActual").prop("disabled", check);
+                $("#EndActual").prop("disabled", check);
+            });
+
+            @* ==========================================================================================================*@
+
+            $("#StartClosedOn").datepicker({ format: "dd/mm/yyyy", autoclose: true });
+            $("#EndClosedOn").datepicker({ format: "dd/mm/yyyy", autoclose: true });
+            $("#StartClosedOn").prop("disabled", true);
+            $("#EndClosedOn").prop("disabled", true);
+            $("#ClosedOnCB").change(function () {
+                var check = true;
+                if ($(this).is(":checked")) {
+                    check = false;
+                    $("#ClosedOnLbl").removeClass("btn-danger").addClass("btn-primary");
+                } else {
+                    $("#ClosedOnLbl").removeClass("btn-primary").addClass("btn-danger");
+                }
+                $("#StartClosedOn").prop("disabled", check);
+                $("#EndClosedOn").prop("disabled", check);
+            });
+
+            @* ==========================================================================================================*@
+            
+            $("#StartDueDate").datepicker({ format: "dd/mm/yyyy", autoclose: true });
+            $("#EndDueDate").datepicker({ format: "dd/mm/yyyy", autoclose: true });
+            $("#StartDueDate").prop("disabled", true);
+            $("#EndDueDate").prop("disabled", true);
+            $("#DueDateCB").change(function () {
+                var check = true;
+                if ($(this).is(":checked")) {
+                    check = false;
+                    $("#DueDateLbl").removeClass("btn-danger").addClass("btn-primary");
+                } else {
+                    $("#DueDateLbl").removeClass("btn-primary").addClass("btn-danger");
+                }
+                $("#StartDueDate").prop("disabled", check);
+                $("#EndDueDate").prop("disabled", check);
+            });
+
+            @* ==========================================================================================================*@
+
+            $("#StartReopenOn").datepicker({ format: "dd/mm/yyyy", autoclose: true });
+            $("#ReopenOnEnd").datepicker({ format: "dd/mm/yyyy", autoclose: true });
+            $("#StartReopenOn").prop("disabled", true);
+            $("#ReopenOnEnd").prop("disabled", true);
+            $("#ReopenOnCB").change(function () {
+                var check = true;
+                if ($(this).is(":checked")) {
+                    check = false;
+                    $("#ReopenOnLbl").removeClass("btn-danger").addClass("btn-primary");
+                } else {
+                    $("#ReopenOnLbl").removeClass("btn-primary").addClass("btn-danger");
+                }
+                $("#StartReopenOn").prop("disabled", check);
+                $("#ReopenOnEnd").prop("disabled", check);
+            });
+
+            @* ==========================================================================================================*@
+
+            $("#CategoryZone").find('div.typeahead-label, div.input-group-addon').attr('disabled', 'disabled');
+            $("#CategoryCB").change(function () {
+                var check = true;
+                if ($(this).is(":checked")) {
+                    check = false;
+                    $("#CategoryLbl").removeClass("btn-danger").addClass("btn-primary");
+                    $("#CategoryZone").find('div.typeahead-label, div.input-group-addon, input').removeAttr('disabled');
+                    $("#CategoryIDName").css("background-color","white");
+                } else {
+                    $("#CategoryLbl").removeClass("btn-primary").addClass("btn-danger");
+                    $("#CategoryZone").find('div.typeahead-label, div.input-group-addon, input').attr('disabled', 'disabled');
+                    $("#CategoryIDName").css("background-color","transparent");
+                }
+            });
+
+            $("#CategoryBtnAdd").click(function (){
+                var id = $("#CategoryID").val();
+                var name = $("#CategoryIDName").val();
+                var sid = $("#Selected-CategoryID").val();
+                var sname = $("#Selected-Category").val();
+                var label = $('#CategoryIDName-label');
+                var del = $.Event('keydown');
+                del.which = 46;
+
+                if(id == "")
+                {
+                    alert("Category belum dipilih");
+                    return false;
+                }
+                else if(sid.indexOf(id) > -1)
+                {
+                    alert("Category telah dipilih");
+                    label.focus();
+                    label.trigger(del);
+                    return false;
+                }
+                else
+                {
+                    sid = sid == ""? sid : sid + ",";
+                    sname = sname == ""? sname : sname + ",";
+                    
+                    sid += id;
+                    sname += name;
+
+                    $("#Selected-CategoryID").val(sid);
+                    $("#Selected-Category").val(sname);
+
+                    label.focus();
+                    label.trigger(del);
+                }
+            });
+            @* ==========================================================================================================*@
+
+            $("#ProductZone").find('div.typeahead-label, div.input-group-addon').attr('disabled', 'disabled');
+            $("#ProductCB").change(function () {
+                var check = true;
+                if ($(this).is(":checked")) {
+                    check = false;
+                    $("#ProductLbl").removeClass("btn-danger").addClass("btn-primary");
+                    $("#ProductZone").find('div.typeahead-label, div.input-group-addon, input').removeAttr('disabled');
+                    $("#ProductIDName").css("background-color","white");
+                } else {
+                    $("#ProductLbl").removeClass("btn-primary").addClass("btn-danger");
+                    $("#ProductZone").find('div.typeahead-label, div.input-group-addon, input').attr('disabled', 'disabled');
+                    $("#ProductIDName").css("background-color","transparent");
+                }
+            });
+
+            $("#ProductBtnAdd").click(function (){
+                var id = $("#ProductID").val();
+                var name = $("#ProductIDName").val();
+                var sid = $("#Selected-ProductID").val();
+                var sname = $("#Selected-Product").val();
+                var label = $('#ProductIDName-label');
+                var del = $.Event('keydown');
+                del.which = 46;
+
+                if(id == "")
+                {
+                    alert("Product belum dipilih");
+                    return false;
+                }
+                else if(sid.indexOf(id) > -1)
+                {
+                    alert("Product telah dipilih");
+                    label.focus();
+                    label.trigger(del);
+                    return false;
+                }
+                else
+                {
+                    sid = sid == ""? sid : sid + ",";
+                    sname = sname == ""? sname : sname + ",";
+                    
+                    sid += id;
+                    sname += name;
+
+                    $("#Selected-ProductID").val(sid);
+                    $("#Selected-Product").val(sname);
+
+                    label.focus();
+                    label.trigger(del);
+                }
+            });
+
+            @* ==========================================================================================================*@
+
+            $("#WorkgroupZone").find('div.typeahead-label, div.input-group-addon').attr('disabled', 'disabled');
+            $("#WorkgroupCB").change(function () {
+                var check = true;
+                if ($(this).is(":checked")) {
+                    check = false;
+                    $("#WorkgroupLbl").removeClass("btn-danger").addClass("btn-primary");
+                    $("#WorkgroupZone").find('div.typeahead-label, div.input-group-addon, input').removeAttr('disabled');
+                    $("#WorkgroupIDName").css("background-color","white");
+                } else {
+                    $("#WorkgroupLbl").removeClass("btn-primary").addClass("btn-danger");
+                    $("#WorkgroupZone").find('div.typeahead-label, div.input-group-addon, input').attr('disabled', 'disabled');
+                    $("#WorkgroupIDName").css("background-color","transparent");
+                }
+            });
+
+            $("#WorkgroupBtnAdd").click(function (){
+                var id = $("#WorkgroupID").val();
+                var name = $("#WorkgroupIDName").val();
+                var sid = $("#Selected-WorkgroupID").val();
+                var sname = $("#Selected-Workgroup").val();
+                var label = $('#WorkgroupIDName-label');
+                var del = $.Event('keydown');
+                del.which = 46;
+
+                if(id == "")
+                {
+                    alert("Workgroup belum dipilih");
+                    return false;
+                }
+                else if(sid.indexOf(id) > -1)
+                {
+                    alert("Workgroup telah dipilih");
+                    label.focus();
+                    label.trigger(del);
+                    return false;
+                }
+                else
+                {
+                    sid = sid == ""? sid : sid + ",";
+                    sname = sname == ""? sname : sname + ",";
+                    
+                    sid += id;
+                    sname += name;
+
+                    $("#Selected-WorkgroupID").val(sid);
+                    $("#Selected-Workgroup").val(sname);
+
+                    label.focus();
+                    label.trigger(del);
+                }
+            });
+
+            @* ==========================================================================================================*@
+
+            $("#statusDd").prop("disabled", true);
+            $("#StatusCB").change(function () {
+                var check = true;
+                if ($(this).is(":checked")) {
+                    check = false;
+                    $("#StatusLbl").removeClass("btn-danger").addClass("btn-primary");
+                } else {
+                    $("#StatusLbl").removeClass("btn-primary").addClass("btn-danger");
+                }
+                $("#statusDd").prop("disabled", check);
+
+            });
+
+            $("#StatusBtnAdd").click(function (){
+                var id = $("#statusDd").val();
+                var name = $("#statusDd option:selected").text();
+                var sid = $("#Selected-StatusID").val();
+                var sname = $("#Selected-Status").val();
+                var del = $.Event('keydown');
+                del.which = 46;
+                
+                if(id == "")
+                {
+                    alert("Status belum dipilih");
+                    return false;
+                }
+                else if(sid.indexOf(id) > -1)
+                {
+                    alert("Status telah dipilih");
+                    $("#statusDd").val('');
+                    $("#statusDd option:selected").text("- Pilih -");
+                    return false;
+                }
+                else
+                {
+                    sid = sid == ""? sid : sid + ",";
+                    sname = sname == ""? sname : sname + ",";
+                    
+                    sid += id;
+                    sname += name;
+
+                    $("#Selected-StatusID").val(sid);
+                    $("#Selected-Status").val(sname);
+                    $("#statusDd").val('');
+                    $("#statusDd option:selected").text("- Pilih -");
+                }
+            });
+            
+            @* ==========================================================================================================*@
+
+            $("#StateDd").prop("disabled", true);
+            $("#StateCB").change(function () {
+                var check = true;
+                if ($(this).is(":checked")) {
+                    check = false;
+                    $("#StateLbl").removeClass("btn-danger").addClass("btn-primary");
+                } else {
+                    $("#StateLbl").removeClass("btn-primary").addClass("btn-danger");
+                }
+                $("#StateDd").prop("disabled", check);
+
+            });
+
+            $("#StateBtnAdd").click(function () {
+                var id = $("#StateDd").val();
+                var name = $("#StateDd option:selected").text();
+                var sid = $("#Selected-StateID").val();
+                var sname = $("#Selected-State").val();
+                var del = $.Event('keydown');
+                del.which = 46;
+
+                if (id == "") {
+                    alert("State belum dipilih");
+                    return false;
+                }
+                else if (sid.indexOf(id) > -1) {
+                    alert("State telah dipilih");
+                    $("#StateDd").val('');
+                    $("#StateDd option:selected").text("- Pilih -");
+                    return false;
+                }
+                else {
+                    sid = sid == "" ? sid : sid + ",";
+                    sname = sname == "" ? sname : sname + ",";
+
+                    sid += id;
+                    sname += name;
+
+                    $("#Selected-StateID").val(sid);
+                    $("#Selected-State").val(sname);
+                    $("#StateDd").val('');
+                    $("#StateDd option:selected").text("- Pilih -");
+                }
+            });
+
+            @* ==========================================================================================================*@
+
+            $("#OwnerZone").find('div.typeahead-label, div.input-group-addon').attr('disabled', 'disabled');
+            $("#OwnerCB").change(function () {
+                var check = true;
+                if ($(this).is(":checked")) {
+                    check = false;
+                    $("#OwnerLbl").removeClass("btn-danger").addClass("btn-primary");
+                    $("#OwnerZone").find('div.typeahead-label, div.input-group-addon, input').removeAttr('disabled');
+                    $("#OwnerIDName").css("background-color","white")
+                } else {
+                    $("#OwnerLbl").removeClass("btn-primary").addClass("btn-danger");
+                    $("#OwnerZone").find('div.typeahead-label, div.input-group-addon, input').attr('disabled', 'disabled');
+                    $("#OwnerIDName").css("background-color","transparent")
+                }
+            });
+
+            $("#OwnerBtnAdd").click(function (){
+                var id = $("#OwnerID").val();
+                var name = $("#OwnerIDName").val();
+                var sid = $("#Selected-OwnerID").val();
+                var sname = $("#Selected-Owner").val();
+                var label = $('#OwnerIDName-label');
+                var del = $.Event('keydown');
+                del.which = 46;
+
+                if(id == "")
+                {
+                    alert("Owner belum dipilih");
+                    return false;
+                }
+                else if(sid.indexOf(id) > -1)
+                {
+                    alert("Owner telah dipilih");
+                    label.focus();
+                    label.trigger(del);
+                    return false;
+                }
+                else
+                {
+                    sid = sid == ""? sid : sid + ",";
+                    sname = sname == ""? sname : sname + ",";
+                    
+                    sid += id;
+                    sname += name;
+
+                    $("#Selected-OwnerID").val(sid);
+                    $("#Selected-Owner").val(sname);
+
+                    label.focus();
+                    label.trigger(del);
+                }
+            });
+
+            @* ==========================================================================================================*@
+            
+            $("#BranchZone").find('div.typeahead-label, div.input-group-addon').attr('disabled', 'disabled');
+            $("#BranchCB").change(function () {
+                var check = true;
+                if ($(this).is(":checked")) {
+                    check = false;
+                    $("#BranchLbl").removeClass("btn-danger").addClass("btn-primary");
+                    $("#BranchZone").find('div.typeahead-label, div.input-group-addon, input').removeAttr('disabled');
+                    $("#BranchIDName").css("background-color","white")
+                } else {
+                    $("#BranchLbl").removeClass("btn-primary").addClass("btn-danger");
+                    $("#BranchZone").find('div.typeahead-label, div.input-group-addon, input').attr('disabled', 'disabled');
+                    $("#BranchIDName").css("background-color","transparent")
+                }
+            });
+
+            $("#BranchBtnAdd").click(function (){
+                var id = $("#BranchID").val();
+                var name = $("#BranchIDName").val();
+                var sid = $("#Selected-BranchID").val();
+                var sname = $("#Selected-Branch").val();
+                var label = $('#BranchIDName-label');
+                var del = $.Event('keydown');
+                del.which = 46;
+
+                if(id == "")
+                {
+                    alert("Branch belum dipilih");
+                    return false;
+                }
+                else if(sid.indexOf(id) > -1)
+                {
+                    alert("Branch telah dipilih");
+                    label.focus();
+                    label.trigger(del);
+                    return false;
+                }
+                else
+                {
+                    sid = sid == ""? sid : sid + ",";
+                    sname = sname == ""? sname : sname + ",";
+                    
+                    sid += id;
+                    sname += name;
+
+                    $("#Selected-BranchID").val(sid);
+                    $("#Selected-Branch").val(sname);
+
+                    label.focus();
+                    label.trigger(del);
+                }
+            });
+
+            @* ==========================================================================================================*@
+
+            $("#CreatedByZone").find('div.typeahead-label, div.input-group-addon').attr('disabled', 'disabled');
+            $("#CreatedByCB").change(function () {
+                var check = true;
+                if ($(this).is(":checked")) {
+                    check = false;
+                    $("#CreatedByLbl").removeClass("btn-danger").addClass("btn-primary");
+                    $("#CreatedByZone").find('div.typeahead-label, div.input-group-addon, input').removeAttr('disabled');
+                    $("#CreatedByIDName").css("background-color","white")
+                } else {
+                    $("#CreatedByLbl").removeClass("btn-primary").addClass("btn-danger");
+                    $("#CreatedByZone").find('div.typeahead-label, div.input-group-addon, input').attr('disabled', 'disabled');
+                    $("#CreatedByIDName").css("background-color","transparent")
+                }
+            });
+
+            $("#CreatedByBtnAdd").click(function (){
+                var id = $("#CreatedByID").val();
+                var name = $("#CreatedByIDName").val();
+                var sid = $("#Selected-CreatedByID").val();
+                var sname = $("#Selected-CreatedBy").val();
+                var label = $('#CreatedByIDName-label');
+                var del = $.Event('keydown');
+                del.which = 46;
+
+                if(id == "")
+                {
+                    alert("CreatedBy belum dipilih");
+                    return false;
+                }
+                else if(sid.indexOf(id) > -1)
+                {
+                    alert("CreatedBy telah dipilih");
+                    label.focus();
+                    label.trigger(del);
+                    return false;
+                }
+                else
+                {
+                    sid = sid == ""? sid : sid + ",";
+                    sname = sname == ""? sname : sname + ",";
+                    
+                    sid += id;
+                    sname += name;
+
+                    $("#Selected-CreatedByID").val(sid);
+                    $("#Selected-CreatedBy").val(sname);
+
+                    label.focus();
+                    label.trigger(del);
+                }
+            });
+
+            @* ==========================================================================================================*@
+            @* ============================================ POP UP SECTION ============================================= *@
+            @* ==========================================================================================================*@
+
+            $('#CategoryIDName-popup').on('click', function (e) {
+                if($(this).attr('disabled') == 'disabled') return false;
+                urlModalPopup = '@Url.Action("_popupContent", "Popup", new { type = "categories", _entity = "" })';
+                colModelsName = [
+                    { label: 'ID', name: 'Id', index: 'Id', key: true, width: 75, hidden: true },
+                    { label: 'Category Name', name: 'Name', index: 'Name', width: 250 },
+                    { label: 'Parent Name', name: 'ParentName', width: 250 },
+                    { label: 'Description Tree', name: 'Description', width: 400 }
+                ];
+                var id = $(this).parent().find('input:last').attr('id');
+                $('#' + id).trigger("blur");
+                e.preventDefault();
+            });
+
+            var categories = new PopupClass();
+            categories.setId("CategoryIDName");
+            categories.setUrl('@Url.Action("Category", "Popup")');
+            categories.setHiddenId("CategoryID");
+            categories.init();
+            
+            @* ==========================================================================================================*@
+
+            $('#ProductIDName-popup').on('click', function (e) {
+                if($(this).attr('disabled') == 'disabled') return false;
+                urlModalPopup = '@Url.Action("_popupContent", "Popup", new { type = "products", _entity = "" })';
+                colModelsName = [
+                    { label: 'ID', name: 'Id', index: 'Id', key: true, width: 75, hidden: true },
+                    { label: 'Product Name', name: 'Name', index: 'Name', width: 250 },
+                    { label: 'Parent Name', name: 'ParentName', width: 250 },
+                    { label: 'Description Tree', name: 'Description', width: 400 }
+                ];
+                var id = $(this).parent().find('input:last').attr('id');
+                $('#' + id).trigger("blur");
+                e.preventDefault();
+            });
+
+            var products = new PopupClass();
+            products.setId("ProductIDName");
+            products.setUrl('@Url.Action("Product", "Popup")');
+            products.setHiddenId("ProductID");
+            products.init();
+           
+            @* ==========================================================================================================*@
+
+            $('#WorkgroupIDName-popup').on('click', function (e) {
+                if($(this).attr('disabled') == 'disabled') return false;
+                urlModalPopup = '@Url.Action("_popupContent", "Popup", new { type = "workgroup", _entity = "" })';
+                colModelsName = [
+                    { label: 'ID', name: 'Id', index: 'Id', key: true, width: 75, hidden: true },
+                    { label: 'Name', name: 'Name', width: 300 },
+                    { label: 'E-Mail', name: 'EMailAddress', width: 300 },
+                    { label: 'Business Unit', name: 'BusinessUnitName', width: 300 }
+                ];
+                var id = $(this).parent().find('input:last').attr('id');
+                $('#' + id).trigger("blur");
+                e.preventDefault();
+            });
+
+            var workgroup = new PopupClass();
+            workgroup.setId("WorkgroupIDName");
+            workgroup.setUrl('@Url.Action("WorkGroup", "Popup")');
+            workgroup.setHiddenId("WorkgroupID");
+            workgroup.init();
+            
+            @* ==========================================================================================================*@
+
+            $('#OwnerIDName-popup').on('click', function (e) {
+                if($(this).attr('disabled') == 'disabled') return false;
+                urlModalPopup = '@Url.Action("_popupContent", "Popup", new { type = "User", _entity = "" })';
+                colModelsName = [
+                    { label: 'ID', name: 'Id', index: 'Id', key: true, width: 75, hidden: true },
+                    { label: 'Name', name: 'Name', width: 100 },
+                    { label: 'Phone', name: 'Phone', width: 100 },
+                    { label: 'Business Unit', name: 'BusinessUnitName', width: 150 }
+                ];
+                var id = $(this).parent().find('input:last').attr('id');
+                $('#' + id).trigger("blur");
+                e.preventDefault();
+            });
+
+            var owner = new PopupClass();
+            owner.setId("OwnerIDName");
+            owner.setUrl('@Url.Action("User", "Popup")');
+            owner.setHiddenId("OwnerID");
+            owner.init();
+
+            @* ==========================================================================================================*@
+
+            $('#BranchIDName-popup').on('click', function (e) {
+                if($(this).attr('disabled') == 'disabled') return false;
+                urlModalPopup = '@Url.Action("_popupContent", "Popup", new { type = "branch", _entity = "" })';
+                colModelsName = [
+                    { label: 'ID', name: 'Id', index: 'Id', key: true, width: 75, hidden: true },
+                    { label: 'Nama Kantor', name: 'Name', width: 250 },
+                    { label: 'Kode Kantor', name: 'OfficeCode', width: 250 },
+                    { label: 'Alamat', name: 'Address', width: 250 },
+                    { label: 'Fax', name: 'Fax', width: 250 },
+                    { label: 'Inisial', name: 'Initials', width: 60 },
+                    { label: 'Kode Pos', name: 'Zipcode', width: 60 },
+                    { label: 'Kota', name: 'City', width: 60 },
+                    { label: 'Telephone 1', name: 'Telephone1', width: 60 },
+                    { label: 'Telephone 2', name: 'Telephone2', width: 60 },
+                    { label: 'Kanwil', name: 'RegionName', width: 60 }
+                ];
+                var id = $(this).parent().find('input:last').attr('id');
+                $('#' + id).trigger("blur");
+                e.preventDefault();
+            });
+
+            var branch = new PopupClass();
+            branch.setId("BranchIDName");
+            branch.setUrl('@Url.Action("Branch", "Popup")');
+            branch.setHiddenId("BranchID");
+            branch.init();
+
+            @* ==========================================================================================================*@
+
+            $('#CreatedByIDName-popup').on('click', function (e) {
+                if($(this).attr('disabled') == 'disabled') return false;
+                urlModalPopup = '@Url.Action("_popupContent", "Popup", new { type = "User", _entity = "" })';
+                colModelsName = [
+                    { label: 'ID', name: 'Id', index: 'Id', key: true, width: 75, hidden: true },
+                    { label: 'Name', name: 'Name', width: 100 },
+                    { label: 'Phone', name: 'Phone', width: 100 },
+                    { label: 'Business Unit', name: 'BusinessUnitName', width: 150 }
+                ];
+                var id = $(this).parent().find('input:last').attr('id');
+                $('#' + id).trigger("blur");
+                e.preventDefault();
+            });
+
+            var createdby = new PopupClass();
+            createdby.setId("CreatedByIDName");
+            createdby.setUrl('@Url.Action("User", "Popup")');
+            createdby.setHiddenId("CreatedByID");
+            createdby.init();
+
+            @* ==========================================================================================================*@
+
+            default_state();
+        });
+    </script>
+}

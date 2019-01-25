@@ -1,0 +1,396 @@
+﻿@model CCARE.Models.ServiceLevel
+
+@{
+    ViewBag.Title = "Service Level: " + Model.Name;
+    if (Request.IsAjaxRequest())
+    {
+        Layout = null;
+    }
+    else
+    {
+        Layout = "~/Views/Shared/_LayoutEntity.cshtml";
+    }
+}
+
+@section title
+{
+
+    Service Level
+}
+
+@section entityLogo
+{
+    <img class="crm-logo" src="~/assets/images/ico_lrg_112.gif" />
+}
+
+@section formTitle
+{
+    <div class="text_title">
+        <h1>Information</h1>
+        Service Level<span class="segment">Segmentation</span>: @Model.Name
+    </div>
+}
+
+@section navHeader
+{
+    <ul class="nav navbar-nav navbar-left">
+        @if (Session["RoleID"] != null)
+        {
+            string entity = ViewContext.Controller.ControllerContext.RouteData.Values["controller"].ToString();
+            Guid roleID = new Guid(Session["RoleID"].ToString());
+            bool checkButton = CCARE.App_Function.RoleNPrivilege.checkEntityButtonByRoleID(roleID, entity, "Write");
+            bool checkButton2 = CCARE.App_Function.RoleNPrivilege.checkEntityButtonByRoleID(roleID, entity, "Delete");
+
+            if (checkButton == true)
+            {
+                if (Model.StateCode == 0)
+                {
+                    <text>
+                        @*<li class="onlyParent"><a id="btn_save" href="#">Save</a></li>
+                        <li class="onlyParent"><a id="btn_savenclose" href="#">Save & Close</a></li>
+                        <li class="onlyParent"><a id="btn_savenopen" href="#">Save & New</a></li>*@
+                    </text>
+                }
+                <li>
+                    <a id="btn_changestatus" class="onlyParent" href="#" data-toggle="modal" data-target="#confirm-changestatus">
+                    @if (Model.StateCode == 0)
+                    {
+                        <text>Deactivate</text>
+                    }
+                    else
+                    {
+                        <text>Activate</text>
+                    }
+                    </a>
+                </li>
+            }
+
+            if (checkButton2 == true)
+            {
+            <text>
+                <li class="onlyParent"><a id="btn_delete" href="#" data-toggle="modal" data-target="#confirm-delete">Delete</a></li>
+            </text>
+            }
+        }
+    </ul>
+}
+
+@section footerStatus
+{
+    <div class="footer_text">
+        Status: @Model.StateLabel
+    </div>
+}
+
+@section sidebarMenu
+{
+    <li><a class="link_form_page" data-ajax="true" data-ajax-mode="replace" data-ajax-update="#page_content" href='@Url.Action("Edit", "ServiceLevel", new { id = Model.ServiceLevelID })'>Information</a></li>
+    <li class="baru"><a class="link_other_page deactivate" data-ajax="true" data-ajax-mode="replace" data-ajax-update="#page_content" href="/ServiceLevel/ServiceLevelChild?id=@(Model.ServiceLevelID)">Service Level Child</a></li>
+    <li class="baru"><a class="link_other_page" data-ajax="true" data-ajax-mode="replace" data-ajax-update="#page_content" href="/ServiceLevel/SegmentationList?id=@(Model.ServiceLevelID)">Segmentation</a></li>
+}
+
+<div class="modal fade" id="confirm-delete" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1>Confirm Deletion</h1>
+            </div>
+            <div class="modal-body input-lg">
+                The system will delete this record. This action cannot be undone, To continue click "Delete".
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                <a class="btn btn-danger btn-ok">Delete</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="confirm-changestatus" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1>Confirm @if (Model.StateCode == 0)
+                            {<text>Service Level Deactivation</text>}
+                            else
+                            {<text>Service Level Activation</text>}</h1>
+            </div>
+            <div class="modal-body input-lg confirm-change-status">
+                This action will change the status of selected Service Level to @if (Model.StateCode == 0)
+                                                                                {<text>Inactive</text>}
+                                                                                else
+                                                                                {<text>Active</text>}. To continue click "Ok"
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                <a class="btn btn-danger btn-ok">Ok</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="page_content" class="container-fluid">
+    <!-- tabs -->
+    <div class="row">
+        <div class="col-sm-12 panel panel-default panel_form_parent">
+            <div class="tab-content myContent_noTab">
+                    
+                <!-- panel content -->
+                <div class="col-sm-12">
+
+                    <!-- START title 1 -->
+                    <div class="row form_text">
+                        @using (Html.BeginForm("Edit", "ServiceLevel", FormMethod.Post, new { id = "form_serviceLevel" }))
+                        {
+                            @Html.Hidden("hidden_displayStatus", "", new { @id = "hidden_displayStatus" })
+                            @Html.HiddenFor(x => x.ServiceLevelID);
+                            @Html.HiddenFor(x => x.Name);
+                            @Html.HiddenFor(x => x.ParentID, new { @class = "form-control" })
+
+                            <div class="panel panel-default panel_form_child">
+                                <div class="panel-heading">
+                                    <label class="control-label sv-header"><strong>General</strong></label>
+                                </div>
+                                <br />
+                                <div class="panel-body">
+                                    <div class="form-horizontal">
+                                
+                                        <div class="row">
+                                            <div class="col-sm-6">                                        
+                                                <div class="form-group">
+                                                    <label class="col-sm-4 control-label mandatory">Product</label>
+                                                    @*<div class="col-sm-8 segment">
+                                                        @Html.HiddenFor(x => x.ProductID, new { @class = "form-control" })
+                                                        <div class="input-group" id="ProductID-Group">
+                                                            @Html.TextBoxFor(x => x.ProductIDName, new { @class = "form-control" })
+                                                            <div tabindex="0" id="ProductIDName-label" class="form-control typeahead-label hide">
+                                                            </div>
+                                                            <div tabindex="0" class="input-group-addon btn" id="ProductIDName-popup">
+                                                                <i class="fa fa-search"></i>
+                                                            </div>
+                                                        </div>
+                                                    </div>*@
+                                                    <div class="col-sm-8">
+                                                        @Html.HiddenFor(x => x.ProductID, new { @class = "form-control" })
+                                                        <input type="text" class="form-control" readonly="readonly" value="@Model.ProductIDName" />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-6">                                        
+                                                <div class="form-group">
+                                                    <label class="col-sm-4 control-label mandatory">Category</label>
+                                                    @*<div class="col-sm-8 segment">
+                                                        @Html.HiddenFor(x => x.CategoryID, new { @class = "form-control" })
+                                                        <div class="input-group" id="CategoryID-Group">
+                                                            @Html.TextBoxFor(x => x.CategoryIDName, new { @class = "form-control" })
+                                                            <div tabindex="0" id="CategoryIDName-label" class="form-control typeahead-label hide">
+                                                            </div>
+                                                            <div tabindex="0" class="input-group-addon btn" id="CategoryIDName-popup">
+                                                                <i class="fa fa-search"></i>
+                                                            </div>
+                                                        </div>
+                                                    </div>*@
+                                                    <div class="col-sm-8 baru">
+                                                        @Html.HiddenFor(x => x.CategoryID, new { @class = "form-control" })
+                                                        <input type="text" class="form-control" readonly="readonly" value="@Model.CategoryIDName" />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-sm-6">                                                                              
+                                                <div class="form-group">
+                                                    <label class="col-sm-4 control-label mandatory">Workgroup</label>
+                                                    <div class="col-sm-8">
+                                                        @Html.HiddenFor(x => x.WorkgroupID, new { @class = "form-control" })
+                                                        @Html.TextBoxFor(x => x.WorkgroupIDName, new { @class = "form-control Hyperlink-TextBox", @readonly = "readonly" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-sm-6">                                                                              
+                                                <div class="form-group">
+                                                    <label class="col-sm-4 control-label mandatory">SLA Days (Hari)</label>
+                                                    <div class="col-sm-8">
+                                                        @Html.TextBoxFor(x => x.SLADays, new { @class = "form-control Hyperlink-TextBox", @readonly = "readonly" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>  
+                            </div>  
+                        }
+                    </div>
+                    <!-- END title 1 -->
+                
+                    <!-- START title 2 -->
+                    <div class="row form_text segment" id="divSegmentation">
+                        <div class="panel panel-default panel_form_child">
+                            <div class="panel-heading">
+                                <label class="control-label sv-header"><strong>Segmentation Details</strong></label>
+                            </div>
+                            <br />
+                            <div class="panel-body">
+                                <div class="form-horizontal">
+                                
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <label class="col-sm-4 control-label">Kota</label>
+                                                <div class="col-sm-8">
+                                                    @Html.DropDownList("KotaID",(SelectList)ViewBag.Kota, "Default Empty", new { @id="KotaID", @class = "form-control" , @readonly = "readonly" })
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6">                                        
+                                            <div class="form-group">
+                                                <label class="col-sm-4 control-label">Segmentasi</label>
+                                                <div class="col-sm-8">
+                                                    @Html.DropDownList("SegmentationID",(SelectList)ViewBag.Segmentation, "Default Empty", new { @id="SegmentationID", @class = "form-control" , @readonly = "readonly" })
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- END title 2 -->
+            
+                    <!-- START title 3 -->
+                    @Html.Partial("_Workflow", Model)
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="response-modal"></div>
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('.onlyParent').show();
+
+        var stateCode = '@(Model.StateCode)';
+        if (stateCode == 1) {
+            $("#form_serviceLevel select").attr('disabled', 'disabled');
+            $("#form_serviceLevel input").attr('readonly', true);
+            $("#form_serviceLevel .typeahead-label").attr('disabled', 'disabled');
+            $("#form_serviceLevel .input-group-addon").attr('disabled', 'disabled');
+            $(".deactivate").hide();
+        }
+
+        //segmentation - disable product and categoryid
+        if ('@Model.ParentID' != '') {
+            //segment
+            $('.baru').hide();
+            $('.segment').show();
+        }
+        else {
+            //baru
+            $('.segment').hide();
+            $('.baru').show();
+        }
+
+        function validateForm(action, formName) {
+            if ($("#ProductID").val() == "") {
+                alert("@Resources.ServiceLevel.SLAMandatoryProduct");
+                return false;
+            }
+            else if ($("#CategoryID").val() == "") {
+                alert("@Resources.ServiceLevel.SLAMandatoryCategory");
+                return false;
+            }
+            formSubmit(action, formName);
+        }
+
+        $("#btn_save").click(function () {
+            validateForm("save", $("#form_serviceLevel"));
+        });
+
+        $("#btn_savenclose").click(function () {
+            validateForm("saveNClose", $("#form_serviceLevel"));
+        });
+
+        $("#btn_savenopen").click(function () {
+            validateForm("saveNOpen", $("#form_serviceLevel"));
+        });
+        
+        $("#confirm-delete").on('show.bs.modal', function (e) {
+            $(this).find('.btn-ok').click(function () {
+                var postData = {
+                    _resolution: "",
+                    _description: ""
+                };
+                otherAction($("#form_serviceLevel"), "/ServiceLevel/Delete", "delete", postData)
+            });
+        });
+
+        $("#confirm-changestatus").on('show.bs.modal', function (e) {
+            $(this).find('.btn-ok').click(function () {
+                var postData = {
+                    _resolution: "",
+                    _description: ""
+                };
+                otherAction($("#form_serviceLevel"), "/ServiceLevel/ChangeStatus", "changestatus", postData)
+            });
+        });
+
+        @* ==========================================================================================================*@
+        $('#CategoryIDName-popup').on('click', function (e) {
+            if ($(this).attr('disabled') == "disabled") return false;
+            urlModalPopup = '@Url.Action("_popupContent", "Popup", new { type = "categories", _entity = "" })';
+            colModelsName = [
+                { label: 'ID', name: 'Id', index: 'Id', key: true, width: 75, hidden: true },
+                { label: 'Category Name', name: 'Name', index: 'Name', width: 250 },
+                { label: 'Parent Name', name: 'ParentName', width: 250 },
+                { label: 'Description Tree', name: 'Description', width: 400 }
+            ];
+            var id = $(this).parent().find('input:last').attr('id');
+            $('#' + id).trigger("blur");
+            e.preventDefault();
+        });
+
+        var categories = new PopupClass();
+        categories.setId("CategoryIDName");
+        categories.setUrl('@Url.Action("Category", "Popup")');
+        categories.setHiddenId("CategoryID");
+        categories.init();
+
+        if ("@Model.CategoryID".length > 0) {
+            popupCheckFirst("CategoryIDName", "@Model.CategoryID", "@Html.Raw(Model.CategoryIDName)");
+        }
+        @* ==========================================================================================================*@
+        $('#ProductIDName-popup').on('click', function (e) {
+            if ($(this).attr('disabled') == "disabled") return false;
+            urlModalPopup = '@Url.Action("_popupContent", "Popup", new { type = "products", _entity = "" })';
+            colModelsName = [
+                { label: 'ID', name: 'Id', index: 'Id', key: true, width: 75, hidden: true },
+                { label: 'Product Name', name: 'Name', index: 'Name', width: 250 },
+                { label: 'Parent Name', name: 'ParentName', width: 250 },
+                { label: 'Description Tree', name: 'Description', width: 400 }
+            ];
+            var id = $(this).parent().find('input:last').attr('id');
+            $('#' + id).trigger("blur");
+            e.preventDefault();
+        });
+
+        var products = new PopupClass();
+        products.setId("ProductIDName");
+        products.setUrl('@Url.Action("Product", "Popup")');
+        products.setHiddenId("ProductID");
+        products.init();
+
+        if ("@Model.ProductID".length > 0) {
+            popupCheckFirst("ProductIDName", "@Model.ProductID", "@Html.Raw(Model.ProductIDName)");
+        }
+        
+
+    });
+</script>

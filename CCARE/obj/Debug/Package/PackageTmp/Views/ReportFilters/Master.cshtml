@@ -1,0 +1,262 @@
+﻿@model IEnumerable<CCARE.Models.ReportFilters>
+
+@{
+    ViewBag.Title = "Report Filters";
+    string actionPage = ViewContext.Controller.ControllerContext.RouteData.Values["action"].ToString();
+    
+    if (Request.IsAjaxRequest())
+    {
+        Layout = null;
+    }
+    else{
+        Layout = "~/Views/Shared/_LayoutEntity.cshtml";
+    }
+}
+
+@section entityLogo
+{
+    <img class="crm-logo" src="~/assets/images/ico_lrg_112.gif" />
+}
+
+@section formTitle
+{
+    <div class="text_title">
+        <h1>Report Filters</h1>
+        Report : @(Model.FirstOrDefault().masterReport.ReportName)
+    </div>
+}
+
+@section navHeader
+{
+    
+}
+
+@section footerStatus
+{
+    <div class="footer_text"></div>
+}
+
+@section sidebarMenu
+{
+
+}
+
+@using (Html.BeginForm("Execute", "ReportFilters", FormMethod.Post, new { id = "form_reportfilters" }))
+{
+        <div class="container-fluid">
+        <!-- tabs -->
+        <div class="row">
+            <div class="col-sm-12 panel panel-default panel_form_parent">
+                <div class="myContent_noTab">
+                    <!--General tab-->
+                    <div class="tab-pane fade active in" id="divGeneral">
+                        <div class="panel panel-default panel_form_child">
+                            <!--Panel Header for section title-->
+                            <div class="panel-heading">
+                                <label class="control-label sv-header"><strong>Master Filter</strong></label>
+                            </div>
+                            <br />
+                            <div class="panel-body">
+                                <div class="form-horizontal">
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <input type="hidden" id="ReportFiltersID" name="ReportFiltersID" />
+                                            <input type="hidden" id="FilterValue" name="FilterValue" />
+                                            <input type="hidden" id="FilterGUID" name="FilterGUID" />
+                                            <input type="hidden" id="ReportID" name="ReportID" value='@(ViewBag.ReportID)' />
+                                            <input type="hidden" id="IsEditable" name="IsEditable" value="0" />
+                                            <div class="form-group">
+                                                <label class="col-sm-3 control-label">Filter Type</label>
+                                                <div class="col-sm-9">
+                                                    <input type="text" id="FilterType" name="FilterType" class="form-control" />
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <span class="col-sm-10" style="text-align:right">
+                                                    <button id="btnHint"
+                                                        type="button" 
+                                                        class="btn btn-success" 
+                                                        data-html="true"
+                                                        data-toggle="popover" 
+                                                        data-placement="bottom"
+                                                        title="Master Filter" 
+                                                        data-content="">
+                                                        Accepted Filter
+                                                    </button>
+                                                </span>
+                                                <span class="col-sm-2"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <br />
+                            <div class="panel-body">
+                                <div class="form-horizontal">
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <span class="col-sm-12" style="text-align:center" id="ReportFilterGroupButton">
+                                                <button id="btnAddFilter" class="btn btn-primary" type="button">Add Filter</button>&nbsp;
+                                                <button id="btnDeleteFilter" class="btn btn-primary" type="button">Delete Filter</button>&nbsp;
+                                            </span>
+                                        </div>
+                                        <div class="col-sm-6">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>                            
+                        <div class="panel panel-default panel_form_child">
+                            <div class="panel-heading">
+                                <label class="control-label sv-header"><strong>Report Filters List (Master)</strong></label>
+                            </div>
+                            <br />
+                            <div class="panel-body">
+                                <div class="divGrid">
+                                    <table id="gridTable"></table>
+                                    <div id="jqGridPager"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="response-modal"></div>
+    </div>
+}
+
+<script type="text/javascript">
+
+    
+
+    $(document).ready(function () {
+        loadAcceptedFilter();
+        $('[data-toggle="popover"]').popover();
+        
+        $('#btnDeleteFilter').hide();
+
+        var checkButtonClient = "false";
+
+        @if(Session["RoleID"] != null){
+            string entity = ViewContext.Controller.ControllerContext.RouteData.Values["controller"].ToString();
+            Guid roleID = new Guid(Session["RoleID"].ToString());
+            bool checkButton = CCARE.App_Function.RoleNPrivilege.checkEntityButtonByRoleID(roleID, "MasterReport", "Write");
+
+            if(checkButton == false)
+            {
+                <text>
+                    $('#ReportFilterGroupButton').hide();
+                </text>
+            }
+            else{
+                <text>
+                    checkButtonClient = '@(checkButton)';
+                </text>
+            }
+        }
+
+        var gridId = "#gridTable";
+        var entityName = '@ViewContext.RouteData.Values["Controller"].ToString()';
+        var ReportID = '@(ViewBag.ReportID)';
+        var postData = {
+            _val: function () { return ReportID; },
+        };
+
+        function loadReportFiltersGrid() {
+            loadJqgrid(gridId, postData, "LoadGridFilterMaster");
+            $(gridId).jqGrid('setGridParam', {
+                ondblClickRow: function (rowid, iRow, iCol) {
+                },
+                onSelectRow: function (rowid, iRow, iCol) {
+                    var rowData = jQuery(gridId).getRowData(rowid);
+                    $('#ReportFiltersID').val(rowData['Id']);
+                    if (checkButtonClient == 'true' || checkButtonClient == 'True') {
+                        $('#btnDeleteFilter').show();
+                    }
+                }
+            });
+        }
+
+        loadReportFiltersGrid();
+        @* ==========================================================================================================*@
+
+        $('#btnAddFilter').click(function () {
+            if ($('#FilterType').val() == "") {
+                alert("@Resources.ReportFilters.TypeMandatory2");
+                return false;
+            }
+            Execute("Create");
+            loadReportFiltersGrid();
+        });
+
+        $('#FilterType').keyup(function (e) {
+            if (e.keyCode == 13) {
+                if ($('#FilterType').val() == "") {
+                    alert("@Resources.ReportFilters.TypeMandatory2");
+                    return false;
+                }
+                Execute("Create");
+                loadReportFiltersGrid();
+            }
+        });
+
+        $('#btnDeleteFilter').click(function () {
+            Execute("Delete");
+            loadReportFiltersGrid();
+        });
+
+        function Execute(action) {
+            var postData = JSON.stringify({ model: $('#form_reportfilters').serializeObject(), action: action });
+            var url = '/ReportFilters/Execute';
+
+            $.ajax({
+                type: "POST",
+                url: url,
+                data: postData,
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (msg) {
+                    if (msg.flag == true) {
+                        
+                    }
+                    // alert(msg.Message);
+                    
+                    $('#FilterType').val('');
+                    $('#FilterType').focus();
+                    $('#btnDeleteFilter').hide();
+                },
+                error: function (xhr, status, err) {
+                    $(selectID).get(0).options.length = 0;
+                    alert("List tidak berhasil diload");
+                }
+            });
+        }
+
+        function loadAcceptedFilter() {
+            $.ajax({
+                type: "POST",
+                url: '/ReportFilters/GetAcceptedFilters',
+                success: function (data) {
+                    var txt = "";
+                    txt += "<ul>";
+                    for (var i = 0 ; i < data.length ; i++) {
+                        if (data[i] != "") txt += "<li>" + data[i] + "</li>";
+                    }
+                    txt += "</ul>";
+                    $('#btnHint').attr("data-content", txt);
+                }
+            });
+        }
+
+        $('#divActionButton').hide();
+
+        setTimeout(function () {
+            $('#btnHint').click();
+        }, 1000);
+    });
+</script>

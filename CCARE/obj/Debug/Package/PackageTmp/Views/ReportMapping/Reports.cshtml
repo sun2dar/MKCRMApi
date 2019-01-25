@@ -1,0 +1,236 @@
+﻿@model IEnumerable<CCARE.Models.ReportRole>
+
+@{
+    ViewBag.Title = "Report Mapping";
+    string actionPage = ViewContext.Controller.ControllerContext.RouteData.Values["action"].ToString();
+    
+    if (Request.IsAjaxRequest())
+    {
+        Layout = null;
+    }
+    else{
+        Layout = "~/Views/Shared/_LayoutEntity.cshtml";
+    }
+}
+
+@section entityLogo
+{
+    <img class="crm-logo" src="~/assets/images/ico_lrg_112.gif" />
+}
+
+@section formTitle
+{
+    <div class="text_title">
+        <h1>Report Mapping</h1>
+        Security Role : @(Model.FirstOrDefault().securityRole.Name)
+    </div>
+}
+
+@section navHeader
+{
+    
+}
+
+@section footerStatus
+{
+    <div class="footer_text"> </div>
+}
+
+@section sidebarMenu
+{
+
+}
+
+@using (Html.BeginForm("Execute", "ReportMapping", FormMethod.Post, new { id = "form_reportmapping" }))
+{
+    <div class="container-fluid">
+        <!-- tabs -->
+        <div class="row">
+            <div class="col-sm-12 panel panel-default panel_form_parent">
+                <!-- Tab panes -->
+                <div class="myContent_noTab">
+                    <!--General tab-->
+                    <div class="tab-pane fade active in" id="divGeneral">
+                        <div class="panel panel-default panel_form_child">
+                            <!--Panel Header for section title-->
+                            <div class="panel-heading">
+                                <label class="control-label sv-header"><strong>Report Mapping</strong></label>
+                            </div>
+                            <br />
+                            <!--Body panel for input form-->
+                            <div class="panel-body">
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <div class="form-group">
+                                            <label class="col-sm-2 control-label">Report List</label>
+                                            <div class="col-sm-10">
+                                                @* ==========================================================================================================*@
+                                                <input type="hidden" id="SecurityRoleID" name="SecurityRoleID" value="@(new Guid(ViewBag.RoleID.ToString()))" />
+                                                <input type="hidden" id="ReportRoleID" name="ReportRoleID" />
+                                                <input type="hidden" id="ReportID" name="ReportID" class="form-control" />
+                                                <div class="input-group" id="ReportID-Group">
+                                                    <input type="text" id="ReportName" name="ReportName" class="form-control" />
+                                                    <div tabindex="0" id="ReportName-label" class="form-control typeahead-label hide">
+                                                    </div>
+                                                    <div tabindex="0" class="input-group-addon btn" id="ReportName-popup">
+                                                        <i class="fa fa-search"></i>
+                                                    </div>
+                                                </div>
+                                                @* ==========================================================================================================*@
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <br />
+                            <!--Button div-->
+                            <div class="panel-body">
+                                <div class="row">
+                                    <span class="col-sm-12" style="text-align:center" id="reportGroupButton">
+                                        <button id="btnAddReport" class="btn btn-primary" type="button">Add Report</button>&nbsp;
+                                        <button id="btnDeleteReport" class="btn btn-primary" type="button">Delete Report</button>&nbsp;
+                                    </span>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="panel panel-default panel_form_child">
+                            <!--Panel Header for girdlist-->
+                            <div class="panel-heading">
+                                <label class="control-label sv-header"><strong>Report List</strong></label>
+                            </div>
+                            <br />
+                            <div class="panel-body">
+                                <div class="divGrid">
+                                    <table id="gridTable"></table>
+                                    <div id="jqGridPager"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="response-modal"></div>
+    </div>
+}
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#divActionButton').hide();
+        $('#btnDeleteReport').hide();
+
+        $(".panel-body").find("input").addClass("rm-padding");
+        $(".panel-body").find("select").addClass("rm-padding");
+        $(".panel-body").find(":radio").removeClass("rm-padding");
+
+        var checkButtonClient = "false";
+
+        @if(Session["RoleID"] != null){
+            string entity = ViewContext.Controller.ControllerContext.RouteData.Values["controller"].ToString();
+            Guid roleID = new Guid(Session["RoleID"].ToString());
+            bool checkButton = CCARE.App_Function.RoleNPrivilege.checkEntityButtonByRoleID(roleID, "SecurityRole", "Write");
+
+            if(checkButton == false)
+            {
+                <text>
+                    $('#reportGroupButton').hide();
+                </text>
+            }
+            else{
+                <text>
+                    checkButtonClient = '@(checkButton)';
+                </text>
+            }
+        }
+
+        var gridId = "#gridTable";
+        var entityName = '@ViewContext.RouteData.Values["Controller"].ToString()';
+        var roleId = '@(ViewBag.RoleID)';
+
+        var postData = {
+            _roleId: function () { return roleId; },
+        };
+
+        function loadReportGrid() {
+            loadJqgrid(gridId, postData, entityName);
+            $(gridId).jqGrid('setGridParam', {
+                ondblClickRow: function (rowid, iRow, iCol) {
+                },
+                onSelectRow: function (rowid, iRow, iCol) {
+                    var rowData = jQuery(gridId).getRowData(rowid);
+                    $('#ReportRoleID').val(rowData['Id']);
+                    if (checkButtonClient == 'true' || checkButtonClient == 'True') {
+                        $('#btnDeleteReport').show();
+                    }
+                }
+            });
+        }
+        
+        loadReportGrid();
+
+        @* ==========================================================================================================*@
+        $('#ReportName-popup').on('click', function (e) {
+            urlModalPopup = '@Url.Action("_popupContent", "Popup", new { type = "reports", _entity = "" })';
+            colModelsName = [
+                { label: 'ID', name: 'Id', index: 'Id', key: true, width: 75, hidden: true },
+                { label: 'Report Name', name: 'Name', index: 'Name', width: 250 },
+                { label: 'Description', name: 'Description', width: 400 }
+            ];
+            var id = $(this).parent().find('input:last').attr('id');
+            $('#' + id).trigger("blur");
+            e.preventDefault();
+        });
+
+        var reports = new PopupClass();
+        reports.setId("ReportName");
+        reports.setUrl('@Url.Action("MasterReport", "Popup")');
+        reports.setHiddenId("ReportID");
+        reports.init();               
+        @* ==========================================================================================================*@
+
+        $('#btnDeleteReport').click(function () {
+            Execute("Delete");
+            loadReportGrid();
+        });
+
+        $('#btnAddReport').click(function () {
+            if ($('#ReportID').val() == "" || $('#ReportName').val() == "") {
+                alert("Report Belum dipilih");
+                return false;
+            }
+            Execute("Create");
+            loadReportGrid();
+        });
+
+        function Execute(action) {
+            var postData = JSON.stringify({ model: $('#form_reportmapping').serializeObject(), action: action });
+            var url = '/ReportMapping/Execute';
+
+            $.ajax({
+                type: "POST",
+                url: url,
+                data: postData,
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (msg) {
+                    if (msg.flag == true) {
+                        switch (action) {
+                            case 'Create':
+                                $('#ReportName-label').focus();
+                                var e = jQuery.Event("keydown", { keyCode: 46 });
+                                $("#ReportName-label").trigger(e);
+                                break;
+                        }
+                    }
+                    alert(msg.Message);
+                    loadReportGrid();
+                },
+                error: function (xhr, status, err) {
+                    $(selectID).get(0).options.length = 0;
+                    alert("List tidak berhasil diload");
+                }
+            });
+        }
+    }); 
+</script>

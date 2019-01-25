@@ -1,0 +1,509 @@
+﻿/* Move down content because we have a fixed navbar that is 50px tall */
+body {
+  padding-top: 27px;
+  overflow: hidden;
+}
+
+html,
+body {
+    margin: 0;
+    background-color: #EAEAEA;
+}
+
+.mainHome{
+	position:absolute;
+	top:85px;
+	bottom:5px;
+	left:5px;
+	right:5px;
+	
+	overflow-y:auto;
+	overflow-x:hidden;
+}
+.main {
+  /*padding-top: 14px;*/
+    position:absolute;
+	top:106px;
+	left:0px;
+	right:5px;
+
+	overflow-y:hidden;
+	overflow-x:hidden;
+}
+
+@media (min-width: 568px) {
+  .main {
+    /*position: fixed;*/
+    /*top: 30px;*/
+    /*top: 87px;*/
+    bottom: 0;
+    padding-right: 10px;
+    padding-left: 0;
+  }
+}
+
+.main .page-header {
+  margin-top: 0;
+}
+
+.main_panel
+{
+    /*background-color: #F7F7F7;*/
+    background-color: #EAEAEA;
+}
+
+
+/* ----------------------------------
+    alert - adjust padding for height
+*/
+.alert
+{
+    padding-top: 6px; 
+    padding-bottom: 6px;
+}
+
+
+/* -------------------
+    header
+*/
+.header_image
+{
+    background-image: url(../images/layout_entity_header.png) !important;
+    background-repeat: repeat-x;
+}
+
+
+/* --------
+*   footer    
+*/
+
+.footer {
+    position: fixed;
+    bottom: 0;
+    z-index: 2000;
+    width: 100%;
+    /* Set the fixed height of the footer here */
+    height: 20px;
+    background-image: url(../images/app_titlebar.gif) !important;
+    border-top: 1px solid #95b5d0;
+}
+
+body > .container {
+  
+}
+.container .footer_text {
+    font:bold 11px arial, verdana;
+}
+
+.footer > .container {
+    width: 100%;
+    padding-left: 10px;
+    padding-top: 3px;
+}
+
+code {
+    font-size: 80%;
+}
+
+
+/* -------------------
+    Sidebar navigation
+*/
+.sidebar {
+  display: none;
+}
+@media (min-width: 768px) {
+  .sidebar {
+    position: fixed;
+    top: 106px;
+    bottom: 0;
+    left: 0;
+    z-index: 1000;
+    display: block;
+    padding: 5px 5px 5px 5px;
+    
+    overflow-x: hidden;
+    overflow-y: auto; /* Scrollable contents if viewport is shorter than content. */
+    background-color: #F7F7F7;
+    border-top: 1px solid #DDDDDD;
+    border-right: 1px solid #DDDDDD;
+    /*border-top: 1px solid #639CCE;
+    border-right: 1px solid #639CCE;*/
+    font-size: 11px;
+  }
+}
+.nav-sidebar {
+  margin-right: -21px; /* 20px padding + 1px border */
+  margin-bottom: 20px;
+  margin-left: -20px;
+}
+.nav-sidebar > li > a {
+  padding-right: 20px;
+  padding-left: 20px;
+}
+.nav-sidebar > .active > a,
+.nav-sidebar > .active > a:hover,
+.nav-sidebar > .active > a:focus {
+  color: #fff;
+  background-color: #428bca;
+}
+.nav-pills > li > a
+{
+    /* adjust padding for height*/
+    padding-top: 6px; 
+    padding-bottom: 6px;
+    color: #0066BB;
+    font-size: 8pt;
+    font-weight: bold;
+}
+
+
+/*
+ * CONTENT
+ */
+
+/*-------------------
+    fonts & size
+*/
+.form_text
+{
+    font-size: small;
+    font-weight: lighter;
+}
+
+.text_main_title
+{
+    font-size: x-large;
+    font-weight: bold;
+}
+
+.text_title
+{
+    font-size: 14px;
+    font-weight: bold;
+}
+/*-- small input --*/
+/*input[type="text"] {
+    height: 23px;
+    font-size: 11px;
+    line-height: 0;
+    
+    margin-bottom: 0;
+    margin-top: 0;
+}*/
+/*
+*   set form column spacing    
+*/
+.form-group
+{
+    margin-bottom: 5px;
+}
+.control-label
+{
+    font-size: 11px;
+    padding-bottom: 0;
+}
+/*.radio-inline
+{
+    font-size: 11px;
+    padding-bottom: 0;
+}*/
+.form-control
+{
+    height: 28px !important;
+    font-size: 12px !important;
+    color: black !important;
+}
+.form-group
+{
+    text-align: left;
+}
+
+
+/* ------------------
+     position
+*/
+
+.entity_logo
+{
+    padding-top: 3px;
+}
+
+.content_title
+{
+    margin-left: auto;
+    margin-right: auto;
+    
+}
+
+
+/* ------------------------------
+    color    
+*/
+.panel > .panel-heading {
+    /*background-color: #dae8f1;*/
+    background-color: #ecf1f5;
+    border-color: #639CCE;
+    color: black;
+    height: 40px;
+    line-height: 20px;
+}
+
+.panel > .panel-body
+{
+    padding-top: 0;
+    padding-bottom: 0;
+}
+
+
+
+.panel_form_parent
+{
+    /*background-color: #E7EBEF;*/
+    border-color: #d3d4d8;
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    margin-right: 15px;
+}
+
+.panel_form_child
+{
+    /*background-color: #EFF3FF;*/
+    background-color: #ecf1f5;
+    padding-bottom: 20px;
+    
+}
+
+.header_color
+{
+    /*background-color: #D6DBE7;*/
+    /*background-color: #428bca;*/
+    background-color: #3B7FAA;
+    border-bottom: 1px solid #655b5b;
+    color: black;
+}
+
+
+/* ---------------------
+    nav pills custom css
+*/
+.nav-pills > li.active > a, .nav-pills > li.active > a:hover, .nav-pills > li.active > a:focus {
+    color:black;
+    background-color:#fcd900;
+}
+
+.nav-pills > li.active > a, .nav-pills > li.active > a:focus {
+    color: black;
+    background-color: #fcd900;
+}
+
+.nav-pills > li.active > a:hover {
+    background-color: #efcb00;
+    color:black;
+}
+
+
+/* -----------------------
+    panel content overflow    
+*/
+.myContent_Tab
+{
+    position:absolute;
+	
+	bottom:20px;
+	left:15px;
+    overflow-y: auto;
+
+    top:55px; right:15px;
+}
+
+.myContent_noTab
+{
+    position:absolute;
+	
+	bottom:20px;
+	left:15px;
+    overflow-y: auto;
+
+    top:10px; right:15px;
+}
+
+
+
+/* ---------------
+    navbar header    
+*/
+.navbar-nav > li > a, .navbar-brand {
+    padding-top:6px !important; 
+    padding-bottom:0 !important;
+    height: 28px;
+}
+.navbar {min-height:28px !important;}
+
+.navbar .nav > li > a {
+    float: none;
+    line-height: 19px;
+    padding: 9px 10px 11px;
+    text-decoration: none;
+    /*text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);*/
+    /*color: #428bca;*/
+    color: #0066BB;
+    font-size: 10pt;
+    font-weight: bold;
+}
+.navbar .nav > li > a:hover {
+    color: blue;
+}
+
+.navbar-default .navbar-brand {
+    color: #fcd900;
+}
+
+.navbar-fixed-top {
+  border: 0;
+  /*background-color: #B3D1EA;*/
+}
+
+/* POPUP */
+.ss {
+    border-color: #66AFE9;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset, 0 0 8px rgba(102, 175, 233, 0.6);
+    outline: 0 none;
+}      
+div .typeahead-label:focus {
+    /*background: pink;*/
+    /*border-color: rgba(126, 239, 104, 0.8);
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset, 0 0 8px rgba(126, 239, 104, 0.6);
+    outline: 0 none;*/
+    border:solid red;
+}
+
+
+/*additional style for role and privilege*/
+.labelRole{
+    text-align:center;
+    font-weight:bold;
+    font-size:8pt;
+    line-height:30px;
+    text-align:left;
+}
+
+.scrollTab {
+    position:absolute;
+    top:45px;
+    bottom:10px;
+    left:0px;
+    right:10px;
+    height:90%;
+    overflow-y:scroll;
+}
+
+.submenuStyle {
+    padding-bottom:20px;
+    margin-bottom:10px;
+}
+
+
+/* GRID ON ENTITY */
+.content_container
+{
+    margin-left:-15px; margin-right:-15px;
+}
+
+
+
+.inquiry_dropdown
+{
+    width: 200px;
+}
+
+.input_space
+{
+    width: 10px;
+}
+
+.inquiry_left
+{
+    padding-left:0; 
+    padding-right:0;
+}
+.inquiry_right
+{
+    padding-right:0;
+}
+
+.panel_heading
+{
+    padding: 5px 5px 5px 7px;
+}
+/* GRID ON ENTITY */
+
+
+/* ENHANCED UI at The End of 2016 */
+
+.nav-pills > li > a
+{
+    color: #0066BB;
+    font-size: 10pt;
+    font-weight: bold;
+}
+
+.nav-pills > li > a:hover
+{
+    background-color: #D0CCCC;
+}
+
+.nav-tabs > li > a
+{
+    font-weight: bold;
+    font-size: 8pt;
+}
+
+.dropdown-menu > li > a
+{
+    color: #0066BB;
+    font-size: 8pt;
+    font-weight: bold;
+}
+
+.dropdown-menu > li > a:hover
+{
+    background-color: #D0CCCC;
+}
+
+.navbar-inverse .navbar-nav > .open > a, .navbar-inverse .navbar-nav > .open > a:hover, .navbar-inverse .navbar-nav > .open > a:focus {
+    background-image: url(../images/layout_entity_header.png) !important;
+    background-repeat: repeat-x;
+    color: #0066BB;
+}
+
+.text_title
+{
+    font-size: 14px;
+    font-family: 'Microsoft YaHei UI';
+}
+
+.text_title > h1
+{
+    font-weight: bold;
+    text-decoration: underline;
+    /*font-family: 'Helvetica Neue LT Pro';*/
+}
+
+.scroll-y
+{
+    overflow-y: auto;
+}
+
+.btn-crm-layout
+{
+    font-size: 12pt;
+    margin: 0px 5px;
+}
+
+
+
+.avoid-clicks {
+  pointer-events: none;
+}

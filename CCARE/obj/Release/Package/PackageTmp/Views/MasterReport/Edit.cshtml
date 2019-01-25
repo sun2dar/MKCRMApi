@@ -1,0 +1,303 @@
+﻿@model CCARE.Models.MasterReport
+
+
+@{
+    if (Request.IsAjaxRequest())
+    {
+        Layout = null;
+    }
+    else
+    {
+        ViewBag.Title = "Report: " + @Model.ReportName;
+        Layout = "~/Views/Shared/_LayoutEntity.cshtml";
+    }
+}
+
+@section title
+{
+    Report
+}
+
+@section entityLogo
+{
+    <img class="crm-logo" src="~/assets/images/ico_lrg_112.gif" />
+}
+
+@section formTitle
+{
+    <div class="text_title">
+        <h1>Information</h1>
+        Report : @Model.ReportName
+    </div>
+}
+
+@section navHeader
+{
+    <ul class="nav navbar-nav navbar-left" id="divActionButton">
+        
+    @if (Session["RoleID"] != null)
+    {
+        string entity = ViewContext.Controller.ControllerContext.RouteData.Values["controller"].ToString();
+        Guid roleID = new Guid(Session["RoleID"].ToString());
+        bool checkButton = CCARE.App_Function.RoleNPrivilege.checkEntityButtonByRoleID(roleID, entity, "Write");
+        bool checkButton2 = CCARE.App_Function.RoleNPrivilege.checkEntityButtonByRoleID(roleID, entity, "Delete");
+
+        if (checkButton == true)
+        {
+            if (Model.Status == 1)
+            {
+                <text>
+                    <li><a id="btn_save" href="#">Save</a></li>
+                    <li><a id="btn_savenclose" href="#">Save & Close</a></li>
+                    <li><a id="btn_savenopen" href="#">Save & New</a></li>
+                </text>
+            }
+            <li>
+                <a id="btn_changestatus" href="#" data-toggle="modal" data-target="#confirm-changestatus">
+                @if (Model.Status == 1)
+                {
+                    <text>Deactivate</text>
+                }
+                else
+                {
+                    <text>Activate</text>
+                }
+                </a>
+            </li>
+        }
+
+        if (checkButton2 == true)
+        {
+        <text>
+            <li><a id="btn_delete" href="#" data-toggle="modal" data-target="#confirm-delete">Delete</a></li>
+        </text>
+        }
+    }
+        
+    </ul>
+}
+
+@section footerStatus
+{
+    <div class="footer_text">
+        Status: @ViewBag.StatusLabel
+    </div>
+}
+
+@section sidebarMenu
+{
+    <li><a data-ajax="true" data-ajax-mode="replace" data-ajax-update="#page_content" href="/MasterReport/Edit?id=@(Model.ReportID)">Report Mapping</a></li>
+    <li><a data-ajax="true" data-ajax-mode="replace" data-ajax-update="#page_content" href="/ReportFilters/Index?ReportID=@(Model.ReportID)">Report Filters</a></li>
+    @if ("Y".Equals(Session["isSuperAdmin"].ToString()))
+    {
+        <li><a data-ajax="true" data-ajax-mode="replace" data-ajax-update="#page_content" href="/ReportFilters/Master?ReportID=@(Model.ReportID)">Report Filters (Master)</a></li>
+    }
+}
+
+<div class="modal fade" id="confirm-delete" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1>Confirm Deletion</h1>
+            </div>
+            <div class="modal-body input-lg">
+                The system will delete this record. This action cannot be undone, To continue click "Delete".
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                <a class="btn btn-danger btn-ok">Delete</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="confirm-changestatus" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1>Confirm @if (Model.Status == 1)
+                            {<text>Report Deactivation</text>}
+                            else
+                            {<text>Report Activation</text>}</h1>
+            </div>
+            <div class="modal-body input-lg confirm-change-status">
+                This action will change the status of selected Report to @if (Model.Status == 1)
+                                                                         {<text>Inactive</text>}
+                                                                         else
+                                                                         {<text>Active</text>}. To continue click "Ok"
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                <a class="btn btn-danger btn-ok">Ok</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container-fluid">
+    <!-- tabs -->
+    <div class="row">
+        <div class="col-sm-12 panel panel-default panel_form_parent">
+            <div class="myContent_noTab">
+            @using (Html.BeginForm("Edit", "MasterReport", FormMethod.Post, new { id = "form_report" }))
+            {
+                @Html.Hidden("hidden_displayStatus", "", new { @id = "hidden_displayStatus" })
+                @Html.HiddenFor(x => x.ReportID);
+                    
+                <!-- panel content -->
+                <div class="col-sm-12">
+
+                    <!-- START title 1 -->
+                    <div class="row form_text">
+                        <div class="panel panel-default panel_form_child">
+                            <div class="panel-heading">
+                                <label class="control-label sv-header"><strong>General</strong></label>
+                            </div>
+                            <br />
+                            <div class="panel-body">
+                                <div class="form-horizontal">
+                                
+                                    <div class="row">
+                                        <div class="col-sm-12">                                        
+                                            <div class="form-group">
+                                                <label class="col-sm-2 control-label mandatory">Name</label>
+                                                <div class="col-sm-10">
+                                                    @Html.TextBoxFor(x => x.ReportName, new { @class = "form-control" })
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-sm-12">                                        
+                                            <div class="form-group">
+                                                <label class="col-sm-2 control-label mandatory">RDL</label>
+                                                <div class="col-sm-10">
+                                                    @Html.TextBoxFor(x => x.RdlName, new { @class = "form-control" })
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-sm-12">                                                                              
+                                            <div class="form-group">
+                                                <label class="col-sm-2 control-label mandatory">Description</label>
+                                                <div class="col-sm-10">
+                                                    @Html.TextBoxFor(x => x.Description, new { @class = "form-control" })
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                                
+                        </div>
+                    </div>
+                    <!-- END title 1 -->        
+                    <!-- START title 2 -->
+                    <div class="row form_text">
+                        <div class="panel panel-default panel_form_child">
+                            <div class="panel-heading">
+                                <label class="control-label sv-header"><strong>Timestamp Information</strong></label>
+                            </div>
+                            <br />
+                            <div class="panel-body">
+                                <div class="form-horizontal">
+
+                                    <div class="row">
+                                        <div class="col-sm-6">                                        
+                                            <div class="form-group">
+                                                <label class="col-sm-4 control-label">Created On</label>
+                                                <div class="col-sm-8">
+                                                    @Html.TextBoxFor(x => x.CreatedOn, new { Value = @Model.CreatedOn.Value.ToString("dd/MM/yyyy HH:mm"), @class = "form-control", @disabled = "disabled" })
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6">                                                                              
+                                            <div class="form-group">
+                                                <label class="col-sm-4 control-label">Modified On</label>
+                                                <div class="col-sm-8">
+                                                    @Html.TextBoxFor(x => x.ModifiedOn, new { Value = @Model.ModifiedOn.Value.ToString("dd/MM/yyyy HH:mm"), @class = "form-control", @disabled = "disabled" })
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- END title 2 -->
+                </div>
+            }
+            </div>
+        </div>
+    </div>
+    <div id="response-modal"></div>
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        var entityName = '@ViewContext.RouteData.Values["Controller"].ToString()';
+       
+        var stateCode = '@(Model.Status)';
+        if (stateCode == 0) {
+            $("#form_report select").attr('disabled', 'disabled');
+            $("#form_report input").attr('readonly', true);
+            $("#form_report .typeahead-label").attr('disabled', 'disabled');
+            $("#form_report .input-group-addon").attr('disabled', 'disabled');
+        }
+
+        function validateForm(action, formName) {
+            if ($("#ReportName").val() == "") {
+                alert("@Resources.MasterReport.NameMandatory");
+                return false;
+            }
+            else if ($("#RdlName").val() == "") {
+                alert("@Resources.MasterReport.RDLMandatory");
+                return false;
+            }
+            else if ($("#Description").val() == "") {
+                alert("@Resources.MasterReport.DescriptionMandatory");
+                return false;
+            }
+            formSubmit(action, formName);
+        }
+
+        $("#btn_save").click(function () {
+            validateForm("save", $("#form_report"));
+        });
+
+        $("#btn_savenclose").click(function () {
+            validateForm("saveNClose", $("#form_report"));
+        });
+
+        $("#btn_savenopen").click(function () {
+            validateForm("saveNOpen", $("#form_report"));
+        });
+
+        $("#confirm-delete").on('show.bs.modal', function (e) {
+            $(this).find('.btn-ok').click(function () {
+                var postData = {
+                    _resolution: "",
+                    _description: ""
+                };
+                otherAction($("#form_report"), "/MasterReport/Delete", "delete", postData)
+            });
+        });
+
+        $("#confirm-changestatus").on('show.bs.modal', function (e) {
+            $(this).find('.btn-ok').click(function () {
+                var postData = {
+                    _resolution: "",
+                    _description: ""
+                };                
+                otherAction($("#form_report"), "/MasterReport/ChangeStatus", "changestatus", postData)
+            });
+        });
+
+        $('#divActionButton').show();
+    });
+</script>

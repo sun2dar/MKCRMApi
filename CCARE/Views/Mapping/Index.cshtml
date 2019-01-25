@@ -1,0 +1,228 @@
+﻿@model CCARE.Models.Mapping
+@{
+    if (Request.IsAjaxRequest())
+    {
+        Layout = null;
+    }
+}
+
+<ul class="nav nav-stacked nav-pills">
+    <li class="titleBar font-crm4"><a>
+        
+        <span class="sr-only">(current)</span></a></li>
+</ul>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-12">
+            
+            <br />
+            
+            <ol class="breadcrumb">
+                <li class="active">Administration</li>
+                <li class="active">Mapping</li>
+                <li class="active"><a href="#">Codes And Mappers</a></li>
+                <li class="active float-right"><a id="btn_new" href="#"><span class="glyphicon glyphicon-pencil glyp-space" aria-hidden="true"></span>New</a></li>
+            </ol>
+
+            <!-- Content -->
+            <div class="container-fluid content_container">
+                <div class="row">
+                    <div class="col-sm-12 content_col form-inquiry-mapping">
+                        <form id="form_inquiry" class="form-horizontal">
+                            <div class="row">
+                                <div class="col-sm-9">
+                                    <div class="form-group">
+                                        <label class="lbl-codemapper control-label col-sm-3"><b>Category</b></label>
+                                        <span class="input-group-btn inquiry_dropdown col-sm-9">
+                                            <select id="inquiry_category" class="form-control">
+                                                <option value="StatusMapper" selected="selected">Status Mapper</option>
+                                                <option value="TransactionAttributeMapping">Transaction Attribute Mapping</option>
+                                                <option value="LoanType">Loan Types</option>
+                                                <option value="AccountCardType">ATM Card Types</option>
+                                                <option value="AccountType">Deposit Types</option>
+                                                <option value="CurrencyCode">Currency Code</option>
+                                                <option value="ResponseCode">Response Code</option>
+                                                <option value="TransactionType">Jenis Transaksi</option>
+                                                <option value="StringMap">String Map</option>
+                                            </select>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        
+                            <div class="row">
+                                <div class="col-sm-9">      
+                                    <div class="form-group">          
+                                        <div class="input-group">
+                                            <span class="input-group-btn inquiry_dropdown">
+                                                <select id="inquiry_param" class="form-control">
+                                                    <option value="SearchObjectName" selected="selected">Entity Type</option>
+                                                    <option value="SearchAttributeName">Status Type</option>
+                                                    <option value="SearchCode">Key</option>
+                                                    <option value="SearchLabel">Value</option>
+                                                </select>
+                                            </span>
+                                            <span class="input-group-btn input_space"></span>
+                                            <input type="text" class="form-control" id="inquiry_val" >
+                                            <span class="input-group-btn">
+                                                <button id="btn_search" class="btn btn-primary" type="submit"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></button>
+                                            </span>
+                                            <span class="input-group-btn input_space"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-3">      
+                                    <div class="form-group">          
+                                        <span class="inquiry_dropdown">
+                                            <select id="inquiry_filter" class="form-control">
+                                                <option value="0">Active Status Mapper</option>
+                                                <option value="1">Inactive Status Mapper</option>
+                                            </select>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <br />
+                <!-- Table result -->
+                <div class="row">
+                    <div class="col-sm-12" >
+                        <div class="panel panel-default">
+                          
+                            <div class="panel-heading panel_heading">
+                                <label id="labelSubTitle" class="control-label sv-header">
+                                    <strong>Search Result: Status Mapper</strong>
+                                </label>
+                            </div>
+
+                            <div class="panel-body">
+                                <div class="divGrid">
+                                    <table id="gridTable"></table>
+                                    <div id="jqGridPager"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+    
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        var gridId = "#gridTable";
+	    var entityName = "Mapping";
+	    var category = $("#inquiry_category").val();
+	    
+	    $("#form_inquiry").find("input").addClass("rm-padding");
+	    $("#form_inquiry").find("select").addClass("rm-padding");
+	    $("#form_inquiry").find(":radio").removeClass("rm-padding");
+	    
+	    $("#inquiry_category").change(function () {
+	        $('#inquiry_param').find('option').remove().end();
+	        category = $("#inquiry_category").val();
+	        $('#inquiry_val').val('');
+	        $('#labelSubTitle').text("Search Result: "+$("#inquiry_category option:selected").text());
+
+	        $('#inquiry_filter option:eq(0)').text("Active " + $("#inquiry_category option:selected").text());
+	        $('#inquiry_filter option:eq(1)').text("Inactive " + $("#inquiry_category option:selected").text());
+
+
+	        switch (category) // List menu of Drop down for search
+	        {
+	            case "StatusMapper":
+	                selectValues = { "SearchObjectName": "@ViewBag.categoryModel[0].ObjectName", "SearchAttributeName": "@ViewBag.categoryModel[0].AttributeName", "SearchCode": "@ViewBag.categoryModel[0].Code", "SearchLabel": "@ViewBag.categoryModel[0].Label" };
+	                break;
+	            case "TransactionAttributeMapping":
+	                selectValues = { "SearchObjectName": "@ViewBag.categoryModel[1].ObjectName", "SearchAttributeName": "@ViewBag.categoryModel[1].AttributeName", "SearchCode": "@ViewBag.categoryModel[1].Code", "SearchLabel": "@ViewBag.categoryModel[1].Label" };
+	                break;
+	            case "LoanType":
+	                selectValues = { "SearchAttributeName": "@ViewBag.categoryModel[2].AttributeName", "SearchCode": "@ViewBag.categoryModel[2].Code", "SearchLabel": "@ViewBag.categoryModel[2].Label" };
+	                break;
+	            case "AccountCardType":
+	                selectValues = { "SearchCode": "@ViewBag.categoryModel[3].Code", "SearchLabel": "@ViewBag.categoryModel[3].Label" };
+	                break;
+	            case "AccountType":
+	                selectValues = { "SearchCode": "@ViewBag.categoryModel[4].Code", "SearchLabel": "@ViewBag.categoryModel[4].Label" };
+	                break;
+	            case "CurrencyCode":
+	                selectValues = { "SearchCode": "@ViewBag.categoryModel[5].Code", "SearchLabel": "@ViewBag.categoryModel[5].Label" };
+	                break;
+	            case "ResponseCode":
+	                selectValues = { "SearchAttributeName": "@ViewBag.categoryModel[6].AttributeName", "SearchCode": "@ViewBag.categoryModel[6].Code", "SearchLabel": "@ViewBag.categoryModel[6].Label" };
+	                break;
+	            case "TransactionType":
+	                selectValues = { "SearchAttributeName": "@ViewBag.categoryModel[7].AttributeName", "SearchCode": "@ViewBag.categoryModel[7].Code", "SearchLabel": "@ViewBag.categoryModel[7].Label" };
+	                break;
+	            case "StringMap":
+	                selectValues = { "SearchObjectName": "@ViewBag.categoryModel[8].ObjectName", "SearchAttributeName": "@ViewBag.categoryModel[8].AttributeName", "SearchCode": "@ViewBag.categoryModel[8].Code", "SearchLabel": "@ViewBag.categoryModel[8].Label" };
+	                break;
+	            case "StatusChangeRCM":
+	                selectValues = { "SearchObjectName": "Entity", "SearchAttributeName": "Attribute", "SearchCode": "Code", "SearchLabel": "Value" };
+	                break;
+	        }
+
+	        $.each(selectValues, function (key, value) {
+	            $('#inquiry_param')
+                    .append($("<option></option>")
+                    .attr("value", key)
+                    .text(value));
+	        });
+
+	        var postData = {
+	            _param: function () { return $("#inquiry_param").val(); },
+	            _val: function () { return $("#inquiry_val").val(); },
+	            _filter: function () { return $("#inquiry_filter").val(); },
+	            _category: $("#inquiry_category").val()
+	        };
+	        loadJqgrid(gridId, postData, entityName);
+        });
+	    
+        var postData = {
+            _param: function () { return $("#inquiry_param").val(); },
+            _val: function () { return $("#inquiry_val").val(); },
+            _filter: function () { return $("#inquiry_filter").val(); },
+            _category: $("#inquiry_category").val()
+        };
+        loadJqgrid(gridId, postData, entityName);
+
+       
+        $('#form_inquiry').submit(function (event) {
+            (event.preventDefault) ? event.preventDefault() : event.returnValue = false;
+
+            var postData = {
+                _param: function () { return $("#inquiry_param").val(); },
+                _val: function () { return $("#inquiry_val").val(); },
+                _filter: function () { return $("#inquiry_filter").val(); },
+                _category: $("#inquiry_category").val()
+            };
+            loadJqgrid(gridId, postData, entityName);
+        });
+
+        $("#inquiry_filter").change(function () {
+            var postData = {
+                //_param: function () { return $("#inquiry_param").val(); },
+                _val: function () { return $("#inquiry_val").val(); },
+                _filter: function () { return $("#inquiry_filter").val(); },
+                _category: $("#inquiry_category").val()
+            };
+            loadJqgrid(gridId, postData, entityName);
+        });
+
+        $('#btn_new').click(function (e) {
+            e.preventDefault();
+            //openWindow(entityName + '/Create');
+            openWindow(entityName + '/Create?_category=' + $("#inquiry_category").val());
+        });
+
+        window.refreshGrid = function refreshGrid() { /*Added By Ardi For Auto Reload Grid After Submission (20151207)*/
+            var gridId = "#gridTable";
+            reloadGrid(gridId);
+        }
+    });
+</script>

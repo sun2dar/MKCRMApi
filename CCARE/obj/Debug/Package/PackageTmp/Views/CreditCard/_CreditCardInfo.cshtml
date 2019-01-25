@@ -1,0 +1,675 @@
+﻿@model CCARE.Models.CreditCardInfo
+
+<div class="panel-body" id="messagebox"></div>
+
+@if (ViewBag.searchResultsCount > 0)
+{
+    if (ViewBag.StatusChange != "")
+    {
+        <script type="text/javascript">ChangeStatusMessageBox("#messagebox", "@ViewBag.StatusChange", "@ViewBag.RequestId", "@ViewBag.TicketNumber");</script>
+    }
+    <div class="row form_text">
+        <div class="panel panel-default panel_form_child">
+
+            <div class="panel-heading" id="contentHeaderDiv">
+                <label class="control-label sv-header">
+                    <strong>Detail Credit Card Information</strong>
+                </label>
+                <a class="pull-right" data-toggle="collapse" href="#collapseContentDiv" aria-expanded="true" aria-controls="collapseContentDiv">
+                    <i class="fa fa-angle-double-up fa-lg"></i>
+                </a>
+            </div>
+
+            <div class="col-sm-offset-10 btn-change-status">
+                <input class="btn btn-primary btn-crm-layout" type="button" value="Change Status" id="changeStatusBtn" />
+            </div>
+            <div class="panel panel-default panel_form_child" id="statusDiv">
+                <div class="panel-heading" id="statusHeaderDiv">
+                    <label class="control-label sv-header">
+                        <strong>Change Status</strong>
+                    </label>
+                    <a class="pull-right" data-toggle="collapse" href="#collapseStatusDiv" aria-expanded="true" aria-controls="collapseStatusDiv">
+                        <i class="fa fa-angle-double-up fa-lg"></i>
+                    </a>          
+                </div>
+                <div id="collapseStatusDiv" class="panel-collapse collapse in" aria-labelledby="headingOne">
+                    <br />
+                    <div class="row form-horizontal">
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">Status</label>
+                                <div class="col-sm-2">
+                                    <select id="statusDdl" name="statusDdl" class="form-control">
+                                        <option value="">-- Select Status --</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row form-horizontal">
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">Change Status To</label>
+                                <div class="col-sm-2">
+                                    <select id="nextStatusDdl" name="nextStatusDdl" class="form-control" disabled>
+                                        <option value="">-- Select Status --</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                                <div class="col-sm-offset-2">
+                                    <input class="btn btn-primary btn-crm-layout" type="button" value="Kirim" id="sendBtn" data-loading-text="Processing..." />
+                                    <input class="btn btn-default btn-crm-layout" type="button" value="Batal" id="cancelBtn" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div id="collapseContentDiv" class="panel-collapse collapse in" aria-labelledby="headingOne">
+                <div class="panel-heading rm-padding-bottom">
+                    <label class="control-label sv-header">
+                        <strong>Account Cardholder</strong>
+                    </label>
+                </div>
+
+                <div class="panel-body rm-padding-top">
+                    <form class="form-horizontal">
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label class="col-sm-4 control-label">Nama Cardholder</label>
+                                    <label class="col-sm-8 control-label text-left-i"> : @Model.CardHolderName</label>
+                                    @Html.HiddenFor(x => x.CardHolderName)
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label class="col-sm-4 control-label">Nomor Kartu Kredit</label>
+                                    <label class="col-sm-8 control-label text-left-i"> : @Model.CreditCardNumber</label>
+                                    @Html.HiddenFor(x => x.CreditCardNumber)
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label class="col-sm-4 control-label">Tipe Kartu</label>
+                                    <label class="col-sm-8 control-label text-left-i"> : @Model.CardType</label>
+                                    @Html.HiddenFor(x => x.CardType)
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label class="col-sm-4 control-label">Status</label>
+                                    <label class="col-sm-8 control-label text-left-i"> : @Model.Status</label>
+                                    @Html.HiddenFor(x => x.Status)
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label class="col-sm-4 control-label">Limit Kredit</label>
+                                    <label class="col-sm-8 control-label text-left-i"> : @(Model.CreditLimit == null ? String.Empty : String.Format("{0:N}", Model.CreditLimit).Replace(',','@').Replace('.',',').Replace('@','.'))</label>
+                                    @Html.HiddenFor(x => x.CreditLimit)
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label class="col-sm-4 control-label">Exp date</label>
+                                    <label class="col-sm-8 control-label text-left-i"> : @Model.ExpiredDate</label>
+                                    @Html.HiddenFor(x => x.ExpiredDate)
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label class="col-sm-4 control-label">Saldo Terpakai</label>
+                                    <label class="col-sm-8 control-label text-left-i"> : @(Model.CurrentBalance == null ? String.Empty : String.Format("{0:N}", Model.CurrentBalance).Replace(',','@').Replace('.',',').Replace('@','.'))</label>
+                                    @Html.HiddenFor(x => x.CurrentBalance)
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label class="col-sm-4 control-label">Tunggakan</label>
+                                    <label class="col-sm-8 control-label text-left-i"> : @(Model.PastDue == null ? String.Empty : String.Format("{0:N}", Model.PastDue).Replace(',','@').Replace('.',',').Replace('@','.'))</label>
+                                    @Html.HiddenFor(x => x.PastDue)
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                
+                <div class="panel-heading rm-padding-bottom">
+                    <label class="control-label sv-header">
+                        <strong>Customer Data</strong>
+                    </label>
+                </div>
+                <div class="panel-body rm-padding-top">
+                    <form class="form-horizontal">
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label class="col-sm-4 control-label">No. Customer</label>
+                                    <label class="col-sm-8 control-label text-left-i"> : @Model.CustomerNo</label>
+                                    @Html.HiddenFor(x => x.CustomerNo)
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label class="col-sm-4 control-label">Tgl Pembebanan Iuran</label>
+                                    <label class="col-sm-8 control-label text-left-i"> : @(Model.AnnualFeeDate == null ? String.Empty : String.Format("{0:dd/MM/yyyy}", Model.AnnualFeeDate))</label>
+                                    @Html.HiddenFor(x => x.AnnualFeeDate)
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label class="col-sm-4 control-label">Nama</label>
+                                    <label class="col-sm-8 control-label text-left-i"> : @Model.CustomerName</label>
+                                    @Html.HiddenFor(x => x.CustomerName)
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label class="col-sm-4 control-label">Tgl Cetak Rekening</label>
+                                    <label class="col-sm-8 control-label text-left-i"> : @(Model.CycleDate == null ? String.Empty : String.Format("{0:dd/MM/yyyy}", Model.CycleDate))</label>
+                                    @Html.HiddenFor(x => x.CycleDate)
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label class="col-sm-4 control-label">Limit Kredit Gabungan</label>
+                                    <label class="col-sm-8 control-label text-left-i"> : @(Model.CreditLine == null ? String.Empty : String.Format("{0:N}", Model.CreditLine).Replace(',','@').Replace('.',',').Replace('@','.'))</label>
+                                    @Html.HiddenFor(x => x.CreditLine)
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label class="col-sm-4 control-label">Rekening Pendebetan</label>
+                                    <label class="col-sm-8 control-label text-left-i"> : @Model.AutoDebetAccountNo</label>
+                                    @Html.HiddenFor(x => x.AutoDebetAccountNo)
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label class="col-sm-4 control-label">Sisa Limit</label>
+                                    <label class="col-sm-8 control-label text-left-i"> : @(Model.AvailableCreditLimit == null ? String.Empty : String.Format("{0:N}", Model.AvailableCreditLimit).Replace(',','@').Replace('.',',').Replace('@','.'))</label>
+                                    @Html.HiddenFor(x => x.AvailableCreditLimit)
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label class="col-sm-4 control-label">% Pendebetan</label>
+                                    <label class="col-sm-8 control-label text-left-i"> : @Model.AutoDebet</label>
+                                    @Html.HiddenFor(x => x.AutoDebet)
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label class="col-sm-4 control-label">Batas Tarik Tunai</label>
+                                    <label class="col-sm-8 control-label text-left-i"> : @(Model.CashAdvancedLimit == null ? String.Empty : String.Format("{0:N}", Model.CashAdvancedLimit).Replace(',','@').Replace('.',',').Replace('@','.'))</label>
+                                    @Html.HiddenFor(x => x.CashAdvancedLimit)
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label class="col-sm-4 control-label">Rekening Jaminan</label>
+                                    <label class="col-sm-8 control-label text-left-i"> : @Model.SecuredAccountNo</label>
+                                    @Html.HiddenFor(x => x.SecuredAccountNo)
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label class="col-sm-4 control-label">Jumlah Tarik Tunai</label>
+                                    <label class="col-sm-8 control-label text-left-i"> : @(Model.CashAdvanced == null ? String.Empty : String.Format("{0:N}", Model.CashAdvanced).Replace(',','@').Replace('.',',').Replace('@','.'))</label>
+                                    @Html.HiddenFor(x => x.CashAdvanced)
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label class="col-sm-4 control-label">Area Kartu</label>
+                                    <label class="col-sm-8 control-label text-left-i"> : @Model.AreaCard</label>
+                                    @Html.HiddenFor(x => x.AreaCard)
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                
+                <div class="panel-heading rm-padding-bottom">
+                    <label class="control-label sv-header">
+                        <strong>Detail</strong>
+                    </label>
+                </div>
+                <div class="panel-body rm-padding-top">
+                    <form class="form-horizontal">
+                        <div class="row">
+                            <div class="col-sm-6">                                        
+                                <div class="form-group">
+                                    <label class="col-sm-4 control-label">Status Terakhir Cardpac</label>
+                                    <label class="col-sm-8 control-label text-left-i"> : @Model.BlockCode</label>
+                                    @Html.HiddenFor(x => x.BlockCode)
+                                </div>
+                            </div>
+                            <div class="col-sm-6">                                        
+                                <div class="form-group">
+                                    <label class="col-sm-4 control-label">Kode User</label>
+                                    <label class="col-sm-8 control-label text-left-i"> : @Model.UserCode</label>
+                                    @Html.HiddenFor(x => x.UserCode)
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-6">                                        
+                                <div class="form-group">
+                                    <label class="col-sm-4 control-label">Kredit Limit Terakhir</label>
+                                    <label class="col-sm-8 control-label text-left-i"> : @(Model.LastCreditLimit == null ? String.Empty : String.Format("{0:N}", Model.LastCreditLimit).Replace(',','@').Replace('.',',').Replace('@','.'))</label>
+                                    @Html.HiddenFor(x => x.LastCreditLimit)
+                                </div>
+                            </div>
+                            <div class="col-sm-6">                                        
+                                <div class="form-group">
+                                    <label class="col-sm-4 control-label">Tanggal Kredit Limit Terakhir</label>
+                                    <label class="col-sm-8 control-label text-left-i"> : @(Model.LastCreditLimitDate == null ? String.Empty : String.Format("{0:dd/MM/yyyy}", Model.LastCreditLimitDate))</label>
+                                    @Html.HiddenFor(x => x.LastCreditLimitDate)
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-6">                                        
+                                <div class="form-group">
+                                    <label class="col-sm-4 control-label">Kredit Limit Tetap</label>
+                                    <label class="col-sm-8 control-label text-left-i"> : @(Model.PermanentCreditLimit == null ? String.Empty : String.Format("{0:N}", Model.PermanentCreditLimit).Replace(',','@').Replace('.',',').Replace('@','.'))</label>
+                                    @Html.HiddenFor(x => x.PermanentCreditLimit)
+                                </div>
+                            </div>
+                            <div class="col-sm-6">                                        
+                                <div class="form-group">
+                                    <label class="col-sm-4 control-label">Tanggal Berlaku</label>
+                                    <label class="col-sm-8 control-label text-left-i"> : @(Model.EffectiveDate == null ? String.Empty : String.Format("{0:dd/MM/yyyy}", Model.EffectiveDate))</label>
+                                    @Html.HiddenFor(x => x.EffectiveDate)
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-6">                                        
+                                <div class="form-group">
+                                    <label class="col-sm-4 control-label">Kredit Limit Sementara</label>
+                                    <label class="col-sm-8 control-label text-left-i"> : @(Model.TemporaryCreditLimit == null ? String.Empty : String.Format("{0:N}", Model.TemporaryCreditLimit).Replace(',','@').Replace('.',',').Replace('@','.'))</label>
+                                    @Html.HiddenFor(x => x.TemporaryCreditLimit)
+                                </div>
+                            </div>
+                            <div class="col-sm-6">                                        
+                                <div class="form-group">
+                                    <label class="col-sm-4 control-label">Tanggal Expired</label>
+                                    <label class="col-sm-8 control-label text-left-i"> : @(Model.TemporaryCreditLimitExpiredDate == null ? String.Empty : String.Format("{0:dd/MM/yyyy}", Model.TemporaryCreditLimitExpiredDate))</label>
+                                    @Html.HiddenFor(x => x.TemporaryCreditLimitExpiredDate)
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-6">                                        
+                                <div class="form-group">
+                                    <label class="col-sm-4 control-label">Status PIN Cash Advance</label>
+                                    <label class="col-sm-8 control-label text-left-i"> : @Model.OwnershipFlag</label>
+                                    @Html.HiddenFor(x => x.OwnershipFlag)
+                                </div>
+                            </div>
+                            <div class="col-sm-6">                                        
+                                <div class="form-group">
+                                    <label class="col-sm-4 control-label">Tanggal Buka</label>
+                                    <label class="col-sm-8 control-label text-left-i"> : @(Model.OpenDate == null ? String.Empty : String.Format("{0:dd/MM/yyyy}", Model.OpenDate))</label>
+                                    @Html.HiddenFor(x => x.OpenDate)
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-6">                                        
+                                <div class="form-group">
+                                    <label class="col-sm-4 control-label">Date Pin Maintain</label>
+                                    <label class="col-sm-8 control-label text-left-i"> : @(Model.PinMaintainDate == null ? String.Empty : String.Format("{0:dd/MM/yyyy}", Model.PinMaintainDate))</label>
+                                    @Html.HiddenFor(x => x.PinMaintainDate)
+                                </div>
+                            </div>
+                            <div class="col-sm-6">                                        
+                                <div class="form-group">
+                                    <label class="col-sm-4 control-label">Tanggal Tutup</label>
+                                    <label class="col-sm-8 control-label text-left-i"> : @(Model.CloseDate == null ? String.Empty : String.Format("{0:dd/MM/yyyy}", Model.CloseDate))</label>
+                                    @Html.HiddenFor(x => x.CloseDate)
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-6">                                        
+                                <div class="form-group">
+                                    <label class="col-sm-4 control-label">PIN Salah Tandem</label>
+                                    <label class="col-sm-8 control-label text-left-i"> : @Model.TandemWrongPinCounter</label>
+                                    @Html.HiddenFor(x => x.TandemWrongPinCounter)
+                                </div>
+                            </div>
+                            <div class="col-sm-6">                                        
+                                <div class="form-group">
+                                    <label class="col-sm-4 control-label">Tanggal Diupdate</label>
+                                    <label class="col-sm-8 control-label text-left-i"> : @(Model.MaintenanceDate == null ? String.Empty : String.Format("{0:dd/MM/yyyy}", Model.MaintenanceDate))</label>
+                                    @Html.HiddenFor(x => x.MaintenanceDate)
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-6">                                        
+                                <div class="form-group">
+                                    <label class="col-sm-4 control-label">Status Terakhir Tandem</label>
+                                    <label class="col-sm-8 control-label text-left-i"> : @Model.LastTandemStatus</label>
+                                    @Html.HiddenFor(x => x.LastTandemStatus)
+                                </div>
+                            </div>
+                            <div class="col-sm-6">                                        
+                                <div class="form-group">
+                                    <label class="col-sm-4 control-label">Tanggal / Jam Update Tandem</label>
+                                    <label class="col-sm-8 control-label text-left-i"> : @(Model.TandemUpdateDate == null ? String.Empty : String.Format("{0:dd/MM/yyyy}", Model.TandemUpdateDate))</label>
+                                    @Html.HiddenFor(x => x.TandemUpdateDate)
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-6">                                        
+                                <div class="form-group">
+                                    <label class="col-sm-4 control-label">Diupdate Oleh (User Grp)</label>
+                                    <label class="col-sm-8 control-label text-left-i"> : @Model.UpdateByUserGroup</label>
+                                    @Html.HiddenFor(x => x.UpdateByUserGroup)
+                                </div>
+                            </div>
+                            <div class="col-sm-6">                                        
+                                <div class="form-group">
+                                    <label class="col-sm-4 control-label">Diupdate Oleh (User Num)</label>
+                                    <label class="col-sm-8 control-label text-left-i"> : @Model.UpdateByUserNumber</label>
+                                    @Html.HiddenFor(x => x.UpdateByUserNumber)
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-6">                                        
+                                <div class="form-group">
+                                    <label class="col-sm-4 control-label">Status Statement / Pembayaran</label>
+                                    <label class="col-sm-8 control-label text-left-i"> : @Model.BillingStatementSendStatus</label>
+                                    @Html.HiddenFor(x => x.BillingStatementSendStatus)
+                                </div>
+                            </div>
+                            <div class="col-sm-6">                                        
+                                <div class="form-group">
+                                    <label class="col-sm-4 control-label">Tanggal Kredit Limit</label>
+                                    <label class="col-sm-8 control-label text-left-i"> : @(Model.CreditLimitDate == null ? String.Empty : String.Format("{0:dd/MM/yyyy}", Model.CreditLimitDate))</label>
+                                    @Html.HiddenFor(x => x.CreditLimitDate)
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="modal fade" id="confirm-summary" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content" style="background-color:#ecf1f5;">
+                <div class="modal-header" style="background-color:#639CCE; color:white;">
+                    <h2>Summary</h2>
+                    <h4>Add your summary.</h4>
+                </div>
+                <div class="modal-body input-lg" style="height:250px;">
+                    <div class="container-fluid form-horizontal">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="form-group">
+                                    <div class="col-sm-3">
+                                        <label class="control-label">Summary</label>
+                                    </div>
+                                    <div class="col-sm-9">
+                                        <input type="text" class="form-control" id="Summary" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <br />
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                    <a class="btn btn-danger btn-ok">Ok</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script src="~/assets/js/changeStatusJs.js"></script>
+    <script type="text/javascript">
+        var entityType = 13;
+        var statusList = {
+            1: "@Model.StatusKey"
+        };
+        var statusLabelList = {
+            1: "@Model.Status"
+        };
+
+        //CreditCard
+        var customerId = "@ViewBag.CreditCard.CustomerId";
+        var hasCIS = customerId == "00000000-0000-0000-0000-000000000000" ? false : true;
+        var cardNo = "@ViewBag.CreditCard.CreditCardNumber";
+        var userId = "";
+        var emailAddress = "";
+        var hpNo = "";
+        var corpId = "";
+        var accountNo = "";
+        var customerNo = "@ViewBag.CreditCard.CreditCardCustomerNo";
+        var snKeyBCA = "";
+        var category = "";
+
+        var params = "Id=@ViewBag.CreditCard.Id";
+        params += "&CreditCardNumber=@ViewBag.CreditCard.CreditCardNumber";
+        //params += "&CardholderName=@ViewBag.CreditCard.CardholderName";
+        //params += "&CardType=@ViewBag.CreditCard.CardType";
+        //params += "&CCType=@ViewBag.CreditCard.CCType";
+        params += "&CreditCardCustomerNo=@ViewBag.CreditCard.CreditCardCustomerNo";
+        params += "&CustomerId=@ViewBag.CreditCard.CustomerId";
+        //params += "&CustomerIdName=@ViewBag.CreditCard.CustomerIdName";
+        //params += "&Status=@ViewBag.CreditCard.Status";
+
+        var statusType;
+        var statusTypeLabel;
+        var oldStatus;
+        var newStatus;
+        var oldStatusLabel;
+        var newStatusLabel;
+        var reason;
+
+
+        $(document).ready(function () {
+            initHideStatus();
+        });
+
+        $("#changeStatusBtn").click(function () {
+            getDDlLabel(entityType, statusList);
+            showAll();
+        });
+
+        $("#cancelBtn").click(function () {
+            hideAll();
+        });
+
+        $("#statusDdl").change(function () {
+            statusType = $(this).val();
+            var currentStatus = getValueByKey(statusList, statusType);
+            ddlLabelChange(entityType, statusType, currentStatus);
+        });
+
+        $("#nextStatusDdl").change(function () {
+            ddlStatusChange();
+        });
+
+        $("#sendBtn").click(function () {
+            $("#sendBtn").button('loading');
+            statusType = $("#statusDdl").val();
+            if (statusType == '') {
+                alert('Please select a status');
+            } else {
+                statusTypeLabel = $("#statusDdl :selected").text();
+                oldStatusLabel = getValueByKey(statusLabelList, statusType);
+                newStatusLabel = $("#nextStatusDdl :selected").text();
+
+                if (confirm('Are you sure you want to change status from ' + oldStatusLabel + ' to ' + newStatusLabel + ' ?')) {
+
+                    cardNo = "@Model.CreditCardNumber";
+                    oldStatus = getValueByKey(statusList, statusType);
+                    newStatus = $("#nextStatusDdl").val();
+                    reason = "";
+
+                    if (hasCIS) {
+                        $("#confirm-summary").modal('show');
+                        $("#Summary").prop('disabled', false);
+                    } else {
+                        changeStatusViaInquiry();
+                    }
+                }
+            }
+        });
+
+        $("#confirm-summary").on('show.bs.modal', function (e) {
+            $(this).find('.btn-ok').one("click", function () {
+                var additionalSummary = $("#Summary").val();
+                var createreq;
+                var change;
+                var updatereq;
+                var statusresult;
+
+                createreq = createRequest(
+                    entityType, statusType, oldStatus, newStatus,
+                    customerId, accountNo, cardNo, hpNo, customerNo, userId, emailAddress, snKeyBCA, corpId, category, reason,
+                    additionalSummary);
+
+                if (createreq.status == RequestSuccess) {
+                    change = changeStatus();
+
+                    if (change.status) {
+                        updatereq = updateRequest('close', createreq.requestId, change);
+
+                        if (updatereq.status) {
+                            statusresult = StatusChangeSuccess;
+                        } else {
+                            statusresult = StatusChangeSuccessButRequestCantClose;
+                        }
+                    } else {
+                        updatereq = updateRequest('cancel', createreq.requestId, change);
+
+                        if (updatereq.status) {
+                            statusresult = StatusChangeFailRequestCancel;
+                        } else {
+                            statusresult = StatusChangeFailButRequestCantCancel;
+                        }
+                    }
+
+                } else if (createreq.status == RequestNotCreated) {
+                    change = changeStatus();
+
+                    if (change.status) {
+                        statusresult = StatusChangeRequestNotCreated;
+                    } else {
+                        statusresult = StatusChangeFail;
+                    }
+
+                } else { // if (createreq.status == RequestFail) {
+                    change = changeStatus();
+
+                    if (change.status) {
+                        statusresult = StatusChangeNoRequest;
+                    } else {
+                        statusresult = StatusChangeFail;
+                    }
+
+                }
+
+                writeLog(entityType, statusTypeLabel, oldStatusLabel, newStatusLabel, statusresult, createreq.requestId, createreq.ticketNumber);
+                $("#partialView").load("/CreditCard/CreditCardInfoPartial?" + params + "&statusChange=" + statusresult + "&requestId=" + createreq.requestId + "&ticketNumber=" + createreq.ticketNumber, " #partialView");
+
+                $('.btn-default').click();
+                $("#Summary").val("");
+            });
+        });
+
+        function changeStatusViaInquiry() {
+            var change;
+            var statusresult;
+
+            change = changeStatus();
+            if (change.status) {
+                statusresult = StatusChangeSuccessViaInquiry;
+            } else {
+                statusresult = StatusChangeFail;
+            }
+
+            writeLog(entityType, statusTypeLabel, oldStatusLabel, newStatusLabel, statusresult, "", "");
+            $("#partialView").load("/CreditCard/CreditCardInfoPartial?" + params + "&statusChange=" + statusresult, " #partialView");
+        }
+
+        function changeStatus() {
+            var change;
+            switch (statusType) {
+                case '1':
+                    change = changeBlockStatus(cardNo, newStatus);
+                    break;
+            }
+            return change;
+        }
+
+        function changeBlockStatus(cardNo, newStatus) {
+            var change = { status: false, updatetime: "", updatedbyid: "", updatedbyname: "" };
+            $.ajax({
+                url: "/CreditCard/ChangeBlockStatus",
+                data: {
+                    CardNo: cardNo,
+                    NewStatus: newStatus
+                },
+                dataType: 'json',
+                async: false,
+                beforeSend: function () {
+                    $("#sendBtn").button('loading');
+                },
+                success: function (data) {
+                    if (data.Status == 1) {
+                        change.status = true;
+                        change.updatetime = data.UpdateTime;
+                        change.updatedbyid = data.UpdatedBy.ID;
+                        change.updatedbyname = data.UpdatedBy.Name;
+                    }
+                },
+                complete: function () {
+                    setTimeout(function () {
+                        $("#sendBtn").button('reset');
+                    }, 1000);
+                }
+            });
+            return change;
+        }
+
+    </script>
+}
+else
+{
+    <script type="text/javascript">$("#messagebox").html(MessageText('error', 'No Record Found'));</script>
+}

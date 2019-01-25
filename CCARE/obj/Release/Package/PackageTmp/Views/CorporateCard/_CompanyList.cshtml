@@ -1,0 +1,29 @@
+﻿@if (ViewBag.searchResultsCount > 0)
+{
+    <div class="panel-body">
+        <form class="form-horizontal">
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="divGrid">
+                        <table id="gridCompanyList"></table>
+                        <div id="gridCompanyListPager"></div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $(".form-horizontal").find("input").attr("disabled", "disabled");//.css('background-color', 'white');
+            if (set(@Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(@ViewBag.searchResultsCount))) > 0) {
+                var model = set(@Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(@ViewBag.searchResults)));
+                loadLocalJqgrid("#gridCompanyList", model, "CompanyList");
+            }
+        });
+    </script>
+}
+else
+{
+    <div class="panel-body" id="no-record-found"></div>
+    <script type="text/javascript">$("#no-record-found").html(NoRecordFound());</script>
+}

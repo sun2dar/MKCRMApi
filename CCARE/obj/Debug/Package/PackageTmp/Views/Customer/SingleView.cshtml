@@ -1,0 +1,532 @@
+﻿@{
+    
+    ViewBag.Title = "Single View";
+    Layout = null;
+
+    int gridMaxRows = ViewBag.GridMaxRows;
+    ViewBag.CustomerIdName = System.Text.RegularExpressions.Regex.Replace(ViewBag.CustomerIdName, @"[^0-9a-zA-Z]+", ",");
+}
+
+@if (ViewBag.hasAccess == 0)
+{
+    <div class="panel-body" id="messagebox"></div>
+    <script type="text/javascript">$("#messagebox").html(MessageText('error', 'You are not Authorized to access this page.'));</script>
+}
+else
+{
+    <div class="container-fluid">
+        <!-- tabs -->
+        <div class="row">
+            <div class="col-sm-12 panel panel-default panel_form_parent scroll-y">
+                <div class="col-sm-12">
+                    <!-- Products -->
+                    <div class="row form_text">
+                        <br />
+                        <div class="panel panel-default panel_form_child">
+                            <div class="panel-heading">
+                                <label class="control-label sv-header">
+                                    <strong>Products</strong>
+                                </label>
+                                <a class="pull-right" data-toggle="collapse" href="#collapseProducts" aria-expanded="true" aria-controls="collapseProducts">
+                                    <i class="fa fa-angle-double-up fa-lg"></i>
+                                </a>
+                            </div>
+                            <div id="collapseProducts" class="panel-collapse collapse in" aria-labelledby="headingOne">
+
+                                @if (ViewBag.DepositModelCount > 0)
+                                {
+                                    <hr />
+                                    <div class="form-horizontal">
+                                        <div class="row">
+                                            <div class="col-sm-6">
+                                                <div class="form-group">
+                                                        <label class="col-sm-12 sv-group">Deposits</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-6">
+                                                @if (ViewBag.DepositModelCount >= gridMaxRows)
+                                                {
+                                                    <div class="form-group">
+                                                        <label class="col-sm-4 control-label">Account Number :</label>
+                                                        <div class="col-sm-4">
+                                                            <input type="text" id="depositAccountNoTxt" name="depositAccountNoTxt" class="form-control" value="">
+                                                        </div>
+                                                        <div class="col-sm-4">
+                                                            <button id="getDepositBtn" class="btn btn-primary btn-crm-layout" type="submit">
+                                                                <span class="glyphicon glyphicon-search glyp-space" aria-hidden="true"></span>
+                                                                Search
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                }
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-sm-12" >
+                                                <div class="panel-body">
+                                                    <div class="divGrid">
+                                                        <table id="gridDeposit"></table>
+                                                        <div id="gridDepositPager"></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+
+                                @if (ViewBag.CreditCardModelCount > 0)
+                                {
+                                    <hr />
+                                    <div class="form-horizontal">
+                                        <div class="row">
+                                            <div class="col-sm-4">
+                                                <div class="form-group">
+                                                        <label class="col-sm-12 sv-group">Credit Cards</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-2">
+                                                <div class="form-group">
+                                                    <button id="getAllStatusBtn" class="btn btn-info btn-crm-layout" type="button">
+                                                        <span class="glyphicon glyphicon-eye-open glyp-space" aria-hidden="true"></span>
+                                                        Get All Status
+                                                    </button>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-6">
+                                                @if (ViewBag.CreditCardModelCount >= gridMaxRows)
+                                                {
+                                                    <div class="form-group">
+                                                        <label class="col-sm-4 control-label">Credit Card Number :</label>
+                                                        <div class="col-sm-4">
+                                                            <input type="text" id="creditCardNoTxt" name="creditCardNoTxt" class="form-control" value="">
+                                                        </div>
+                                                        <div class="col-sm-4">
+                                                            <button id="getCreditCardBtn" class="btn btn-primary btn-crm-layout" type="submit">
+                                                                <span class="glyphicon glyphicon-search glyp-space" aria-hidden="true"></span>
+                                                                Search
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                }
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-12" >
+                                                <div class="panel-body">
+                                                    <div class="divGrid">
+                                                        <table id="gridCreditCard"></table>
+                                                        <div id="gridCreditCardPager"></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+
+                                @if (ViewBag.LoanModelCount > 0)
+                                {
+                                    <hr />
+                                    <div class="form-horizontal">
+                                        <div class="row">
+                                            <div class="col-sm-6">
+                                                <div class="form-group">
+                                                        <label class="col-sm-12 sv-group">Loans</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-6">
+                                                @if (ViewBag.LoanModelCount >= gridMaxRows)
+                                                {
+                                                    <div class="row">
+                                                        <div class="col-sm6">
+                                                            <div class="form-group">
+                                                                <label class="col-sm-4 control-label">Account Number :</label>
+                                                                <div class="col-sm-4">
+                                                                    <input type="text" id="loanAccountNoTxt" name="loanAccountNoTxt" class="form-control" value="">
+                                                                </div>
+                                                                <div class="col-sm-4"></div>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="col-sm6">
+                                                            <div class="form-group">
+                                                                <label class="col-sm-4 control-label">Loan Number :</label>
+                                                                <div class="col-sm-4">
+                                                                    <input type="text" id="loanNumberTxt" name="loanNumberTxt" class="form-control" value="">
+                                                                </div>
+                                                                <div class="col-sm-4">
+                                                                    <button id="getLoanBtn" class="btn btn-primary btn-crm-layout" type="submit">
+                                                                        <span class="glyphicon glyphicon-search glyp-space" aria-hidden="true"></span>
+                                                                        Search
+                                                                    </button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                }
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-12" >
+                                                <div class="panel-body">
+                                                    <div class="divGrid">
+                                                        <table id="gridLoan"></table>
+                                                        <div id="gridLoanPager"></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- e-Banking -->
+                    <div class="row form_text">
+                        <div class="panel panel-default panel_form_child">
+                            <div class="panel-heading">
+                                <label class="control-label sv-header">
+                                    <strong>e-Banking</strong>
+                                </label>
+                                <a class="pull-right" data-toggle="collapse" href="#collapseEbanking" aria-expanded="true" aria-controls="collapseEbanking">
+                                    <i class="fa fa-angle-double-up fa-lg"></i>
+                                </a>
+                            </div>
+                            <div id="collapseEbanking" class="panel-collapse collapse in" aria-labelledby="headingOne">
+                                @if (ViewBag.ChannelModelCount > 0)
+                                {
+                                    <hr />
+                                    <div class="form-horizontal">
+                                        <div class="row">
+                                            <div class="col-sm-6">
+                                                <div class="form-group">
+                                                        <label class="col-sm-12 sv-group">e-Banking</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-6"></div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-12" >
+                                                <div class="panel-body">
+                                                    <div class="divGrid">
+                                                        <table id="gridChannel"></table>
+                                                        <div id="gridChannelPager"></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+
+            $('a>i').click(function () {
+                $(this).toggleClass('fa-rotate-180');
+            });
+
+            if (set(@Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(@ViewBag.CreditCardModelCount))) > 0) {
+                var creditcardData = set(@Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(@ViewBag.CreditCardModel)));
+                loadJqgridPopup("#gridCreditCard", creditcardData, "CreditCard");
+            }
+
+            if (set(@Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(@ViewBag.DepositModelCount))) > 0) {
+                var depositData = set(@Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(@ViewBag.DepositModel)));
+                loadJqgridPopup("#gridDeposit", depositData, "Deposit");
+            }
+
+            if (set(@Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(@ViewBag.LoanModelCount))) > 0) {
+                var loanData = set(@Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(@ViewBag.LoanModel)));
+                loadJqgridPopup("#gridLoan", loanData, "Loan");
+            }
+
+            if (set(@Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(@ViewBag.ChannelModelCount))) > 0) {
+                var channelData = set(@Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(@ViewBag.ChannelModel)));
+                loadJqgridPopup("#gridChannel", channelData, "Channel");
+            }
+        });
+
+        $("#getAllStatusBtn").click(function () {
+            var creditcardList = new Array();
+
+            var grid = jQuery('#gridCreditCard');
+            var creditcardIds = grid.jqGrid('getDataIDs');
+
+            for (var i = 0; i < creditcardIds.length; i++) {
+                var _rowid = creditcardIds[i];
+                var _rowData = grid.getRowData(_rowid);
+                var creditcard = new Object();
+                creditcard.Id = _rowid;
+                creditcard.CreditCardNumber = _rowData.CreditCardNumber;
+                creditcard.CCType = _rowData.CCType;
+                creditcardList.push(creditcard);
+            }
+
+            $.ajax({
+                type: "GET",
+                dataType: "json",
+                url: "GetAllCreditCardStatus",
+                data: { _strCreditCards: JSON.stringify(creditcardList) },
+                cache: false,
+                beforeSend: function () {
+                    $.blockUI({ message: 'Loading...' });
+                },
+                success: function (data) {
+                    for (var i = 0; i < data.length; i++) {
+                        var rowid = data[i].Id;
+                        grid.jqGrid("setCell", rowid, "Status", data[i].Status);
+                    }
+                },
+                error: function (msg) {
+                    alert('Failed to get Credit Card status');
+                },
+                complete: function () {
+                    $.unblockUI();
+                }
+            });
+        });
+
+        function loadJqgridPopup(gridId, postData, entityname) {
+            loadLocalJqgrid(gridId, postData, entityname);
+            $(gridId).jqGrid('setGridParam', {
+                ondblClickRow: function (rowid, iRow, iCol) {
+                    var selected = $(gridId).getRowData(rowid);
+                    var url, paramList;
+
+                    switch (entityname) {
+                        case "CreditCard":
+                            paramList =
+                                'Id=' + selected.Id +
+                                '&CreditCardNumber=' + selected.CreditCardNumber +
+                                '&CardholderName=' + selected.CardholderName.replace('#', '%23') +
+                                '&CardType=' + selected.CardType +
+                                '&CCType=' + selected.CCType +
+                                '&CreditCardCustomerNo=' + selected.CreditCardCustomerNo +
+                                '&CustomerId=' + selected.CustomerId +
+                                '&CustomerIdName=' + selected.CustomerIdName +
+                                '&Status=' + selected.Status;
+                            url = '/' + entityname + '/Index?' + paramList;
+                            break;
+
+                        case "Deposit":
+                            paramList =
+                                'Id=' + selected.Id +
+                                '&AccountNo=' + selected.AccountNo +
+                                '&CardNo=' + selected.CardNo +
+                                '&OwnerTypeLabel=' + selected.OwnerTypeLabel +
+                                '&RelationType=' + selected.RelationType +
+                                '&CustomerId=' + selected.CustomerId +
+                                '&CustomerIdName=' + selected.CustomerIdName.replace('\\', '') +
+                                '&RelationshipWith=' + selected.RelationshipWith;
+                            url = '/' + entityname + '/Index?' + paramList;
+                            break;
+
+                        case "Loan":
+                            paramList =
+                                'Id=' + selected.Id +
+                                '&AccountNo=' + selected.AccountNo +
+                                '&LoanNumber=' + selected.LoanNumber +
+                                '&CustomerId=' + selected.CustomerId +
+                                '&CustomerIdName=' + selected.CustomerIdName +
+                                '&LoanTypeIdCode=' + selected.LoanTypeIdCode +
+                                '&LoanTypeIdName=' + selected.LoanTypeIdName;
+                            url = '/' + entityname + '/Index?' + paramList;
+                            break;
+
+                        case "Channel":
+                            paramList =
+                                'channelTypeId=' + selected.ChannelTypeId +
+                                '&channelType=' + selected.ChannelType +
+                                '&customerId=' + selected.CustomerId +
+                                '&customerIdName=' + selected.CustomerIdName +
+                                '&cardNo=' + selected.CardNo +
+                                '&userId=' + selected.UserId +
+                                '&emailAddress=' + selected.EmailAddress +
+                                '&hpNo=' + selected.HpNo +
+                                '&corpId=' + selected.CorpId +
+                                '&accountNo=' + selected.AccountNo +
+                                '&customerNo=' + selected.CustomerNo +
+                                '&snKeyBCA=' + selected.SNKeyBCA +
+                                '&category=' + selected.Category;
+
+                            channelTypeId = selected.ChannelTypeId;
+                            switch (channelTypeId) {
+                                case "901": url = '/KlikBCAIndividu/Index?' + paramList; break;
+                                case "902": url = '/MBCA/Index?' + paramList; break;
+                                case "903": url = '/SMSTopUp/Index?' + paramList; break;
+                                case "904": url = '/BCAbyPhone/Index?' + paramList; break;
+                                case "905": url = '/KlikBCABisnis/Index?' + paramList; break;
+                                case "906": url = '/SMSBCA/Index?' + paramList; break;
+                            }
+                            break;
+                    }
+                    openWindow(url);
+                }
+            })
+            .navGrid(gridId + "Pager", { edit: false, add: false, del: false, search: false });
+        };
+
+        $("#getCreditCardBtn").click(function () {
+            var cardno = $("#creditCardNoTxt").val();
+            if (cardno == '') {
+                alert('Please enter credit card number');
+            } else {
+                getCreditCardData(cardno);
+            }
+        });
+
+        $("#getDepositBtn").click(function () {
+            var accountno = $("#depositAccountNoTxt").val();
+            if (accountno == '') {
+                alert('Please enter account number');
+            } else {
+                getDepositData(accountno);
+            }
+        });
+
+        $("#getLoanBtn").click(function () {
+            var accountno = $("#loanAccountNoTxt").val();
+            var loannumber = $("#loanNumberTxt").val();
+            if (accountno == '' || loannumber == '') {
+                alert('Please enter account number and loan number');
+            } else {
+                getLoanData(accountno, loannumber);
+            }
+        });
+
+        function getCreditCardData(cardno) {
+            var url, paramList;
+
+            $.ajax({
+                type: "GET",
+                dataType: "json",
+                url: "GetCreditCardData",
+                data: { _cisno: '@ViewBag.CISNumber', _cardno: cardno },
+                cache: false,
+                beforeSend: function () {
+                    $.blockUI({ message: 'Loading...' });
+                },
+                success: function (data) {
+                    if (data.CreditCardNumber == null) {
+                        alert('Credit Card is not found');
+                    } else {
+                        paramList =
+                            'Id=' + '' +
+                            '&CreditCardNumber=' + data.CreditCardNumber +
+                            '&CustomerId=' + '@ViewBag.CustomerId' +
+                            '&CustomerIdName=' + '@ViewBag.CustomerIdName' +
+                            '&CreditCardCustomerNo=' + data.CreditCardCustomerNo +
+                            '&CardType=' + data.CardType +
+                            '&CardholderName=' + data.CardholderName;
+                        url = '/CreditCard/Index?' + paramList;
+                        openWindow(url);
+                    }
+                },
+                error: function (msg) {
+                    alert('Failed to get Credit Card info');
+                },
+                complete: function () {
+                    $.unblockUI();
+                }
+            });
+        }
+
+        function getDepositData(accountno) {
+            var url, paramList;
+
+            $.ajax({
+                type: "GET",
+                dataType: "json",
+                url: "GetDepositData",
+                data: { _cisno: '@ViewBag.CISNumber', _accountno: accountno },
+                cache: false,
+                beforeSend: function () {
+                    $.blockUI({ message: 'Loading...' });
+                },
+                success: function (data) {
+                    if (data.AccountNo == null) {
+                        alert('Deposit is not found');
+                    } else {
+                        paramList =
+                            'Id=' + '' +
+                            '&AccountNo=' + data.AccountNo +
+                            '&CardNo=' + data.CardNo +
+                            '&OwnerTypeLabel=' + data.OwnerTypeLabel +
+                            '&RelationType=' + data.RelationType +
+                            '&CustomerId=' + '@ViewBag.CustomerId' +
+                        '&CustomerIdName=' + '@ViewBag.CustomerIdName' +
+                        '&RelationshipWith=' + '';
+                        url = '/Deposit/Index?' + paramList;
+                        openWindow(url);
+                    }
+                },
+                error: function (msg) {
+                    alert('Failed to get Deposit info');
+                },
+                complete: function () {
+                    $.unblockUI();
+                }
+            });
+        }
+
+        function getLoanData(accountno, loannumber) {
+            var url, paramList;
+
+            $.ajax({
+                type: "GET",
+                dataType: "json",
+                url: "GetLoanData",
+                data: { _accountno: accountno, _loannumber: loannumber },
+                cache: false,
+                beforeSend: function () {
+                    $.blockUI({ message: 'Loading...' });
+                },
+                success: function (data) {
+                    paramList =
+                        'Id=' + '' +
+                        '&AccountNo=' + data.AccountNumber +
+                        '&LoanNumber=' + data.LoanNumber +
+                        '&CustomerId=' + '@ViewBag.CustomerId' +
+                        '&CustomerIdName=' + '@ViewBag.CustomerIdName' +
+                        '&LoanTypeIdCode=' + data.LoanType +
+                        '&LoanTypeIdName=' + data.LoanType;
+                    url = '/Loan/Index?' + paramList;
+                    openWindow(url);
+                },
+                error: function (msg) {
+                    alert('Failed to get Loan info');
+                },
+                complete: function () {
+                    $.unblockUI();
+                }
+            });
+        }
+
+        $("#creditCardNoTxt").keyup(function () {
+            isNumber($(this).val(), "#creditCardNoTxt");
+        });
+
+        $("#depositAccountNoTxt").keyup(function () {
+            isNumber($(this).val(), "#depositAccountNoTxt");
+        });
+
+        $("#loanAccountNoTxt").keyup(function () {
+            isNumber($(this).val(), "#loanAccountNoTxt");
+        });
+
+        $("#loanNumberTxt").keyup(function () {
+            isNumber($(this).val(), "#loanNumberTxt");
+        });
+    </script>
+
+}
+

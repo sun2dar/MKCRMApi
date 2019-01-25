@@ -1,0 +1,110 @@
+﻿@model CCARE.Models.RequestResolutionArchive
+
+@{
+    ViewBag.Title = "Edit";
+    Layout = "~/Views/Shared/_LayoutEntity.cshtml";
+}
+
+@section title
+{
+    Task
+}
+
+@section entityLogo
+{
+    <img class="crm-logo" src="~/assets/images/ico_lrg_112.gif" />
+}
+
+@section formTitle
+{
+    <div class="text_title">
+        <h1>Information</h1>
+        Task: @Model.Subject
+    </div>  
+}
+
+@section navHeader
+{
+    <ul class="nav navbar-nav navbar-left">
+    </ul>
+}
+
+@section footerStatus
+{
+    <div class="footer_text"> Status :
+
+        
+    </div>
+}
+
+@section sidebarMenu
+{
+    <li class="active"><a href="#">Information</a></li>
+}
+
+<div class="container-fluid">
+    <!-- tabs -->
+    <div class="row">
+        <div class="col-sm-12 panel panel-default panel_form_parent">
+            <ul id="myTab2" class="nav nav-tabs crm-padding-top-10">
+                <li class="active"><a href="#general" id="general-tab" data-toggle="tab">General</a></li>
+            </ul>             
+            <br />        
+                 
+            <div class="tab-content myContent_Tab">
+                <div class="tab-pane fade active in" id="general" aria-labelledby="general-tab">
+                @using (Html.BeginForm("Edit", "Task", FormMethod.Post, new { id = "form_resolution" }))
+                {
+                    
+                    <!-- panel content -->
+                    <div class="col-sm-12">
+                      
+                        <div class="row form_text">
+                            <div class="panel panel-default panel_form_child">
+                                <div class="panel-heading">
+                                    <label class="control-label"><strong>Resolution</strong></label>
+                                </div>
+                                <div class="panel-body">
+                                    <div class="form-horizontal">
+                                        @*<div class="row">
+                                            <div class="col-sm-12">                                        
+                                                <div class="form-group">
+                                                    <label class="col-sm-2 control-label mandatory">Resolution</label>
+                                                    <div class="col-sm-10">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>*@
+                                        <div class="row">
+                                            <div class="col-sm-12">                                        
+                                                <div class="form-group">
+                                                    <label class="col-sm-2 control-label mandatory">Description</label>
+                                                    <div class="col-sm-10">
+                                                        @Html.TextAreaFor(x => x.Description, new { @class = "form-control", @style = "height:150px; min-height:150px; max-height:150px;", @readonly  = "readonly"})
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>                               
+                            </div>
+                        </div>     
+                        
+                    </div>
+                }
+                </div>
+            </div>
+                
+        </div>        
+    </div>    
+</div>
+
+<div class="row form_text"></div>
+
+<div id="response-modal"></div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+
+    });
+</script>

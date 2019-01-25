@@ -1,0 +1,165 @@
+﻿@model CCARE.Models.LoanInfo
+
+@if (ViewBag.searchResultsCount > 0)
+{
+    
+    <div class="row form_text">
+        <div class="panel panel-default panel_form_child">
+            <div class="panel-heading">
+                <label class="control-label sv-header">
+                    <strong>Detail Loan Information</strong>
+                </label>
+                <a class="pull-right" data-toggle="collapse" href="#collapseContentDiv" aria-expanded="true" aria-controls="collapseContentDiv">
+                    <i class="fa fa-angle-double-up fa-lg"></i>
+                </a>
+            </div>
+            <div id="collapseContentDiv" class="panel-collapse collapse in" aria-labelledby="headingOne">
+                <div class="panel-body">
+                    <form class="form-horizontal">
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label class="col-sm-4 control-label">Account Number</label>
+                                    <label class="col-sm-8 control-label text-left-i"> : @Model.AccountNumber</label>
+                                    @Html.HiddenFor(x => x.AccountNumber)
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label class="col-sm-4 control-label">Interest Rate</label>
+                                    <label class="col-sm-8 control-label text-left-i"> : @(Model.InterestRate == null ? String.Empty : String.Format("{0:N}", Model.InterestRate).Replace(',','@').Replace('.',',').Replace('@','.'))</label>
+                                    @Html.HiddenFor(x => x.InterestRate)
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label class="col-sm-4 control-label">Loan Number</label>
+                                    <label class="col-sm-8 control-label text-left-i"> : @Model.LoanNumber</label>
+                                    @Html.HiddenFor(x => x.LoanNumber)
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label class="col-sm-4 control-label">Next Interest Rate Change Date</label>
+                                    <label class="col-sm-8 control-label text-left-i"> : @(Model.NextInterestRateChangeDate == null ? String.Empty : String.Format("{0:dd/MM/yyyy}", Model.NextInterestRateChangeDate))</label>
+                                    @Html.HiddenFor(x => x.NextInterestRateChangeDate)
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label class="col-sm-4 control-label">Loan Type</label>
+                                    <label class="col-sm-8 control-label text-left-i"> : @Model.LoanType</label>
+                                    @Html.HiddenFor(x => x.LoanType)
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label class="col-sm-4 control-label">Currency</label>
+                                    <label class="col-sm-8 control-label text-left-i"> : @Model.Currency</label>
+                                    @Html.HiddenFor(x => x.Currency)
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label class="col-sm-4 control-label">Open Date</label>
+                                    <label class="col-sm-8 control-label text-left-i"> : @(Model.OpenDate == "00000000000" || string.IsNullOrEmpty(Model.OpenDate) ? String.Empty : String.Format("{0}/{1}/{2}", @Model.OpenDate.Substring(2, 2), @Model.OpenDate.Substring(0, 2), @Model.OpenDate.Substring(4, 4)))</label>
+                                    @Html.HiddenFor(x => x.OpenDate)
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label class="col-sm-4 control-label">Original Principal</label>
+                                    <label class="col-sm-8 control-label text-left-i"> : @(Model.OriginalPrincipal == null ? String.Empty : String.Format("{0:N}", Model.OriginalPrincipal).Replace(',','@').Replace('.',',').Replace('@','.'))</label>
+                                    @Html.HiddenFor(x => x.OriginalPrincipal)
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label class="col-sm-4 control-label">Due Date</label>
+                                    <label class="col-sm-8 control-label text-left-i"> : @(Model.DueDate == "00000000000" || string.IsNullOrEmpty(Model.DueDate) ? String.Empty : String.Format("{0}/{1}/{2}", @Model.DueDate.Substring(2, 2), @Model.DueDate.Substring(0, 2), @Model.DueDate.Substring(4, 4)))</label>
+                                    @Html.HiddenFor(x => x.DueDate)
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label class="col-sm-4 control-label">Outstanding Principal</label>
+                                    <label class="col-sm-8 control-label text-left-i"> : @(Model.OutstandingPrincipal == null ? String.Empty : String.Format("{0:N}", Model.OutstandingPrincipal).Replace(',','@').Replace('.',',').Replace('@','.'))</label>
+                                    @Html.HiddenFor(x => x.OutstandingPrincipal)
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label class="col-sm-4 control-label">Term of Loan</label>
+                                    <label class="col-sm-8 control-label text-left-i"> : @Model.LoanTerm</label>
+                                    @Html.HiddenFor(x => x.LoanTerm)
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label class="col-sm-4 control-label">Remaining Term</label>
+                                    <label class="col-sm-8 control-label text-left-i"> : @Model.RemainingTerm</label>
+                                    @Html.HiddenFor(x => x.RemainingTerm)
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="panel-heading rm-padding-bottom">
+                    <label class="control-label sv-header">
+                        <strong>Information of Unpaid Loan Installment</strong>
+                    </label>
+                </div>
+
+                <div class="panel-body rm-padding-top">
+                    <form class="form-horizontal">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="divGrid">
+                                    <table id="gridUnpaidLoan"></table>
+                                    <div id="gridUnpaidLoanPager"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <br />
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label">Total Unpaid Installment </label>
+                                    <label class="col-sm-10 control-label text-left-i">@(Model.TotalUnpaidInstallment == null ? String.Empty : "Rp. " + String.Format("{0:N}", Model.TotalUnpaidInstallment).Replace(',','@').Replace('.',',').Replace('@','.'))</label>
+                                    @Html.HiddenFor(x => x.TotalUnpaidInstallment)
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $(".form-horizontal").find("input").attr("disabled", "disabled");//.css('background-color', 'white');
+            if (set(@ViewBag.searchResultsListCount) > 0) {
+                var installmentList = set(@Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(@ViewBag.searchResultsList)));
+                loadLocalJqgrid("#gridUnpaidLoan", installmentList, "UnpaidLoanInstallment");
+            }
+        });
+    </script>
+
+}
+else
+{
+    <div class="panel-body" id="messagebox"></div>
+    <script type="text/javascript">$("#messagebox").html(MessageText('error', 'No Record Found'));</script>
+}

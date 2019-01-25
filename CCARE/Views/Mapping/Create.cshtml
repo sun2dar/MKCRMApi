@@ -1,0 +1,554 @@
+﻿@model CCARE.Models.Mapping
+
+@{
+    ViewBag.Title = "Codes And Mappers: New";
+    Layout = "~/Views/Shared/_LayoutEntity.cshtml";
+}
+
+@section title
+{
+    Code and Mappers
+}
+
+@section entityLogo
+{
+    <img class="crm-logo" src="~/assets/images/ico_lrg_112.gif" />
+}
+
+@section formTitle
+{
+    <div class="text_title">
+        <h1>Information</h1>
+        Codes And Mappers: New
+    </div>
+}
+
+@section navHeader
+{
+    <ul class="nav navbar-nav navbar-left">
+        <li><a id="btn_save" href="#">Save</a></li>
+        <li><a id="btn_savenclose" href="#">Save & Close</a></li>
+        <li><a id="btn_savenopen" href="#">Save & New</a></li>
+    </ul>
+}
+
+@section footerStatus
+{
+    <div class="footer_text">Status: New</div>
+}
+
+@section sidebarMenu
+{
+    <li class="active"><a href="#">Information</a></li>
+}
+
+@{
+    int idx = 0;    
+}
+
+<div class="container-fluid">
+    <!-- tabs -->
+    <div class="row">
+        <div class="col-sm-12 panel panel-default panel_form_parent">
+        <div class="myContent_noTab">
+        @using (Html.BeginForm("Create", "Mapping", FormMethod.Post, new { id = "form_mapping" }))
+        {
+            @Html.Hidden("hidden_displayStatus", "", new { @id = "hidden_displayStatus" })
+            @Html.HiddenFor(x => x.CategoryName, new { @id = "CategoryName" });  
+            
+            @Html.HiddenFor(x => x.ObjectName, new { @id = "OBN", @name = "ObjectNameH" , @disabled = "disabled"}); 
+            @Html.HiddenFor(x => x.AttributeName, new { @id = "ABN", @name = "AttributeNameH" , @disabled = "disabled"}); 
+            
+           <input type="hidden" name="ObjectName">
+           <input type="hidden" name="AttributeName">  
+           <input type="hidden" id="_category" name="_category" />
+            
+            <!-- panel content -->
+            <div class="col-sm-12">
+
+                <!-- START title 1 -->
+                <div class="row form_text">
+                    <div class="panel panel-default panel_form_child">
+                        <div class="panel-heading">
+                            <label class="control-label sv-header"><strong>General</strong></label>
+                        </div>
+                        <br />
+                        <div class="panel-body">
+                            <div class="form-horizontal">
+                                
+                                <div class="row">
+                                    <div class="col-sm-12">                                        
+                                        <div class="form-group">
+                                            <label class="col-sm-2 control-label">Codes And Mappers Category</label>
+                                            <div class="col-sm-10">
+                                                <input type="text" id="inquiry_category" class="form-control" value="" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div id="divBody">
+
+                                    <div class="row" id="ObjectDiv">
+                                        <div class="col-sm-12">                                        
+                                            <div class="form-group">
+                                                <label class="col-sm-2 control-label" id="label1"></label>
+                                                <div class="col-sm-10">
+                                                    <div class="input-group">
+                                                        @Html.DropDownListFor(x => x.ObjectName, (SelectList)ViewBag.DropDownObjectName, "", new { @id = "ObjectName", Name="ObjectNameDD" , @class = "form-control" })
+                                                        @Html.TextBoxFor(x => x.ObjectName, new { id = "ObjectNameTB", Name ="ObjectNameTB", @class = "form-control" })
+                                                        <span class="input-group-btn">
+                                                            <button id="ObjBtn" class="btn btn-primary" type="button">Change Value</button>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row" id="AttributeDiv">
+                                        <div class="col-sm-12">                                                                              
+                                            <div class="form-group">
+                                                <label class="col-sm-2 control-label" id="label2"></label>
+                                                <div class="col-sm-10">
+                                                    <div class="input-group">
+                                                        @Html.DropDownListFor(x => x.AttributeName, (SelectList)ViewBag.DropDownAttributeName, "", new { @id = "AttributeName", Name="AttributeNameDD" , @class = "form-control" })
+                                                        @Html.TextBoxFor(x => x.AttributeName, new { id = "AttributeNameTB", Name ="AttributeNameTB", @class = "form-control" })
+                                                        <span class="input-group-btn">
+                                                                <button id="AtrBtn" class="btn btn-primary" type="button">Change Value</button>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                
+                                    <div class="row">
+                                        <div class="col-sm-12">                                                                              
+                                            <div class="form-group">
+                                                <label class="col-sm-2 control-label" id="label3"></label>
+                                                <div class="col-sm-10">
+                                                    @Html.TextBoxFor(x => x.Code, new { id = "Code", @class = "form-control" })
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-sm-12">                                                                              
+                                            <div class="form-group">
+                                                <label class="col-sm-2 control-label" id="label4"></label>
+                                                <div class="col-sm-10">
+                                                    @Html.TextBoxFor(x => x.Label, new { id = "Label", @class = "form-control" })
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- END title 1 -->        
+                <!-- START title 2 -->
+                <div class="row form_text">
+                    <div class="panel panel-default panel_form_child">
+                        <div class="panel-heading">
+                            <label class="control-label sv-header"><strong>Timestamp Information</strong></label>
+                        </div>
+                        <br />
+                        <div class="panel-body">
+                            <div class="form-horizontal">
+                                
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <label class="col-sm-4 control-label">Created By</label>
+                                            <div class="col-sm-8">
+                                                @Html.TextBoxFor(x => x.CreatedBy, new { @class = "form-control", @disabled = "disabled" })
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6">                                        
+                                        <div class="form-group">
+                                            <label class="col-sm-4 control-label">Created On</label>
+                                            <div class="col-sm-8">
+                                                @Html.TextBoxFor(x => x.CreatedOn, new { @class = "form-control", @disabled = "disabled" })
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-sm-6">                                        
+                                        <div class="form-group">
+                                            <label class="col-sm-4 control-label">Modified By</label>
+                                            <div class="col-sm-8">
+                                                @Html.TextBoxFor(x => x.ModifiedBy, new { @class = "form-control", @disabled = "disabled" })
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6">                                                                              
+                                        <div class="form-group">
+                                            <label class="col-sm-4 control-label">Modified On</label>
+                                            <div class="col-sm-8">
+                                                @Html.TextBoxFor(x => x.ModifiedOn, new { @class = "form-control", @disabled = "disabled" })
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- END title 2 -->
+            </div>
+        }
+        </div>
+        </div>
+    </div>
+
+    <div id="response-modal"></div>
+</div>
+
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        var entityName = '@ViewContext.RouteData.Values["Controller"].ToString()';
+        $("#divBody").hide();
+        $("input[name=ObjectNameTB]").hide();
+        $("input[name=ObjectNameH]").prop("disabled", true);
+        $("input[name=AttributeNameTB]").hide();
+        $("input[name=AttributeNameH]").prop("disabled", true);
+
+        $('#ObjBtn').click(function () {
+            if ($("input[name=ObjectNameTB]").is(':visible')) {
+                $("#ObjectName").attr("id", "OBN");
+                $("input[name=ObjectNameH]").prop("disabled", true);
+                $("input[name=ObjectNameTB]").hide();
+                $('[name="ObjectNameDD"]').show();
+                $("input[name=ObjectNameTB]").prop("disabled", true);
+                $("input[name=ObjectNameDD]").prop("disabled", false);
+                $("input[name=ObjectNameTB]").val("");
+                $("#ObjectName").val($("input[name=ObjectNameDD] option:selected").text());
+            }
+            else // if textbox not visible
+            {
+                $("input[name=ObjectNameH]").prop("disabled", false);
+                $("input[name=ObjectNameTB]").val("");
+                $("#OBN").attr("id", "ObjectName");
+                $("input[name=ObjectNameTB]").show();
+                $('[name="ObjectNameDD"]').hide();
+                $("input[name=ObjectNameTB]").prop("disabled", false);
+                $("input[name=ObjectNameDD]").prop("disabled", true);
+            }
+        });
+
+        $('#AtrBtn').click(function () {
+            if ($("input[name=AttributeNameTB]").is(':visible')) {
+                $("#AttributeName").attr("id", "ABN");
+                $("input[name=AttrributeNameH]").prop("disabled", true);
+                $("input[name=AttributeNameTB]").hide();
+                $('[name="AttributeNameDD"]').show();
+                $("input[name=AttributeNameTB]").prop("disabled", true);
+                $("input[name=AttributeNameDD]").prop("disabled", false);
+                $("input[name=AttributeNameTB]").val("");
+                $("#AttributeName").val($("input[name=AttributeNameDD] option:selected").text());
+            }
+            else {
+                $("input[name=AttributeNameH]").prop("disabled", false);
+                $("input[name=AttributeNameTB]").val("");
+                $("#ABN").attr("id", "AttributeName");
+                $("input[name=AttributeNameTB]").show();
+                $('[name="AttributeNameDD"]').hide();
+                $("input[name=AttributeNameTB]").prop("disabled", false);
+                $("input[name=AttributeNameDD]").prop("disabled", true);
+            }
+        });
+
+        function validateForm(action, formName) {
+
+            if ($("input[name=ObjectNameTB]").is(':visible'))
+                $('#ObjectName').attr('value', $("input[name=ObjectNameTB]").val());
+            
+            if ($("input[name=AttributeNameTB]").is(':visible'))
+                $('#AttributeName').attr('value', $("input[name=AttributeNameTB]").val());
+
+
+            if ($('#ObjectDiv').is(':hidden') == false )
+                $("input[name=ObjectName]").val($("#ObjectName").val());
+            if ($('#AttributeDiv').is(':hidden') == false)
+                $("input[name=AttributeName]").val($("#AttributeName").val());
+
+            if ($('#ObjectDiv').is(':hidden') == false )
+            {
+                if ($("#ObjectName").val() == "") {
+                    alert("Field " + $("#label1").text() + " harus diisi");
+                    return false;
+                }
+            }
+            if ($('#AttributeDiv').is(':hidden') == false )
+            {
+                if ($("#AttributeName").val() == "") {
+                    alert("Field " + $("#label2").text() + " harus diisi");
+                    return false;
+                }
+            }
+            if ($("#Code").val() == "") {
+                alert("Field " + $("#label3").text() + " harus diisi");
+                return false;
+            }
+            if ($("#Label").val() == "") {
+                alert("Field " + $("#label4").text() + " harus diisi");
+                return false;
+            }
+            
+            //$("#CategoryName").val($("#inquiry_category").val());
+            $("#CategoryName").val("@(ViewBag.categoryName)");
+            formSubmit(action, formName);
+        }
+
+        $("#btn_save").click(function () {
+            validateForm("save", $("#form_mapping"));
+        });
+        
+        $("#btn_savenclose").click(function () {
+            validateForm("saveNClose", $("#form_mapping"));
+        });
+
+        $("#btn_savenopen").click(function () {
+            validateForm("saveNOpenMapping", $("#form_mapping"));
+        });
+
+        $("#inquiry_category").change(function () {
+            category = $("#inquiry_category").val();
+
+            if(category == "")
+                $("#divBody").hide();
+            else
+                $("#divBody").show();
+
+            if (category == "StatusMapper")
+            {
+                $('#ObjectDiv').show();
+                $('#AttributeDiv').show();
+                
+                $("#label1").text("@(ViewBag.categoryModel[0].ObjectName)");
+                $("#label2").text("@(ViewBag.categoryModel[0].AttributeName)");
+                $("#label3").text("@ViewBag.categoryModel[0].Code");
+                $("#label4").text("@ViewBag.categoryModel[0].Label");
+            }
+            if (category == "TransactionAttributeMapping")
+            {
+                $('#ObjectDiv').show();
+                $('#AttributeDiv').show();
+
+                $("#label1").text("@(ViewBag.categoryModel[1].ObjectName)");
+                $("#label2").text("@(ViewBag.categoryModel[1].AttributeName)");
+                $("#label3").text("@ViewBag.categoryModel[1].Code");
+                $("#label4").text("@ViewBag.categoryModel[1].Label");
+            }
+            if(category == "LoanType" )
+            {
+                $('#ObjectDiv').hide();
+                $('#AttributeDiv').show();
+
+                $("#label1").text("@(ViewBag.categoryModel[2].ObjectName)");
+                $("#label2").text("@(ViewBag.categoryModel[2].AttributeName)");
+                $("#label3").text("@ViewBag.categoryModel[2].Code");
+                $("#label4").text("@ViewBag.categoryModel[2].Label");
+            }
+            if(category == "AccountCardType")
+            {
+                $('#ObjectDiv').hide();
+                $('#AttributeDiv').hide();
+                
+                $("#label1").text("@(ViewBag.categoryModel[3].ObjectName)");
+                $("#label2").text("@(ViewBag.categoryModel[3].AttributeName)");
+                $("#label3").text("@ViewBag.categoryModel[3].Code");
+                $("#label4").text("@ViewBag.categoryModel[3].Label");
+            }
+            if(category == "AccountType" )
+            {
+                $('#ObjectDiv').hide();
+                $('#AttributeDiv').hide();
+                
+                $("#label1").text("@(ViewBag.categoryModel[4].ObjectName)");
+                $("#label2").text("@(ViewBag.categoryModel[4].AttributeName)");
+                $("#label3").text("@ViewBag.categoryModel[4].Code");
+                $("#label4").text("@ViewBag.categoryModel[4].Label");
+            }
+            if (category == "CurrencyCode" )
+            {
+                $('#ObjectDiv').hide();
+                $('#AttributeDiv').hide();
+                
+                $("#label1").text("@(ViewBag.categoryModel[5].ObjectName)");
+                $("#label2").text("@(ViewBag.categoryModel[5].AttributeName)");
+                $("#label3").text("@ViewBag.categoryModel[5].Code");
+                $("#label4").text("@ViewBag.categoryModel[5].Label");
+            }
+            if (category == "ResponseCode") {
+                $('#ObjectDiv').hide();
+                $('#AttributeDiv').show();
+                
+                $("#label1").text("@(ViewBag.categoryModel[6].ObjectName)");
+                $("#label2").text("@(ViewBag.categoryModel[6].AttributeName)");
+                $("#label3").text("@ViewBag.categoryModel[6].Code");
+                $("#label4").text("@ViewBag.categoryModel[6].Label");
+            }
+            if (category == "TransactionType") {
+                $('#ObjectDiv').hide();
+                $('#AttributeDiv').show();
+                
+                $("#label1").text("@(ViewBag.categoryModel[7].ObjectName)");
+                $("#label2").text("@(ViewBag.categoryModel[7].AttributeName)");
+                $("#label3").text("@ViewBag.categoryModel[7].Code");
+                $("#label4").text("@ViewBag.categoryModel[7].Label");
+            }
+            if (category == "StringMap")
+            {
+                $('#ObjectDiv').show();
+                $('#AttributeDiv').show();
+
+                $("#label1").text("@(ViewBag.categoryModel[8].ObjectName)");
+                $("#label2").text("@(ViewBag.categoryModel[8].AttributeName)");
+                $("#label3").text("@ViewBag.categoryModel[8].Code");
+                $("#label4").text("@ViewBag.categoryModel[8].Label");
+            }
+
+            // call function to change dropdown value based on category
+            setDropDownObjectName("ObjectNameDropDown", category, $("#ObjectName"));
+            setDropDownObjectName("AttributeNameDropDown", category, $("#AttributeName"));
+        });
+
+
+        // change dropdown list based on category
+        function setDropDownObjectName(_type, _category, _field) {
+            $.ajax({
+                url: "/" + entityName + "/getDropDownCreate",
+                data: {
+                    type: _type,
+                    category: _category
+                },
+                dataType: 'json',
+                success: function (data) {
+                    _field.empty();
+                    $.each(data, function (i, value) {
+                        _field.append($('<option>').text(value.Text).attr('value', value.Value));
+                    });
+                }
+            });
+        }
+
+
+        // will
+        var category = "@(ViewBag.categoryName)";
+        $("#_category").val(category);
+        $("#inquiry_category").prop("disabled", true);
+
+        if (category == "")
+            $("#divBody").hide();
+        else
+            $("#divBody").show();
+
+        if (category == "StatusMapper") {
+            $("#inquiry_category").val("Status Mapper");
+            $('#ObjectDiv').show();
+            $('#AttributeDiv').show();
+
+            $("#label1").text("@(ViewBag.categoryModel[0].ObjectName)");
+                $("#label2").text("@(ViewBag.categoryModel[0].AttributeName)");
+            $("#label3").text("@ViewBag.categoryModel[0].Code");
+            $("#label4").text("@ViewBag.categoryModel[0].Label");
+        }
+        if (category == "TransactionAttributeMapping") {
+            $("#inquiry_category").val("Transaction Attribute Mapping");
+            $('#ObjectDiv').show();
+            $('#AttributeDiv').show();
+
+            $("#label1").text("@(ViewBag.categoryModel[1].ObjectName)");
+                $("#label2").text("@(ViewBag.categoryModel[1].AttributeName)");
+                $("#label3").text("@ViewBag.categoryModel[1].Code");
+                $("#label4").text("@ViewBag.categoryModel[1].Label");
+            }
+        if (category == "LoanType") {
+            $("#inquiry_category").val("Loan Types");
+            $('#ObjectDiv').hide();
+            $('#AttributeDiv').show();
+
+            $("#label1").text("@(ViewBag.categoryModel[2].ObjectName)");
+                $("#label2").text("@(ViewBag.categoryModel[2].AttributeName)");
+                $("#label3").text("@ViewBag.categoryModel[2].Code");
+                $("#label4").text("@ViewBag.categoryModel[2].Label");
+            }
+        if (category == "AccountCardType") {
+            $("#inquiry_category").val("ATM Card Types");
+            $('#ObjectDiv').hide();
+            $('#AttributeDiv').hide();
+
+            $("#label1").text("@(ViewBag.categoryModel[3].ObjectName)");
+                $("#label2").text("@(ViewBag.categoryModel[3].AttributeName)");
+                $("#label3").text("@ViewBag.categoryModel[3].Code");
+                $("#label4").text("@ViewBag.categoryModel[3].Label");
+            }
+        if (category == "AccountType") {
+            $("#inquiry_category").val("Deposit Types");
+            $('#ObjectDiv').hide();
+            $('#AttributeDiv').hide();
+
+            $("#label1").text("@(ViewBag.categoryModel[4].ObjectName)");
+                $("#label2").text("@(ViewBag.categoryModel[4].AttributeName)");
+                $("#label3").text("@ViewBag.categoryModel[4].Code");
+                $("#label4").text("@ViewBag.categoryModel[4].Label");
+            }
+        if (category == "CurrencyCode") {
+            $("#inquiry_category").val("Currency Code");
+            $('#ObjectDiv').hide();
+            $('#AttributeDiv').hide();
+
+            $("#label1").text("@(ViewBag.categoryModel[5].ObjectName)");
+                $("#label2").text("@(ViewBag.categoryModel[5].AttributeName)");
+                $("#label3").text("@ViewBag.categoryModel[5].Code");
+                $("#label4").text("@ViewBag.categoryModel[5].Label");
+            }
+        if (category == "ResponseCode") {
+            $("#inquiry_category").val("Response Code");
+            $('#ObjectDiv').hide();
+            $('#AttributeDiv').show();
+
+            $("#label1").text("@(ViewBag.categoryModel[6].ObjectName)");
+                $("#label2").text("@(ViewBag.categoryModel[6].AttributeName)");
+                $("#label3").text("@ViewBag.categoryModel[6].Code");
+                $("#label4").text("@ViewBag.categoryModel[6].Label");
+            }
+        if (category == "TransactionType") {
+            $("#inquiry_category").val("Jenis Transaksi");
+            $('#ObjectDiv').hide();
+            $('#AttributeDiv').show();
+
+            $("#label1").text("@(ViewBag.categoryModel[7].ObjectName)");
+                $("#label2").text("@(ViewBag.categoryModel[7].AttributeName)");
+                $("#label3").text("@ViewBag.categoryModel[7].Code");
+                $("#label4").text("@ViewBag.categoryModel[7].Label");
+            }
+        if (category == "StringMap") {
+            $("#inquiry_category").val("StringMap");
+            $('#ObjectDiv').show();
+            $('#AttributeDiv').show();
+
+            $("#label1").text("@(ViewBag.categoryModel[8].ObjectName)");
+                $("#label2").text("@(ViewBag.categoryModel[8].AttributeName)");
+                $("#label3").text("@ViewBag.categoryModel[8].Code");
+                $("#label4").text("@ViewBag.categoryModel[8].Label");
+            }
+
+        // call function to change dropdown value based on category
+        setDropDownObjectName("ObjectNameDropDown", category, $("#ObjectName"));
+        setDropDownObjectName("AttributeNameDropDown", category, $("#AttributeName"));
+
+    });
+</script>

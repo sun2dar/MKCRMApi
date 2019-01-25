@@ -1,0 +1,554 @@
+﻿@model CCARE.Models.RequestCreationMatrix
+
+@{
+    Layout = "~/Views/Shared/_LayoutEntity.cshtml";
+}
+
+@section title
+{
+    @ViewBag.Title
+}
+
+@section entityLogo
+{
+    <img class="crm-logo" src="~/assets/images/ico_lrg_112.gif" />
+}
+
+@section formTitle
+{
+    <div class="text_title">
+        <h1>Information</h1>
+        @ViewBag.Title
+    </div>
+}
+
+@section navHeader
+{
+    <ul class="nav navbar-nav navbar-left">
+        
+        @if (Session["RoleID"] != null)
+        {
+            string entity = ViewContext.Controller.ControllerContext.RouteData.Values["controller"].ToString();
+            Guid roleID = new Guid(Session["RoleID"].ToString());
+            bool checkButton = CCARE.App_Function.RoleNPrivilege.checkEntityButtonByRoleID(roleID, entity, "Write");
+            bool checkButton2 = CCARE.App_Function.RoleNPrivilege.checkEntityButtonByRoleID(roleID, entity, "Delete");
+
+            if (checkButton == true)
+            {
+                if (Model.StateCode == 0)
+                {
+                    <text>
+                        <li><a id="btn_save" href="#">Save</a></li>
+                        <li><a id="btn_savenclose" href="#">Save & Close</a></li>
+                        <li><a id="btn_savenopen" href="#">Save & New</a></li>
+                    </text>
+                }
+                <li>
+                    <a id="btn_changestatus" href="#" data-toggle="modal" data-target="#confirm-changestatus">
+                    @if (Model.StateCode == 0)
+                    {
+                        <text>Deactivate</text>
+                    }
+                    else
+                    {
+                        <text>Activate</text>
+                    }
+                    </a>
+                </li>
+            }
+
+            if (checkButton2 == true)
+            {
+            <text>
+                <li><a id="btn_delete" href="#" data-toggle="modal" data-target="#confirm-delete">Delete</a></li>
+            </text>
+            }
+        }
+    </ul>
+}
+
+@section footerStatus
+{
+    <div class="footer_text">Status: 
+    @if (Model.StateCode == 0)
+    {
+        <text>Active</text>
+    }
+    else
+    {
+        <text>Inactive</text>
+    }
+
+    </div>
+}
+
+@section sidebarMenu
+{
+    <li class="active"><a href="#">Information</a></li>
+}
+
+<div class="modal fade" id="confirm-delete" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1>Confirm Deletion</h1>
+            </div>
+            <div class="modal-body input-lg">
+                The system will delete this record. This action cannot be undone, To continue click "Delete".
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                <a class="btn btn-danger btn-ok">Delete</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="confirm-changestatus" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1>Confirm @if (Model.StateCode == 0)
+                            {<text>Request Creation Matrix Activation</text>}
+                            else
+                            {<text>Request Creation Matrix Deactivation</text>}</h1>
+            </div>
+            <div class="modal-body input-lg" style="height:70px;">
+                This action will change the status of selected Request Creation Matrix to @if (Model.StateCode == 0)
+                                                                                          {<text>Inactive</text>}
+                                                                                          else
+                                                                                          {<text>Active</text>}. To continue click "Ok"
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                <a class="btn btn-danger btn-ok">Ok</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container-fluid">
+    <!-- tabs -->
+    <div class="row">
+        <div class="col-sm-12 panel panel-default panel_form_parent">
+        <div class="myContent_noTab">
+        @using (Html.BeginForm(ViewContext.RouteData.Values["Action"].ToString(), ViewContext.RouteData.Values["Controller"].ToString(), FormMethod.Post, new { id = "frmRequestCreationMatrixEdit" }))
+        {
+            @Html.HiddenFor(x => x.RequestCreationMatrixID);
+                    
+            <!-- panel content -->
+            <div class="col-sm-12">
+
+                <!-- START title 1 -->
+                <div class="row form_text">
+                    <div class="panel panel-default panel_form_child">
+                        <div class="panel-heading">
+                            <label class="control-label sv-header"><strong>General</strong></label>
+                        </div>
+                        <br />
+                        <div class="panel-body">
+                            <div class="form-horizontal">
+                                <div class="row">
+                                    <div class="col-sm-6">                                        
+                                        <div class="form-group">
+                                            <label class="col-sm-4 control-label mandatory">E-Banking & Products</label>
+                                            <div class="col-sm-8">
+                                                @Html.DropDownListFor(x => x.EntityType, (List<SelectListItem>)ViewBag.DDL_eBanking, "", new { @class = "form-control" })
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6">                                                                              
+                                        <div class="form-group">
+                                            <label class="col-sm-4 control-label">Channel</label>
+                                            <div class="col-sm-8">
+                                                <select class="form-control" id="Channel" name="Channel" disabled="disabled"><option value="200003">Agent</option></select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-6">                                        
+                                        <div class="form-group">
+                                            <label class="col-sm-4 control-label mandatory">Status Name</label>
+                                            <div id="divStatusType" class="col-sm-8">
+                                                @Html.DropDownListFor(x => x.StatusType, (List<SelectListItem>)ViewBag.DDL_StatusType, new { @class = "form-control" })
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6">                                                                              
+                                        <div class="form-group">
+                                            <label class="col-sm-4 control-label mandatory">Request Status</label>
+                                            <div class="col-sm-8">
+                                                @Html.DropDownListFor(x => x.RequestStatus, (List<SelectListItem>)ViewBag.DDL_RequestStatus, new { @class = "form-control", @disabled = "disabled" })
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-6">                                        
+                                        <div class="form-group">
+                                            <label class="col-sm-4 control-label mandatory">Previous Status</label>
+                                            <div id="divPrevStatus" class="col-sm-8">
+                                                @Html.DropDownListFor(x => x.PrevStatus, (List<SelectListItem>)ViewBag.DDL_PrevStatus, new { @class = "form-control" })
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6 div_accountcode">                                        
+                                        <div class="form-group">
+                                            <label class="col-sm-4 control-label">Account Code</label>
+                                            <div class="col-sm-8">
+                                                @Html.DropDownListFor(x => x.AccountCode, (List<SelectListItem>)ViewBag.DDL_accountCode, "", new { @class = "form-control" })
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-6">                                        
+                                        <div class="form-group">
+                                            <label class="col-sm-4 control-label mandatory">New Status</label>
+                                            <div id="divStatusChangeID" class="col-sm-8">
+                                                @Html.DropDownListFor(x => x.StatusChangeID, (List<SelectListItem>)ViewBag.DDL_NewStatus, new { @class = "form-control" })
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-6">                                        
+                                        <div class="form-group">
+                                            <label class="col-sm-4 control-label mandatory">Category</label>
+                                            <div class="col-sm-8">
+                                                <input type="hidden" id="CategoryID" name="CategoryID" value="@Model.CategoryID" class="form-control" style="margin-bottom:-50px;" />
+                                                <div class="input-group">
+                                                    <input type="text" id="CategoryName" name="CategoryName" class="form-control" value="@Model.CategoryName">
+                                                    <div tabindex="0" id="CategoryName-label" class="form-control typeahead-label hide" style="border-top-left-radius:3px;border-bottom-left-radius:3px">
+                                                    </div>
+                                                    <div tabindex="0" class="input-group-addon btn" id="CategoryName-popup">
+                                                        <i class="fa fa-search"></i>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6">                                                                              
+                                        <div class="form-group">
+                                            <label class="col-sm-4 control-label mandatory">Product</label>
+                                            <div class="col-sm-8">
+                                                <input type="hidden" id="ProductID" name="ProductID" value="@Model.ProductID" class="form-control" style="margin-bottom:-50px;" />
+                                                <div class="input-group">
+                                                    <input type="text" id="ProductName" name="ProductName" class="form-control" value="@Model.ProductName">
+                                                    <div tabindex="0" id="ProductName-label" class="form-control typeahead-label hide" style="border-top-left-radius:3px;border-bottom-left-radius:3px">
+                                                    </div>
+                                                    <div tabindex="0" class="input-group-addon btn" id="ProductName-popup">
+                                                        <i class="fa fa-search"></i>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-12">                                        
+                                        <div class="form-group">
+                                            <label class="col-sm-2 control-label mandatory">Summary</label>
+                                            <div class="col-sm-10">
+                                                @Html.TextBoxFor(x => x.Summary, new { @class = "form-control" })
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                                
+                    </div>
+                </div>
+                <!-- END title 1 -->      
+                <!-- START title 2 -->
+                <div class="row form_text">
+                    <div class="panel panel-default panel_form_child">
+                        <div class="panel-heading">
+                            <label class="control-label sv-header"><strong>Timestamp Information</strong></label>
+                        </div>
+                        <br />
+                        <div class="panel-body">
+                            <div class="form-horizontal">
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <label class="col-sm-4 control-label">Created By</label>
+                                            <div class="col-sm-8">
+                                                @Html.TextBoxFor(x => x.CreatedByName, new { @class = "form-control", @disabled = "disabled" })
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6">                                        
+                                        <div class="form-group">
+                                            <label class="col-sm-4 control-label">Created On</label>
+                                            <div class="col-sm-8">
+                                                @Html.TextBoxFor(x => x.CreatedOn, new { Value = @Model.CreatedOn.HasValue ? @Model.CreatedOn.Value.ToString("dd/MM/yyyy HH:mm") : string.Empty, @class = "form-control", @disabled = "disabled" })
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-6">                                        
+                                        <div class="form-group">
+                                            <label class="col-sm-4 control-label">Modified By</label>
+                                            <div class="col-sm-8">
+                                                @Html.TextBoxFor(x => x.ModifiedByName, new { @class = "form-control", @disabled = "disabled" })
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6">                                                                              
+                                        <div class="form-group">
+                                            <label class="col-sm-4 control-label">Modified On</label>
+                                            <div class="col-sm-8">
+                                                @Html.TextBoxFor(x => x.ModifiedOn, new { Value = @Model.ModifiedOn.HasValue ? @Model.ModifiedOn.Value.ToString("dd/MM/yyyy HH:mm") : string.Empty, @class = "form-control", @disabled = "disabled" })
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- END title 2 -->
+            </div>
+        }
+        </div>
+        </div>
+    </div>
+
+    <div id="response-modal"></div>
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        var entityName = '@ViewContext.RouteData.Values["Controller"].ToString()';
+
+        var stateCode = '@(Model.StateCode)';
+        if (stateCode == 1) {
+            $("#frmRequestCreationMatrixEdit select").attr('disabled', 'disabled');
+            $("#frmRequestCreationMatrixEdit input").attr('readonly', true);
+            $(".input-group-addon").attr('disabled', 'disabled');
+            $(".typeahead-label").attr('disabled', 'disabled');
+        }
+
+        function validateForm(action, formName) {
+            jQuery("#confirm-summary").remove(); /*Remove modal in LayoutEntity.cshtml, because of duplicat id "Summary"*/
+            var entityType = jQuery("#EntityType").val();
+            var statusType = jQuery("#StatusType").val();
+            var prevStatus = jQuery("#PrevStatus").val();
+            var newStatus = jQuery("#StatusChangeID").val();
+            var categoryID = jQuery("#CategoryID").val();
+            var summary = jQuery("#Summary").val();
+            var requestStatus = jQuery("#RequestStatus").val();
+            var productID = jQuery("#ProductID").val();
+            var accountCode = jQuery("#AccountCode").val();
+
+            if (!entityType) {
+                var message = '@Resources.RequestCreationMatrix.Alert_ProvideEBanking.ToString().Replace("&amp;", "&")';
+                alert(message.replace("&amp;", "&"));
+                return false;
+            }
+            else if (!statusType) {
+                alert("@Resources.RequestCreationMatrix.Alert_ProvideStatusName");
+                return false;
+            }
+            else if (!requestStatus) {
+                alert("@Resources.RequestCreationMatrix.Alert_ProvideRequestStatus");
+                return false;
+            }
+            else if (!prevStatus) {
+                alert("@Resources.RequestCreationMatrix.Alert_ProvidePreviousStatus");
+                return false;
+            }
+            else if (!newStatus) {
+                alert("@Resources.RequestCreationMatrix.Alert_ProvideNewStatus");
+                return false;
+            }
+            else if (entityType == 4 && accountCode == "") {
+                alert("@Resources.RequestCreationMatrix.Alert_ProvideAccountCode");
+                return false;
+            }
+            else if (!categoryID) {
+                alert("@Resources.RequestCreationMatrix.Alert_ProvideCategory");
+                return false;
+            }
+            else if (!productID) {
+                alert("@Resources.RequestCreationMatrix.Alert_ProvideProduct");
+                return false;
+            }
+            else if (!summary) {
+                alert("@Resources.RequestCreationMatrix.Alert_ProvideSummary");
+                return false;
+            }
+            
+    formSubmit(action, formName);
+}
+
+        function SetPrevStatus(EntityType, StatusType) {
+            jQuery.blockUI({ message: '<h4>Getting Previous Status...</h4>' });
+            $.ajax({
+                url: '@Url.Action("GetJsonPrevStatus")',
+                type: "POST",
+                data: { EntityType: EntityType, StatusType: StatusType },
+                success: function (data) {
+                    $("#PrevStatus").empty();
+                    $.each(data, function (i, value) {
+                        $("#PrevStatus").append($('<option>').text(value.Text).attr('value', value.Value));
+                    });
+                },
+                complete: function (data) {
+                    jQuery.unblockUI();
+
+                    SetNewStatus(EntityType, StatusType, $('#PrevStatus option:selected').val());
+                }
+            });
+        }
+
+        function SetNewStatus(EntityType, StatusType, PrevStatus) {
+            jQuery.blockUI({ message: '<h4>Getting New Status...</h4>' });
+            $.ajax({
+                url: '@Url.Action("GetJsonNewStatus")',
+                type: "POST",
+                data: { EntityType: EntityType, StatusType: StatusType, PrevStatus: PrevStatus },
+                success: function (data) {
+                    $("#StatusChangeID").empty();
+                    $.each(data, function (i, value) {
+                        $("#StatusChangeID").append($('<option>').text(value.Text).attr('value', value.Value));
+                    });
+                },
+                complete: function (data) {
+                    jQuery.unblockUI();
+                }
+            });
+        }
+
+        if ($('#EntityType').val() == 4) {
+            $(".div_accountcode").show();
+        }
+        else {
+            $(".div_accountcode").hide();
+        }
+        $('#EntityType').change(function () {
+            var EntityType = $('#EntityType option:selected').val();
+            //show accountcode when entitytype selected bcabyphone
+            if ($(this).val() == 4) {
+                $(".div_accountcode").show();
+            }
+            else {
+                $('.div_accountcode option:eq(0)').attr('selected', 'selected');
+                $(".div_accountcode").hide();
+            }
+            jQuery.blockUI({ message: '<h4>Getting Status Name...</h4>' });
+            $.ajax({
+                url: '@Url.Action("GetJsonStatusTypes")',
+                type: "POST",
+                data: { EntityType: EntityType },
+                success: function (data) {
+                    $("#StatusType").empty();
+                    $.each(data, function (i, value) {
+                        $("#StatusType").append($('<option>').text(value.Text).attr('value', value.Value));
+                    });
+                },
+                complete: function (data) {
+                    jQuery.unblockUI();
+
+                    SetPrevStatus(EntityType, $('#StatusType option:selected').val());
+                }
+            });
+        });
+
+        $('#StatusType').change(function () {
+            var EntityType = $('#EntityType option:selected').val();
+            var StatusType = $('#StatusType option:selected').val();
+
+            SetPrevStatus(EntityType, StatusType);
+        });
+
+        $('#PrevStatus').change(function () {
+            var EntityType = $('#EntityType option:selected').val();
+            var StatusType = $('#StatusType option:selected').val();
+            var PrevStatus = $('#PrevStatus option:selected').val();
+
+            SetNewStatus(EntityType, StatusType, PrevStatus);
+        });
+
+        $("#btn_save").click(function () {
+            validateForm("save", $("#frmRequestCreationMatrixEdit"));
+        });
+
+        $("#btn_savenclose").click(function () {
+            validateForm("saveNClose", $("#frmRequestCreationMatrixEdit"));
+        });
+
+        $("#btn_savenopen").click(function () {
+            validateForm("saveNOpen", $("#frmRequestCreationMatrixEdit"));
+        });
+
+        $("#confirm-delete").on('show.bs.modal', function (e) {
+            $(this).find('.btn-ok').click(function () {
+                var postData = {
+                    _resolution: "",
+                    _description: ""
+                };
+
+                otherAction($("#frmRequestCreationMatrixEdit"), '@Url.Action("Delete")', "delete", postData)
+            });
+        });
+
+        $("#confirm-changestatus").on('show.bs.modal', function (e) {
+            $(this).find('.btn-ok').click(function () {
+                var postData = {
+                    _resolution: "",
+                    _description: ""
+                };
+
+                otherAction($("#frmRequestCreationMatrixEdit"), '@Url.Action("ChangeStatus")', "changestatus", postData)
+            });
+        });
+
+        //------------ Popup ---------------
+
+        $('#CategoryName-popup').on('click', function (e) {
+            urlModalPopup = '@Url.Action("_popupContent", "Popup", new { type = "category" })';
+            var id = $(this).parent().find('input:last').attr('id');
+            $('#' + id).trigger("blur");
+            e.preventDefault();
+        });
+
+        $('#ProductName-popup').on('click', function (e) {
+            urlModalPopup = '@Url.Action("_popupContent", "Popup", new { type = "product" })';
+            var id = $(this).parent().find('input:last').attr('id');
+            $('#' + id).trigger("blur");
+            e.preventDefault();
+        });
+
+        var categoryTypeahead = new PopupClass();
+        categoryTypeahead.setId("CategoryName");
+        categoryTypeahead.setUrl('@Url.Action("CategoryTree", "Popup")');
+        categoryTypeahead.setHiddenId("CategoryID");
+        categoryTypeahead.setDepend("Product");
+        categoryTypeahead.setDependId("ProductID");
+        categoryTypeahead.init();
+
+        var productTypeahead = new PopupClass();
+        productTypeahead.setId("ProductName");
+        productTypeahead.setUrl('@Url.Action("ProductTree", "Popup")');
+        productTypeahead.setHiddenId("ProductID");
+        productTypeahead.setDepend("Category");
+        productTypeahead.setDependId("CategoryID");
+        productTypeahead.init();
+
+        if ("@Model.CategoryID".length > 0) {
+            popupCheckFirst("CategoryName", "@Model.CategoryID", "@Html.Raw(Model.CategoryName)");
+        }
+
+        if ("@Model.ProductID".length > 0) {
+            popupCheckFirst("ProductName", "@Model.ProductID", "@Html.Raw(Model.ProductName)");
+        }
+
+        //------------ End Popup ---------------
+
+    });
+</script>

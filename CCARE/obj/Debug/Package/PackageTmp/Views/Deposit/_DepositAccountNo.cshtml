@@ -1,0 +1,136 @@
+﻿@model CCARE.Models.DepositInfo
+
+<div class="panel-body" id="messagebox"></div>
+
+@if (ViewBag.searchResultsCount > 0)
+{
+    <div class="row form_text">
+        <div class="panel panel-default panel_form_child">
+            <div class="panel-heading">
+                <label class="control-label sv-header">
+                    <strong>Detail Deposit Information</strong>
+                </label>
+                <a class="pull-right" data-toggle="collapse" href="#collapseContentDiv" aria-expanded="true" aria-controls="collapseContentDiv">
+                    <i class="fa fa-angle-double-up fa-lg"></i>
+                </a>
+            </div>
+            <div id="collapseContentDiv" class="panel-collapse collapse in" aria-labelledby="headingOne">
+                <div class="panel-body">
+                    <div class="form-horizontal">
+                        <div class="row">
+                            <div class="col-sm-6">                                        
+                                <div class="form-group">
+                                    <label class="col-sm-4 control-label">Nama</label>
+                                    <label class="col-sm-8 control-label text-left-i"> : @Model.Name</label>
+                                    @Html.HiddenFor(x => x.Name)
+                                    <br />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-6">                                                                              
+                                <div class="form-group">
+                                    <label class="col-sm-4 control-label">No. Rekening</label>
+                                    <label class="col-sm-8 control-label text-left-i"> : @Model.AccountNumber</label>
+                                    @Html.HiddenFor(x => x.AccountNumber)
+                                    <br />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-6">                                                                              
+                                <div class="form-group">
+                                    <label class="col-sm-4 control-label">Jenis Rekening</label>
+                                    <label class="col-sm-8 control-label text-left-i"> : @Model.AccountType</label>
+                                    @Html.HiddenFor(x => x.AccountType)
+                                    <br />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-6">                                                                              
+                                <div class="form-group">
+                                    <label class="col-sm-4 control-label">No Kartu</label>
+                                    <label class="col-sm-8 control-label text-left-i"> : @Model.CardNumber</label>
+                                    @Html.HiddenFor(x => x.CardNumber)
+                                    <br />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-6">                                                                              
+                                <div class="form-group">
+                                    <label class="col-sm-4 control-label">Jenis Kartu</label>
+                                    <label class="col-sm-8 control-label text-left-i"> : @Model.ATMCardType</label>
+                                    @Html.HiddenFor(x => x.ATMCardType)
+                                    <br />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-6">                                                                              
+                                <div class="form-group">
+                                    <label class="col-sm-4 control-label">Relation Type</label>
+                                    <label class="col-sm-8 control-label text-left-i"> : @Model.RelationType</label>
+                                    @Html.HiddenFor(x => x.RelationType)
+                                    <br />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-6">                                                                              
+                                <div class="form-group">
+                                    <label class="col-sm-4 control-label">Cabang Asal</label>
+                                    <label class="col-sm-8 control-label text-left-i"> : @Model.BranchHome</label>
+                                    @Html.HiddenFor(x => x.BranchHome)
+                                    <br />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-6">                                                                              
+                                <div class="form-group">
+                                    <label class="col-sm-4 control-label">Status Terakhir</label>
+                                    <label class="col-sm-8 control-label text-left-i"> : @Model.LastStatus</label>
+                                    @Html.HiddenFor(x => x.LastStatus)
+                                    <br />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-6">                                                                              
+                                <div class="form-group">
+                                    <label class="col-sm-4 control-label">Tanggal Buka</label>
+                                    <label class="col-sm-8 control-label text-left-i"> : @((Model.OpenDate == "00000000000" || string.IsNullOrEmpty(Model.OpenDate)) ? String.Empty : String.Format("{0}/{1}/{2}", @Model.OpenDate.Substring(2, 2), @Model.OpenDate.Substring(0, 2), @Model.OpenDate.Substring(4, 4)))</label>
+                                    <br />
+                                    @*<input type="text" class="form-control" value="@((Model.OpenDate == "00000000000" || string.IsNullOrEmpty(Model.OpenDate)) ? String.Empty : String.Format("{0}/{1}/{2}", @Model.OpenDate.Substring(2, 2), @Model.OpenDate.Substring(0, 2), @Model.OpenDate.Substring(4, 4)))">*@
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-6">                                                                              
+                                <div class="form-group">
+                                    <label class="col-sm-4 control-label">Tanggal Tutup</label>
+                                    <label class="col-sm-8 control-label text-left-i"> : @((Model.CloseDate == "00000000000" || string.IsNullOrEmpty(Model.CloseDate)) ? String.Empty : String.Format("{0}/{1}/{2}", @Model.CloseDate.Substring(2, 2), @Model.CloseDate.Substring(0, 2), @Model.CloseDate.Substring(4, 4)))</label>
+                                    <br />
+                                    @*<input type="text" class="form-control" value="@((Model.CloseDate == "00000000000" || string.IsNullOrEmpty(Model.CloseDate)) ? String.Empty : String.Format("{0}/{1}/{2}", @Model.CloseDate.Substring(2, 2), @Model.CloseDate.Substring(0, 2), @Model.CloseDate.Substring(4, 4)))">*@
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script src="~/assets/js/changeStatusJs.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            init();
+        });
+    </script>
+}
+else
+{ 
+    <script type="text/javascript">$("#messagebox").html(MessageText('error', 'No Record Found'));</script>
+}

@@ -1,0 +1,117 @@
+D:\BCA Work\CCARE(Tambah Kota) Sebelum ganti Database\CCareApi\bin\CCareApi.dll
+D:\BCA Work\CCARE(Tambah Kota) Sebelum ganti Database\CCareApi\bin\CCareApi.pdb
+D:\BCA Work\CCARE(Tambah Kota) Sebelum ganti Database\CCareApi\bin\Antlr3.Runtime.dll
+D:\BCA Work\CCARE(Tambah Kota) Sebelum ganti Database\CCareApi\bin\CCARE.dll
+D:\BCA Work\CCARE(Tambah Kota) Sebelum ganti Database\CCareApi\bin\EntityFramework.dll
+D:\BCA Work\CCARE(Tambah Kota) Sebelum ganti Database\CCareApi\bin\Microsoft.Web.Infrastructure.dll
+D:\BCA Work\CCARE(Tambah Kota) Sebelum ganti Database\CCareApi\bin\Newtonsoft.Json.dll
+D:\BCA Work\CCARE(Tambah Kota) Sebelum ganti Database\CCareApi\bin\Swashbuckle.Core.dll
+D:\BCA Work\CCARE(Tambah Kota) Sebelum ganti Database\CCareApi\bin\System.Net.Http.Formatting.dll
+D:\BCA Work\CCARE(Tambah Kota) Sebelum ganti Database\CCareApi\bin\System.Web.Helpers.dll
+D:\BCA Work\CCARE(Tambah Kota) Sebelum ganti Database\CCareApi\bin\System.Web.Http.dll
+D:\BCA Work\CCARE(Tambah Kota) Sebelum ganti Database\CCareApi\bin\System.Web.Http.WebHost.dll
+D:\BCA Work\CCARE(Tambah Kota) Sebelum ganti Database\CCareApi\bin\System.Web.Mvc.dll
+D:\BCA Work\CCARE(Tambah Kota) Sebelum ganti Database\CCareApi\bin\System.Web.Optimization.dll
+D:\BCA Work\CCARE(Tambah Kota) Sebelum ganti Database\CCareApi\bin\System.Web.Providers.dll
+D:\BCA Work\CCARE(Tambah Kota) Sebelum ganti Database\CCareApi\bin\System.Web.Razor.dll
+D:\BCA Work\CCARE(Tambah Kota) Sebelum ganti Database\CCareApi\bin\System.Web.WebPages.Deployment.dll
+D:\BCA Work\CCARE(Tambah Kota) Sebelum ganti Database\CCareApi\bin\System.Web.WebPages.dll
+D:\BCA Work\CCARE(Tambah Kota) Sebelum ganti Database\CCareApi\bin\System.Web.WebPages.Razor.dll
+D:\BCA Work\CCARE(Tambah Kota) Sebelum ganti Database\CCareApi\bin\WebActivatorEx.dll
+D:\BCA Work\CCARE(Tambah Kota) Sebelum ganti Database\CCareApi\bin\WebGrease.dll
+D:\BCA Work\CCARE(Tambah Kota) Sebelum ganti Database\CCareApi\bin\Microsoft.AspNet.SignalR.Core.dll
+D:\BCA Work\CCARE(Tambah Kota) Sebelum ganti Database\CCareApi\bin\NLog.dll
+D:\BCA Work\CCARE(Tambah Kota) Sebelum ganti Database\CCareApi\bin\BCA.CRM.OSB.dll
+D:\BCA Work\CCARE(Tambah Kota) Sebelum ganti Database\CCareApi\bin\DevTrends.MvcDonutCaching.dll
+D:\BCA Work\CCARE(Tambah Kota) Sebelum ganti Database\CCareApi\bin\BCA.CRM.EAI.REST.dll
+D:\BCA Work\CCARE(Tambah Kota) Sebelum ganti Database\CCareApi\bin\Microsoft.AspNet.SignalR.SystemWeb.dll
+D:\BCA Work\CCARE(Tambah Kota) Sebelum ganti Database\CCareApi\bin\Owin.dll
+D:\BCA Work\CCARE(Tambah Kota) Sebelum ganti Database\CCareApi\bin\Microsoft.AspNet.SignalR.Owin.dll
+D:\BCA Work\CCARE(Tambah Kota) Sebelum ganti Database\CCareApi\bin\Microsoft.Owin.Host.SystemWeb.dll
+D:\BCA Work\CCARE(Tambah Kota) Sebelum ganti Database\CCareApi\bin\CCARE.pdb
+D:\BCA Work\CCARE(Tambah Kota) Sebelum ganti Database\CCareApi\bin\Newtonsoft.Json.xml
+D:\BCA Work\CCARE(Tambah Kota) Sebelum ganti Database\CCareApi\bin\EntityFramework.xml
+D:\BCA Work\CCARE(Tambah Kota) Sebelum ganti Database\CCareApi\bin\System.Net.Http.Formatting.xml
+D:\BCA Work\CCARE(Tambah Kota) Sebelum ganti Database\CCareApi\bin\System.Web.Helpers.xml
+D:\BCA Work\CCARE(Tambah Kota) Sebelum ganti Database\CCareApi\bin\System.Web.Http.xml
+D:\BCA Work\CCARE(Tambah Kota) Sebelum ganti Database\CCareApi\bin\System.Web.Http.WebHost.xml
+D:\BCA Work\CCARE(Tambah Kota) Sebelum ganti Database\CCareApi\bin\System.Web.Mvc.xml
+D:\BCA Work\CCARE(Tambah Kota) Sebelum ganti Database\CCareApi\bin\System.Web.Razor.xml
+D:\BCA Work\CCARE(Tambah Kota) Sebelum ganti Database\CCareApi\bin\System.Web.WebPages.xml
+D:\BCA Work\CCARE(Tambah Kota) Sebelum ganti Database\CCareApi\bin\System.Web.WebPages.Deployment.xml
+D:\BCA Work\CCARE(Tambah Kota) Sebelum ganti Database\CCareApi\bin\System.Web.WebPages.Razor.xml
+D:\BCA Work\CCARE(Tambah Kota) Sebelum ganti Database\CCareApi\bin\Microsoft.AspNet.SignalR.Core.xml
+D:\BCA Work\CCARE(Tambah Kota) Sebelum ganti Database\CCareApi\bin\DevTrends.MvcDonutCaching.pdb
+D:\BCA Work\CCARE(Tambah Kota) Sebelum ganti Database\CCareApi\bin\DevTrends.MvcDonutCaching.xml
+D:\BCA Work\CCARE(Tambah Kota) Sebelum ganti Database\CCareApi\bin\Microsoft.AspNet.SignalR.SystemWeb.xml
+D:\BCA Work\CCARE(Tambah Kota) Sebelum ganti Database\CCareApi\bin\Microsoft.AspNet.SignalR.Owin.xml
+D:\BCA Work\CCARE(Tambah Kota) Sebelum ganti Database\CCareApi\bin\Microsoft.Owin.Host.SystemWeb.xml
+D:\BCA Work\CCARE(Tambah Kota) Sebelum ganti Database\CCareApi\obj\Debug\CCareApi.csprojResolveAssemblyReference.cache
+D:\BCA Work\CCARE(Tambah Kota) Sebelum ganti Database\CCareApi\obj\Debug\CCareApi.dll
+D:\BCA Work\CCARE(Tambah Kota) Sebelum ganti Database\CCareApi\obj\Debug\CCareApi.pdb
+D:\Code\CCARE(Tambah Kota) Sebelum ganti Database\CCareApi\bin\CCareApi.dll.config
+D:\Code\CCARE(Tambah Kota) Sebelum ganti Database\CCareApi\bin\CCareApi.dll
+D:\Code\CCARE(Tambah Kota) Sebelum ganti Database\CCareApi\bin\CCareApi.pdb
+D:\Code\CCARE(Tambah Kota) Sebelum ganti Database\CCareApi\bin\Antlr3.Runtime.dll
+D:\Code\CCARE(Tambah Kota) Sebelum ganti Database\CCareApi\bin\CCARE.dll
+D:\Code\CCARE(Tambah Kota) Sebelum ganti Database\CCareApi\bin\EntityFramework.dll
+D:\Code\CCARE(Tambah Kota) Sebelum ganti Database\CCareApi\bin\Microsoft.Web.Infrastructure.dll
+D:\Code\CCARE(Tambah Kota) Sebelum ganti Database\CCareApi\bin\Newtonsoft.Json.dll
+D:\Code\CCARE(Tambah Kota) Sebelum ganti Database\CCareApi\bin\Swashbuckle.Core.dll
+D:\Code\CCARE(Tambah Kota) Sebelum ganti Database\CCareApi\bin\System.Net.Http.Formatting.dll
+D:\Code\CCARE(Tambah Kota) Sebelum ganti Database\CCareApi\bin\System.Web.Helpers.dll
+D:\Code\CCARE(Tambah Kota) Sebelum ganti Database\CCareApi\bin\System.Web.Http.dll
+D:\Code\CCARE(Tambah Kota) Sebelum ganti Database\CCareApi\bin\System.Web.Http.WebHost.dll
+D:\Code\CCARE(Tambah Kota) Sebelum ganti Database\CCareApi\bin\System.Web.Mvc.dll
+D:\Code\CCARE(Tambah Kota) Sebelum ganti Database\CCareApi\bin\System.Web.Optimization.dll
+D:\Code\CCARE(Tambah Kota) Sebelum ganti Database\CCareApi\bin\System.Web.Providers.dll
+D:\Code\CCARE(Tambah Kota) Sebelum ganti Database\CCareApi\bin\System.Web.Razor.dll
+D:\Code\CCARE(Tambah Kota) Sebelum ganti Database\CCareApi\bin\System.Web.WebPages.Deployment.dll
+D:\Code\CCARE(Tambah Kota) Sebelum ganti Database\CCareApi\bin\System.Web.WebPages.dll
+D:\Code\CCARE(Tambah Kota) Sebelum ganti Database\CCareApi\bin\System.Web.WebPages.Razor.dll
+D:\Code\CCARE(Tambah Kota) Sebelum ganti Database\CCareApi\bin\WebActivatorEx.dll
+D:\Code\CCARE(Tambah Kota) Sebelum ganti Database\CCareApi\bin\WebGrease.dll
+D:\Code\CCARE(Tambah Kota) Sebelum ganti Database\CCareApi\bin\Microsoft.AspNet.SignalR.Core.dll
+D:\Code\CCARE(Tambah Kota) Sebelum ganti Database\CCareApi\bin\DocumentFormat.OpenXml.dll
+D:\Code\CCARE(Tambah Kota) Sebelum ganti Database\CCareApi\bin\NLog.dll
+D:\Code\CCARE(Tambah Kota) Sebelum ganti Database\CCareApi\bin\BCA.CRM.OSB.dll
+D:\Code\CCARE(Tambah Kota) Sebelum ganti Database\CCareApi\bin\DevTrends.MvcDonutCaching.dll
+D:\Code\CCARE(Tambah Kota) Sebelum ganti Database\CCareApi\bin\BCA.CRM.EAI.REST.dll
+D:\Code\CCARE(Tambah Kota) Sebelum ganti Database\CCareApi\bin\Microsoft.AspNet.SignalR.SystemWeb.dll
+D:\Code\CCARE(Tambah Kota) Sebelum ganti Database\CCareApi\bin\Owin.dll
+D:\Code\CCARE(Tambah Kota) Sebelum ganti Database\CCareApi\bin\Microsoft.AspNet.SignalR.Owin.dll
+D:\Code\CCARE(Tambah Kota) Sebelum ganti Database\CCareApi\bin\Microsoft.Owin.Host.SystemWeb.dll
+D:\Code\CCARE(Tambah Kota) Sebelum ganti Database\CCareApi\bin\CCARE.pdb
+D:\Code\CCARE(Tambah Kota) Sebelum ganti Database\CCareApi\bin\Newtonsoft.Json.xml
+D:\Code\CCARE(Tambah Kota) Sebelum ganti Database\CCareApi\bin\EntityFramework.xml
+D:\Code\CCARE(Tambah Kota) Sebelum ganti Database\CCareApi\bin\System.Net.Http.Formatting.xml
+D:\Code\CCARE(Tambah Kota) Sebelum ganti Database\CCareApi\bin\System.Web.Helpers.xml
+D:\Code\CCARE(Tambah Kota) Sebelum ganti Database\CCareApi\bin\System.Web.Http.xml
+D:\Code\CCARE(Tambah Kota) Sebelum ganti Database\CCareApi\bin\System.Web.Http.WebHost.xml
+D:\Code\CCARE(Tambah Kota) Sebelum ganti Database\CCareApi\bin\System.Web.Mvc.xml
+D:\Code\CCARE(Tambah Kota) Sebelum ganti Database\CCareApi\bin\System.Web.Razor.xml
+D:\Code\CCARE(Tambah Kota) Sebelum ganti Database\CCareApi\bin\System.Web.WebPages.xml
+D:\Code\CCARE(Tambah Kota) Sebelum ganti Database\CCareApi\bin\System.Web.WebPages.Deployment.xml
+D:\Code\CCARE(Tambah Kota) Sebelum ganti Database\CCareApi\bin\System.Web.WebPages.Razor.xml
+D:\Code\CCARE(Tambah Kota) Sebelum ganti Database\CCareApi\bin\Microsoft.AspNet.SignalR.Core.xml
+D:\Code\CCARE(Tambah Kota) Sebelum ganti Database\CCareApi\bin\BCA.CRM.OSB.dll.config
+D:\Code\CCARE(Tambah Kota) Sebelum ganti Database\CCareApi\bin\DevTrends.MvcDonutCaching.pdb
+D:\Code\CCARE(Tambah Kota) Sebelum ganti Database\CCareApi\bin\DevTrends.MvcDonutCaching.xml
+D:\Code\CCARE(Tambah Kota) Sebelum ganti Database\CCareApi\bin\Microsoft.AspNet.SignalR.SystemWeb.xml
+D:\Code\CCARE(Tambah Kota) Sebelum ganti Database\CCareApi\bin\Microsoft.AspNet.SignalR.Owin.xml
+D:\Code\CCARE(Tambah Kota) Sebelum ganti Database\CCareApi\bin\Microsoft.Owin.Host.SystemWeb.xml
+D:\Code\CCARE(Tambah Kota) Sebelum ganti Database\CCareApi\obj\Debug\CCareApi.csprojAssemblyReference.cache
+D:\Code\CCARE(Tambah Kota) Sebelum ganti Database\CCareApi\obj\Debug\CCareApi.csproj.CoreCompileInputs.cache
+D:\Code\CCARE(Tambah Kota) Sebelum ganti Database\CCareApi\obj\Debug\CCareApi.csproj.CopyComplete
+D:\Code\CCARE(Tambah Kota) Sebelum ganti Database\CCareApi\obj\Debug\CCareApi.dll
+D:\Code\CCARE(Tambah Kota) Sebelum ganti Database\CCareApi\obj\Debug\CCareApi.pdb
+D:\Code\CCARE(Tambah Kota) Sebelum ganti Database\CCareApi\bin\SqlServerTypes\x64\msvcr100.dll
+D:\Code\CCARE(Tambah Kota) Sebelum ganti Database\CCareApi\bin\SqlServerTypes\x64\SqlServerSpatial110.dll
+D:\Code\CCARE(Tambah Kota) Sebelum ganti Database\CCareApi\bin\SqlServerTypes\x86\msvcr100.dll
+D:\Code\CCARE(Tambah Kota) Sebelum ganti Database\CCareApi\bin\SqlServerTypes\x86\SqlServerSpatial110.dll
+D:\Code\CCARE(Tambah Kota) Sebelum ganti Database\CCareApi\bin\Microsoft.ReportViewer.WebForms.dll
+D:\Code\CCARE(Tambah Kota) Sebelum ganti Database\CCareApi\bin\Microsoft.ReportViewer.Common.dll
+D:\Code\CCARE(Tambah Kota) Sebelum ganti Database\CCareApi\bin\Microsoft.ReportViewer.ProcessingObjectModel.dll
+D:\Code\CCARE(Tambah Kota) Sebelum ganti Database\CCareApi\bin\Microsoft.ReportViewer.DataVisualization.dll
+D:\Code\CCARE(Tambah Kota) Sebelum ganti Database\CCareApi\bin\Microsoft.SqlServer.Types.dll
+D:\Code\CCARE(Tambah Kota) Sebelum ganti Database\CCareApi\bin\CCARE.dll.config

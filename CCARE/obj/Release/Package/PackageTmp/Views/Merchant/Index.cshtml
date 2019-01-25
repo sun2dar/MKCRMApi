@@ -1,0 +1,334 @@
+﻿@{
+    if (Request.IsAjaxRequest())
+    {
+        Layout = null;
+    }
+}
+
+<ul class="nav nav-stacked nav-pills">
+    <li class="titleBar font-crm4"><a></a></li>
+</ul>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-12">
+            <!-- Content -->
+            <div class="container-fluid content_container">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <form id="form_inquiry">
+                            <br />
+                            <div class="tab-content myContent_Tab">
+                                <div class="tab-pane fade active in" id="history" aria-labelledby="history-tab">
+                                    
+                                    <ol class="breadcrumb">
+                                        <li class="active">Search</li>
+                                        <li class="active">Inquiry</li>
+                                        <li class="active"><a href="#">Merchant</a></li>
+                                    </ol>
+
+                                    <div class="form-horizontal">
+                                        <div class="row">
+                                            <div class="col-sm-6">
+                                                <div class="form-group">
+                                                    <label class="col-sm-4 control-label mandatory"><span id="lblparam">Terminal ID</span></label>
+                                                    <div class="col-sm-8">
+                                                        <input type="text" id="inquiry_val" class="form-control" maxlength="12" value=""/>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-6">
+                                                <div class="form-group">
+                                                    <div class="col-sm-4"></div>
+                                                    <div class="col-sm-8">
+                                                        <div class="input-group">
+                                                            <button id="btn_search" class="btn btn-primary btn-crm-layout" type="submit">
+                                                                <span class="glyphicon glyphicon-search glyp-space" aria-hidden="true"></span>
+                                                                Search
+                                                            </button>
+                                                            <button id="btn_clear" class="btn btn-danger btn-crm-layout" type="button">
+                                                                <span class="glyphicon glyphicon-erase glyp-space" aria-hidden="true"></span>
+                                                                Clear
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>                                
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <br />
+                
+                <!-- Table result -->
+                <div class="row">
+                    <div class="col-sm-12" >
+                        <div class="panel panel-default">
+                            <div class="panel-body" id="no-record-found"></div>
+
+                            <div class="panel-body" id="information">
+                                <div class="form-horizontal pad-eb-trx">
+
+                                    <div class="row">
+                                        <div class="col-sm-6">                                        
+                                            <div class="form-group">
+                                                <label class="col-sm-3 control-label">Terminal ID</label>
+                                                <div class="col-sm-9">
+                                                    <input type="text" class="form-control" id="terminalID" readonly="readonly" />
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <label class="col-sm-3 control-label">Alamat 2</label>
+                                                <div class="col-sm-9">
+                                                    <input type="text" class="form-control" id="alamat2" readonly="readonly" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-sm-6">                                        
+                                            <div class="form-group">
+                                                <label class="col-sm-3 control-label">Retailer ID</label>
+                                                <div class="col-sm-9">
+                                                    <input type="text" class="form-control" id="retailerID" readonly="readonly" />
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <label class="col-sm-3 control-label">Alamat 3</label>
+                                                <div class="col-sm-9">
+                                                    <input type="text" class="form-control" id="alamat3" readonly="readonly" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-sm-6">                                        
+                                            <div class="form-group">
+                                                <label class="col-sm-3 control-label">Retailer Group</label>
+                                                <div class="col-sm-9">
+                                                    <input type="text" class="form-control" id="retailerGroup" readonly="readonly" />
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <label class="col-sm-3 control-label">Alamat 4</label>
+                                                <div class="col-sm-9">
+                                                    <input type="text" class="form-control" id="alamat4" readonly="readonly" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-sm-6">                                        
+                                            <div class="form-group">
+                                                <label class="col-sm-3 control-label">Nama Merchant</label>
+                                                <div class="col-sm-9">
+                                                    <input type="text" class="form-control" id="merchantName" readonly="readonly" />
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <label class="col-sm-3 control-label">Kota</label>
+                                                <div class="col-sm-9">
+                                                    <input type="text" class="form-control" id="city" readonly="readonly" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-sm-6">                                        
+                                            <div class="form-group">
+                                                <label class="col-sm-3 control-label">Jenis Merchant</label>
+                                                <div class="col-sm-9">
+                                                    <input type="text" class="form-control" id="merchantType" readonly="readonly" />
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <label class="col-sm-3 control-label">Kode Pos</label>
+                                                <div class="col-sm-9">
+                                                    <input type="text" class="form-control" id="zipcode" readonly="readonly" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-sm-6">                                        
+                                            <div class="form-group">
+                                                <label class="col-sm-3 control-label">Terminal Type</label>
+                                                <div class="col-sm-9">
+                                                    <input type="text" class="form-control" id="terminalType" readonly="readonly" />
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <label class="col-sm-3 control-label">No Telephone</label>
+                                                <div class="col-sm-9">
+                                                    <input type="text" class="form-control" id="nohp" readonly="readonly" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-sm-6">                                        
+                                            <div class="form-group">
+                                                <label class="col-sm-3 control-label">Terminal Status</label>
+                                                <div class="col-sm-9">
+                                                    <input type="text" class="form-control" id="terminalStatus" readonly="readonly" />
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <label class="col-sm-3 control-label">Merchant Name</label>
+                                                <div class="col-sm-9">
+                                                    <input type="text" class="form-control" id="merchantName2" readonly="readonly" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-sm-6">                                        
+                                            <div class="form-group">
+                                                <label class="col-sm-3 control-label">Alamat 1</label>
+                                                <div class="col-sm-9">
+                                                    <input type="text" class="form-control" id="alamat1" readonly="readonly" />
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-sm-6"></div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        var entityName = '@ViewContext.RouteData.Values["Controller"].ToString()';
+
+        $("#information").hide();
+        $("#no-record-found").hide();
+
+        $('#form_inquiry').submit(function (e) {
+            e.preventDefault();
+            $("#btn_search").trigger("click");
+        });
+
+        $("#btn_search").click(function () {
+            (event.preventDefault) ? event.preventDefault() : event.returnValue = false;
+            if ($("#inquiry_val").val() == '') {
+                alert("Terminal ID harus diisi");
+                return false;
+            }
+
+            var postData = {
+                _val: function () { return $("#inquiry_val").val(); },
+            };
+
+            var url = '/' + entityName + '/' + 'Inquiry';
+
+            $.ajax({
+                type: "POST",
+                url: url,
+                data: postData,
+                beforeSend: function () {
+
+                },
+                success: function (data) {
+                    var obj = JSON.parse(data);
+                    if (obj.TerminalId != null) {
+                        $("#terminalID").val(obj.TerminalId);
+                        $("#alamat1").val(obj.Address1);
+                        $("#alamat2").val(obj.Address2);
+                        $("#alamat3").val(obj.Address3);
+                        $("#alamat4").val(obj.Address4);
+                        $("#retailerID").val(obj.RetailerId);
+                        $("#retailerGroup").val(obj.RetailerGroup);
+                        $("#merchantName").val(obj.TandemMerchantName);
+                        $("#city").val(obj.City);
+                        $("#merchantType").val(obj.MerchantType);
+                        $("#zipcode").val(obj.ZipCode);
+                        $("#terminalType").val(obj.TerminalType);
+                        $("#nohp").val(obj.TelephoneNo);
+                        $("#terminalStatus").val(obj.TerminalStatus);
+                        $("#merchantName2").val(obj.Name);
+
+                        $("#no-record-found").hide();
+                        $("#information").show();
+                    }
+                    else {
+                        $("#information").hide();
+                        $("#no-record-found").html(NoRecordFound());
+                        $("#no-record-found").show();
+                    }
+                },
+                error: function (xhr, textStatus, errorThrown) {
+
+                },
+                complete: function () {
+                
+                }
+            });
+            
+            
+        });
+
+
+        $("#StartDate").datepicker({
+            format: 'dd/mm/yyyy',
+            todayHighlight: true,
+            orientation: "top auto",
+            autoclose: true
+        })
+
+        $("#EndDate").datepicker({
+            format: 'dd/mm/yyyy',
+            todayHighlight: true,
+            orientation: "top auto",
+            autoclose: true
+        })
+
+        $("#btn_clear").click(function () {
+            $("input[type=text]").val('');
+            $("#information").hide();
+            $("#no-record-found").hide();
+        });
+
+    });
+</script>

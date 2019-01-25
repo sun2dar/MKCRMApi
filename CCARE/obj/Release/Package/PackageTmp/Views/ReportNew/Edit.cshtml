@@ -1,0 +1,316 @@
+﻿@model CCARE.Models.ReportView
+
+@{
+    if (Request.IsAjaxRequest())
+    {
+        Layout = null;
+    }
+    else
+    {
+        ViewBag.Title = "Report: " + @Model.Name;
+        Layout = "~/Views/Shared/_LayoutEntity.cshtml";
+    }
+}
+
+@section title
+{
+    Report
+}
+
+@section entityLogo
+{
+    <img class="crm-logo" src="~/assets/images/ico_lrg_112.gif" />
+}
+
+@section formTitle
+{
+    <div class="text_title">
+        <h1>Information</h1>
+        Report : @Model.Name
+    </div>
+}
+
+@section navHeader
+{
+     <ul class="nav navbar-nav navbar-left">
+        @if (Session["RoleID"] != null)
+        {
+            string entity = ViewContext.Controller.ControllerContext.RouteData.Values["controller"].ToString();
+            Guid roleID = new Guid(Session["RoleID"].ToString());
+            bool buttonWrite = CCARE.App_Function.RoleNPrivilege.checkEntityButtonByRoleID(roleID, entity, "Write");
+            bool buttonDelete = CCARE.App_Function.RoleNPrivilege.checkEntityButtonByRoleID(roleID, entity, "Delete");
+            bool buttonDuplicate = CCARE.App_Function.RoleNPrivilege.checkEntityButtonByRoleID(roleID, entity, "Duplicate");
+            
+            if (buttonWrite == true)
+            {
+                <text>
+                    <li><a class="btn_information" id="btn_save" href="#">Save</a></li>
+                    <li><a class="btn_information" id="btn_savenclose" href="#">Save & Close</a></li>
+                </text>
+            }
+        
+            if (buttonWrite == true)
+            {
+                <text>
+                    <li><a class="btn_information" id="btn_duplicate" href="#">Duplicate</a></li>
+                </text>
+            }
+
+            if (buttonWrite == true)
+            {
+                <text>
+                    <li><a class="btn_information" id="btn_delete" href="#" data-toggle="modal" data-target="#confirm-delete">Delete</a></li>
+                </text>
+            }
+        }
+    </ul>
+}
+
+@section footerStatus
+{
+    <div class="footer_text">
+        Status: @ViewBag.StatusLabel
+    </div>
+}
+
+@section sidebarMenu
+{
+    <li><a data-ajax="true" data-ajax-mode="replace" data-ajax-update="#page_content" href="/ReportNew/Edit?id=@(Model.ID)">Report Information</a></li>
+    <li><a data-ajax="true" data-ajax-mode="replace" data-ajax-update="#page_content" href="/ReportFilter/Index?ReportID=@(Model.ID)">Report Filter</a></li>
+    <li><a data-ajax="true" data-ajax-mode="replace" data-ajax-update="#page_content" href="/ReportColumn/Index?ReportID=@(Model.ID)">Report Column</a></li>
+    <li><a data-ajax="true" data-ajax-mode="replace" data-ajax-update="#page_content" href="/ReportAccess/Index?ReportID=@(Model.ID)">Report Access</a></li>
+}
+
+<div class="modal fade" id="confirm-delete" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1>Confirm Deletion</h1>
+            </div>
+            <div class="modal-body input-lg">
+                The system will delete this record. This action cannot be undone, To continue click "Delete".
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                <a class="btn btn-danger btn-ok">Delete</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container-fluid">
+    <!-- tabs -->
+    <div class="row">
+        <div class="col-sm-12 panel panel-default panel_form_parent">
+            <div class="tab-content myContent_noTab">
+
+                @using (Html.BeginForm("Edit", "ReportNew", FormMethod.Post, new { id = "form_report" }))
+                {
+                    @Html.Hidden("hidden_displayStatus", "", new { @id = "hidden_displayStatus" })
+                    @Html.HiddenFor(x => x.ID);
+                    
+                    <!-- panel content -->
+                    <div class="col-sm-12">
+                        
+                        <!-- START title 1 -->
+                        <div class="row form_text">
+                            <div class="panel panel-default panel_form_child">
+                                <div class="panel-heading">
+                                    <label class="control-label sv-header"><strong>General</strong></label>
+                                </div>
+                                <br />
+                                <div class="panel-body">
+                                    <div class="form-horizontal">
+
+                                        <div class="row">
+                                            <div class="col-sm-12">                                        
+                                                <div class="form-group">
+                                                    <label class="col-sm-2 control-label mandatory">Name</label>
+                                                    <div class="col-sm-10">
+                                                        @Html.TextBoxFor(x => x.Name, new { @class = "form-control" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-sm-12">                                                                              
+                                                <div class="form-group">
+                                                    <label class="col-sm-2 control-label mandatory">Description</label>
+                                                    <div class="col-sm-10">
+                                                        @Html.TextBoxFor(x => x.Description, new { @class = "form-control" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                         <div class="row">
+                                            <div class="col-sm-12">                                                                              
+                                                <div class="form-group">
+                                                    <label class="col-sm-2 control-label mandatory">Entity</label>
+                                                    <div class="col-sm-10">
+                                                        <input type="text" id="EntityID" class="form-control" name="Entity" disabled value="@ViewBag.entity.Name" />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        @if (@ViewBag.entity.Name == "Request")
+                                        {
+                                        <div class="row">
+                                            <div class="col-sm-12">                                                                              
+                                                <div class="form-group">
+                                                    <label class="col-sm-2 control-label">Hyperlink</label>
+                                                    <div class="col-sm-10" style="margin-top:8px;">
+                                                        @if (Model.Hyperlink == null)
+                                                        {
+                                                            Model.Hyperlink = false;
+                                                        }
+                                                        <label>@Html.CheckBoxFor(x => x.Hyperlink.Value, new { Name = "Hyperlink", @Class = "url-choice" })  <span class="url-choice-note">Show Request's URL on Report</span></label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        }
+
+                                    </div>
+                                </div>
+                                
+                            </div>
+                        </div>
+                        <!-- END title 1 -->        
+                        <!-- START title 2 -->
+                        <div class="row form_text">
+                            <div class="panel panel-default panel_form_child">
+                                <div class="panel-heading">
+                                    <label class="control-label sv-header"><strong>Creation Information</strong></label>
+                                </div>
+                                <br />
+                                <div class="panel-body">
+                                    <div class="form-horizontal">
+                                        <div class="row">
+                                            <div class="col-sm-6">                                        
+                                                <div class="form-group">
+                                                    <label class="col-sm-4 control-label">Created On</label>
+                                                    <div class="col-sm-8">
+                                                        @Html.TextBoxFor(x => x.CreatedOn, new { Value = @Model.CreatedOn.ToString("dd/MM/yyyy HH:mm"), @class = "form-control", @disabled = "disabled" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-6">                                        
+                                                <div class="form-group">
+                                                    <label class="col-sm-4 control-label">Created By</label>
+                                                    <div class="col-sm-8">
+                                                        <input type="text" value="@(ViewBag.createdBy)" class="form-control" disabled />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-sm-6">                                                                              
+                                                <div class="form-group">
+                                                    <label class="col-sm-4 control-label">Modified On</label>
+                                                    <div class="col-sm-8">
+                                                        @Html.TextBoxFor(x => x.ModifiedOn, new { Value = @Model.ModifiedOn.ToString("dd/MM/yyyy HH:mm"), @class = "form-control", @disabled = "disabled" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-6">                                                                              
+                                                <div class="form-group">
+                                                    <label class="col-sm-4 control-label">Modified By</label>
+                                                    <div class="col-sm-8">
+                                                        <input type="text" value="@(ViewBag.modifiedBy)" class="form-control" disabled />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- END title 2 -->
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+    <div id="response-modal"></div>
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        var entityName = '@ViewContext.RouteData.Values["Controller"].ToString()';
+        var reportId = $("#ID").val();
+        $(".btn_information").show();
+
+        function validateForm(action, formName) {
+            if ($("#ReportName").val() == "") {
+                alert("@Resources.MasterReport.NameMandatory");
+                return false;
+            }
+            else if ($("#Description").val() == "") {
+                alert("@Resources.MasterReport.DescriptionMandatory");
+                return false;
+            }
+            formSubmit(action, formName);
+        }
+
+        $("#btn_save").click(function () {
+            validateForm("save", $("#form_report"));
+        });
+
+        $("#btn_savenclose").click(function () {
+            validateForm("saveNClose", $("#form_report"));
+        });
+
+        $("#btn_duplicate").click(function () {
+            $.ajax({
+                type: "POST",
+                url: "/ReportNew/Duplicate?ID=" + reportId,
+                dataType: "json",
+                success: function (data) {
+                    if (data.flag == false) {
+                        $("#messagebox").html(MessageText('alert', data.Message));
+                    }
+                    else {
+                        $("#messagebox").html(MessageText('info', data.Message));
+                        openWindow('/ReportNew/Edit?id=' + data.ID);
+                    }
+                },
+                error: function (xhr, status, err) {
+                    alert("Error");
+                }
+            });
+        });
+
+        $("#confirm-delete").on('show.bs.modal', function (e) {
+            $(this).find('.btn-ok').click(function () {
+                $.ajax({
+                    type: "POST",
+                    url: "/ReportNew/Delete?ID=" + reportId,
+                    dataType: "json",
+                    success: function (data) {
+                        if (data.flag == false) {
+                            $("#messagebox").html(MessageText('alert', data.Message));
+                        }
+                        else {
+                            $("#messagebox").html(MessageText('info', data.Message));
+                            window.close();
+                        }
+                    },
+                    error: function (xhr, status, err) {
+                        alert("Error");
+                    }
+                });
+            });
+        });
+
+        $("#btn_savenopen").click(function () {
+            validateForm("saveNOpen", $("#form_report"));
+        });
+
+        $('#divActionButton').show();
+    });
+</script>

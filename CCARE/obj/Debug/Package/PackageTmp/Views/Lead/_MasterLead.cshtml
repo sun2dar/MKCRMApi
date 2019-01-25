@@ -1,0 +1,615 @@
+﻿@*Author : SUN*@
+@model CCARE.Models.SalesMarketing.Lead
+@{
+    if (Request.IsAjaxRequest())
+    {
+        Layout = null;
+    }
+    else
+    {
+        Layout = "~/Views/Shared/_LayoutEntity.cshtml";
+    }
+    string actionPage = ViewContext.Controller.ControllerContext.RouteData.Values["action"].ToString();
+    string entityLabel = "Lead";
+    Guid newCustomerID = Guid.NewGuid();
+}
+
+@section entityLogo
+{
+    <img class="crm-logo" src="~/assets/images/ico_lrg_112.gif" />
+}
+
+@section formTitle
+{
+    <div class="text_title">
+        <h1>Information</h1>
+        @entityLabel : 
+        @if (actionPage == "Create")
+        {
+            <text>New @entityLabel</text>
+        }
+        else if (actionPage == "Edit")
+        {
+            <text>@(Model.Name)</text>
+        }
+    </div>
+}
+
+@section navHeader
+{
+    <ul class="nav navbar-nav navbar-left" id="divActionButton">
+        @if (actionPage == "Create")
+        {
+            <li><a id="btn_save" href="#">Save</a></li>
+            <li><a id="btn_savenclose" href="#">Save & Close</a></li>
+            <li><a id="btn_savenopen" href="#">Save & New</a></li>
+        }
+        else if (actionPage == "Edit")
+        {
+            if (Session["RoleID"] != null)
+            {
+                string entity = ViewContext.Controller.ControllerContext.RouteData.Values["controller"].ToString();
+                Guid roleID = new Guid(Session["RoleID"].ToString());
+                bool checkButton = CCARE.App_Function.RoleNPrivilege.checkEntityButtonByRoleID(roleID, entity, "Write");
+                bool checkButton2 = CCARE.App_Function.RoleNPrivilege.checkEntityButtonByRoleID(roleID, entity, "Qualify");
+                
+                if (checkButton == true)
+                {
+                    if (Model.StateCode == 0)//Active state
+                    {
+                        <text>
+                            <li><a id="btn_save" href="#">Save</a></li>
+                            <li><a id="btn_savenclose" href="#">Save & Close</a></li>
+                            <li><a id="btn_savenopen" href="#">Save & New</a></li>
+                        </text>
+                    }
+                    else if (Model.StateCode == 3) //Disqualified state
+                    {
+                        <text>
+                            <li><a id="btn_reactivate" href="#" data-toggle="modal" data-target="#confirm-reactivate">Reactivate</a></li>
+                        </text>
+                    }
+                }
+                if(checkButton2 == true)
+                {
+                    if(Model.StateCode == 0)
+                    {
+                        <text>
+                            <li><a id="btn_qualify" href="#" data-toggle="modal" data-target="#confirm-qualify">Qualify</a></li>
+                            <li><a id="btn_disqualify" href="#" data-toggle="modal" data-target="#confirm-disqualify">Disqualify</a></li>
+                        </text>
+                    }
+                    if (Model.StateCode == 2) //Qualified state
+                    {
+                    
+                    }
+                    else if (Model.StateCode == 3) //Disqualified state
+                    {
+                       
+                    }
+                }
+
+            }
+        }
+    </ul>
+}
+
+@section footerStatus
+{
+    <div class="footer_text">Status: 
+        @if (actionPage == "Create")
+        {
+            <text>New</text>
+        }
+        else if (actionPage == "Edit")
+        {
+            if(Model.StateCode == 0){
+                <text>Active</text>
+            }
+            else if(Model.StateCode == 1){
+                <text>Inactive</text>
+            }
+            else if(Model.StateCode == 2){
+                <text>Qualified</text>
+            }
+            else if(Model.StateCode == 3){
+                <text>Disqualified</text>
+            }
+        }
+    </div>
+}
+
+@section title
+{
+     @if (actionPage == "Create")
+    {
+        <text>Lead : New</text>
+    }
+    else if (actionPage == "Edit")
+    {
+        <text>Lead : @Model.Name</text>
+    }   
+}
+
+@section sidebarMenu
+{
+    @if (ViewBag.actionType == "Edit")
+    {
+        <text><li><a data-ajax="true" data-ajax-mode="replace" data-ajax-update="#page_content" href="/Lead/Edit?id=@(Model.ID)">@entityLabel</a></li></text>
+    }
+    else
+    {
+        <text><li><a data-ajax="true" data-ajax-mode="replace" data-ajax-update="#page_content" href="#">@entityLabel</a></li></text>
+    }
+}
+
+<div class="modal fade" id="confirm-qualify" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1>Confirm Qualify Lead</h1>
+            </div>
+            <div class="modal-body input-lg">
+                The system will change status of this record. To continue click "Qualify".
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                <a class="btn btn-danger btn-ok">Qualify</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="confirm-disqualify" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1>Confirm Disqualify Lead</h1>
+            </div>
+            <div class="modal-body input-lg">
+                The system will change status of this record. To continue click "Disqualify".
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                <a class="btn btn-danger btn-ok">Disqualify</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="confirm-reactivate" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1>Confirm Reactivate</h1>
+            </div>
+            <div class="modal-body input-lg">
+                The system will change status of this record. To continue click "Active".
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                <a class="btn btn-danger btn-ok">Active</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="container-fluid">
+    <!-- tabs -->
+    <div class="row">
+        <div class="col-sm-12 panel panel-default panel_form_parent">
+            <div class="myContent_noTab">
+                @using (Html.BeginForm(actionPage, "Lead", FormMethod.Post, new { id = "form_lead" }))
+                {           
+                    @RenderBody()
+                    @Html.HiddenFor(model => model.DeletionStateCode)
+                    @Html.HiddenFor(model => model.StateCode)
+                    @Html.HiddenFor(model => model.StatusCode)
+                    
+                    if (actionPage == "Create")
+                    {
+                        <input type="hidden" id="ID" name="ID" value="@Guid.NewGuid()" />
+                    }
+                    else {@Html.HiddenFor(model => model.ID)}
+                    
+                    <!-- panel content -->
+                    <div class="col-sm-12">
+                        <div class="row form_text">
+                            <div class="panel panel-default panel_form_child">
+                                <div class="panel-heading">
+                                    <label class="control-label sv-header"><strong>Lead Information</strong></label>
+                                </div>
+                                <br />
+                                <div class="panel-body">
+                                    <div class="form-horizontal">
+
+                                        <div class="row">
+                                            <div class="col-sm-6">
+                                                <div class="form-group">
+                                                    <label class="col-sm-4 control-label mandatory">Name</label>
+                                                    <div class="col-sm-8">
+                                                        @Html.TextBoxFor(x => x.Name, new { id = "Name", @class = "form-control" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-6">                                        
+                                                <div class="form-group">
+                                                    <label class="col-sm-4 control-label mandatory">Topic</label>
+                                                    <div class="col-sm-8">
+                                                        @Html.TextBoxFor(x => x.Topic, new { id = "Topic", @class = "form-control" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-sm-6">
+                                                <div class="form-group">
+                                                    <label class="col-sm-4 control-label mandatory">Company</label>
+                                                    <div class="col-sm-8">
+                                                        @Html.TextBoxFor(x => x.Company, new { id = "Company", @class = "form-control" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-6"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!--New Section-->
+                        <div class="row form_text">
+                            <div class="panel panel-default panel_form_child">
+                                <div class="panel-heading">
+                                    <label class="control-label sv-header"><strong>Contact Information</strong></label>
+                                </div>
+                                <br />
+                                <div class="panel-body">
+                                    <div class="form-horizontal">
+
+                                        <div class="row">
+                                            <div class="col-sm-6">
+                                                <div class="form-group">
+                                                    <label class="col-sm-4 control-label mandatory">Firstname</label>
+                                                    <div class="col-sm-8">
+                                                        @Html.TextBoxFor(x => x.Firstname, new { id = "Firstname", @class = "form-control" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-6">                                        
+                                                <div class="form-group">
+                                                    <label class="col-sm-4 control-label mandatory">Lastname</label>
+                                                    <div class="col-sm-8">
+                                                        @Html.TextBoxFor(x => x.Lastname, new { id = "Lastname", @class = "form-control" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-6">
+                                                <div class="form-group">
+                                                    <label class="col-sm-4 control-label mandatory">BirtDate</label>
+                                                    <div class="col-sm-8">
+                                                        @if (actionPage != "Create")
+                                                        {
+                                                            <div class="input-group date">
+                                                                <input type="text" id="BirthDate" name="BirthDate" class="form-control" value="@(Model.BirthDate.Value.Date.ToShortDateString())" />
+                                                                <span class="input-group-addon">
+                                                                    <i class="fa fa-calendar fa-lg"></i>
+                                                                </span>
+                                                            </div>
+                                                        }
+                                                        else
+                                                        {
+                                                            <div class="input-group date">
+                                                                <input type="text" id="BirthDate" name="BirthDate" class="form-control" />
+                                                                <span class="input-group-addon">
+                                                                    <i class="fa fa-calendar fa-lg"></i>
+                                                                </span>
+                                                            </div>
+                                                        }
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-6">                                        
+                                                <div class="form-group">
+                                                    <label class="col-sm-4 control-label mandatory">Gender</label>
+                                                    <div class="col-sm-8">
+                                                        <select id="GenderCode" name="GenderCode" class="form-control">
+                                                            <option value="1">Male</option>
+                                                            <option value="2">Female</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-6">
+                                                <div class="form-group">
+                                                    <label class="col-sm-4 control-label">Job Title</label>
+                                                    <div class="col-sm-8">
+                                                        @Html.TextBoxFor(x => x.JobTitle, new { id = "JobTitle", @class = "form-control" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-6">
+                                                <div class="form-group">
+                                                    <label class="col-sm-4 control-label mandatory">Address</label>
+                                                    <div class="col-sm-8">
+                                                        @Html.TextBoxFor(x => x.Address, new { id = "Address", @class = "form-control" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-6">                                        
+                                                <div class="form-group">
+                                                    <label class="col-sm-4 control-label mandatory">City</label>
+                                                    <div class="col-sm-8">
+                                                        @Html.TextBoxFor(x => x.City, new { id = "City", @class = "form-control" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-6">
+                                                <div class="form-group">
+                                                    <label class="col-sm-4 control-label mandatory">Country</label>
+                                                    <div class="col-sm-8">
+                                                        @Html.TextBoxFor(x => x.Country, new { id = "Country", @class = "form-control" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-6">
+                                                <div class="form-group">
+                                                    <label class="col-sm-4 control-label mandatory">Mobile Phone</label>
+                                                    <div class="col-sm-8">
+                                                        @Html.TextBoxFor(x => x.Handphone, new { id = "Handphone", @class = "form-control" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-6">                                        
+                                                <div class="form-group">
+                                                    <label class="col-sm-4 control-label mandatory">Telephone</label>
+                                                    <div class="col-sm-8">
+                                                        @Html.TextBoxFor(x => x.Telephone, new { id = "Telephone", @class = "form-control" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-6">
+                                                <div class="form-group">
+                                                    <label class="col-sm-4 control-label mandatory">Email</label>
+                                                    <div class="col-sm-8">
+                                                        @Html.TextBoxFor(x => x.Email, new { id = "Email", @class = "form-control" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                         @if (actionPage == "Edit")
+                        {
+                        <text>
+                        <!--New Section-->
+                        <div class="row form_text">
+                            <div class="panel panel-default panel_form_child">
+                                <div class="panel-heading">
+                                    <label class="control-label sv-header"><strong>Timestamp Information</strong></label>
+                                </div>
+                                <br />
+                                <div class="panel-body">
+                                    <div class="form-horizontal">
+
+                                        <div class="row">
+                                            <div class="col-sm-6">
+                                                <div class="form-group">
+                                                    <label class="col-sm-4 control-label">Created By</label>
+                                                    <div class="col-sm-8">
+                                                        @Html.HiddenFor(x=>x.CreatedBy)
+                                                        @Html.TextBoxFor(x => x.CreatedByName, new { id = "CreatedByName", @class = "form-control" , @readonly = "readonly"})
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-6">                                        
+                                                <div class="form-group">
+                                                    <label class="col-sm-4 control-label">Created On</label>
+                                                    <div class="col-sm-8">
+                                                        @Html.TextBoxFor(x => x.CreatedOn, new { id = "CreatedOn", @class = "form-control" , @readonly = "readonly"})
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-6">
+                                                <div class="form-group">
+                                                    <label class="col-sm-4 control-label">Modified By</label>
+                                                    <div class="col-sm-8">
+                                                        @Html.HiddenFor(x=>x.ModifiedBy)
+                                                        @Html.TextBoxFor(x => x.ModifiedByName, new { id = "ModifiedByName", @class = "form-control", @readonly = "readonly" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-6">                                        
+                                                <div class="form-group">
+                                                    <label class="col-sm-4 control-label">Modified On</label>
+                                                    <div class="col-sm-8">
+                                                        @Html.TextBoxFor(x => x.ModifiedOn, new { id = "ModifiedOn", @class = "form-control", @readonly = "readonly" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        </text>
+                        }
+                        
+                        <!--End Section-->
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+    <div id="response-modal"></div>
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        $("#BirthDate").datepicker({
+            format: 'dd/mm/yyyy',
+            todayHighlight: true,
+            orientation: "top auto",
+            autoclose: true
+        });
+
+        //OprType : 0=Reactivate , 3=Disqualify
+        function changeState(id, state) {
+            var url = "/Lead/changeState";
+            var postData = { id: id, StateCode: state };
+
+            $.ajax({
+                type: "POST",
+                url: url,
+                data: JSON.stringify(postData),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (msg) {
+                    alert(msg.Message);
+                    location.reload();
+                },
+                error: function (xhr, status, err) {
+                    alert("Proses tidak berhasil !!!");
+                }
+            });
+        }
+
+        var customerId = '@newCustomerID';
+        function setQualify(id, customerId) {
+            var url = "/Lead/setQualify";
+            var postData = { id: id, CustomerID: customerId };
+
+            $.ajax({
+                type: "POST",
+                url: url,
+                data: JSON.stringify(postData),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (msg) {
+                    alert(msg.Message);
+                    if (msg.flag == true) {
+                        openWindow(msg.customerURL);
+                    }
+                    location.reload();
+                },
+                error: function (xhr, status, err) {
+                    alert("Proses tidak berhasil !!!");
+                }
+            });
+        }
+
+        $("#confirm-qualify").on('show.bs.modal', function (e) {
+            $(this).find('.btn-ok').click(function () {
+                setQualify(id, customerId);
+            });
+        });
+
+        $("#confirm-disqualify").on('show.bs.modal', function (e) {
+            $(this).find('.btn-ok').click(function () {
+                changeState(id, 3);
+            });
+        });
+
+        $("#confirm-reactivate").on('show.bs.modal', function (e) {
+            $(this).find('.btn-ok').click(function () {
+                changeState(id, 0);
+            });
+        });
+
+        function validateForm(action, formName) {
+            if ($("#Name").val() == "") {
+                alert("@Resources.Lead.MandatoryName");
+                return false;
+            }
+            else if ($("#Topic").val() == "") {
+                alert("@Resources.Lead.MandatoryTopic");
+                return false;
+            }
+            else if ($("#Company").val() == "") {
+                alert("@Resources.Lead.MandatoryCompany");
+                return false;
+            }
+            else if ($("#Firstname").val() == "") {
+                alert("@Resources.Lead.MandatoryFirstname");
+                return false;
+            }
+            else if ($("#Lastname").val() == "") {
+                alert("@Resources.Lead.MandatoryLastname");
+                return false;
+            }
+            else if ($("#Email").val() == "") {
+                alert("@Resources.Lead.MandatoryEmail");
+            }
+            else if ($("#Handphone").val() == "") {
+                alert("@Resources.Lead.MandatoryMobile");
+            }
+            else if ($("#GenderCode").val() == "") {
+                alert("@Resources.Lead.MandatoryGenderCode");
+            }
+            else if ($("#Address").val() == "") {
+                alert("@Resources.Lead.MandatoryAddress");
+            }
+            else if ($("#City").val() == "") {
+                alert("@Resources.Lead.MandatoryCity");
+            }
+            else if ($("#Country").val() == "") {
+                alert("@Resources.Lead.MandatoryCountry");
+            }
+            formSubmit(action, formName);
+        }
+
+        $("#btn_save").click(function () {
+            validateForm("save", $("#form_lead"));
+        });
+
+        $("#btn_savenclose").click(function () {
+            validateForm("saveNClose", $("#form_lead"));
+        });
+
+        $("#btn_savenopen").click(function () {
+            validateForm("saveNOpen", $("#form_lead"));
+        });
+
+        $("#Telephone").keyup(function () {
+            isNumber($(this).val(), "#Telephone");
+        });
+        $("#Handphone").keyup(function () {
+            isNumber($(this).val(), "#Handphone");
+        });
+
+        //Check if not active
+        @if (actionPage == "Edit")
+        {
+            <text>var id = '@(Model.ID)';</text>
+            if (@Model.StateCode != 0)
+            { 
+                <text>
+                    $("#form_lead :input").attr("disabled", true);
+                    $("#form_lead :input").addClass("readOnlyText");
+                </text>
+            }
+
+        }
+    });
+</script>

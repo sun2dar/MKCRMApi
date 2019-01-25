@@ -1,0 +1,143 @@
+﻿@{
+    if (Request.IsAjaxRequest())
+    {
+        Layout = null;
+    }
+}
+
+@section title
+{
+    
+}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-12">
+            
+            <br />
+            
+            <ol class="breadcrumb">
+                <li class="active">Administration</li>
+                <li class="active">Master Data Application</li>
+                <li class="active"><a href="#">Request Creation Matrix</a></li>
+                <li class="active float-right"><a id="btn_new" href="#"><span class="glyphicon glyphicon-pencil glyp-space" aria-hidden="true"></span>New</a></li>
+            </ol>
+
+            <form id="form_inquiry">
+                <!-- Content -->
+                <div class="container-fluid content_container">
+                    <div class="row">
+                        <div class="col-sm-12 content_col">
+                            <div class="form-horizontal">
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <label class="col-sm-3 control-label">Ebanking Type</label>
+                                            <div class="col-sm-9">
+                                                @Html.DropDownList("eBanking", (SelectList)ViewBag.DDL_eBanking, "", new { @class = "form-control" })
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <label class="col-sm-3 control-label">Status Type</label>
+                                            <div class="col-sm-9">
+                                                @Html.DropDownList("StatusType", (SelectList)ViewBag.DDL_StatusType, "", new { @class = "form-control" })
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <div class="col-sm-offset-3 col-sm-9">
+                                                <button type="submit" id="btn_search_inquiry" class="btn btn-primary btn-crm-layout">
+                                                    <span class="glyphicon glyphicon-search glyp-space" aria-hidden="true"></span>
+                                                    Search
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <br />
+                    <!-- Table result -->
+                    <div class="row">
+                        <div class="col-sm-12" >
+                            <div class="panel panel-default">
+
+                                <div class="panel-heading panel_heading">
+                                    <label class="control-label sv-header">
+                                        <strong>Search Result</strong>
+                                    </label>
+                                </div>
+                                
+                                <div class="panel-body">
+                                    <div class="divGrid">
+                                        <table id="gridTable"></table>
+                                        <div id="jqGridPager"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        var gridId = "#gridTable";
+        var entityName = '@ViewContext.RouteData.Values["Controller"].ToString()';
+
+        $(".form-horizontal").find("input").addClass("rm-padding");
+        $(".form-horizontal").find("select").addClass("rm-padding");
+        $(".form-horizontal").find(":radio").removeClass("rm-padding");
+
+        $('#eBanking').change(function () {
+            var eBanking = $(this).val();
+            var StatusType = null;
+
+            $.ajax({
+                url: "/" + entityName + "/setStatusType",
+                data: {
+                    eBanking: eBanking
+                },
+                dataType: 'json',
+                success: function (data) {
+                    $("#StatusType").empty();
+                    $.each(data, function (i, value) {
+                        $("#StatusType").append($('<option>').text(value.Text).attr('value', value.Value));
+                        if (i == 0) StatusType = value.Value;
+                    });
+                }
+            });
+        });
+
+        $('#form_inquiry').submit(function (event) {
+            (event.preventDefault) ? event.preventDefault() : event.returnValue = false;
+
+            var postData = {
+                _eBanking: $("#eBanking").val(),
+                _statusType: $("#StatusType").val()
+            };
+            loadJqgrid(gridId, postData, entityName);
+        });
+
+        $('#btn_new').click(function (e) {
+            e.preventDefault();
+            openWindow(entityName + '/Create');
+        });
+
+        window.refreshGrid = function refreshGrid() { /*Added By Ardi For Auto Reload Grid After Submission (20151207)*/
+            var gridId = "#gridTable";
+            reloadGrid(gridId);
+        }
+    });
+</script>

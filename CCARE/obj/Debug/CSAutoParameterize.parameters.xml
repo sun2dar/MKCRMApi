@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<parameters>
+  <parameter name="ApplicationServices-Web.config Connection String" description="ApplicationServices Connection String used in web.config by the application to access the database." defaultValue="data source=.\SQLEXPRESS;Integrated Security=SSPI;AttachDBFilename=|DataDirectory|aspnetdb.mdf;User Instance=true" tags="SqlConnectionString">
+    <parameterEntry kind="XmlFile" scope="D:\\Code\\CCARE\(Tambah\ Kota\)\ Sebelum\ ganti\ Database\\CCARE\\obj\\Debug\\Package\\PackageTmp\\Web\.config$" match="/configuration/connectionStrings/add[@name='ApplicationServices']/@connectionString" />
+  </parameter>
+  <parameter name="CRMDb-Web.config Connection String" description="CRMDb Connection String used in web.config by the application to access the database." defaultValue="Data Source=localhost;Initial Catalog=CCARE;Persist Security Info=True;User ID=sa;Password=M1tr4c1d3ngbarat;" tags="SqlConnectionString">
+    <parameterEntry kind="XmlFile" scope="D:\\Code\\CCARE\(Tambah\ Kota\)\ Sebelum\ ganti\ Database\\CCARE\\obj\\Debug\\Package\\PackageTmp\\Web\.config$" match="/configuration/connectionStrings/add[@name='CRMDb']/@connectionString" />
+  </parameter>
+  <parameter name="HistDb-Web.config Connection String" description="HistDb Connection String used in web.config by the application to access the database." defaultValue="Data Source=10.20.201.139;Initial Catalog=hist_tran;Persist Security Info=True;User ID=sa;Password=bcabca;" tags="SqlConnectionString">
+    <parameterEntry kind="XmlFile" scope="D:\\Code\\CCARE\(Tambah\ Kota\)\ Sebelum\ ganti\ Database\\CCARE\\obj\\Debug\\Package\\PackageTmp\\Web\.config$" match="/configuration/connectionStrings/add[@name='HistDb']/@connectionString" />
+  </parameter>
+  <parameter name="ArchiveDb-Web.config Connection String" description="ArchiveDb Connection String used in web.config by the application to access the database." defaultValue="Data Source=10.20.201.146;Initial Catalog=CRM_ARCHIVE;Persist Security Info=True;User ID=sa;Password=bca123!;" tags="SqlConnectionString">
+    <parameterEntry kind="XmlFile" scope="D:\\Code\\CCARE\(Tambah\ Kota\)\ Sebelum\ ganti\ Database\\CCARE\\obj\\Debug\\Package\\PackageTmp\\Web\.config$" match="/configuration/connectionStrings/add[@name='ArchiveDb']/@connectionString" />
+  </parameter>
+</parameters>

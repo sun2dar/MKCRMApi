@@ -1,0 +1,210 @@
+﻿@model CCARE.Models.SalesMarketing.Campaign
+
+@{
+    ViewBag.Title = "Lead List: " + Model.Name;
+    if (Request.IsAjaxRequest())
+    {
+        Layout = null;
+    }
+    else
+    {
+        Layout = "~/Views/Shared/_LayoutEntity.cshtml";
+    }
+}
+
+@section title
+{
+    Lead List
+}
+
+@section entityLogo
+{
+    <img class="crm-logo" src="~/assets/images/ico_lrg_112.gif" />
+}
+
+@section formTitle
+{
+    <div class="text_title">
+        <h1>Lead List</h1>
+    </div>
+}
+
+@section navHeader
+{
+}
+
+@section footerStatus
+{
+}
+
+@section sidebarMenu
+{
+    
+}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-12 panel panel-default panel_form_parent scroll-y">
+            <br />
+            <div class="col-sm-12">
+                <!-- title 1 -->
+                <div class="row form_text">
+                    <div class="panel panel-default panel_form_child">
+                        
+                        <div class="panel-heading">
+                            <label class="col-sm-8 control-label sv-header">
+                                <strong>List Lead</strong>
+                            </label>
+                            <label class="col-sm-4 control-label sv-header">
+                                <strong>Add Lead</strong>
+                            </label>
+                        </div>
+
+                        <br />
+
+                        <div class="panel-body">
+                            <form class="form-horizontal" id="form_inquiry">
+                                <div class="row">
+                                    <div class="col-sm-8">
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <div class="form-group">
+                                            <label class="col-sm-4 control-label">Search</label>
+                                            <div class="col-sm-8">
+                                                <input type="text" id="txtSearch" />
+                                                <button id="btn_search" class="btn btn-primary" type="submit"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-7">
+                                        <div class="form-group">
+                                            <div id="divMainGrid">
+                                                @Html.Partial("_CLeadGrid", Model);
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-1"></div>
+                                    <div class="col-sm-4">
+                                        <div class="form-group">
+                                            <div id="divSearchGrid">
+                                                <table id="gridSearch"></table>
+                                                <div id="pagerSearch"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+
+                    </div>
+                </div>
+            
+            </div>
+            <!--end section-->
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        //var gridId = "#gridTable";
+        var CampaignID = '@(Model.ID)';
+        var gridSearch = "#gridSearch";
+        var postData = {
+            _val: function () { return $("#txtSearch").val(); },
+            _ID: CampaignID
+        };
+
+        $('#form_inquiry').submit(function (event) {
+            (event.preventDefault) ? event.preventDefault() : event.returnValue = false;
+            loadgridSearch(postData);
+        });
+        loadgridSearch(postData);
+
+        //second grid
+        var gridSearch = "#gridSearch";
+        function loadgridSearch(postData) {
+            $.jgrid.gridUnload(gridSearch);
+            var colModels = [
+                { label: 'ID', name: 'Id', index: 'Id', key: true, width: 75, hidden: true },
+                { label: 'Name', name: 'Name', index: 'Name', width: 150 },
+                { label: 'Contact', name: 'Fullname', width: 150 }
+            ];;
+            var customVal = getCustomVal("");
+            var url = '/Campaign/GetLead';
+            $(gridSearch).jqGrid({
+                url: url,
+                mtype: "POST",
+                datatype: "json",
+                postData: postData,
+                colModel: colModels,
+                shrinkToFit: false,
+                width: '100%',
+                autowidth: true,
+                height: '100%',
+                rowNum: customVal.rowNum,
+                rowList: [20, 30],
+                rownumbers: true,
+                pager: $("#pagerSearch"),
+                sortname: 'Id',
+                viewrecords: true,
+                sortorder: "desc",
+                loadComplete: function (data) {
+
+                    if (data.rows.length == 0) {
+                        //if (data.records == 0) {
+                        var emptyText = '';
+                        emptyText += '<table class="ui-jqgrid-btable"><tr><td>&nbsp;&nbsp;&nbsp;</td><td><center><h2>No Records Found</h2><center></td></tr></table>';
+                        var grid = $(gridSearch);
+                        var container = grid.parents('.ui-jqgrid-view');
+                        container.find('.ui-jqgrid-bdiv').children("table").remove();
+                        container.find('.ui-jqgrid-bdiv').append(emptyText);
+                    }
+                },
+                jsonreader: {
+                    root: "rows", //array containing actual data
+                    page: "page", //current page
+                    total: "total", //total pages for the query
+                    records: "records", //total number of records
+                    cell: 'cell',
+                    repeatitems: false,
+                    id: "Id" //index of the column with the pk in it
+                },
+                ondblClickRow: function (rowid, iRow, iCol) {
+                    //Add lead to marketing list
+                    var data = jQuery("#gridSearch").getRowData(rowid);
+                    var id = '@Guid.NewGuid()';
+                    doAddLead(id, 0, data['Id'], '@Model.ID');
+                }
+            })
+            .navGrid("#pagerSearch", { edit: false, add: false, del: false, search: false });
+        }
+
+        function doAddLead(id, type, leadID, campaignID) {
+            var url = "/Campaign/doAddLead";
+            var postData = { id: id, type: type, leadID: leadID, campaignID: campaignID };
+
+            $.ajax({
+                type: "POST",
+                url: url,
+                data: JSON.stringify(postData),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (msg) {
+                    alert(msg.Message);
+                    if (msg.flag == true) {
+                        $('#CLead span').trigger('click');
+                    }
+                },
+                error: function (xhr, status, err) {
+                    alert("Proses tidak berhasil !!!");
+                    $(".modal").hide();
+                }
+            });
+        }
+
+    });
+</script>

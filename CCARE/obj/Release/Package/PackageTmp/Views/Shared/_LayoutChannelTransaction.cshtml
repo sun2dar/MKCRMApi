@@ -1,0 +1,94 @@
+﻿@{
+    if (Request.IsAjaxRequest())
+    {
+        Layout = null;
+    }
+    else{
+        Layout = "~/Views/Shared/_LayoutChannelTransaction.cshtml";
+    }
+}
+
+<ul class="nav nav-stacked nav-pills">
+    <li class="titleBar font-crm4"><a>
+        @RenderSection("title", required: false)
+        <span class="sr-only">(current)</span></a></li>
+</ul>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-12">
+            <!-- Content -->
+            <div class="container-fluid content_container">
+                <div class="row">
+                    <div class="col-sm-12 content_col">
+                        <form id="form_inquiry">
+                            @RenderBody()
+                        </form>
+                    </div>
+                </div>
+                <br />
+                <!-- Table result -->
+                <div class="row">
+                    <div class="col-sm-12" >
+                        <div class="panel panel-default">
+                            <div class="panel-heading panel_heading">
+                                <div class="container-fluid">
+                                    <div class="row">
+                                        <div class="col-sm-11 text_title">
+                                            <strong>Search Result</strong>
+                                        </div>
+                                        <button id="btn_new" class="btn btn-primary btn-sm col-sm-1" type="button"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span>&nbsp;&nbsp;&nbsp;&nbsp;New</button>                         
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="panel-body">
+                                <div class="divGrid">
+                                    <table id="gridTable"></table>
+                                    <div id="jqGridPager"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        var gridId = "#gridTable";
+        var entityName = '@ViewContext.RouteData.Values["Controller"].ToString()';
+
+        $('#form_inquiry').submit(function (event) {
+            (event.preventDefault) ? event.preventDefault() : event.returnValue = false;
+
+            var postData = {
+                _param: function () { return $("#inquiry_param").val(); },
+                _val: function () { return $("#inquiry_val").val(); },
+                _filter: function () { return $("#inquiry_filter").val(); }
+            };
+            loadJqgrid(gridId, postData, entityName);
+        });
+
+        $("#inquiry_filter").change(function () {
+            var postData = {
+                //_param: function () { return $("#inquiry_param").val(); },
+                _val: function () { return $("#inquiry_val").val(); },
+                _filter: function () { return $("#inquiry_filter").val(); }
+            };
+            loadJqgrid(gridId, postData, entityName);
+        });
+
+        $('#btn_new').click(function () {
+            openWindow(entityName + '/Create');
+        });
+        
+        if (entityName != "Request" || entityName != "Customer") {
+            $('#form_inquiry').trigger('submit');
+        }
+        
+        @RenderSection("scriptExt", required:false)
+
+    });
+</script>

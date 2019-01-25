@@ -1,0 +1,397 @@
+﻿<div class="panel-body" id="messagebox"></div>
+
+@if (ViewBag.searchResultsCount > 0)
+{
+    if (ViewBag.StatusChange != "")
+    {
+        <script type="text/javascript">ChangeStatusMessageBox("#messagebox", "@ViewBag.StatusChange", "@ViewBag.RequestId", "@ViewBag.TicketNumber");</script>
+    }
+    <div class="row form_text">
+        <div class="panel panel-default panel_form_child">
+
+            <div class="panel-heading" id="contentHeaderDiv">
+                <label class="control-label sv-header">
+                    <strong>Detail m-BCA Information</strong>
+                </label>
+                <a class="pull-right" data-toggle="collapse" href="#collapseContentDiv" aria-expanded="true" aria-controls="collapseContentDiv">
+                    <i class="fa fa-angle-double-up fa-lg"></i>
+                </a>
+            </div>
+
+            <div class="col-sm-offset-10 btn-change-status">
+                <input class="btn btn-primary btn-crm-layout" type="button" value="Change Status" id="changeStatusBtn" />
+            </div>
+            <div class="panel panel-default panel_form_child" id="statusDiv">
+                <div class="panel-heading" id="statusHeaderDiv">
+                    <label class="control-label sv-header">
+                        <strong>Change Status</strong>
+                    </label>
+                    <a class="pull-right" data-toggle="collapse" href="#collapseStatusDiv" aria-expanded="true" aria-controls="collapseStatusDiv">
+                        <i class="fa fa-angle-double-up fa-lg"></i>
+                    </a>          
+                </div>
+                <div id="collapseStatusDiv" class="panel-collapse collapse in" aria-labelledby="headingOne">
+                    <label class="control-label"><strong></strong></label>
+                    <div class="row form-horizontal">
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">Status</label>
+                                <div class="col-sm-2">
+                                    <select id="statusDdl" name="statusDdl" class="form-control">
+                                        <option value="">-- Select Status --</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row form-horizontal">
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">Change Status To</label>
+                                <div class="col-sm-2">
+                                    <select id="nextStatusDdl" name="nextStatusDdl" class="form-control" disabled>
+                                        <option value="">-- Select Status --</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row form-horizontal">
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">Change Reason</label>
+                                <div class="col-sm-4">
+                                    <select id="reasonDdl" name="reasonDdl" class="form-control">
+                                        <option value="">-- Select Reason --</option>
+                                        @foreach (var reason in ViewBag.DDL_Reason)
+                                        {
+                                            <option value="@reason.Value">@reason.Text</option>
+                                        }
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                                <div class="col-sm-offset-2">
+                                    <input class="btn btn-primary btn-crm-layout" type="button" value="Kirim" id="sendBtn" data-loading-text="Processing..." />
+                                    <input class="btn btn-default btn-crm-layout" type="button" value="Batal" id="cancelBtn" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="collapseContentDiv" class="panel-collapse collapse in" aria-labelledby="headingOne">
+                <div class="panel-body">
+                    <div class="form-horizontal">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="divGrid">
+                                    <table id="gridMultipleRecord"></table>
+                                    <div id="gridMultipleRecordPager"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="modal fade" id="confirm-summary" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content" style="background-color:#ecf1f5;">
+                <div class="modal-header" style="background-color:#639CCE; color:white;">
+                    <h2>Summary</h2>
+                    <h4>Add your summary.</h4>
+                </div>
+                <div class="modal-body input-lg" style="height:250px;">
+                    <div class="container-fluid form-horizontal">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="form-group">
+                                    <div class="col-sm-3">
+                                        <label class="control-label">Summary</label>
+                                    </div>
+                                    <div class="col-sm-9">
+                                        <input type="text" class="form-control" id="Summary" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <br />
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                    <a class="btn btn-danger btn-ok">Ok</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script src="~/assets/js/changeStatusJs.js"></script>
+    <script type="text/javascript">
+        var entityType = 2;
+        var statusList = { 1: "" };
+        var statusLabelList = { 1: "" };
+
+        //Channel
+        var customerId = "@ViewBag.Channel.CustomerId";
+        var hasCIS = customerId == "00000000-0000-0000-0000-000000000000" ? false : true;
+        var channelTypeId = "@ViewBag.Channel.ChannelTypeId";
+@*        var channelType = "@ViewBag.Channel.ChannelType";
+        var customerIdName = "@ViewBag.Channel.CustomerIdName";*@
+        var cardNo = "@ViewBag.Channel.CardNo";
+        var userId = "@ViewBag.Channel.UserId";
+        var emailAddress = "@ViewBag.Channel.EmailAddress";
+        var hpNo = "@ViewBag.Channel.HpNo";
+        var corpId = "@ViewBag.Channel.CorpId";
+        var accountNo = "@ViewBag.Channel.AccountNo";
+        var customerNo = "@ViewBag.Channel.CustomerNo";
+        var snKeyBCA = "@ViewBag.Channel.SNKeyBCA";
+        var category = "@ViewBag.Channel.Category";
+
+        var params = "customerId=" + customerId;
+        params += "&channelTypeId=" + channelTypeId;
+        //params += "&channelType=" + channelType;
+        //params += "&customerIdName=" + customerIdName;
+        params += "&cardNo=" + cardNo;
+        params += "&userId=" + userId;
+        params += "&emailAddress=" + emailAddress;
+        params += "&hpNo=" + hpNo;
+        params += "&corpId=" + corpId;
+        params += "&accountNo=" + accountNo;
+        params += "&customerNo=" + customerNo;
+        params += "&snKeyBCA=" + snKeyBCA;
+        params += "&category=" + category;
+
+        var statusType;
+        var statusTypeLabel;
+        var oldStatus;
+        var newStatus;
+        var oldStatusLabel;
+        var newStatusLabel;
+        var reason;
+
+        var isBlockStatusDifferent;
+
+
+        var gridId = '#gridMultipleRecord';
+
+        function setGrid() {
+            jQuery(gridId).setGridParam({
+                onSelectRow: function (rowid) {
+                    hideAll();
+
+                    var rowData = jQuery(gridId).getRowData(rowid);
+                    statusList[1] = rowData.BlockStatusKey;
+                    statusLabelList[1] = rowData.BlockStatus;
+                    //hpNo = rowData.MobileNo;
+                    // temporary solution for rowData.MobileNo is null
+                    if (rowData.MobileNo != "") {
+                        hpNo = rowData.MobileNo;
+                    }
+                    isBlockStatusDifferent = rowData.BlockStatus == rowData.TandemBlockStatus ? false : true;
+
+                    getDDlLabel(entityType, statusList);
+                }
+            });
+        }
+
+        $(document).ready(function () {
+            initHideStatus();
+            if (set(@Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(@ViewBag.searchResultsCount))) > 0) {
+                var models = set(@Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(@ViewBag.searchResults)));
+                loadLocalJqgrid(gridId, models, "MBCA");
+                setGrid();
+            }
+        });
+
+        $("#changeStatusBtn").click(function () {
+            var rowid = jQuery(gridId).getGridParam('selrow');
+            if (rowid) {
+                //Status exception
+                if (isBlockStatusDifferent) {
+                    ddlLabelChangeEmpty();
+                    ChangeStatusException("#messagebox", ExceptionBlockVsTandem);
+                } else {
+                    showAll();
+                }
+            } else {
+                $("#messagebox").html(MessageText('alert', "You have not selected a record / No record Exists for change status / You don't have permission to perform change status operation."));
+            }
+        });
+
+        $("#cancelBtn").click(function () {
+            hideAll();
+        });
+
+        $("#statusDdl").change(function () {
+            statusType = $(this).val();
+            var currentStatus = getValueByKey(statusList, statusType);
+            ddlLabelChange(entityType, statusType, currentStatus);
+        });
+
+        $("#nextStatusDdl").change(function () {
+            ddlStatusChange();
+        });
+
+        $("#reasonDdl").change(function () {
+            ddlReasonChange();
+        });
+
+        $("#sendBtn").click(function () {
+            $("#sendBtn").button('loading');
+            statusType = $("#statusDdl").val();
+            if (statusType == '') {
+                alert('Please select a status');
+            } else {
+                statusTypeLabel = $("#statusDdl :selected").text();
+                oldStatusLabel = getValueByKey(statusLabelList, statusType);
+                newStatusLabel = $("#nextStatusDdl :selected").text();
+
+                if (confirm('Are you sure you want to change status from ' + oldStatusLabel + ' to ' + newStatusLabel + ' ?')) {
+
+                    oldStatus = getValueByKey(statusList, statusType);
+                    newStatus = $("#nextStatusDdl").val();
+                    reason = $("#reasonDdl :selected").text();
+
+                    if (hasCIS) {
+                        $("#confirm-summary").modal('show');
+                        $("#Summary").prop('disabled', false);
+                    } else {
+                        changeStatusViaInquiry();
+                    }
+                }
+            }
+        });
+
+        $("#confirm-summary").on('show.bs.modal', function (e) {
+            $(this).find('.btn-ok').one("click", function () {
+
+                var additionalSummary = $("#Summary").val();
+                var createreq;
+                var change;
+                var updatereq;
+                var statusresult;
+
+                createreq = createRequest(
+                    entityType, statusType, oldStatus, newStatus,
+                    customerId, accountNo, cardNo, hpNo, customerNo, userId, emailAddress, snKeyBCA, corpId, category, reason,
+                    additionalSummary);
+
+                if (createreq.status == RequestSuccess) {
+                    change = changeStatus();
+
+                    if (change.status) {
+                        updatereq = updateRequest('close', createreq.requestId, change);
+
+                        if (updatereq.status) {
+                            statusresult = StatusChangeSuccess;
+                        } else {
+                            statusresult = StatusChangeSuccessButRequestCantClose;
+                        }
+                    } else {
+                        updatereq = updateRequest('cancel', createreq.requestId, change);
+
+                        if (updatereq.status) {
+                            statusresult = StatusChangeFailRequestCancel;
+                        } else {
+                            statusresult = StatusChangeFailButRequestCantCancel;
+                        }
+                    }
+
+                } else if (createreq.status == RequestNotCreated) {
+                    change = changeStatus();
+
+                    if (change.status) {
+                        statusresult = StatusChangeRequestNotCreated;
+                    } else {
+                        statusresult = StatusChangeFail;
+                    }
+
+                } else { // if (createreq.status == RequestFail) {
+                    change = changeStatus();
+
+                    if (change.status) {
+                        statusresult = StatusChangeNoRequest;
+                    } else {
+                        statusresult = StatusChangeFail;
+                    }
+
+                }
+
+                writeLog(entityType, statusTypeLabel, oldStatusLabel, newStatusLabel, statusresult, createreq.requestId, createreq.ticketNumber);
+                $("#partialView").load("/MBCA/MBCAPartial?" + params + "&statusChange=" + statusresult + "&requestId=" + createreq.requestId + "&ticketNumber=" + createreq.ticketNumber, " #partialView");
+
+                $('.btn-default').click();
+                $("#Summary").val("");
+            });
+        });
+
+        function changeStatusViaInquiry() {
+            var change;
+            var statusresult;
+
+            change = changeStatus();
+            if (change.status) {
+                statusresult = StatusChangeSuccessViaInquiry;
+            } else {
+                statusresult = StatusChangeFail;
+            }
+
+            writeLog(entityType, statusTypeLabel, oldStatusLabel, newStatusLabel, statusresult, "", "");
+            $("#partialView").load("/MBCA/MBCAPartial?" + params + "&statusChange=" + statusresult, " #partialView");
+        }
+
+        function changeStatus() {
+            var change;
+            switch (statusType) {
+                case '1':
+                    change = changeBlockStatus(hpNo, newStatus);
+                    break;
+            }
+            return change;
+        }
+
+        function changeBlockStatus(mobileNo, newStatus) {
+            var change = { status: false, updatetime: "", updatedbyid: "", updatedbyname: "" };
+            $.ajax({
+                url: "/MBCA/ChangeBlockStatus",
+                data: {
+                    MobileNo: mobileNo,
+                    NewStatus: newStatus
+                },
+                dataType: 'json',
+                async: false,
+                beforeSend: function () {
+                    $("#sendBtn").button('loading');
+                },
+                success: function (data) {
+                    if (data.Status == 1) {
+                        change.status = true;
+                        change.updatetime = data.UpdateTime;
+                        change.updatedbyid = data.UpdatedBy.ID;
+                        change.updatedbyname = data.UpdatedBy.Name;
+                    }
+                },
+                complete: function () {
+                    setTimeout(function () {
+                        $("#sendBtn").button('reset');
+                    }, 1000);
+                }
+            });
+            return change;
+        }
+
+    </script>
+}
+else
+{
+    <script type="text/javascript">$("#messagebox").html(MessageText('error', 'No Record Found'));</script>
+}

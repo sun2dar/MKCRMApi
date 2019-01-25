@@ -1,0 +1,239 @@
+﻿@model CCARE.Models.CreditCard
+
+@{
+    Model.CustomerIdName = HttpUtility.HtmlEncode(Model.CustomerIdName); 
+    ViewBag.Title = "Credit Card: " + Model.CreditCardNumber;
+    if (Request.IsAjaxRequest())
+    {
+        Layout = null;
+    }
+    else
+    {
+        Layout = "~/Views/Shared/_LayoutEntity.cshtml";
+    }
+}
+
+@section title
+{
+    Credit Card: @Model.CreditCardNumber
+}
+
+@section entityLogo
+{
+    <img class="crm-logo" src="~/assets/images/ico_lrg_112.gif" />
+}
+
+@section formTitle
+{
+    <div class="text_title">
+        <h1>Information</h1>
+        Credit Card: @Model.CreditCardNumber
+    </div>
+}
+
+@section buttonRequest
+{
+    <a href="#">
+        <img id="btn_create_request" class="btn-create-request"  data-toggle="tooltip" data-placement="left"
+           title="" data-original-title="Create Request" src="~/assets/images/request.png" />
+    </a>
+    
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#btn_create_request").tooltip('show');
+            $('#btn_create_request').click(function () {
+                var CustomerId = '@Model.CustomerId';
+                var CustomerIdName = escape('@Model.CustomerIdName');
+                var CustomerNo = '@Model.CreditCardCustomerNo';
+                var CardNo = '@Model.CreditCardNumber';
+                var url = '@Url.Action("Create", "Request")';
+
+                openWindow(url + "?customerID=" + CustomerId + "&customerName=" + CustomerIdName + "&customerNo=" + CustomerNo + "&cardNo=" + CardNo + "&customerType=customer_creditcard");
+            });
+        });
+    </script>
+}
+
+@section navHeader
+{
+
+}
+
+@section footerStatus
+{
+    <div class="footer_text">Status: Active</div>
+}
+
+@section sidebarMenu
+{
+    <li><a data-ajax="true" data-ajax-mode="replace" data-ajax-update="#page_content" href="/CreditCard/Index?Id=@Model.Id&CreditCardNumber=@Model.CreditCardNumber&CardholderName=@Model.CardholderName&CardType=@Model.CardType&CCType=@Model.CCType&CreditCardCustomerNo=@Model.CreditCardCustomerNo&CustomerId=@Model.CustomerId&CustomerIdName=@Model.CustomerIdName&Status=@Model.Status">Information</a></li>
+}
+
+<div id="page_content" class="container-fluid">
+    <!-- tabs -->
+    <div class="row">
+        <div class="col-sm-12 panel panel-default panel_form_parent">
+            <br />
+            <div class="tab-content myTabContent tab-content-custom1">
+                <div class="tab-pane fade active in" id="general" aria-labelledby="general-tab">
+                    
+                    <!-- panel content -->
+                    <div class="col-sm-12">
+
+                        <!-- title 1 -->
+                        <div class="row form_text">
+                            <div class="panel panel-default panel_form_child">
+                                
+                                <div class="panel-heading">
+                                    <label class="control-label sv-header">
+                                        <strong>General</strong>
+                                    </label>
+                                </div>
+                                
+                                <br />
+                                
+                                <div class="panel-body">
+                                    <form class="form-horizontal">
+                                        <div class="row">
+                                            <div class="col-sm-6">                                        
+                                                <div class="form-group">
+                                                    <label class="col-sm-4 control-label">Credit Card Number</label>
+                                                    <div class="col-sm-8">
+                                                        @Html.HiddenFor(x => x.CreditCardNumber)
+                                                        @Html.TextBoxFor(x => x.CreditCardNumber, new { @class = "form-control" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-6">                                                                              
+                                                <div class="form-group">
+                                                    <label class="col-sm-4 control-label">Card Type</label>
+                                                    <div class="col-sm-8">
+                                                        @Html.TextBoxFor(x => x.CardType, new { @class = "form-control" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-6">                                        
+                                                <div class="form-group">
+                                                    <label class="col-sm-4 control-label">Customer</label>
+                                                    <div class="col-sm-8">
+                                                        @Html.TextBoxFor(x => x.CustomerIdName, new { @class = "form-control" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-6">                                                                              
+                                                <div class="form-group">
+                                                    <label class="col-sm-4 control-label">Cardholder Name</label>
+                                                    <div class="col-sm-8">
+                                                        @Html.TextBoxFor(x => x.CardholderName, new { @class = "form-control" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-6">                                        
+                                                <div class="form-group">
+                                                    <label class="col-sm-4 control-label">Credit Card Customer No.</label>
+                                                    <div class="col-sm-8">
+                                                        @Html.TextBoxFor(x => x.CreditCardCustomerNo, new { @class = "form-control" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            
+                            </div>
+                        </div>
+
+                        <!-- partial view -->
+                        <div class="row form-horizontal">
+                            <div class="col-sm-12">
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label">Inquiry Status</label>
+                                    <div class="col-sm-2">
+                                        <select id="inquiryDdl" name="inquiryDdl" class="form-control">
+                                            <option value="creditcard">Credit Card</option>
+                                            <option value="autopay">Auto Pay</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="partialView"></div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row form_text">
+        
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#myTab a').click(function (e) {
+            e.preventDefault()
+            $(this).tab('show')
+        })
+
+        $("#btn_save").click(function () {
+            formSubmit("save", $("#form_customer"));
+        });
+
+    });
+
+    $("#inquiryDdl").change(function () {
+        var postData = {
+            Id: function () { return "@Model.Id"; },
+            CreditCardNumber: function () { return "@Model.CreditCardNumber"; },
+            CardholderName: function () { return "@Model.CardholderName"; },
+            CardType: function () { return "@Model.CardType"; },
+            CCType: function () { return "@Model.CCType"; },
+            CreditCardCustomerNo: function () { return "@Model.CreditCardCustomerNo"; },
+            CustomerId: function () { return "@Model.CustomerId"; },
+            CustomerIdName: function () { return "@Model.CustomerIdName"; },
+            Status: function () { return "@Model.Status"; }
+        };
+
+        var selected = $(this).val();
+        if (selected == 'creditcard') {
+            $.ajax({
+                type: "GET",
+                url: "/CreditCard/CreditCardInfoPartial/",
+                data: postData,
+                cache: false,
+                contentType: "application/html; charset=utf-8",
+                dataType: "html",
+                success: function (viewHTML) {
+                    $("#partialView").html(viewHTML);
+                },
+                error: function (errorData) {
+                    //onError(errorData);
+                }
+            });
+        }
+        else if (selected == 'autopay') {
+            $.ajax({
+                type: "GET",
+                url: "/CreditCard/CreditCardAutopayPartial/",
+                data: postData,
+                cache: false,
+                contentType: "application/html; charset=utf-8",
+                dataType: "html",
+                success: function (viewHTML) {
+                    $("#partialView").html(viewHTML);
+                },
+                error: function (errorData) {
+                    //onError(errorData);
+                }
+            });
+        }
+    });
+
+    $("#inquiryDdl").trigger("change");
+
+</script>

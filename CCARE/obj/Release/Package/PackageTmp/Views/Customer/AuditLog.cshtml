@@ -1,0 +1,114 @@
+﻿@model CCARE.Models.RequestArchive
+
+@{
+    ViewBag.Title = "Request Audit Log";
+    if (Request.IsAjaxRequest())
+    {
+        Layout = null;
+    }
+    else
+    {
+        Layout = "~/Views/Shared/_LayoutEntity.cshtml";
+    }
+}
+
+@section entityLogo
+{
+    <img class="crm-logo" src="~/assets/images/ico_lrg_112.gif" />
+}
+
+@section navHeader
+{
+    <ul class="nav navbar-nav navbar-left">
+        <li><a id="btn_save" href="#">Save</a></li>
+        <li><a href="#">Save & Close</a></li>
+    </ul>
+}
+
+@section footerStatus
+{
+    <div class="footer_text">Status: Owned</div>
+}
+
+@section sidebarMenu
+{
+    <li><a data-ajax="true" data-ajax-mode="replace" data-ajax-update="#page_content" href="/Request/Edit?id=@(Model.RequestID)">Information</a></li>
+    <li><a data-ajax="true" data-ajax-mode="replace" data-ajax-update="#page_content" href="/Request/RequestAuditLog?id=@(Model.RequestID)">Request Audit Log</a></li>
+}
+
+<div class="container-fluid">
+    <!-- tabs -->
+     <div class="row">
+                    <div class="col-sm-12 panel panel-default panel_form_parent">
+                        <div class="tab-content myContent_noTab">
+                            <table class="auditGrid" width="99%" cellspacing="0" cellpadding="3" border="1">
+                                <colgroup>
+                                <col width="20%" />
+                                <col width="40%" />
+                                <col width="40%" />
+                                </colgroup>
+                
+                                @foreach (var item in ViewBag.auditl)
+                                {
+                                        string myXmlString = "<root>" + @item.AuditLog + "</root>";
+                                        myXmlString = myXmlString.Replace("&", "&amp;");
+                                        System.Xml.XmlDocument xml = new System.Xml.XmlDocument();
+                                        xml.LoadXml(myXmlString);
+                                        System.Xml.XmlNodeList xnList = xml.SelectNodes("/root/AUDITLOG/Action");
+                                        System.Xml.XmlNodeList des = xml.SelectNodes("root/AUDITLOG/Action/@description");
+                                 
+                                           <tr style="background-color:#D5DFE9;">
+                                         
+                                        </tr>
+                                    
+                                        foreach (System.Xml.XmlNode xn in xnList)
+                                        {
+                                            // string dn = .InnerText;
+                                            // Console.WriteLine(dn);
+                                             <tr style="background-color:#D5DFE9;">
+                                                 <td colspan="3" class="auditRow" >
+                                                    <center>@xn.Attributes[1].Value</center>
+                                                 </td>
+                                            </tr>
+                                            <tr style="font-weight:bold;background-color:#E0E3E8;">
+                                                <td class="auditRow">FieldName</td>
+                                                <td class="auditRow">Original Value</td>
+                                                <td class="auditRow">New Value</td>
+                                            </tr>
+                                  
+                                            foreach (System.Xml.XmlNode x in xn)
+                                            {
+                                                //  @x.Name
+                                                string oriValue = "";
+                                                if (x["originalValue"] != null)
+                                                {
+                                                    oriValue = x["originalValue"].InnerText;
+                                                }
+                                                if (x["displayName"].InnerText == "WSID_")
+                                                {
+                                                    continue;
+                                                }
+                                                // @(x["displayName"].InnerText
+                                                    <tr>
+                                                        <td class="auditRow"><text>@x["displayName"].InnerText</text>&nbsp;</td>
+                                                        <td class="auditRow">@oriValue&nbsp;</td>
+                                                        <td class="auditRow"><text>@x["newValue"].InnerText</text>&nbsp;</td>
+                                                    </tr>
+                                        
+                                            }
+                                        }
+                                        
+                                        
+                                }
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        
+    });
+</script>

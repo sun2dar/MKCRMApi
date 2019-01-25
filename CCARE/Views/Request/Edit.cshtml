@@ -1,0 +1,2189 @@
+﻿@model CCARE.Models.Request
+
+@{
+    ViewBag.Title = "Edit";
+    if (Request.IsAjaxRequest())
+    {
+        Layout = null;
+    }
+    else
+    {
+        Layout = "~/Views/Shared/_LayoutEntity.cshtml";
+    }
+}
+
+@section title
+{
+    Request: @Model.TicketNumber
+}
+
+@section entityLogo
+{
+    <img class="crm-logo" src="~/assets/images/ico_lrg_112.gif" />
+}
+
+@section formTitle
+{
+    <div class="text_title">
+        <h1 id="Request-Page">Information</h1>
+        Request: @Model.TicketNumber
+    </div>
+}
+
+@section navHeader
+{
+    <ul class="nav navbar-nav navbar-left">
+    @if (Model.StateCode == 0)
+    {
+        <li class="form_page"><a id="btn_save" href="#">Save</a></li>
+        <li class="form_page"><a id="btn_savenclose" href="#">Save & Close</a></li>
+    }
+
+    @if (Session["RoleID"] != null)
+    {
+        Guid roleID = new Guid(Session["RoleID"].ToString());
+
+        bool checkButton2 = CCARE.App_Function.RoleNPrivilege.checkEntityButtonByRoleID(roleID, "LetterEntry", "Write");
+        if (checkButton2 == true)
+        {
+            <text>
+                <li class="other_page"><a id="btn_newletterentry" href="#">Create Letter Entry</a></li>
+            </text>
+        }
+    }
+        
+    <li class="other_page"><a id="btn_printticket" href="#">Print Ticket</a></li>
+
+    @if (Model.StateCode == 0)
+    {
+        if (Session["RoleID"] != null)
+        {
+            Guid roleID = new Guid(Session["RoleID"].ToString());
+            bool checkButton = CCARE.App_Function.RoleNPrivilege.checkEntityButtonByRoleID(roleID, "Task", "Write");
+
+            if (checkButton == true)
+            {
+            <text>
+                <li class="other_page"><a id="btn_newtask" href="#">Add Task</a></li>
+            </text>
+            }
+        }
+        
+        
+        <li>
+            <a id="btn_assignNext" class="form_page" href="#" data-toggle="modal" data-target="#confirm-next">Next Workgroup</a>
+        </li>
+        <li>
+            <a id="btn_assignPrev" class="form_page" href="#" data-toggle="modal" data-target="#confirm-prev">Prev Workgroup</a>
+        </li>
+       
+        <li class="form_page"><a id="btn_close" href="#" data-toggle="modal" data-target="#confirm-close">Close</a></li>
+        
+        <li class="form_page"><a id="btn_cancel" href="#" data-toggle="modal" data-target="#confirm-cancel">Cancel</a></li>
+        <li class="form_page dropdown other_page" id="btn_assignOption" role="presentation">
+            <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+                Assign To <span class="caret"></span>
+            </a>
+            <ul class="dropdown-menu">
+                <li><a id="btn_assigntome" href="#">Assign To Me</a></li>
+                <!-- Assign to workgroup is removed -->
+                @*<li>
+                    <a id="assigntowg" class="btn_assignto" href="#">Assign To Workgroup</a>
+                </li>*@
+                <li>
+                    <input type="hidden" id="assign_type" />
+                    <a id="assigntouser" class="btn_assignto" href="#">Assign To Another User</a>
+                </li>
+            </ul>
+        </li>
+    }
+    else
+    {
+        <li class="form_page"><a id="btn_Reopen" href="#" data-toggle="modal" data-target="#confirm-reopen">Reopen</a></li>
+    }
+    </ul>
+    }
+
+@section footerStatus
+{
+    <div class="footer_text">Status: @Model.StatusLabel</div>
+}
+
+@section sidebarMenu
+{
+    <li><a id="homePage" class="link_form_page" data-ajax="true" data-ajax-mode="replace" data-ajax-update="#page_content" href='@Url.Action("Edit", "Request", new { id = Model.RequestID })'>Information</a></li>
+    <li><a class="link_other_page" data-ajax="true" data-ajax-mode="replace" data-ajax-update="#page_content" href="/Request/Task?id=@(Model.RequestID)">Task</a></li>
+    <li><a class="link_other_page" data-ajax="true" data-ajax-mode="replace" data-ajax-update="#page_content" href="/Request/History?Id=@(Model.RequestID)">History</a></li>
+    <li><a class="link_other_page" data-ajax="true" data-ajax-mode="replace" data-ajax-update="#page_content" href="/Request/RequestAuditLog?id=@(Model.RequestID)">Request Audit Log</a></li>
+    <li><a class="link_form_page" data-ajax="true" data-ajax-mode="replace" data-ajax-update="#page_content" href="/Request/Request_Workflow?Id=@(Model.RequestID)">Workflow Log</a></li>
+    <li><a class="link_other_page" data-ajax="true" data-ajax-mode="replace" data-ajax-update="#page_content" href="/Request/LetterEntry?Id=@(Model.RequestID)">Letter Entries</a></li>
+    <li><a class="link_other_page" data-ajax="true" data-ajax-mode="replace" data-ajax-update="#page_content" href="/Request/ReferalRequestList?Id=@(Model.RequestID)">Referral Request</a></li>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('ul.nav-pills li a').click(function (e) {
+                $("#Request-Page").html($(this).html());
+            });
+        });
+    </script>
+}
+
+<!-- Modal -->
+<div class="modal fade" id="myModalSignalR" role="dialog">
+    <div class="modal-dialog">
+    
+        <!-- Modal Content-->
+        <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h4 class="modal-title"></h4>
+        </div>
+        <div class="modal-body">
+            <p>@Session["Fullname"].ToString() has done some changes on this request.</p>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+        </div>
+      
+    </div>
+</div>
+
+<div class="modal fade" id="confirm-cancel" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1>Confirm request cancel action</h1>
+            </div>
+            <div class="modal-body input-lg" style="height:70px;">
+                This action will change the status of selected Request to cancel. To continue click "Ok"
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                <a class="btn btn-danger btn-ok">Ok</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="confirm-close" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content" style="background-color:#ecf1f5;">
+            <div class="modal-header" style="background-color:#639CCE; color:white;">
+                <h2>Close Request</h2>
+                <h4>Provide information in the following boxes to resolve this case.</h4>
+            </div>
+            <div class="modal-body input-lg" style="height:250px;">
+                <div class="container-fluid form-horizontal">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                                <div class="col-sm-3">
+                                    <label class="control-label sv-header">Resolution Type</label>
+                                </div>
+                                <div class="col-sm-9">
+                                    <select class="form-control">
+                                        <option value="closed">Closed</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-sm-3">
+                                    <label class="control-label sv-header">Resolution</label>
+                                </div>
+                                <div class="col-sm-9">
+                                    <input type="text" class="form-control" id="Resolution" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <br />
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">Description</label>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-sm-12">
+                                    <textarea class="form-control" id="Description" style="height:100px; min-height:100px; max-height:100px;"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                <a class="btn btn-danger btn-ok">Ok</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Popup authentication reopen -->
+<div class="modal fade" id="confirm-reopen" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content" style="background-color:#ecf1f5;">
+            <div class="modal-header" style="background-color:#639CCE; color:white;">
+                <h2>Reopen Request</h2>
+                <h4></h4>
+            </div>
+            <div class="modal-body input-lg" style="height:250px;">
+                <div class="container-fluid form-horizontal">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                                <div class="col-sm-3">
+                                    <label class="control-label sv-header">Username</label>
+                                </div>
+                                <div class="col-sm-9">
+                                    <input type="text" class="form-control reopen_modal" id="reopen_user" />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-sm-3">
+                                    <label class="control-label sv-header">Password</label>
+                                </div>
+                                <div class="col-sm-9">
+                                    <input type="password" class="form-control reopen_modal" id="reopen_pass" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <br />
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">Reason</label>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-sm-12">
+                                    <textarea class="form-control reopen_modal" id="reopen_reason" style="height:100px; min-height:100px; max-height:100px;"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                <a class="btn btn-danger btn-ok" id="reopen_ok">Ok</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Popup authentication prevWorkgroup -->
+<div class="modal fade" id="confirm-prev" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content" style="background-color:#ecf1f5;">
+            <div class="modal-header" style="background-color:#639CCE; color:white;">
+                <h2>Previous Workgroup</h2>
+                <h4></h4>
+            </div>
+            <div class="modal-body input-lg" style="height:250px;">
+                <div class="container-fluid form-horizontal">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                                <div class="col-sm-3">
+                                    <label class="control-label sv-header">Username</label>
+                                </div>
+                                <div class="col-sm-9">
+                                    <input type="text" class="form-control reopen_modal" id="prevworkgroup_user" />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-sm-3">
+                                    <label class="control-label sv-header">Password</label>
+                                </div>
+                                <div class="col-sm-9">
+                                    <input type="password" class="form-control reopen_modal" id="prevworkgroup_pass" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <br />
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">Reason</label>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-sm-12">
+                                    <textarea class="form-control reopen_modal" id="prevworkgroup_reason" style="height:100px; min-height:100px; max-height:100px;"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                <a class="btn btn-danger btn-ok" id="prevworkgroup_ok">Ok</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="confirm-next" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1>Confirm Next Workgroup</h1>
+            </div>
+            <div class="modal-body input-lg" style="height:70px;">
+                This action will change the stage of selected Request to the next WORKGROUP.<br /> To continue click "Ok"
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                <a class="btn btn-danger btn-ok">Ok</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container-fluid">
+    <!-- tabs -->
+    <div class="row">
+        <div class="col-sm-12 panel panel-default panel_form_parent">
+            <ul id="myTab" class="nav nav-tabs crm-padding-top-10">
+                <li class="active"><a href="#general" id="general-tab" data-toggle="tab">General</a></li>
+                <li ><a href="#notes" id="notes-tab" data-toggle="tab">Notes</a></li>
+                <li ><a href="#documents" id="documents-tab" data-toggle="tab">Documents</a></li>
+            </ul>
+            <br />
+            <div class="tab-content myContent_Tab">
+                <div class="tab-pane fade active in" id="general" aria-labelledby="general-tab">
+                @using (Html.BeginForm("Edit", "Request", FormMethod.Post, new { id = "form_incident" }))
+                {
+                    @Html.Hidden("hidden_displayStatus", "", new { @id = "hidden_displayStatus" })
+                    @Html.HiddenFor(x => x.SegmentationID, new { @class = "form-control" })
+
+                    <input type="hidden" id="entityname" name="entityname" value="request" />
+                    <input type="hidden" id="ObjectId" name="ObjectId" class="form-control" value="@Model.RequestID" />
+                    <input type="hidden" id="ObjectTypeCode" name="ObjectTypeCode" class="form-control" value="112" />    
+                    <input type="hidden" id="BusinessUnitID" name="BusinessUnitID" class="form-control" value="@Model.BusinessUnitID" />
+                    <input type="hidden" id="dependId" name="dependId" value="@Model.CustomerID" />
+                    <!-- panel content -->
+                    <div class="col-sm-12">
+                        <!-- title overview -->
+                        <div class="row form_text">
+                            <div class="panel panel-default panel_form_child">
+                                <div class="panel-heading">
+                                    <label class="control-label sv-header"><strong>Overview</strong></label>
+                                </div>
+                                <br />
+                                <div class="panel-body">
+                                    <div class="form-horizontal">
+                                        <div class="row">
+                                            <div class="col-sm-6">                                        
+                                                <div class="form-group">
+                                                    <label class="col-sm-4 control-label">CRM Request ID</label>
+                                                    <div class="col-sm-8">
+                                                        @Html.HiddenFor(x => x.RequestID)
+                                                        @Html.TextBoxFor(x => x.TicketNumber, new { @class = "form-control" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-6">                                        
+                                                <div class="form-group">
+                                                    <label class="col-sm-4 control-label">For Customer</label>
+                                                    <div class="col-sm-8" >
+                                                        @Html.HiddenFor(x => x.ForCustomer)
+                                                        <label class="radio-inline">
+                                                            @Html.RadioButtonFor(x => x.ForCustomer, true, new { @disabled = "disabled" }) Yes
+                                                        </label>
+                                                        <label class="radio-inline">
+                                                            @Html.RadioButtonFor(x => x.ForCustomer, false, new { @disabled = "disabled" }) No
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-6">                                        
+                                                <div class="form-group">
+                                                @if (ViewBag.customerType == "noncustomer")
+                                                {
+                                                    <label class="col-sm-4 control-label">Non Customer</label>
+                                                    <div class="col-sm-8">
+                                                        @Html.HiddenFor(x => x.NonCustomerID)
+                                                        @Html.TextBoxFor(x => x.NonCustomerName, new { @class = "form-control Hyperlink-TextBox", @readonly = "readonly" })
+                                                    </div>
+                                                }
+                                                else
+                                                {
+                                                    <label class="col-sm-4 control-label mandatory">Customer</label>
+                                                    <div class="col-sm-8">
+                                                        @Html.HiddenFor(x => x.CustomerID)
+                                                        @Html.TextBoxFor(x => x.CustomerName, new { @class = "form-control Hyperlink-TextBox", @readonly = "readonly" })
+                                                    </div>
+                                                }
+                                                </div>
+                                            </div>
+                                            @if (ViewBag.customerType != "noncustomer")
+                                            {
+                                            <div class="col-sm-6">                                                                              
+                                                <div class="form-group">
+                                                    <label class="col-sm-4 control-label">Customer Product</label>
+                                                    <div class="col-sm-8">
+                                                        <select id="CustomerProduct" name="CustomerProduct" class="form-control">
+                                                            <option value="creditcard">Credit Card</option>
+                                                            <option value="deposit">Deposit</option>
+                                                            <option value="loan">Loan</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            }
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-6">                                        
+                                                <div class="form-group">
+                                                    <label class="col-sm-4 control-label">No Kartu</label>
+                                                    <div class="col-sm-8">
+                                                        @Html.TextBoxFor(x => x.CardNo, new { @class = "form-control" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-6">                                                                              
+                                                <div class="form-group">
+                                                    <label id="label_norek" class="col-sm-4 control-label">No Rekening</label>
+                                                    <div class="col-sm-8">
+                                                        @Html.TextBoxFor(x => x.AccountNo, new { @class = "form-control" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-6">                                        
+                                                <div class="form-group">
+                                                    <label class="col-sm-4 control-label">No Customer</label>
+                                                    <div class="col-sm-8">
+                                                        @Html.TextBoxFor(x => x.CustomerNo, new { @class = "form-control" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-6">                                                                              
+                                                <div class="form-group">
+                                                    <label class="col-sm-4 control-label">No Loan</label>
+                                                    <div class="col-sm-8">
+                                                        @Html.TextBoxFor(x => x.LoanNo, new { @class = "form-control" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-6">                                        
+                                                <div class="form-group">
+                                                    <label class="col-sm-4 control-label">Contact Method</label>
+                                                    <div class="col-sm-8">
+                                                        @Html.DropDownListFor(x => x.ContactMethod, (SelectList)ViewBag.SL_ContactMethod, new { @class = "form-control" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-6">                                                                              
+                                                <div class="form-group">
+                                                    <label class="col-sm-4 control-label">Customer Attitude</label>
+                                                    <div class="col-sm-8">
+                                                        @Html.DropDownListFor(x => x.CustomerAttitude, (SelectList)ViewBag.SL_CustomerAttitude, new { @class = "form-control" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-6">                                        
+                                                <div class="form-group">
+                                                    <label class="col-sm-4 control-label">Interaction Count</label>
+                                                    <div class="col-sm-8">
+                                                        @Html.TextBoxFor(x => x.InteractionCount, new { @class = "form-control" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-6">                                        
+                                                <div class="form-group">
+                                                    <label class="col-sm-4 control-label">Referral Request ID</label>
+                                                    <div class="col-sm-8">
+                                                        @* ==========================================================================================================*@
+                                                        <input type="hidden" id="RefTicketNumber" name="RefTicketNumber" class="form-control"/>
+                                                        <div class="input-group" id="Request-Group">
+                                                            <input type="text" id="RefRequest" name="" class="form-control" value="">
+                                                            <div tabindex="0" id="RefRequest-label" class="form-control typeahead-label hide" 
+                                                                data-html="true" data-toggle="popover" data-placement="bottom"
+                                                                title="Referral Request" data-content="">
+                                                            </div>
+                                                            <div tabindex="0" class="input-group-addon btn" id="RefRequest-popup">
+                                                                <i class="fa fa-search"></i>
+                                                            </div>
+                                                        </div>
+                                                        @* ==========================================================================================================*@
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-6">                                        
+                                                <div class="form-group">
+                                                    <label class="col-sm-4 control-label">Profession</label>
+                                                    <div class="col-sm-8">
+                                                        @Html.TextBoxFor(x => x.Profession, new { @class = "form-control" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-6">                                        
+                                                <div class="form-group">
+                                                    <div class="col-sm-4">
+                                                        @Html.DropDownList("ExtraCardType", new List<SelectListItem>
+                                                                        {
+                                                                            new SelectListItem{ Text = "- Other Product -", Value = "0" },
+                                                                            new SelectListItem{ Text = "Flazz", Value = "1" },
+                                                                            new SelectListItem{ Text = "Sakuku", Value = "2" },
+                                                                            new SelectListItem{ Text = "Dinar/DUITT", Value = "3" },
+                                                                            new SelectListItem{ Text = "PayeeCode", Value = "4" }, 
+                                                                            new SelectListItem{ Text = "KBB-IS", Value = "5" }
+                                                                        }, new { @class = "form-control", @style = "text-align:right;" })
+                                                    </div>
+                                                    <div class="col-sm-8">
+                                                        @Html.TextBoxFor(x => x.ExtraCardNumber, new { @class = "form-control" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                            </div>
+                        </div>
+                        
+                        <!-- title Communication Address -->
+                        <div class="row form_text">
+                            <div class="panel panel-default panel_form_child">
+                                <div class="panel-heading">
+                                    <label class="control-label sv-header"><strong>Communication Address</strong></label>
+                                </div>
+                                <br />
+                                <div class="panel-body">
+                                    <div class="form-horizontal">
+                                        @if (ViewBag.customerType != "noncustomer")
+                                        {
+                                        <div class="row">
+                                            <div class="col-sm-6">
+                                                <div class="form-group">
+                                                    <label class="col-sm-4 control-label mandatory">Address Type</label>
+                                                    <div class="col-sm-8">
+                                                        @Html.DropDownListFor(x => x.Location, (SelectList)ViewBag.SL_Location, "", new { @class = "form-control" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        }
+                                        <div class="row other_address" style="display:none">
+                                            <div class="col-sm-6">                                        
+                                                <div class="form-group">
+                                                    <label class="col-sm-4 control-label mandatory">Address 1</label>
+                                                    <div class="col-sm-8">
+                                                        @Html.TextBoxFor(x => x.Address1, new { @class = "form-control" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-6">                                                                              
+                                                <div class="form-group">
+                                                    <label class="col-sm-4 control-label mandatory">City</label>
+                                                    <div class="col-sm-8">
+                                                        @Html.TextBoxFor(x => x.City, new { @class = "form-control" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row other_address" style="display:none">
+                                            <div class="col-sm-6">                                        
+                                                <div class="form-group">
+                                                    <label class="col-sm-4 control-label mandatory">Address 2</label>
+                                                    <div class="col-sm-8">
+                                                        @Html.TextBoxFor(x => x.Address2, new { @class = "form-control" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-6">                                                                              
+                                                <div class="form-group">
+                                                    <label class="col-sm-4 control-label mandatory">Zip</label>
+                                                    <div class="col-sm-8">
+                                                        @Html.TextBoxFor(x => x.PostalCode, new { @class = "form-control" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-6">                                        
+                                                <div class="form-group">
+                                                    <label class="col-sm-4 control-label">Company Name</label>
+                                                    <div class="col-sm-8">
+                                                        @Html.TextBoxFor(x => x.CompanyName, new { @class = "form-control" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-6">                                                                              
+                                                <div class="form-group">
+                                                    <label class="col-sm-4 control-label mandatory">Phone</label>
+                                                    <div class="col-sm-8">
+                                                        @Html.TextBoxFor(x => x.CommunicationPhone, new { @class = "form-control" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-offset-6 col-sm-6">                                                                              
+                                                <div class="form-group">
+                                                    <label class="col-sm-4 control-label">Incoming Phone Number</label>
+                                                    <div class="col-sm-8">
+                                                        @Html.TextBoxFor(x => x.IncomingPhoneNumber, new { @class = "form-control" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div id="messagebox"></div>
+
+                        <!-- title Service Level Information -->
+                        <div class="row form_text">
+                            <div class="panel panel-default panel_form_child">
+                                <div class="panel-heading">
+                                    <label class="control-label sv-header"><strong>Service Level Information</strong></label>
+                                </div>
+                                <br />
+                                <div class="panel-body">
+                                    <div class="form-horizontal">
+                                        <div class="row">
+                                            <div class="col-sm-6">
+                                                <div class="form-group">
+                                                    <label class="col-sm-4 control-label mandatory">Category</label>
+                                                    <div class="col-sm-8">
+                                                        <input type="hidden" id="CategoryID" name="CategoryID" value="@Model.CategoryID" class="form-control" style="margin-bottom:-50px;" />
+                                                        <div class="input-group">
+                                                            <input type="text" id="CategoryName" name="CategoryName" class="form-control" value="@Model.CategoryName">
+                                                            <div tabindex="0" id="CategoryName-label" class="form-control typeahead-label hide" style="border-top-left-radius:3px;border-bottom-left-radius:3px">
+                                                            </div>
+                                                            <div tabindex="0" class="input-group-addon btn" id="CategoryName-popup">
+                                                                <i class="fa fa-search"></i>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <div class="form-group">
+                                                    <label class="col-sm-4 control-label mandatory">Product</label>
+                                                    <div class="col-sm-8">
+                                                        <input type="hidden" id="ProductID" name="ProductID" value="@Model.ProductID" class="form-control" style="margin-bottom:-50px;" />
+                                                        <div class="input-group">
+                                                            <input type="text" id="ProductName" name="ProductName" class="form-control" value="@Model.ProductName">
+                                                            <div tabindex="0" id="ProductName-label" class="form-control typeahead-label hide" style="border-top-left-radius:3px;border-bottom-left-radius:3px">
+                                                            </div>
+                                                            <div tabindex="0" class="input-group-addon btn" id="ProductName-popup">
+                                                                <i class="fa fa-search"></i>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-6">                                        
+                                                <div class="form-group">
+                                                    <label class="col-sm-4 control-label">Kota</label>
+                                                    <div class="col-sm-8">
+                                                        @Html.DropDownList("KotaID", (SelectList)ViewBag.Kota, "Default Empty", new { @id = "KotaID", @class = "form-control" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-6">                                                                              
+                                                <div class="form-group">
+                                                    <label class="col-sm-4 control-label">Priority</label>
+                                                    <div class="col-sm-8">
+                                                        @Html.DropDownListFor(x => x.PriorityCode, (SelectList)ViewBag.SL_PriorityCode, "", new { @class = "form-control" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-6">
+                                                <div class="form-group">
+                                                    <label class="col-sm-4 control-label">Workgroup</label>
+                                                    <div class="col-sm-8">
+                                                        @Html.HiddenFor(model => model.WorkgroupId)
+                                                        @Html.TextBoxFor(x => x.WorkgroupName, new { @class = "form-control", @readonly = "readonly" })
+                                                    </div>
+                                                </div>                                        
+                                            </div>
+                                            <div class="col-sm-6">                                        
+                                                <div class="form-group">
+                                                    <label class="col-sm-4 control-label">Due Date</label>
+                                                    @Html.HiddenFor(model => model.DueDate)
+                                                    @{ string DueDate_Date = Model.DueDate == null ? string.Empty : Model.DueDate.Value.Date.ToShortDateString(); }
+                                                    @{ string DueDate_Time = Model.DueDate == null ? string.Empty : Model.DueDate.Value.TimeOfDay.ToString(); }
+                                                    <div class="col-sm-4">
+                                                        <div class="input-group">
+                                                            <input type="text" class="form-control" value="@DueDate_Date" readonly="readonly" />
+                                                            <span class="input-group-addon">
+                                                                <i class="fa fa-calendar fa-lg"></i>
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-sm-4">
+                                                        <input id="duedate_time" type="text" class="form-control" value="@DueDate_Time" readonly="readonly" />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-6">
+                                                <div class="form-group">
+                                                    <label class="col-sm-4 control-label">Service Level</label>
+                                                    <div class="col-sm-8">
+                                                        @Html.TextBoxFor(x => x.ServiceLevel, new { @class = "form-control", @readonly = "readonly" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <div class="form-group">
+                                                    <label class="col-sm-4 control-label">Status</label>
+                                                    <div class="col-sm-8">
+                                                        @Html.HiddenFor(model => model.StatusCode)
+                                                        @Html.TextBoxFor(x => x.StatusLabel, new { @class = "form-control", @readonly = "true" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- title Request Information -->
+                        <div class="row form_text">
+                            <div class="panel panel-default panel_form_child">
+                                <div class="panel-heading">
+                                    <label class="control-label sv-header"><strong>Request Information</strong></label>
+                                </div>
+                                <br />
+                                <div class="panel-body">
+                                    <div class="form-horizontal">
+                                        <div class="row">
+                                            <div class="col-sm-12">
+                                                <div class="form-group">
+                                                    <label class="col-sm-2 control-label mandatory">Summary</label>
+                                                    <div class="col-sm-10">
+                                                        @Html.TextBoxFor(x => x.Title, new { @class = "form-control" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-12">                                        
+                                                <div class="form-group">
+                                                    <label class="col-sm-2 control-label">Transaction Time</label>
+                                                    <div class="col-sm-4">
+                                                        <div class="col-sm-6" style="padding: 0px 14px 0px 0px;">
+                                                            <div class="input-group date">
+                                                                @Html.TextBoxFor(x => x.TransactionTime, new { @class = "form-control" })
+                                                                <span class="input-group-addon">
+                                                                    <i class="fa fa-calendar fa-lg"></i>
+                                                                </span>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-sm-2" style="padding: 0px 3px 0px 0px;">
+                                                            <input id="TransactionTimeHour" name="TransactionTimeHour" class="form-control" type="text" />
+                                                        </div>
+                                                        <div class="col-sm-2" style="padding: 0px 3px 0px 3px;">
+                                                            <input id="TransactionTimeMin" name="TransactionTimeMin" class="form-control" type="text" />
+                                                        </div>
+                                                        <div class="col-sm-2" style="padding: 0px 0px 0px 3px;">
+                                                            <input id="TransactionTimeSec" name="TransactionTimeSec" class="form-control" type="text" />
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-6">                                        
+                                                <div class="form-group">
+                                                    <label class="col-sm-4 control-label">Currency</label>
+                                                    <div class="col-sm-8">
+                                                        @Html.DropDownListFor(x => x.Currency, (SelectList)ViewBag.SL_Currency, new { @class = "form-control" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-6">                                                                              
+                                                <div class="form-group">
+                                                    <label class="col-sm-4 control-label">Transaction Amount</label>
+                                                    <div class="col-sm-8">
+                                                        @Html.TextBoxFor(x => x.TransactionAmount, new { @class = "form-control" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-6">                                        
+                                                <div class="form-group">
+                                                    <label class="col-sm-4 control-label mandatory">Channel</label>
+                                                    <div class="col-sm-8">
+                                                        @Html.DropDownListFor(x => x.CaseOriginCode, (SelectList)ViewBag.SL_CaseOriginCode, "", new { @class = "form-control" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-6">                                                                              
+                                                <div class="form-group">
+                                                    <label class="col-sm-4 control-label">WSID</label>
+                                                    <div class="col-sm-8">
+                                                        <input type="hidden" id="WsIdID" name="WsIdID" class="form-control" style="margin-bottom:-50px;" />
+                                                        <div class="input-group" id="WsIdName-Group">
+                                                            <input type="text" id="WsIdName" name="WsiIdName" class="form-control" value="">
+                                                            @*<div tabindex="0" id="WsIdName-label" class="form-control typeahead-label hide" style="border-top-left-radius:3px;border-bottom-left-radius:3px">*@
+                                                            <div tabindex="0" id="WsIdName-label" class="form-control typeahead-label hide Hyperlink-TextBox hyperlink-bw">
+                                                            </div>
+                                                            <div tabindex="0" class="input-group-addon btn" id="WsIdName-popup">
+                                                                <i class="fa fa-search"></i>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-6">                                        
+                                                <div class="form-group">
+                                                    <label class="col-sm-4 control-label">Location</label>
+                                                    <div class="col-sm-8">
+                                                        @Html.TextBoxFor(x => x.Lokasi, new { @class = "form-control" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-6">                                                                              
+                                                <div class="form-group">
+                                                    <label class="col-sm-4 control-label">Branch</label>
+                                                    <div class="col-sm-8">
+                                                        <input type="hidden" id="BranchID" name="BranchID" class="form-control" style="margin-bottom:-50px;" />
+                                                        <div class="input-group" id="BranchName-Group">
+                                                            <input type="text" id="BranchName" name="BranchName" class="form-control" value="">
+                                                            @*<div tabindex="0" id="BranchName-label" class="form-control typeahead-label hide" style="border-top-left-radius:3px;border-bottom-left-radius:3px">*@
+                                                            <div tabindex="0" id="BranchName-label" class="form-control typeahead-label hide Hyperlink-TextBox hyperlink-bw">
+                                                            </div>
+                                                            <div tabindex="0" class="input-group-addon btn" id="BranchName-popup">
+                                                                <i class="fa fa-search"></i>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-6">                                        
+                                                <div class="form-group">
+                                                    <label class="col-sm-4 control-label">Action</label>
+                                                    <div class="col-sm-8">
+                                                        <input type="hidden" id="CauseID" name="CauseID" class="form-control" style="margin-bottom:-50px;" />
+                                                        <div class="input-group" id="CauseName-Group">
+                                                            <input type="text" id="CauseName" name="CauseName" class="form-control" value="">
+                                                            <div tabindex="0" id="CauseName-label" class="form-control typeahead-label hide" style="border-top-left-radius:3px;border-bottom-left-radius:3px">
+                                                            </div>
+                                                            <div tabindex="0" class="input-group-addon btn" id="CauseName-popup">
+                                                                <i class="fa fa-search"></i>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-12">                                        
+                                                <div class="form-group">
+                                                    <label class="col-sm-2 control-label">Reason</label>
+                                                    <div class="col-sm-10">
+                                                        @Html.TextBoxFor(x => x.Reason, new { @class = "form-control" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- title 5 -->
+                        <div class="row form_text">
+                            <div class="panel panel-default panel_form_child">
+                                <div class="panel-heading">
+                                    <label class="control-label sv-header"><strong>Assignment Information</strong></label>
+                                </div>
+                                <br />
+                                <div class="panel-body">
+                                    <div class="form-horizontal">
+                                        <div class="row">
+                                            <div class="col-sm-6">                                        
+                                                <div class="form-group">
+                                                    <label class="col-sm-4 control-label">Agent</label>
+                                                    <div class="col-sm-8">
+                                                        @Html.HiddenFor(x => x.CreatedBy)
+                                                        @Html.TextBoxFor(x => x.CreatedByName, new { @class = "form-control Hyperlink-TextBox", @readonly = "readonly" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-6">                                        
+                                                <div class="form-group">
+                                                    <label class="col-sm-4 control-label">Modified By</label>
+                                                    <div class="col-sm-8">
+                                                        @Html.HiddenFor(x => x.ModifiedBy)
+                                                        @Html.TextBoxFor(x => x.ModifiedByName, new { @class = "form-control Hyperlink-TextBox", @readonly = "readonly" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-6">                                        
+                                                <div class="form-group">
+                                                    <label class="col-sm-4 control-label mandatory">Owner</label>
+                                                    <div class="col-sm-8">
+                                                        <input type="hidden" id="OwnerID" name="OwnerID" class="form-control" style="margin-bottom:-50px;" />
+                                                        <div class="input-group" id="Owner-Group">
+                                                            <input type="text" id="OwnerName" name="OwnerName" class="form-control" value="">
+                                                            <div tabindex="0" id="OwnerName-label" class="form-control typeahead-label hide Hyperlink-TextBox bg-own-req">
+                                                            </div>
+                                                            <div tabindex="0" class="input-group-addon btn" id="OwnerName-popup" readonly="readonly">
+                                                                <i class="fa fa-search"></i>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- title Timestamp Information -->
+                        <div class="row form_text">
+                            <div class="panel panel-default panel_form_child">
+                                <div class="panel-heading">
+                                    <label class="control-label sv-header"><strong>Timestamp Information</strong></label>
+                                </div>
+                                <br />
+                                <div class="panel-body">
+                                    <div class="form-horizontal">
+                                        <div class="row">
+                                            <div class="col-sm-6">                                        
+                                                <div class="form-group">
+                                                    <label class="col-sm-4 control-label">Created On</label>
+                                                    @Html.HiddenFor(model => model.CreatedOn)
+                                                    <div class="col-sm-4">
+                                                        <div class="input-group">
+                                                            <input type="text" class="form-control" value="@(Model.CreatedOn.Value.Date.ToShortDateString())" readonly="readonly" />
+                                                            <span class="input-group-addon">
+                                                                <i class="fa fa-calendar fa-lg"></i>
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-sm-4">
+                                                        @Html.TextBoxFor(x => x.CreatedOn, new { Id = "createdon_time", Value = @Model.CreatedOn.Value.ToString("HH:mm"), @class = "form-control", @readonly = "readonly" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-6">                                        
+                                                <div class="form-group">
+                                                    <label class="col-sm-4 control-label">Modified On</label>
+                                                    @Html.HiddenFor(x => x.ModifiedOn)
+                                                    @if (Model.ModifiedOn != null)
+                                                    {
+                                                        <div class="col-sm-4">
+                                                            <div class="input-group">
+                                                                <input type="text" class="form-control" value="@(Model.ModifiedOn.Value.Date.ToShortDateString())" readonly="readonly" />
+                                                                <span class="input-group-addon">
+                                                                    <i class="fa fa-calendar fa-lg"></i>
+                                                                </span>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-sm-4">
+                                                            @Html.TextBoxFor(x => x.ModifiedOn, new { Id = "modifiedon_time", Value = @Model.ModifiedOn.Value.ToString("HH:mm"), @class = "form-control", @readonly = "readonly" })
+                                                        </div>
+                                                    }
+                                                    else
+                                                    {
+                                                        <div class="col-sm-4">
+                                                            <div class="input-group">
+                                                                <input type="text" class="form-control" value="" readonly="readonly" />
+                                                                <span class="input-group-addon">
+                                                                    <i class="fa fa-calendar fa-lg"></i>
+                                                                </span>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-sm-4">
+                                                            <input type="text" class="form-control" value="" readonly="readonly" />
+                                                        </div>
+                                                    }
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-6">                                        
+                                                <div class="form-group">
+                                                    <label class="col-sm-4 control-label">Closed On</label>
+                                                    @Html.HiddenFor(model => model.ClosedOn)
+                                                    @if (Model.ClosedOn != null)
+                                                    {
+                                                        <div class="col-sm-4">
+                                                            <div class="input-group">
+                                                                <input type="text" class="form-control" value="@(Model.ClosedOn.Value.Date.ToShortDateString())" readonly="readonly" />
+                                                                <span class="input-group-addon">
+                                                                    <i class="fa fa-calendar fa-lg"></i>
+                                                                </span>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-sm-4">
+                                                            @Html.TextBoxFor(x => x.ClosedOn, new { Value = @Model.ClosedOn.Value.ToString("HH:mm"), @class = "form-control", @readonly = "readonly" })
+                                                        </div>
+                                                    }
+                                                    else
+                                                    {
+                                                        <div class="col-sm-4">
+                                                            <div class="input-group">
+                                                                <input type="text" class="form-control" value="" readonly="readonly" />
+                                                                <span class="input-group-addon">
+                                                                    <i class="fa fa-calendar fa-lg"></i>
+                                                                </span>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-sm-4">
+                                                            <input type="text" class="form-control" value="" readonly="readonly" />
+                                                        </div>
+                                                    }
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-6">                                        
+                                                <div class="form-group">
+                                                    <label class="col-sm-4 control-label">Reopened On</label>
+                                                    @Html.HiddenFor(model => model.ReopenedOn)
+                                                    @if (Model.ReopenedOn != null)
+                                                    {
+                                                        <div class="col-sm-4">
+                                                            <div class="input-group">
+                                                                <input type="text" class="form-control" value="@(Model.ReopenedOn.Value.Date.ToShortDateString())" readonly="readonly" />
+                                                                <span class="input-group-addon">
+                                                                    <i class="fa fa-calendar fa-lg"></i>
+                                                                </span>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-sm-4">
+                                                            @Html.TextBoxFor(x => x.ReopenedOn, new { Value = @Model.ReopenedOn.Value.ToString("HH:mm"), @class = "form-control", @readonly = "readonly" })
+                                                        </div>
+                                                    }
+                                                    else
+                                                    {
+                                                        <div class="col-sm-4">
+                                                            <div class="input-group">
+                                                                <input type="text" class="form-control" value="" readonly="readonly" />
+                                                                <span class="input-group-addon">
+                                                                    <i class="fa fa-calendar fa-lg"></i>
+                                                                </span>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-sm-4">
+                                                            <input type="text" class="form-control" value="" readonly="readonly" />
+                                                        </div>
+                                                    }
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                }
+                </div>
+                
+                <div class="tab-pane fade" id="notes" aria-labelledby="notes-tab">
+                    <div class="col-sm-12">
+                        <div class="row">
+                            <div class="panel panel-default panel_form_child">
+                                <div class="panel-heading">
+                                    <label class="control-label sv-header"><strong>Notes</strong></label>
+                                </div>
+                                <div class="panel-body">
+                                    <div class="row">
+                                        <div class="col-sm-12">
+                                            @Html.Partial("~/Views/Note/_PartialNotes.cshtml", Model.Notes)
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tab-pane fade" id="documents" aria-labelledby="documents-tab">
+                    <div class="col-sm-12">
+                        <div class="row">
+                            <ol class="breadcrumb">
+                                <li><a id="btn_attach" class="functionalBtn" href="#">Attach New File</a></li>
+                            </ol>
+                            <div class="panel panel-default panel_form_child">
+                                
+                                <div class="panel-heading">
+                                    <label class="control-label sv-header"><strong>Document</strong></label>
+                                </div>
+                                <br />
+                                <div class="panel-body">
+                                    <div class="row">
+                                        <div class="col-sm-12">
+                                            @if (Model.Notes.Count() > 0)
+                                            {
+                                                @Html.Partial("~/Views/Note/_PartialDocuments.cshtml", Model.Notes)
+                                            }
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <div class="row form_text">
+        
+    </div>
+    <div id="response-modal"></div>
+</div>
+
+<script src="~/Scripts/jquery.signalR-1.1.4.js"></script>
+<script src="~/signalr/hubs"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        @if (CCARE.App_Function.WorkflowFunction.hasNext(new Guid(Model.RequestID.ToString())) == true)
+        {
+                <text>
+                    $("#btn_assignNext").show();
+                    $("#btn_close").hide();
+                </text>
+        }
+        else
+        {
+                <text>
+                    $("#btn_close").show();
+                    $("#btn_assignNext").hide();
+                </text>
+        }
+
+        @if (CCARE.App_Function.WorkflowFunction.hasPrev(new Guid(Model.RequestID.ToString())) == true) 
+        {
+            <text>
+                $("#btn_assignPrev").show();
+            </text>
+        }
+        else{
+            <text>
+                $("#btn_assignPrev").hide();
+            </text>
+        }
+
+        @if(Model.OwnerID == new Guid(Session["CurrentUserID"].ToString())){
+           
+        }
+        else {
+            <text>
+                $("#btn_assignNext").hide();
+                $("#btn_assignPrev").hide();
+                $("#btn_close").hide();
+            </text>   
+        }
+
+        $(".form-horizontal").find("select").addClass("rm-padding");
+
+        // Validasi Field
+        function validateForm(action, formName) {
+            var regexNumber = /^\d+$/;
+
+            if ($("#CustomerID").val() == "") {
+                if ($("#CustomerName").val() == "") {
+                    alert("@Resources.Request.RequestMandatoryCustomer");
+                    $("#CustomerName").focus();
+                }
+                else
+                    alert("@Resources.Request.RequestMandatoryCustomer2");
+                return false;
+            }
+
+            if ($("#Location").val() == "") {
+                alert("@Resources.Request.RequestMandatoryAddress");
+                $("#Location").focus();
+                return false;
+            }
+            if ($("#Location").val() == "200001") {
+                if ($("#Address1").val() == "") {
+                    alert("@Resources.Request.RequestMandatoryAddress1");
+                    $("#Address1").focus();
+                    return false;
+                }
+                if ($("#City").val() == "") {
+                    alert("@Resources.Request.RequestMandatoryCity");
+                    $("#City").focus();
+                    return false;
+                }
+                if ($("#Address2").val() == "") {
+                    alert("@Resources.Request.RequestMandatoryAddress2");
+                    $("#Address2").focus();
+                    return false;
+                }
+                if ($("#PostalCode").val() == "") {
+                    alert("@Resources.Request.RequestMandatoryZip");
+                    $("#PostalCode").focus();
+                    return false;
+                }
+                if (regexNumber.test($("#PostalCode").val()) == false || $("#PostalCode").val().length != 5) {
+                    alert("@Resources.Request.RequestZipLength");
+                    $("#PostalCode").focus();
+                    return false;
+                }
+            }
+
+            if (regexNumber.test($("input[name=CommunicationPhone]").val()) == false || $("#input[name=CommunicationPhone]").length < 0) {
+                alert("@Resources.Request.RequestNumericCommunicationPhoneNumber");
+                $("input[name=CommunicationPhone]").focus();
+                return false;
+            }
+            if ($("#CategoryID").val() == "") {
+                if ($("#CategoryName").val() == "") {
+                    alert("@Resources.Request.RequestMandatoryCategory");
+                    $("#CategoryID").focus();
+                }
+                else
+                    alert("@Resources.Request.RequestMandatoryCategory2");
+                return false;
+            }
+            else if ($("#ProductID").val() == "") {
+                if ($("#ProductName").val() == "") {
+                    alert("@Resources.Request.RequestMandatoryProduct");
+                    $("#ProductID").focus();
+                }
+                else
+                    alert("@Resources.Request.RequestMandatoryProduct2");
+                return false;
+            }
+            if ($("#Title").val() == "") {
+                alert("@Resources.Request.RequestMandatorySummary");
+                $("#Title").focus();
+                return false;
+            }
+            if ($("#CaseOriginCode").val() == "") {
+                alert("@Resources.Request.RequestMandatoryChannel");
+                $("#CaseOriginCode").focus();
+                return false;
+            }
+            if ($("#OwnerName").val() == "") {
+                alert("@Resources.Request.RequestMandatoryOwner");
+                $("#OwnerName").focus();
+                return false;
+            }
+
+            if (regexNumber.test($("input[name=InteractionCount]").val()) == false && $("#input[name=InteractionCount]").length > 0) {
+                alert("@Resources.Request.RequestInteractionCountNumber");
+                $("input[name=InteractionCount]").focus();
+                return false;
+            }
+            if (regexNumber.test($("input[name=IncomingPhoneNumber]").val()) == false && $("#input[name=IncomingPhoneNumber]").length > 0) {
+                alert("@Resources.Request.RequestNumericIncomingPhoneNumber");
+                $("input[name=IncomingPhoneNumber]").focus();
+                return false;
+            }
+
+            if (isNaN($("#TransactionTimeHour").val()))
+                $("#TransactionTimeHour").val("");
+
+            if (isNaN($("#TransactionTimeMin").val()))
+                $("#TransactionTimeMin").val("");
+
+            if (isNaN($("#TransactionTimeSec").val()))
+                $("#TransactionTimeSec").val("");
+
+            if ($("#RefTicketNumber").val() == "" && ($("#RefRequest").val() != "" || $("#RefRequest-label").val() != "")) {
+                alert("@Resources.Request.RefRequest");
+                return false;
+            }
+            if ($("#WsIdID").val() == "" && ($("#WsIdName").val() != "" || $("#WsIdName-label").val() != "")) {
+                alert("@Resources.Request.WSID");
+                return false;
+            }
+            if ($("#CauseID").val() == "" && ($("#CauseName").val() != "" || $("#CauseName-label").val() != "")) {
+                alert("@Resources.Request.Cause");
+                return false;
+            }
+            if ($("#BranchID").val() == "" && ($("#BranchName").val() != "" || $("#BranchName-label").val() != "")) {
+                alert("@Resources.Request.Branch");
+                return false;
+            }
+
+            var decimal = moneyToDecimal($("#TransactionAmount").val());
+            $("#TransactionAmount").val(decimal);
+            formSubmit(action, formName);
+        }
+
+        var customerType = "@ViewBag.customerType";
+        if (customerType != "noncustomer") {
+            $("#CustomerProduct").attr('readonly', 'readonly');
+        }
+
+        var signalr = $.connection.cCAREHub;
+        var gID = $("#RequestID").val();
+
+        signalr.client.refresh = function (guid, msg) {
+            if (gID == guid) {
+                var checkr = msg.split('-');
+                if (checkr[0] == "information") {
+                    if (currentUserId != checkr[1]) {
+                        $('#myModalSignalR').modal('show');
+
+                        setTimeout(function () {
+                            $('#myModalSignalR').modal('hide');
+                        }, 2500); // milliseconds
+                    }
+                }
+                else {
+                    $(".textareaDisplay").val(msg);
+                    $("#textareaInput").val('');
+                }
+            }
+        };
+
+        var currentUserId = '@Session["FullName"].ToString()';
+
+        $.connection.hub.start().done(function () {
+            $("#btn_save").one("click", function () {
+                validateForm("save", $("#form_incident"));
+                signalr.server.data(gID, "information-" + currentUserId);
+            });
+
+            $("#btn_savenclose").one("click", function () {
+                validateForm("saveNClose", $("#form_incident"));
+                signalr.server.data(gID, "information-" + currentUserId);
+            });
+        });
+
+        $(".link_other_page").click(function () {
+            $(".form_page").hide();
+        });
+        $(".link_form_page").click(function () {
+            $(".form_page").show();
+            $(".other_page").show();
+        });
+
+        var stateCode = '@(Model.StateCode)';
+        var checkStatusCode = "@Model.StatusCode";
+        if (checkStatusCode == 5 || checkStatusCode == 6) {
+            $("select").attr('readonly', 'readonly').addClass('avoid-clicks');
+            $("input").attr('readonly', 'readonly');
+            $(".functionalBtn").attr('disabled', 'disabled');
+            $(".input-group").find('div.typeahead-label').attr('readonly', 'readonly');
+            $(".input-group").find('div.input-group-addon').attr('disabled', 'disabled').addClass('avoid-clicks');
+            $("#btnInputNotes").attr('disabled', 'disabled');
+            $("#textareaInput").attr('readonly', 'readonly');
+            //$("#TransactionTime").attr('disabled', 'disabled');
+        }
+        $("#reopen_user").removeAttr('readonly');
+        $("#reopen_pass").removeAttr('readonly');
+
+        $("#btn_attach").click(function () {
+            var checkStatusCode = "@Model.StatusCode";
+            if (checkStatusCode != 5 && checkStatusCode != 6) {
+                $("#attach-file").modal();
+            }
+        });
+
+        if ($("#ExtraCardType").val() == 0)
+            $("#ExtraCardNumber").attr('disabled', 'disabled');
+        $("#ExtraCardType").change(function () {
+            if ($("#ExtraCardType").val() == 0)
+                $("#ExtraCardNumber").attr('disabled', 'disabled');
+            else {
+                $("#ExtraCardNumber").attr('disabled', false);
+                $("#ExtraCardNumber").val("");
+            }
+        });
+
+        var createdon_time = $("#createdon_time").val().substring(0, 5);
+        $("#createdon_time").val(createdon_time);
+
+        var modifiedon_time = $("#modifiedon_time").val().substring(0, 5);
+        $("#modifiedon_time").val(modifiedon_time);
+
+        var duedate_time = $("#duedate_time").val().substring(0, 5);
+        $("#duedate_time").val(duedate_time);
+
+        if ('@(ViewBag.TabPosition)' == "documents") {
+            var tab = "documents";
+            $('.nav-tabs a[href="#' + tab + '"]').tab('show');
+        }
+
+        $("#btn_assigntome").click(function () {
+            SaveRequest($("#form_incident"));
+
+            var serializedForm = $("#form_incident").serialize();
+            $.ajax({
+                type: "POST",
+                url: "/Assign/AssignToWG",
+                data: serializedForm + '&type=currentuser',
+                dataType: "json",
+                success: function (data) {
+                    if (data.flag == true) {
+                        window.location.replace(data.Message);
+                    }
+                    else {
+                        alert(data.Message);
+                        $(".divFormMessage").text(data.Message);
+                    }
+                },
+                error: function (xhr, status, err) {
+                    alert("Error");
+                }
+            });
+            return;
+        });
+
+        $(".btn_assignto").click(function (e) {
+            //if ($(this).attr("id") == "assigntouser")
+            //    $("#assign_type").val("user");
+            //else if ($(this).attr("id") == "assigntowg")
+            //    $("#assign_type").val("workgroup");
+            $("#assign_type").val("user_request");
+            $('#OwnerName-popup').removeAttr('disabled', 'disabled');
+
+            $('#OwnerName-popup').focus();
+            $('#OwnerName-popup').click();
+        });
+
+        $("#btn_printticket").click(function () {
+            var url = '@Url.Action("Print", "Request")';
+            var requestId = '@(Model.RequestID)';
+
+            if (requestId) {
+                openPrintWindow(url + '?id=' + requestId);
+            }
+            else
+                alert("No Request Selected");
+        });
+
+        $("#btn_newletterentry").click(function () {
+            var url = '@Url.Action("Create", "LetterEntry")';
+            var requestId = '@(Model.RequestID)';
+
+            var temp = new Array();
+            temp.push(requestId);
+            openWindow(url + '?id=' + JSON.stringify(temp));
+        });
+
+        $('#btn_newtask').click(function () {
+            var id = '@Model.RequestID';
+            var regarding = '@Model.Title';
+            var ticketNumber = '@Model.TicketNumber';
+            var url = '@Url.Action("Create", "Task")';
+            openWindow(url + '?RequestID=' + id + '&Regarding=' + regarding + '&TicketNumber=' + ticketNumber);
+        });
+
+        $("#confirm-cancel").on('show.bs.modal', function (e) {
+            $(this).find('.btn-ok').click(function () {
+                var postData = {
+                    _resolution: "",
+                    _description: ""
+                };
+
+                var decimal = moneyToDecimal($("#TransactionAmount").val());
+                $("#TransactionAmount").val(decimal);
+
+                otherAction($("#form_incident"), "/Request/Cancel", "changestatus", postData)
+            });
+        }); // statecode = 1, statuscode = 5 kalo cancel
+
+        //function next workgroup or prev workgroup
+        function nextOrPrevWorkgroup(postData, url) {
+            $.ajax({
+                type: "POST",
+                url: url,
+                data: postData,
+                dataType: "json",
+                success: function (data) {
+                    //alert(data.Message);
+                    if (data.flag == true) {
+                        //location.reload();
+                        $("#messagebox").html(MessageText('info', data.Message));
+                        $("#WorkgroupName").val(data.newWGName);
+                        $("#WorkgroupId").val(data.newWGID);
+                        if (data.hasNext == false) {
+                            $("#btn_assignNext").hide();
+                            $("#btn_close").show();
+                        }
+                        else {
+                            $("#btn_assignNext").show();
+                        }
+                        if (data.hasPrev == false) {
+                            $("#btn_assignPrev").hide();
+                        }
+                        else {
+                            $("#btn_assignPrev").show();
+                        }
+
+                        if(data.isOwner == false){
+                            $("#btn_assignPrev").hide();
+                            $("#btn_assignNext").hide();
+                            $("#btn_close").hide();
+                        }
+                    }
+                    else {
+                        $(".divFormMessage").text(data.Message);
+                    }
+
+                },
+                error: function (xhr, status, err) {
+                    alert(err);
+                }
+            });
+        }
+
+        //btn_assignNext action when click OK
+        $("#confirm-next").on('show.bs.modal', function (e) {
+            $(this).find('.btn-ok').click(function () {
+                $("#confirm-next").modal('hide');
+
+                var serializedForm = $("#form_incident").serialize();
+                var opr = "Next";
+                var url = '/Request/NextOrPrevWG';
+                postData = serializedForm + "&operationType=" + opr;
+
+                nextOrPrevWorkgroup(postData, url);
+            });
+        }); 
+
+
+        //btn_assignPrev action when clicked
+        //$("#btn_assignPrev").click(function () {
+        //    var serializedForm = $("#form_incident").serialize();
+        //    var opr = "Prev";
+        //    var url = '/Request/NextOrPrevWG';
+        //    postData = serializedForm + "&operationType=" + opr;
+
+        //    nextOrPrevWorkgroup(postData, url);
+        //});
+
+
+
+        $("#confirm-close").on('show.bs.modal', function (e) {
+            SaveRequest($("#form_incident"));
+
+            $(this).find('.btn-ok').click(function () {
+                var postData = {
+                    _resolution: $("#Resolution").val(),
+                    _description: $("#Description").val()
+                };
+
+                var decimal = moneyToDecimal($("#TransactionAmount").val());
+                $("#TransactionAmount").val(decimal);
+
+                otherAction($("#form_incident"), "/Request/Close", "changestatus", postData)
+            });
+        }); // statecode = 1, statuscode = 4
+
+        $('#reopen_ok').prop('disabled', true);
+        $('.reopen_modal').keyup(function () {
+            if($('#reopen_user').val() != "" && $('#reopen_pass').val() != "" && $('#reopen_reason').val() != "")
+                $('#reopen_ok').prop('disabled', false);
+        });
+
+        $("#confirm-reopen").on('show.bs.modal', function (e) {
+            $(this).find('.btn-ok').click(function () {
+                var _username = $("#reopen_user").val();
+                var _password = $("#reopen_pass").val();
+                var _reason = $("#reopen_reason").val();
+                var _objectId = $("#RequestID").val();
+                var _businessUnitId = $("#BusinessUnitID").val();
+
+                var decimal = moneyToDecimal($("#TransactionAmount").val());
+                $("#TransactionAmount").val(decimal);
+
+                var currentDomainUserName = '@Session["DomainUserName"].ToString()';
+
+                if (currentDomainUserName == _username) {
+                    $.ajax({
+                        url: "/Login/validateUserDomainByJson",
+                        type: "POST",
+                        data: 'varUserName=' + _username + '&varPwd=' + _password,
+                        dataType: "json",
+                        success: function (result) {
+                            if (result._isValidUser == true) {
+                                var serializedForm = $("#form_incident").serialize();
+                                $.ajax({
+                                    type: "POST",
+                                    url: "/Note/GetRequestAnnotation",
+                                    data: 'requestId=' + _objectId,
+                                    dataType: "json",
+                                    success: function (data) {
+                                        $.ajax({
+                                            url: "/Request/Reopen",
+                                            type: "POST",
+                                            data: serializedForm + '&annotationID=' + data.AnnotationID + '&reopenReason=' + _reason,
+                                            dataType: "json",
+                                            success: function (result) {
+                                                window.location.replace(result.Message);
+                                            },
+                                            error: function (xhr, data, status) {
+                                                alert("Reopen Failed")
+                                            }
+                                        });
+                                    },
+                                    error: function (xhr, status, err) {
+                                        alert("Reopen Failed");
+                                    }
+                                });
+                            }
+                            else {
+                                alert("UserId atau password salah");
+                            }
+                        },
+                        error: function (xhr, data, status) {
+                            alert("Authentication Failed")
+                        }
+                    });
+                }
+                else {
+                    alert("UserId atau password salah");
+                }
+            });
+        });
+
+        $("#confirm-prev").on('show.bs.modal', function (e) {
+            $(this).find('.btn-ok').click(function () {
+                var _username = $("#prevworkgroup_user").val();
+                var _password = $("#prevworkgroup_pass").val();
+                var _objectId = $("#RequestID").val();
+                var _reason = $("#prevworkgroup_reason").val();
+                var _businessUnitId = $("#BusinessUnitID").val();
+
+                var decimal = moneyToDecimal($("#TransactionAmount").val());
+                $("#TransactionAmount").val(decimal);
+
+                var currentDomainUserName = '@Session["DomainUserName"].ToString()';
+
+                if (currentDomainUserName == _username) {
+                    $.ajax({
+                        url: "/Login/validateUserDomainByJson",
+                        type: "POST",
+                        data: 'varUserName=' + _username + '&varPwd=' + _password,
+                        dataType: "json",
+                        success: function (result) {
+                            if (result._isValidUser == true) {
+                                var serializedForm = $("#form_incident").serialize();
+                                $.ajax({
+                                    type: "POST",
+                                    url: "/Note/GetRequestAnnotation",
+                                    data: 'requestId=' + _objectId,
+                                    dataType: "json",
+                                    success: function (data) {
+                                        var opr = "Prev";
+                                        var url = '/Request/NextOrPrevWG';
+                                        postData = serializedForm + "&operationType=" + opr + "&objectId=" + _objectId + '&prevReason=' + _reason + '&annotationID=' + data.AnnotationID;
+
+                                        nextOrPrevWorkgroup(postData, url);
+                                        $('#confirm-prev').modal('hide');
+                                    },
+                                    error: function (xhr, status, err) {
+                                        alert("Prev Failed");
+                                    }
+                                });
+                            }
+                            else {
+                                alert("UserId atau password salah");
+                            }
+                        },
+                        error: function (xhr, data, status) {
+                            alert("Authentication Failed")
+                        }
+                    });
+                }
+                else {
+                    alert("UserId atau password salah");
+                }
+            });
+        });
+
+        $("#CustomerProduct").val("@(ViewBag.CustomerProduct)");
+
+        // Transaction Amount
+        var money = decimalToMoney($("#TransactionAmount").val());
+        $("#TransactionAmount").val(money);
+
+        $("#TransactionAmount").focus(function () {
+            var decimal = moneyToDecimal($("#TransactionAmount").val());
+            $("#TransactionAmount").val(decimal);
+        });
+
+        $("#TransactionAmount").focusout(function () {
+            var money = decimalToMoney($("#TransactionAmount").val());
+            $("#TransactionAmount").val(money);
+        });
+
+        var isTransactionTimeFilled = false;
+
+        if ($("#TransactionTime").val().length == 0) {
+            isTransactionTimeFilled = false;
+            applyPlaceholder($("#TransactionTimeHour"), "hh");
+            $("#TransactionTimeHour").prop('readonly', true);
+        }
+        else {
+            isTransactionTimeFilled = true;
+        }
+
+        $("#TransactionTime").focusout(function () {
+            if ($("#TransactionTime").val().length != 10) {
+                isTransactionTimeFilled = false;
+                applyPlaceholder($("#TransactionTimeHour"), "hh");
+                $("#TransactionTimeHour").attr('readonly', true);
+                applyPlaceholder($("#TransactionTimeMin"), "mm");
+                $("#TransactionTimeMin").attr('readonly', true);
+                applyPlaceholder($("#TransactionTimeSec"), "ss");
+                $("#TransactionTimeSec").attr('readonly', true);
+            }
+            else {
+                isTransactionTimeFilled = true;
+                $("#TransactionTimeHour").attr('readonly', false);
+                $("#TransactionTimeMin").attr('readonly', true);
+                $("#TransactionTimeSec").attr('readonly', true);
+            }
+        });
+
+        $("#TransactionTime").change(function () {
+            if ($("#TransactionTime").val().length != 10) {
+                isTransactionTimeFilled = false;
+                applyPlaceholder($("#TransactionTimeHour"), "hh");
+                $("#TransactionTimeHour").attr('readonly', true);
+                applyPlaceholder($("#TransactionTimeMin"), "mm");
+                $("#TransactionTimeMin").attr('readonly', true);
+                applyPlaceholder($("#TransactionTimeSec"), "ss");
+                $("#TransactionTimeSec").attr('readonly', true);
+            }
+            else {
+                isTransactionTimeFilled = true;
+                $("#TransactionTimeHour").attr('readonly', false);
+                $("#TransactionTimeMin").attr('readonly', true);
+                $("#TransactionTimeSec").attr('readonly', true);
+            }
+        });
+
+        $("#TransactionTimeHour").val('@ViewBag.TransactionTimeHour');
+        if ($("#TransactionTimeHour").val() != "") {
+            if ($("#TransactionTimeHour").val().length == 1)
+                $("#TransactionTimeHour").val("0" + $("#TransactionTimeHour").val());
+        }
+        else {
+            applyPlaceholder($("#TransactionTimeHour"), "hh");
+        }
+
+        $("#TransactionTimeHour").keyup(function () {
+            if (isTransactionTimeFilled == true) {
+                isNumber($(this).val(), "#TransactionTimeHour");
+                if ($(this).val().length > 2)
+                    $(this).val($("#TransactionTimeHour").val().substring(0, 2));
+            }
+        });
+
+        $("#TransactionTimeHour").focus(function () {
+            if (isNaN($(this).val()) && isTransactionTimeFilled == true)
+                removePlaceholder($(this));
+        });
+
+        $("#TransactionTimeHour").focusout(function () {
+            if (!isNaN($(this).val()) && $(this).val() != "") {
+                if ($(this).val() > 23) {
+                    alert("Input hour is out of range [00 - 23]");
+                    $("#TransactionTimeHour").val("");
+                    $("#TransactionTimeHour").focus();
+                }
+                else if ($(this).val() < 10 && $(this).val().length == 1) {
+                    $(this).val("0" + $("#TransactionTimeHour").val());
+                }
+
+                if (isNaN($("#TransactionTimeMin").val())) {
+                    removePlaceholder($("#TransactionTimeMin"));
+                    $("#TransactionTimeMin").val("00");
+                }
+                if (isNaN($("#TransactionTimeSec").val())) {
+                    removePlaceholder($("#TransactionTimeSec"));
+                    $("#TransactionTimeSec").val("00");
+                }
+
+                $("#TransactionTimeMin").prop('readonly', false);
+                $("#TransactionTimeSec").prop('readonly', false);
+            }
+            else {
+                applyPlaceholder($(this), "hh");
+                applyPlaceholder($("#TransactionTimeMin"), "mm");
+                $("#TransactionTimeMin").prop('readonly', true);
+                applyPlaceholder($("#TransactionTimeSec"), "ss");
+                $("#TransactionTimeSec").prop('readonly', true);
+            }
+        });
+
+        $("#TransactionTimeMin").val('@ViewBag.TransactionTimeMin');
+        if ($("#TransactionTimeMin").val() != "") {
+            if ($("#TransactionTimeMin").val().length == 1)
+                $("#TransactionTimeMin").val("0" + $("#TransactionTimeMin").val());
+        }
+        else {
+            $("#TransactionTimeMin").prop('readonly', true);
+            applyPlaceholder($("#TransactionTimeMin"), "mm");
+        }
+
+        $("#TransactionTimeMin").keyup(function () {
+            if (isTransactionTimeFilled == true) {
+                isNumber($(this).val(), "#TransactionTimeMin");
+
+                if ($(this).val().length > 2)
+                    $(this).val($("#TransactionTimeMin").val().substring(0, 2));
+            }
+        });
+
+        $("#TransactionTimeMin").focus(function () {
+            if (isNaN($(this).val()) && isTransactionTimeFilled == true)
+                removePlaceholder($(this));
+        });
+
+        $("#TransactionTimeMin").focusout(function () {
+            if (!isNaN($(this).val()) && $(this).val() != "") {
+                if ($(this).val() > 59) {
+                    alert("Input minute is out of range [00 - 59]");
+                    $("#TransactionTimeMin").val("");
+                    $("#TransactionTimeMin").focus();
+                }
+                else if ($(this).val() < 10 && $(this).val().length == 1) {
+                    $(this).val("0" + $("#TransactionTimeMin").val());
+                }
+
+                if (isNaN($("#TransactionTimeSec").val())) {
+                    removePlaceholder($("#TransactionTimeSec"));
+                    $("#TransactionTimeSec").val("00");
+                }
+            }
+            else {
+                applyPlaceholder($(this), "mm");
+            }
+        });
+
+        // Second
+        $("#TransactionTimeSec").val('@ViewBag.TransactionTimeSec');
+        if ($("#TransactionTimeSec").val() != "") {
+            if ($("#TransactionTimeSec").val().length == 1)
+                $("#TransactionTimeSec").val("0" + $("#TransactionTimeSec").val());
+        }
+        else {
+            $("#TransactionTimeSec").prop('readonly', true);
+            applyPlaceholder($("#TransactionTimeSec"), "ss");
+        }
+
+        $("#TransactionTimeSec").keyup(function () {
+            if (isTransactionTimeFilled == true) {
+                isNumber($(this).val(), "#TransactionTimeSec");
+
+                if ($(this).val().length > 2)
+                    $(this).val($("#TransactionTimeSec").val().substring(0, 2));
+            }
+        });
+
+        $("#TransactionTimeSec").focus(function () {
+            if (isNaN($(this).val()) && isTransactionTimeFilled == true)
+                removePlaceholder($(this));
+        });
+
+        $("#TransactionTimeSec").focusout(function () {
+            if (!isNaN($(this).val()) && $(this).val() != "") {
+                if ($(this).val() > 59) {
+                    alert("Input second is out of range [00 - 59]");
+                    $("#TransactionTimeSec").val("");
+                    $("#TransactionTimeSec").focus();
+                }
+                else if ($(this).val() < 10 && $(this).val().length == 1) {
+                    $(this).val("0" + $("#TransactionTimeSec").val());
+                }
+            }
+            else {
+                applyPlaceholder($(this), "ss");
+            }
+        });
+
+        // ------------ Popup ---------------
+
+        $('#BranchName-popup').on('click', function (e) {
+            urlModalPopup = '@Url.Action("_popupContent", "Popup", new { type = "branch", _entity = "" })';
+            colModelsName = [
+                { label: 'ID', name: 'Id', index: 'Id', key: true, width: 75, hidden: true },
+                { label: 'Nama Kantor', name: 'Name', width: 250 },
+                { label: 'Kode Kantor', name: 'OfficeCode', width: 250 },
+                { label: 'Alamat', name: 'Address', width: 250 },
+                { label: 'Fax', name: 'Fax', width: 250 },
+                { label: 'Inisial', name: 'Initials', width: 60 },
+                { label: 'Kode Pos', name: 'Zipcode', width: 60 },
+                { label: 'Kota', name: 'City', width: 60 },
+                { label: 'Kode Telepon', name: 'LongDistanceCode', width: 60 },
+                { label: 'Telephone 1', name: 'Telephone1', width: 60 },
+                { label: 'Telephone 2', name: 'Telephone2', width: 60 },
+                { label: 'Kanwil', name: 'RegionName', width: 60 }
+            ];
+            var id = $(this).parent().find('input:last').attr('id');
+            $('#' + id).trigger("blur");
+            e.preventDefault();
+        });
+
+        $('#WsIdName-popup').on('click', function (e) {
+            urlModalPopup = '@Url.Action("_popupContent", "Popup", new { type = "wsid", _entity = "" })';
+            colModelsName = [
+                { label: 'ID', name: 'Id', index: 'Id', key: true, width: 75, hidden: true },
+                { label: 'Location', name: 'Name', width: 250 },
+                { label: 'Address', name: 'Address', width: 250 },
+                { label: 'City', name: 'City', width: 250 },
+                { label: 'Lok', name: 'Lok', width: 60 },
+                { label: 'WSID', name: 'Location', width: 60 }
+            ];
+            var id = $(this).parent().find('input:last').attr('id');
+            $('#' + id).trigger("blur");
+            e.preventDefault();
+        });
+
+        $('#CauseName-popup').on('click', function (e) {
+            urlModalPopup = '@Url.Action("_popupContent", "Popup", new { type = "cause", _entity = "" })';
+            colModelsName = [
+                { label: 'ID', name: 'Id', index: 'Id', key: true, width: 75, hidden: true },
+                { label: 'Name', name: 'Name', width: 250 },
+                { label: 'Created On', name: 'CreatedOn', width: 150, formatter: "date", formatoptions: { srcformat: "ISO8601Long", newformat: "d/m/Y H:i" } }
+            ];
+            var id = $(this).parent().find('input:last').attr('id');
+            $('#' + id).trigger("blur");
+            e.preventDefault();
+        });
+
+        $('#CategoryName-popup').on('click', function (e) {
+            urlModalPopup = '@Url.Action("_popupContent", "Popup", new { type = "category" })';
+            var id = $(this).parent().find('input:last').attr('id');
+            $('#' + id).trigger("blur");
+            e.preventDefault();
+        });
+
+        $('#ProductName-popup').on('click', function (e) {
+            urlModalPopup = '@Url.Action("_popupContent", "Popup", new { type = "product" })';
+            var id = $(this).parent().find('input:last').attr('id');
+            $('#' + id).trigger("blur");
+            e.preventDefault();
+        });
+
+        $('#OwnerName-popup').on('click', function (e) {
+            urlModalPopup = '@Url.Action("_popupContent", "Popup", new { type = "owner_request", _entity = "" })';
+            colModelsName = [
+                { label: 'ID', name: 'Id', index: 'Id', key: true, width: 75, hidden: true },
+                { label: 'Name', name: 'Name', width: 100 },
+                { label: 'Phone', name: 'Phone', width: 100 },
+                { label: 'Business Unit', name: 'BusinessUnitName', width: 150 },
+                { label: 'Site', name: 'Site', width: 150 },
+                { label: 'Title', name: 'Title', width: 150 },
+                { label: 'E-mail', name: 'EMail', width: 150 }
+            ];
+            var id = $(this).parent().find('input:last').attr('id');
+            $('#' + id).trigger("blur");
+            e.preventDefault();
+        });
+
+        $('#RefRequest-popup').on('click', function (e) {
+            urlModalPopup = '@Url.Action("_popupContent", "Popup", new { type = "requestTransaction", _entity = "" })';
+            colModelsName = [
+                { label: 'ID', name: 'Id', index: 'Id', key: true, width: 75, hidden: true },
+                { label: 'Request ID', name: 'Name', width: 150 },
+                { label: 'Summary', name: 'Summary', width: 200 },
+                { label: 'Category', name: 'CategoryName', width: 200 },
+                { label: 'Product', name: 'ProductName', width: 200 },
+                { label: 'Status', name: 'StatusLabel', width: 70 },
+                { label: 'Created On', name: 'CreatedOn', width: 150, formatter: "date", formatoptions: { srcformat: "ISO8601Long", newformat: "d M Y h:i:s" } },
+                { label: 'Due Date', name: 'DueDate', width: 150, formatter: "date", formatoptions: { srcformat: "ISO8601Long", newformat: "d M Y h:i:s" } }
+            ];
+            var id = $(this).parent().find('input:last').attr('id');
+            $('#' + id).trigger("blur");
+            e.preventDefault();
+        });
+
+        var branchTypeahead = new PopupClass();
+        branchTypeahead.setId("BranchName");
+        branchTypeahead.setUrl('@Url.Action("Branch", "Popup")');
+        branchTypeahead.setHiddenId("BranchID");
+        branchTypeahead.init();
+
+        var wsidTypeahead = new PopupClass();
+        wsidTypeahead.setId("WsIdName");
+        wsidTypeahead.setUrl('@Url.Action("WSID", "Popup")');
+        wsidTypeahead.setHiddenId("WsIdID");
+        wsidTypeahead.init();
+
+        var causeTypeahead = new PopupClass();
+        causeTypeahead.setId("CauseName");
+        causeTypeahead.setUrl('@Url.Action("Cause", "Popup")');
+        causeTypeahead.setHiddenId("CauseID");
+        causeTypeahead.init();
+
+        var categoryTypeahead = new PopupClass();
+        categoryTypeahead.setId("CategoryName");
+        categoryTypeahead.setUrl('@Url.Action("CategoryTree", "Popup")');
+        categoryTypeahead.setHiddenId("CategoryID");
+        categoryTypeahead.setDepend("Product");
+        categoryTypeahead.setDependId("ProductID");
+        categoryTypeahead.init();
+
+        var productTypeahead = new PopupClass();
+        productTypeahead.setId("ProductName");
+        productTypeahead.setUrl('@Url.Action("ProductTree", "Popup")');
+        productTypeahead.setHiddenId("ProductID");
+        productTypeahead.setDepend("Category");
+        productTypeahead.setDependId("CategoryID");
+        productTypeahead.init();
+
+        var workgroupTypeahead = new PopupClass();
+        workgroupTypeahead.setId("OwnerName");
+        workgroupTypeahead.setUrl('@Url.Action("Workgroup", "Popup")');
+        workgroupTypeahead.setHiddenId("OwnerID");
+        workgroupTypeahead.init();
+
+        var requestTypeahead = new PopupClass();
+        requestTypeahead.setId("RefRequest");
+        requestTypeahead.setUrl('@Url.Action("RequestLookUp", "Popup")');
+        requestTypeahead.setHiddenId("RefTicketNumber");
+        requestTypeahead.setDependId($("#CustomerID").val());
+        requestTypeahead.init();
+
+        if ("@Model.BranchID".length > 0) {
+            popupCheckFirst("BranchName", "@Model.BranchID", "@Model.BranchName");
+        }
+
+        if ("@Model.WsIdID".length > 0) {
+            popupCheckFirst("WsIdName", "@Model.WsIdID", "@Model.WsIdName");
+        }
+
+        if ("@Model.CauseID".length > 0) {
+            popupCheckFirst("CauseName", "@Model.CauseID", "@Model.CauseName");
+        }
+
+        if ("@Model.CategoryID".length > 0) {
+            popupCheckFirst("CategoryName", "@Model.CategoryID", "@Html.Raw(Model.CategoryName)");
+        }
+
+        if ("@Model.ProductID".length > 0) {
+            popupCheckFirst("ProductName", "@Model.ProductID", "@Html.Raw(Model.ProductName)");
+        }
+
+        if ("@Model.OwnerID".length > 0) {
+            popupCheckFirst("OwnerName", "@Model.OwnerID", "@Html.Raw(Model.OwnerName)");
+        }
+
+        if ("@Model.RefTicketNumber".length > 0) {
+            popupCheckFirst("RefRequest", "@Model.RefTicketNumber", "@Model.RefTicketNumber");
+        }
+
+        // ------------ End Popup ---------------
+
+        $('.input-group.date').datepicker({
+            format: "dd-mm-yyyy",
+        });
+
+        // Clear Other Address
+        function clearOtherAddress() {
+            $("input[name='Address1']").val("");
+            $("input[name='Address2']").val("");
+            $("input[name='City']").val("");
+            $("input[name='PostalCode']").val("");
+        }
+
+        // Other Address
+        if ($("#Location option:selected").text() == "Other") {
+            $(".other_address").show();
+        }
+        else {
+            $(".other_address").hide();
+        }
+
+        $("#Location").change(function () {
+            clearOtherAddress();
+            if ($("#Location option:selected").text() == "Other") {
+                $(".other_address").show();
+            }
+            else {
+                $(".other_address").hide();
+            }
+        });
+
+        $("#CustomerName").click(function () {
+            openWindow('/Customer/Edit?id=' + $("#CustomerID").val());
+        });
+
+        $("#NonCustomerName").click(function () {
+            openWindow('/NonCustomer/Edit?id=' + $("#NonCustomerID").val());
+        });
+
+        $("#BranchName-label").dblclick(function () {
+            openWindow('/Branch/Edit?id=' + $("#BranchID").val());
+        });
+
+        $("#WsIdName-label").dblclick(function () {
+            openWindow('/WSID/Edit?id=' + $("#WsIdID").val());
+        });
+
+        $("#OwnerName-label").click(function () {
+            openWindow('/SystemUser/Edit?id=' + $("#OwnerID").val());
+        });
+
+        $("#CreatedByName").click(function () {
+            openWindow('/SystemUser/Edit?id=' + $("#CreatedBy").val());
+        });
+
+        $("#ModifiedByName").click(function () {
+            openWindow('/SystemUser/Edit?id=' + $("#ModifiedBy").val());
+        });
+
+        if ($("#CustomerName").length > 0) {
+            $("#CustomerName").val(UnescapeHtml($("#CustomerName").val()));
+        }
+
+        if ($("#NonCustomerName").length > 0) {
+            $("#NonCustomerName").val(UnescapeHtml($("#NonCustomerName").val()));
+        }
+
+        $('[data-toggle="popover"]').popover();
+        $("#RefRequest-label").attr("data-content", "Product  : " + '@ViewBag.RefferalProduct' + "<br /> Category : " + '@ViewBag.RefferalCategory');
+        $("#RefRequest-label").hover(function () {
+            $(this).click();
+        });
+
+        $("#RefTicketNumber").change(function () {
+            var postData = { _requestID: $("#RefRequest-label").html() };
+            var url = '/Request/GetDetailReferralRequest';
+            $.ajax({
+                type: "POST",
+                url: url,
+                data: postData,
+                success: function (msg) {
+                    $("#RefRequest-label").attr("data-content", msg);
+                }
+            });
+        });
+
+
+    });
+</script>

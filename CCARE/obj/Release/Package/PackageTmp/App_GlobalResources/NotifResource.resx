@@ -1,0 +1,323 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="AcctNoEmpty" xml:space="preserve">
+    <value>Field Account No harus diisi</value>
+  </data>
+  <data name="BlankDate" xml:space="preserve">
+    <value>Field tanggal harus diisi</value>
+  </data>
+  <data name="BranchBlank" xml:space="preserve">
+    <value>Field Branch harus diisi</value>
+  </data>
+  <data name="BranchReportBlank" xml:space="preserve">
+    <value>Field Branch harus diisi</value>
+  </data>
+  <data name="BusinessUnitBlank" xml:space="preserve">
+    <value>Field Business Unit harus diisi</value>
+  </data>
+  <data name="ConfirmDisableUser" xml:space="preserve">
+    <value>Apakah anda yakin untuk menonaktifkan user ini?</value>
+    <comment>This action will change the status of this user to Disable.\n Do you want to continue?</comment>
+  </data>
+  <data name="ConfirmEnableUser" xml:space="preserve">
+    <value>Apakah anda yakin untuk mengaktifkan user ini?</value>
+    <comment>This action will change the status of this user to Enable.\n Do you want to continue?</comment>
+  </data>
+  <data name="ContactAllFieldsNeeded" xml:space="preserve">
+    <value>Field fullname, birthdate, gender harus diisi semua</value>
+  </data>
+  <data name="ContactCISNeeded" xml:space="preserve">
+    <value>Field CIS Number harus diisi</value>
+  </data>
+  <data name="ContactEbankingParameterNeeded" xml:space="preserve">
+    <value>Field parameter produk harus diisi</value>
+  </data>
+  <data name="ContactProductParameterNeeded" xml:space="preserve">
+    <value>Field parameter produk harus diisi</value>
+  </data>
+  <data name="CorpIdEmpty" xml:space="preserve">
+    <value>Field Corp ID Harus Diisi</value>
+  </data>
+  <data name="DataCustomerNotFound" xml:space="preserve">
+    <value>Data tidak ditemukan</value>
+  </data>
+  <data name="DataNotFound" xml:space="preserve">
+    <value>Data tidak ditemukan</value>
+  </data>
+  <data name="DataRequestNotFound" xml:space="preserve">
+    <value>Data tidak ditemukan</value>
+  </data>
+  <data name="DataUserNotFound" xml:space="preserve">
+    <value>Data tidak ditemukan</value>
+  </data>
+  <data name="DateReportMandatory" xml:space="preserve">
+    <value>Tanggal harus diisi</value>
+  </data>
+  <data name="DBTimeout" xml:space="preserve">
+    <value>Koneksi time-out, silakan lakukan pencarian ulang</value>
+  </data>
+  <data name="DomainNameExistinCRM" xml:space="preserve">
+    <value>User ID sudah terdaftar</value>
+  </data>
+  <data name="DomainNameNotFoundAD" xml:space="preserve">
+    <value>User ID tidak terdaftar pada domain</value>
+  </data>
+  <data name="EmailEmpty" xml:space="preserve">
+    <value>Field Email harus diisi</value>
+  </data>
+  <data name="FirstNameBlank" xml:space="preserve">
+    <value>Field Firstname harus diisi</value>
+  </data>
+  <data name="IncorrectDateFormat" xml:space="preserve">
+    <value>Format tanggal salah</value>
+  </data>
+  <data name="IncorrectNumberFormat" xml:space="preserve">
+    <value>Format bilangan salah</value>
+  </data>
+  <data name="InquiryByProduct" xml:space="preserve">
+    <value>Field parameter produk harus diisi</value>
+  </data>
+  <data name="InquiryByRequestId" xml:space="preserve">
+    <value>Field Request ID harus diisi</value>
+  </data>
+  <data name="InvalidCredential" xml:space="preserve">
+    <value>User ID atau Password salah</value>
+  </data>
+  <data name="InvalidUserAccess" xml:space="preserve">
+    <value>Anda tidak berhak mengakses aplikasi ini. \nHarap hubungi Administrator</value>
+  </data>
+  <data name="LastNameBlank" xml:space="preserve">
+    <value>Field Lastname harus diisi</value>
+  </data>
+  <data name="MenuNotAllowedToAccess" xml:space="preserve">
+    <value>Anda tidak berhak mengakses menu ini. \nHarap hubungi Administrator</value>
+  </data>
+  <data name="MustInputParam" xml:space="preserve">
+    <value>Parameter harus diisi</value>
+  </data>
+  <data name="RequestMandatoryAddress" xml:space="preserve">
+    <value>Field address harus diisi</value>
+  </data>
+  <data name="RequestMandatoryAddress1" xml:space="preserve">
+    <value>Field address1 harus diisi</value>
+  </data>
+  <data name="RequestMandatoryAddress2" xml:space="preserve">
+    <value>Field address2 harus diisi</value>
+  </data>
+  <data name="RequestMandatoryCategory" xml:space="preserve">
+    <value>Field category harus diisi</value>
+  </data>
+  <data name="RequestMandatoryChannel" xml:space="preserve">
+    <value>Field channel harus diisi</value>
+  </data>
+  <data name="RequestMandatoryCity" xml:space="preserve">
+    <value>Field city harus diisi</value>
+  </data>
+  <data name="RequestMandatoryCustomer" xml:space="preserve">
+    <value>Field customer harus diisi</value>
+  </data>
+  <data name="RequestMandatoryCustomerProduct" xml:space="preserve">
+    <value>Field parameter product harus diisi</value>
+  </data>
+  <data name="RequestMandatoryPhone" xml:space="preserve">
+    <value>Field phone harus diisi</value>
+  </data>
+  <data name="RequestMandatoryProduct" xml:space="preserve">
+    <value>Field product harus diisi</value>
+  </data>
+  <data name="RequestMandatorySummary" xml:space="preserve">
+    <value>Field summary harus diisi</value>
+  </data>
+  <data name="RequestMandatoryZip" xml:space="preserve">
+    <value>Field zip harus diisi</value>
+  </data>
+  <data name="RequestSuccess" xml:space="preserve">
+    <value>Keluhan Nasabah sudah berhasil disimpan</value>
+  </data>
+  <data name="RequestWorkgroup" xml:space="preserve">
+    <value>Keluhan ini hanya dapat di proses melalui Halo BCA</value>
+  </data>
+  <data name="RequestZipLength" xml:space="preserve">
+    <value>Field zip harus  5 digit numerik</value>
+  </data>
+  <data name="RoleBlank" xml:space="preserve">
+    <value>Field Role harus diisi</value>
+  </data>
+  <data name="SnTokenEmpty" xml:space="preserve">
+    <value>Field SN Token Harus Diisi</value>
+  </data>
+  <data name="TransactionAmountRange" xml:space="preserve">
+    <value>Batas maksimum nilai traksaksi adalah 100.000.000.000</value>
+  </data>
+  <data name="UserActivate" xml:space="preserve">
+    <value>User ID sudah berhasil diaktifkan</value>
+  </data>
+  <data name="UserDeactivate" xml:space="preserve">
+    <value>User ID sudah berhasil dinonaktifkan</value>
+  </data>
+  <data name="UserIdEmpty" xml:space="preserve">
+    <value>Field User ID Harus Diisi</value>
+  </data>
+  <data name="UserSuccess" xml:space="preserve">
+    <value>User ID sudah berhasil disimpan</value>
+  </data>
+  <data name="WrongDomainNameFormat" xml:space="preserve">
+    <value>Format Domain Login name salah. \nContoh : bcadomain\\namauserdomain</value>
+  </data>
+  <data name="WrongEmailFormat" xml:space="preserve">
+    <value>Format Email Salah. \nContoh : namaemail@intra.bca atau namaemail@bca.co.id</value>
+  </data>
+  <data name="WrongEmailSearch" xml:space="preserve">
+    <value>Harap masukan alamat email sesuai format</value>
+  </data>
+  <data name="WsidMandatoryKeyword" xml:space="preserve">
+    <value>Keyword WSID harus diisi</value>
+  </data>
+  <data name="MandatoryKeyword" xml:space="preserve">
+    <value>Keyword Harus diisi</value>
+  </data>
+  <data name="IncompleteForm" xml:space="preserve">
+    <value>Field Inputan Harus Lengkap</value>
+  </data>
+  <data name="PrivilegeExceptionDelSuccess" xml:space="preserve">
+    <value>Privilege Exception berhasil dihapus</value>
+  </data>
+  <data name="PrivilegeExceptionSame" xml:space="preserve">
+    <value>Privilege Exception sudah pernah dibuat</value>
+  </data>
+  <data name="PrivilegeExceptionSuccess" xml:space="preserve">
+    <value>Privilege Exception berhasil disimpan</value>
+  </data>
+  <data name="SecurityRoleSuccess" xml:space="preserve">
+    <value>SecurityRole berhasil disimpan</value>
+  </data>
+  <data name="DomainNameEmpty" xml:space="preserve">
+    <value>Field Domain Name Harus Diisi</value>
+  </data>
+  <data name="SaveSuccess" xml:space="preserve">
+    <value>Data berhasil disimpan</value>
+  </data>
+  <data name="PrivilegeExceptionCross" xml:space="preserve">
+    <value>Privilege Exception tidak berhasil ditambahkan karena ada data yang berlawanan pada field isInclusive</value>
+  </data>
+  <data name="DataSuccess" xml:space="preserve">
+    <value>Data sudah berhasil disimpan</value>
+  </data>
+</root>

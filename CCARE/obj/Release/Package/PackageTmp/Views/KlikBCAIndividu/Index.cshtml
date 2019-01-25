@@ -1,0 +1,276 @@
+﻿@model CCARE.Models.Channel
+
+@{
+    ViewBag.Title = "e-Banking: ";
+    if (Request.IsAjaxRequest())
+    {
+        Layout = null;
+    }
+    else
+    {
+        Layout = "~/Views/Shared/_LayoutEntity.cshtml";
+    }
+}
+
+@section title
+{
+    KlikBCA Individu
+}
+
+@section entityLogo
+{
+    <img class="crm-logo" src="~/assets/images/ico_lrg_112.gif" />
+}
+
+@section formTitle
+{
+    <div class="text_title">
+        <h1>Information</h1>
+        KlikBCA Individu: @Model.UserId
+    </div>
+}
+
+@section navHeader
+{
+
+}
+
+@section footerStatus
+{
+    <div class="footer_text">Status: Active</div>
+}
+
+@section sidebarMenu
+{
+    <li><a data-ajax="true" data-ajax-mode="replace" data-ajax-update="#page_content" href="/KlikBCAIndividu/Index?Id=@Model.Id&CustomerId=@Model.CustomerId&CustomerIdName=@Model.CustomerIdName&ChannelTypeId=@Model.ChannelTypeId&ChannelType=@Model.ChannelType&CardNo=@Model.CardNo&UserId=@Model.UserId&EmailAddress=@Model.EmailAddress&HpNo=@Model.HpNo&CorpId=@Model.CorpId&AccountNo=@Model.AccountNo&CustomerNo=@Model.CustomerNo&SNKeyBCA=@Model.SNKeyBCA&Category=@Model.Category">Information</a></li>
+}
+
+<div id="page_content" class="container-fluid">
+    <!-- tabs -->
+    <div class="row">
+        <div class="col-sm-12 panel panel-default panel_form_parent">
+            <br />
+            <div class="tab-content myTabContent tab-content-custom1">
+                <div class="tab-pane fade active in" id="general" aria-labelledby="general-tab">
+                    <!-- panel content -->
+                    <div class="col-sm-12">
+                        <!-- title 1 -->
+                        <div class="row form_text">
+                            <div class="panel panel-default panel_form_child">
+                                
+                                <div class="panel-heading">
+                                    <label class="control-label sv-header">
+                                        <strong>General</strong>
+                                    </label>
+                                </div>
+                                
+                                <br />
+                                
+                                <div class="panel-body">
+                                    <form class="form-horizontal">
+                                        <div class="row">
+                                            <div class="col-sm-6">
+                                                <div class="form-group">
+                                                    <label class="col-sm-4 control-label">e-Banking Type</label>
+                                                    <div class="col-sm-8">
+                                                        @Html.HiddenFor(x => x.ChannelTypeId)
+                                                        @Html.TextBoxFor(x => x.ChannelType, new { @class = "form-control" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <div class="form-group">
+                                                    <label class="col-sm-4 control-label">Customer</label>
+                                                    <div class="col-sm-8">
+                                                        @Html.HiddenFor(x => x.CustomerId)
+                                                        @Html.TextBoxFor(x => x.CustomerIdName, new { @class = "form-control" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-6">
+                                                <div class="form-group">
+                                                    <label class="col-sm-4 control-label">No Kartu</label>
+                                                    <div class="col-sm-8">
+                                                        @Html.TextBoxFor(x => x.CardNo, new { @class = "form-control" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-6">
+                                                <div class="form-group">
+                                                    <label class="col-sm-4 control-label">User ID</label>
+                                                    <div class="col-sm-8">
+                                                        @Html.TextBoxFor(x => x.UserId, new { @class = "form-control" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-6">
+                                                <div class="form-group">
+                                                    <label class="col-sm-4 control-label">E-mail Address</label>
+                                                    <div class="col-sm-8">
+                                                        @Html.TextBoxFor(x => x.EmailAddress, new { @class = "form-control" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-6">
+                                                <div class="form-group">
+                                                    <label class="col-sm-4 control-label">S/N KeyBCA</label>
+                                                    <div class="col-sm-8">
+                                                        @Html.TextBoxFor(x => x.SNKeyBCA, new { @class = "form-control" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            
+                            </div>
+                        </div>
+
+                        <!-- partial view -->
+                        <div class="row form-horizontal">
+                            <div class="col-sm-12">
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label">Inquiry Status</label>
+                                    <div class="col-sm-4">
+                                        <select id="inquiryDdl" name="inquiryDdl" class="form-control">
+                                            <option value="klikbcaindividu">KlikBCA Individu</option>
+                                            <option value="kbicreditcardconnection">Koneksi Kartu Kredit</option>
+                                            <option value="kbicreditcardapplication">Status Permohonan Kartu Kredit</option>
+                                            <option value="kbikeybcaconnection">Koneksi KeyBCA Individu</option>
+                                            <option value="kbikeybcaapplication">Status Permohonan KeyBCA Individu</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="partialView"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row form_text">
+
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#myTab a').click(function (e) {
+            e.preventDefault()
+            $(this).tab('show')
+        })
+
+    });
+
+    $("#inquiryDdl").change(function () {
+        var postData = {
+            channelTypeId: function () { return "@Model.ChannelTypeId"; },
+            channelType: function () { return "@Model.ChannelType"; },
+            customerId: function () { return "@Model.CustomerId"; },
+            customerIdName: function () { return "@Model.CustomerIdName"; },
+            cardNo: function () { return "@Model.CardNo"; },
+            userId: function () { return "@Model.UserId"; },
+            emailAddress: function () { return "@Model.EmailAddress"; },
+            hpNo: function () { return "@Model.HpNo"; },
+            corpId: function () { return "@Model.CorpId"; },
+            accountNo: function () { return "@Model.AccountNo"; },
+            customerNo: function () { return "@Model.CustomerNo"; },
+            snKeyBCA: function () { return "@Model.SNKeyBCA"; },
+            category: function () { return "@Model.Category"; }
+        };
+
+        var selected = $(this).val();
+        if (selected == 'klikbcaindividu') {
+            $.ajax({
+                type: "GET",
+                url: "/KlikBCAIndividu/KBIKlikBCAIndividuPartial/",
+                data: postData,
+                cache: false,
+                contentType: "application/html; charset=utf-8",
+                dataType: "html",
+                success: function (viewHTML) {
+                    $("#partialView").html(viewHTML);
+                },
+                error: function (errorData) {
+                    //onError(errorData);
+                }
+            });
+        }
+        else if (selected == 'kbicreditcardconnection') {
+            $.ajax({
+                type: "GET",
+                url: "/KlikBCAIndividu/KBICCConnectionPartial/",
+                data: postData,
+                cache: false,
+                contentType: "application/html; charset=utf-8",
+                dataType: "html",
+                success: function (viewHTML) {
+                    $("#partialView").html(viewHTML);
+                },
+                error: function (errorData) {
+                    //onError(errorData);
+                }
+            });
+        }
+        else if (selected == 'kbicreditcardapplication') {
+            $.ajax({
+                type: "GET",
+                url: "/KlikBCAIndividu/KBICCApplicationPartial/",
+                data: postData,
+                cache: false,
+                contentType: "application/html; charset=utf-8",
+                dataType: "html",
+                success: function (viewHTML) {
+                    $("#partialView").html(viewHTML);
+                },
+                error: function (errorData) {
+                    //onError(errorData);
+                }
+            });
+        }
+        else if (selected == 'kbikeybcaconnection') {
+            $.ajax({
+                type: "GET",
+                url: "/KlikBCAIndividu/KBIKeyBCAConnectionPartial/",
+                data: postData,
+                cache: false,
+                contentType: "application/html; charset=utf-8",
+                dataType: "html",
+                success: function (viewHTML) {
+                    $("#partialView").html(viewHTML);
+                },
+                error: function (errorData) {
+                    //onError(errorData);
+                }
+            });
+        }
+        else if (selected == 'kbikeybcaapplication') {
+            $.ajax({
+                type: "GET",
+                url: "/KlikBCAIndividu/KBIKeyBCAApplicationPartial/",
+                data: postData,
+                cache: false,
+                contentType: "application/html; charset=utf-8",
+                dataType: "html",
+                success: function (viewHTML) {
+                    $("#partialView").html(viewHTML);
+                },
+                error: function (errorData) {
+                    //onError(errorData);
+                }
+            });
+        }
+    });
+
+    $("#inquiryDdl").trigger("change");
+
+</script>

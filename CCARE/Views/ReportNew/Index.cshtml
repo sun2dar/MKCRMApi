@@ -1,0 +1,51 @@
+﻿@{
+    ViewBag.Title = "Report";
+    Layout = "~/Views/Shared/_LayoutInquiry.cshtml";
+}
+
+    @*<div class="modal fade" id="confirm-delete" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1>Confirm Deletion</h1>
+                </div>
+                <div class="modal-body input-lg">
+                    The system will delete this record. This action cannot be undone, To continue click "Delete".
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                    <a class="btn btn-danger btn-ok">Delete</a>
+                </div>
+            </div>
+        </div>
+    </div>*@
+
+    <div class="col-lg-12 inquiry_left">
+        <div class="input-group">
+            <input type="text" class="form-control" id="inquiry_val" >
+            <span class="input-group-btn">
+                <button id="btn_search" class="btn btn-primary" type="submit"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></button>
+            </span>
+        </div>
+    </div>
+
+@section mainmenu{ Workplace }
+@section submenu{ My Work }
+@section menu{ My Created Reports }
+
+@section title{ }
+
+@section scriptExt{
+    @if(Session["RoleID"] != null){
+        string entity = ViewContext.Controller.ControllerContext.RouteData.Values["controller"].ToString();
+        Guid roleID = new Guid(Session["RoleID"].ToString());
+        bool checkButton = CCARE.App_Function.RoleNPrivilege.checkEntityButtonByRoleID(roleID, entity, "Write");
+
+        if(checkButton == false)
+        {
+            <text>
+                $('#btn_new').hide();
+            </text>
+        }
+    }
+}

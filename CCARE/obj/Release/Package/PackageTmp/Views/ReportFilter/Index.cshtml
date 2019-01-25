@@ -1,0 +1,614 @@
+﻿@model CCARE.Models.Report
+
+@{
+    ViewBag.Title = "Report Filter";
+    string actionPage = ViewContext.Controller.ControllerContext.RouteData.Values["action"].ToString();
+    
+    if (Request.IsAjaxRequest())
+    {
+        Layout = null;
+    }
+    else{
+        Layout = "~/Views/Shared/_LayoutEntity.cshtml";
+    }
+}
+
+@section entityLogo
+{
+    <img class="crm-logo" src="~/assets/images/ico_lrg_112.gif" />
+}
+
+@section formTitle
+{
+    <div class="text_title">
+        <h1>Report Mapping</h1>
+        @*Report : @(Model.FirstOrDefault().masterReport.ReportName)*@
+    </div>
+}
+
+@section navHeader
+{
+    
+}
+
+@section footerStatus
+{
+    <div class="footer_text"></div>
+}
+
+@section sidebarMenu
+{
+
+}
+
+@using (Html.BeginForm("Create", "ReportFilter", FormMethod.Post, new { id = "form_reportfilter" }))
+{
+    <div class="container-fluid">
+        <!-- tabs -->
+        <div class="row">
+            <div class="col-sm-12 panel panel-default panel_form_parent">
+                <!-- Tab panes -->
+                <div class="tab-content myContent_noTab">
+
+                    <!-- panel content -->
+                    <div class="col-sm-12">
+
+                        <!-- START title 1 -->
+                        <div class="row form_text">
+                            <div class="panel panel-default panel_form_child">
+                                <div class="panel-heading">
+                                    <label class="control-label sv-header"><strong>Report Filter</strong></label>
+                                </div>
+                                <br />
+                                <div class="panel-body">
+                                    <div class="form-horizontal">
+                                        <div class="row">
+                                            <div class="col-sm-6">
+                                                <input type="hidden" id="enthid" value="@ViewBag.entityname" />
+                                                <input type="hidden" id="hiddenname" name="hiddenname" value="" />
+                                                <input type="hidden" id="hiddentype" name="hiddentype" value="" />
+                                                <input type="hidden" id="reportid" name="reportid" value="@Model.ID" />
+                                                <input type="hidden" id="entitycolumnid" name="entitycolumnid" value="" />
+                                                <input type="hidden" id="hiddenlabel" name="hiddenlabel" value="" />  
+                                                <input type="hidden" id="hiddenrow" name="hiddenrow" value="" />
+                                                <div class="form-group">
+                                                    <label class="col-sm-3 control-label">Filter Type</label>
+                                                    <div class="col-sm-9">
+                                                        <select id="FilterType" name="FilterType" class="form-control">
+                                                           <option value="">- Pilih Filter -</option>
+                                                            @foreach(var x in ViewBag.entity){
+                                                                <option value="@x.Name" title="@x.FieldType" id="@x.ID" label="@x.Label"></option>
+                                                            }                                                      
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <div class="form-group">
+                                                    <label class="col-sm-3 control-label">Filter Value</label>
+                                                    <div class="col-sm-9" id="div_filtervalue">
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <br />
+                                <div class="panel-body">
+                                    <div class="row">
+                                        <span class="col-sm-12" style="text-align:center" id="ReportFilterGroupButton">
+                                            <button id="btnAddFilter" class="btn btn-primary" type="button"><span class="glyphicon glyphicon-ok-sign glyp-space" aria-hidden="true"></span>Add Filter</button>
+                                            <button id="btnDeleteFilter" class="btn btn-primary" type="button"><span class="glyphicon glyphicon-remove-sign glyp-space" aria-hidden="true"></span>Delete Filter</button>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div id="messagebox"></div>
+
+                            <div class="panel panel-default panel_form_child">
+                                <div class="panel-heading submenuStyle">
+                                    <label class="control-label sv-header"><strong>Report Filter List</strong></label>
+                                </div>
+                                <div class="panel-body">
+                                    <div class="divGrid">
+                                        <table id="gridTable"></table>
+                                        <div id="jqGridPager"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="response-modal"></div>
+    </div>
+}
+
+<script type="text/javascript">
+    function appendTextbox(div, name, label) {
+        $("#" + div).append("<div class='row' id='DivTextbox_" + name + "'><div class='row'><div class='col-sm-12'><div class='form-group'><div class='col-sm-12'><input type='text' id='" + name + "' name='" + name + "' class='form-control' maxlength='16'/></div></div></div><div class='col-sm-6'><div class='btn-group' data-toggle='buttons'></div></div></div></div>");
+        $("#hiddenname").val(name);
+        $("#hiddentype").val("text");
+    }
+
+    function appendDatepicker(div, name, label) {
+        //$("#" + div).append("<div class='row' id='DivDatepicker_" + name + "'><div class='row'><div class='col-sm-12'><div class='form-group'><div class='col-sm-12'><div class='input-group' id='DateGroup" + name + "'><input type='text' class='form-control datepicker' id='Start" + name + "' name= 'Start" + name + "' /><span class='input-group-addon'><i class='fa fa-calendar fa-lg'></i></span><span class='input-group-btn input_space'></span><input type='text' class='form-control datepicker' id='End" + name + "' name= 'End" + name + "'  /><span class='input-group-addon'><i class='fa fa-calendar fa-lg'></i></span></div></div></div></div></div></div>");
+        $("#hiddenname").val(name);
+        $("#hiddentype").val("datetime");
+    }
+
+    function appendPopup(div, name, label) {
+        $("#" + div).append("<div class='row' id='DivPopup_" + name + "'><div class='row'><div class='col-sm-12'><div class='form-group'><div class='col-sm-12'><input type='hidden' id='" + name + "' name='"+name+"' class='form-control' /><div class='input-group' id='" + name + "-Group'><input type='text' id='" + name + "Name' name='"+name+"Name' class='form-control' /><div tabindex='0' id='" + name + "Name-label' class='form-control typeahead-label hide'></div><div tabindex='0' class='input-group-addon btn' id='" + name + "Name-popup' ><i class='fa fa-search'></i></div></div></div></div></div></div></div>");
+        $("#hiddenname").val(name);
+        $("#hiddentype").val("popup");
+    }
+
+    function appendDropdown(div, name, label) {
+        $("#" + div).append("<div class='row' id='DivDropdown" + name + "'><div class='row'><div class='col-sm-12'><div class='form-group'><div class='col-sm-12'><select id='" + name + "'  name='"+name+"' class='form-control dropdownvalue'></select></div></div></div></div></div>");
+        fillDropdownitem(div, name, label);
+        $("#hiddenname").val(name);
+        $("#hiddentype").val("dropdown");
+    }
+
+    function fillDropdownitem(div, name, label) {
+        var entity = $('#enthid').val();
+        $.ajax({
+            url: "/ReportFilter/setDropdownItem",
+            data: {
+                entity: entity,
+                name: name
+            },
+            dataType: 'json',
+            success: function (data) {
+                $("#" + name).empty();
+                $.each(data, function (i, value) {
+                    $("#" + name).append($('<option>').text(value.Text).attr('value', value.Value));
+                });
+                $("#hiddenlabel").val($('#' + name + ' :selected').text());
+            }
+        });
+        
+    }
+
+    $(".datepicker").datepicker({ format: "dd/mm/yyyy", autoclose: true });
+
+    function bindEventListener() {
+        $(".datepicker").datepicker({ format: "dd/mm/yyyy", autoclose: true });
+
+        $('.dropdownvalue').bind("change", function () {
+            $("#hiddenlabel").val($('.dropdownvalue :selected').text());
+
+        });
+
+        @* ==========================================================================================================*@
+        @* ============================================ POP UP SECTION ============================================= *@
+        @* ==========================================================================================================*@
+
+        $('#CategoryIDName-popup').bind("click", function (e) {
+            if ($(this).attr('disabled') == 'disabled') return false;
+            urlModalPopup = '@Url.Action("_popupContent", "Popup", new { type = "categories", _entity = "" })';
+            colModelsName = [
+                { label: 'ID', name: 'Id', index: 'Id', key: true, width: 75, hidden: true },
+                { label: 'Category Name', name: 'Name', index: 'Name', width: 250 },
+                { label: 'Parent Name', name: 'ParentName', width: 250 },
+                { label: 'Description Tree', name: 'Description', width: 400 }
+            ];
+            var id = $(this).parent().find('input:last').attr('id');
+            $('#' + id).trigger("blur");
+            e.preventDefault();
+        });
+
+        var categories = new PopupClass();
+        categories.setId("CategoryIDName");
+        categories.setUrl('@Url.Action("Category", "Popup")');
+        categories.setHiddenId("CategoryID");
+        categories.init();
+
+        @* ==========================================================================================================*@
+
+        $('#ProductIDName-popup').bind("click", function (e) {
+            if ($(this).attr('disabled') == 'disabled') return false;
+            urlModalPopup = '@Url.Action("_popupContent", "Popup", new { type = "products", _entity = "" })';
+            colModelsName = [
+                { label: 'ID', name: 'Id', index: 'Id', key: true, width: 75, hidden: true },
+                { label: 'Product Name', name: 'Name', index: 'Name', width: 250 },
+                { label: 'Parent Name', name: 'ParentName', width: 250 },
+                { label: 'Description Tree', name: 'Description', width: 400 }
+            ];
+            var id = $(this).parent().find('input:last').attr('id');
+            $('#' + id).trigger("blur");
+            e.preventDefault();
+        });
+
+        var products = new PopupClass();
+        products.setId("ProductIDName");
+        products.setUrl('@Url.Action("Product", "Popup")');
+        products.setHiddenId("ProductID");
+        products.init();
+
+        @* ==========================================================================================================*@
+
+        $('#WorkgroupIDName-popup').bind("click", function (e) {
+            if ($(this).attr('disabled') == 'disabled') return false;
+            urlModalPopup = '@Url.Action("_popupContent", "Popup", new { type = "workgroup", _entity = "" })';
+            colModelsName = [
+                { label: 'ID', name: 'Id', index: 'Id', key: true, width: 75, hidden: true },
+                { label: 'Name', name: 'Name', width: 300 },
+                { label: 'E-Mail', name: 'EMailAddress', width: 300 },
+                { label: 'Business Unit', name: 'BusinessUnitName', width: 300 }
+            ];
+            var id = $(this).parent().find('input:last').attr('id');
+            $('#' + id).trigger("blur");
+            e.preventDefault();
+        });
+
+        var workgroup = new PopupClass();
+        workgroup.setId("WorkgroupIDName");
+        workgroup.setUrl('@Url.Action("WorkGroup", "Popup")');
+        workgroup.setHiddenId("WorkgroupID");
+        workgroup.init();
+
+        @* ==========================================================================================================*@
+
+        $('#WorkGroupIDName-popup').bind("click", function (e) {
+            if ($(this).attr('disabled') == 'disabled') return false;
+            urlModalPopup = '@Url.Action("_popupContent", "Popup", new { type = "workgroup", _entity = "" })';
+            colModelsName = [
+                { label: 'ID', name: 'Id', index: 'Id', key: true, width: 75, hidden: true },
+                { label: 'Name', name: 'Name', width: 300 },
+                { label: 'E-Mail', name: 'EMailAddress', width: 300 },
+                { label: 'Business Unit', name: 'BusinessUnitName', width: 300 }
+            ];
+            var id = $(this).parent().find('input:last').attr('id');
+            $('#' + id).trigger("blur");
+            e.preventDefault();
+        });
+
+        var workgroup2 = new PopupClass();
+        workgroup2.setId("WorkGroupIDName");
+        workgroup2.setUrl('@Url.Action("WorkGroup", "Popup")');
+        workgroup2.setHiddenId("WorkGroupID");
+        workgroup2.init();
+
+        @* ==========================================================================================================*@
+
+        $('#CauseIDName-popup').bind("click", function (e) {
+            if ($(this).attr('disabled') == 'disabled') return false;
+            urlModalPopup = '@Url.Action("_popupContent", "Popup", new { type = "cause", _entity = "" })';
+            colModelsName = [
+                { label: 'ID', name: 'Id', index: 'Id', key: true, width: 75, hidden: true },
+                { label: 'Name', name: 'Name', width: 250 },
+                { label: 'Created On', name: 'CreatedOn', width: 150, formatter: "date", formatoptions: { srcformat: "ISO8601Long", newformat: "d/m/Y H:i" } }
+            ];
+            var id = $(this).parent().find('input:last').attr('id');
+            $('#' + id).trigger("blur");
+            e.preventDefault();
+        });
+
+        var Cause = new PopupClass();
+        Cause.setId("CauseIDName");
+        Cause.setUrl('@Url.Action("Cause", "Popup")');
+        Cause.setHiddenId("CauseID");
+        Cause.init();
+
+        @* ==========================================================================================================*@
+
+        $('#CreatedByName-popup').bind("click", function (e) {
+            if ($(this).attr('disabled') == 'disabled') return false;
+            urlModalPopup = '@Url.Action("_popupContent", "Popup", new { type = "User", _entity = "" })';
+            colModelsName = [
+                { label: 'ID', name: 'Id', index: 'Id', key: true, width: 75, hidden: true },
+                { label: 'Name', name: 'Name', width: 100 },
+                { label: 'Phone', name: 'Phone', width: 100 },
+                { label: 'Business Unit', name: 'BusinessUnitName', width: 150 }
+            ];
+            var id = $(this).parent().find('input:last').attr('id');
+            $('#' + id).trigger("blur");
+            e.preventDefault();
+        });
+
+        var user = new PopupClass();
+        user.setId("CreatedByName");
+        user.setUrl('@Url.Action("SystemUser", "Popup")');
+        user.setHiddenId("CreatedBy");
+        user.init();
+
+        @* ==========================================================================================================*@
+
+        $('#BranchIDName-popup').bind("click", function (e) {
+            if ($(this).attr('disabled') == 'disabled') return false;
+            urlModalPopup = '@Url.Action("_popupContent", "Popup", new { type = "branch", _entity = "" })';
+            colModelsName = [
+                { label: 'ID', name: 'Id', index: 'Id', key: true, width: 75, hidden: true },
+                { label: 'Nama Kantor', name: 'Name', width: 250 },
+                { label: 'Kode Kantor', name: 'OfficeCode', width: 250 },
+                { label: 'Alamat', name: 'Address', width: 250 },
+                { label: 'Fax', name: 'Fax', width: 250 },
+                { label: 'Inisial', name: 'Initials', width: 60 },
+                { label: 'Kode Pos', name: 'Zipcode', width: 60 },
+                { label: 'Kota', name: 'City', width: 60 },
+                { label: 'Telephone 1', name: 'Telephone1', width: 60 },
+                { label: 'Telephone 2', name: 'Telephone2', width: 60 },
+                { label: 'Kanwil', name: 'RegionName', width: 60 }
+            ];
+            var id = $(this).parent().find('input:last').attr('id');
+            $('#' + id).trigger("blur");
+            e.preventDefault();
+        });
+
+        var branch = new PopupClass();
+        branch.setId("BranchIDName");
+        branch.setUrl('@Url.Action("Branch", "Popup")');
+        branch.setHiddenId("BranchID");
+        branch.init();
+
+        @* ==========================================================================================================*@
+
+        $('#SecurityRoleIDName-popup').bind("click", function (e) {
+            urlModalPopup = '@Url.Action("_popupContent", "Popup", new { type = "securityrole", _entity = "" })';
+            colModelsName = [
+                { label: 'ID', name: 'Id', index: 'Id', key: true, width: 75, hidden: true },
+                { label: 'Name', name: 'Name', index: 'Name', width: 500 }
+            ];
+            var id = $(this).parent().find('input:last').attr('id');
+            $('#' + id).trigger("blur");
+            e.preventDefault();
+        });
+
+        var SecurityRole = new PopupClass();
+        SecurityRole.setId("SecurityRoleIDName");
+        SecurityRole.setUrl('@Url.Action("SecurityRole", "Popup")');
+        SecurityRole.setHiddenId("SecurityRoleID");
+        SecurityRole.init();
+
+        @* ==========================================================================================================*@
+
+        $('#BusinessUnitIDName-popup').bind("click", function (e) {
+            urlModalPopup = '@Url.Action("_popupContent", "Popup", new { type = "businessunit", _entity = "" })';
+            colModelsName = [
+                { label: 'ID', name: 'Id', index: 'Id', key: true, width: 75, hidden: true },
+                { label: 'Name', name: 'Name', index: 'Name', width: 500 }
+
+            ];
+            var id = $(this).parent().find('input:last').attr('id');
+            $('#' + id).trigger("blur");
+            e.preventDefault();
+        });
+
+        var BusinessUnit = new PopupClass();
+        BusinessUnit.setId("BusinessUnitIDName");
+        BusinessUnit.setUrl('@Url.Action("BusinessUnit", "Popup")');
+        BusinessUnit.setHiddenId("BusinessUnitID");
+        BusinessUnit.init();
+
+        @* ==========================================================================================================*@
+
+        $('#OwnerIDName-popup').bind("click", function (e) {
+            urlModalPopup = '@Url.Action("_popupContent", "Popup", new { type = "owner", _entity = "" })';
+            colModelsName = [
+                { label: 'ID', name: 'Id', index: 'Id', key: true, width: 75, hidden: true },
+                { label: 'Name', name: 'name', width: 100 },
+                { label: 'Phone', name: 'phone', width: 100 },
+                { label: 'Business Unit', name: 'businessunit', width: 150 }
+            ];
+            var id = $(this).parent().find('input:last').attr('id');
+            $('#' + id).trigger("blur");
+            e.preventDefault();
+        });
+
+        var workgroupTypeahead = new PopupClass();
+        workgroupTypeahead.setId("OwnerIDName");
+        workgroupTypeahead.setUrl('@Url.Action("Workgroup", "Popup")');
+        workgroupTypeahead.setHiddenId("OwnerID");
+        workgroupTypeahead.init();
+
+        @* ==========================================================================================================*@
+
+        $('#RequestIDName-popup').bind("click", function (e) {
+            urlModalPopup = '@Url.Action("_popupContent", "Popup", new { type = "request", _entity = "" })';
+            colModelsName = [
+                { label: 'ID', name: 'Id', index: 'Id', key: true, width: 75, hidden: true },
+                { label: 'Summary', name: 'Name', width: 100 },
+                { label: 'CCQ Request ID', name: 'ccqreqid', width: 100 },
+                { label: 'Category', name: 'category', width: 150 },
+                { label: 'Product', name: 'product', width: 150 },
+                { label: 'Status', name: 'status', width: 70 },
+                { label: 'Created On', name: 'createdon', width: 150, formatter: 'date', formatoptions: { srcformat: "ISO8601Long", newformat: "m/d/Y h:i A" } },
+                { label: 'Due Date', name: 'duedate', width: 150, formatter: 'date', formatoptions: { srcformat: "ISO8601Long", newformat: "m/d/Y h:i A" } }
+            ];
+            var id = $(this).parent().find('input:last').attr('id');
+            $('#' + id).trigger("blur");
+            e.preventDefault();
+        });
+
+        var requestTypeahead = new PopupClass();
+        requestTypeahead.setId("RequestIDName");
+        requestTypeahead.setUrl('@Url.Action("RequestLookUp", "Popup")');
+        requestTypeahead.setHiddenId("RequestID");
+        requestTypeahead.init();
+
+        @* ==========================================================================================================*@
+
+        $('#WsIdIDName-popup').bind("click", function (e) {
+            urlModalPopup = '@Url.Action("_popupContent", "Popup", new { type = "wsid", _entity = "" })';
+            colModelsName = [
+                { label: 'ID', name: 'Id', index: 'Id', key: true, width: 75, hidden: true },
+                { label: 'Name', name: 'name', width: 100 },
+                { label: 'Address', name: 'address', width: 100 },
+                { label: 'City', name: 'city', width: 150 },
+                { label: 'Lok', name: 'lok', width: 150 },
+                { label: 'Location', name: 'location', width: 150 }
+            ];
+            var id = $(this).parent().find('input:last').attr('id');
+            $('#' + id).trigger("blur");
+            e.preventDefault();
+        });
+
+        var wsidTypeahead = new PopupClass();
+        wsidTypeahead.setId("WsIdIDName");
+        wsidTypeahead.setUrl('@Url.Action("WSID", "Popup")');
+        wsidTypeahead.setHiddenId("WsIdID");
+        wsidTypeahead.init();
+
+        @* ==========================================================================================================*@
+
+        $('#NonCustomerIDName-popup').bind("click", function (e) {
+            urlModalPopup = '@Url.Action("_popupContent", "Popup", new { type = "noncustomer", _entity = "" })';
+            colModelsName = [
+                { label: 'ID', name: 'Id', index: 'Id', key: true, width: 75, hidden: true },
+                { label: 'Name', name: 'name', width: 100 },
+                { label: 'Phone', name: 'phone', width: 100 }
+            ];
+            var id = $(this).parent().find('input:last').attr('id');
+            $('#' + id).trigger("blur");
+            e.preventDefault();
+        });
+
+        var noncustomerTypeahead = new PopupClass();
+        noncustomerTypeahead.setId("NonCustomerIDName");
+        noncustomerTypeahead.setUrl('@Url.Action("NonCustomer", "Popup")');
+        noncustomerTypeahead.setHiddenId("NonCustomerID");
+        noncustomerTypeahead.init();
+
+        @* ==========================================================================================================*@
+
+        $('#ModifiedByName-popup').bind("click", function (e) {
+            if ($(this).attr('disabled') == 'disabled') return false;
+            urlModalPopup = '@Url.Action("_popupContent", "Popup", new { type = "User", _entity = "" })';
+            colModelsName = [
+                { label: 'ID', name: 'Id', index: 'Id', key: true, width: 75, hidden: true },
+                { label: 'Name', name: 'Name', width: 100 },
+                { label: 'Phone', name: 'Phone', width: 100 },
+                { label: 'Business Unit', name: 'BusinessUnitName', width: 150 }
+            ];
+            var id = $(this).parent().find('input:last').attr('id');
+            $('#' + id).trigger("blur");
+            e.preventDefault();
+        });
+
+        var user2 = new PopupClass();
+        user2.setId("ModifiedByName");
+        user2.setUrl('@Url.Action("SystemUser", "Popup")');
+        user2.setHiddenId("ModifiedBy");
+        user2.init();
+
+        @* ==========================================================================================================*@
+
+        $('#CustomerIDName-popup').bind("click", function (e) {
+            if ($(this).attr('disabled') == 'disabled') return false;
+            urlModalPopup = '@Url.Action("_popupContent", "Popup", new { type = "customer", _entity = "" })';
+            colModelsName = [
+                { label: 'ID', name: 'Id', index: 'Id', key: true, width: 75, hidden: true },
+                { label: 'Name', name: 'Name', width: 100 },
+                { label: 'Phone', name: 'Phone', width: 100 },
+                { label: 'Business Unit', name: 'BusinessUnitName', width: 150 }
+            ];
+            var id = $(this).parent().find('input:last').attr('id');
+            $('#' + id).trigger("blur");
+            e.preventDefault();
+        });
+
+        var customer = new PopupClass();
+        customer.setId("CustomerIDName");
+        customer.setUrl('@Url.Action("Customer", "Popup")');
+        customer.setHiddenId("CustomerID");
+        customer.init();
+
+        @* ==========================================================================================================*@
+    }
+
+    $(document).ready(function () {
+        var gridId = "#gridTable";
+        var entityName = 'ReportFilter';
+        var ReportID = $('#reportid').val();
+
+        var postData = {
+            _val: function () { return ReportID; }
+        };
+
+        loadJqgrid(gridId, postData, entityName);
+
+        $("#btnAddFilter").attr('disabled', 'disabled');
+        $("#btnDeleteFilter").attr('disabled', 'disabled');
+        $(".btn_information").hide();
+
+        $('#btnAddFilter').click(function () {
+            $.ajax({
+                type: "POST",
+                url: "/ReportFilter/Create",
+                data: $("#form_reportfilter").serialize(),
+                dataType: "json",
+                success: function (data) {
+                    if (data.flag == false) {
+                        $("#messagebox").html(MessageText('alert', data.Message));
+                    }
+                    else {
+                        $("#messagebox").html(MessageText('info', data.Message));
+                        loadJqgrid(gridId, postData, entityName);
+                    }
+                },
+                error: function (xhr, status, err) {
+                    alert("Error");
+                }
+            });
+        });
+
+        $('#btnDeleteFilter').click(function () {
+            var rowval = $("#hiddenrow").val();
+            $.ajax({
+                type: "POST",
+                url: "/ReportFilter/Delete?ID=" + rowval+"&ReportID="+ReportID,//?eBanking=" + eBanking + "&StatusType=" + StatusType + "CurrentStatus=" + CurrentStatus,
+                dataType: "json",
+                success: function (data) {
+                    if (data.flag == false) {
+                        $("#messagebox").html(MessageText('alert', data.Message));
+                    }
+                    else {
+                        $("#messagebox").html(MessageText('info', data.Message));
+                        loadJqgrid(gridId, postData, entityName);
+                        $("#btnDeleteFilter").attr('disabled', 'disabled');
+                    }
+                },
+                error: function (xhr, status, err) {
+                    alert("Error");
+                }
+            });
+        });
+
+        $('#FilterType').change(function () {
+            var val = $(this).val();
+            var text = $('#FilterType :selected').text();
+            var type = $('#FilterType :selected').attr('title');
+            var entitycolumnid = $('#FilterType :selected').attr('id');
+            var hidlabel = $("");
+
+            if (val == "")
+                $("#btnAddFilter").attr('disabled', 'disabled');
+            else
+                $("#btnAddFilter").attr('disabled', false);
+           
+            //empty filtervalue
+            $('#div_filtervalue').empty();
+            $("#entitycolumnid").val(entitycolumnid);
+           
+            switch (type){
+                case "text":
+                    appendTextbox("div_filtervalue", val, text)
+                    break;
+                case "datetime":
+                    appendDatepicker("div_filtervalue", val, text)
+                    break;
+                case "popup":
+                    appendPopup("div_filtervalue", val, text)
+                    break;
+                case "select":
+                    appendDropdown("div_filtervalue", val, text)
+                    break;
+            }
+            bindEventListener();
+        });
+    });
+</script>

@@ -1,0 +1,538 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en">
+    <head>
+        @*<meta charset="utf-8" />*@
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <meta http-equiv="x-ua-compatible" content="IE=8" />
+        <link rel="shortcut icon" type="image/x-icon" href="../../assets/images/icon.ico" />
+        <title>CCARE</title>
+        <meta name="viewport" content="width=device-width" />
+
+        @Styles.Render("~/maincss")
+        @Styles.Render("~/layoutcss")
+        @Styles.Render("~/addOncss")
+        @Scripts.Render("~/bundles/modernizr")
+        @Scripts.Render("~/bundles/respondjs")
+    
+        <object progid="ICAgentDLL.ICAgentLib" id="myobject" classid="clsid:17FB5553-FE09-4468-AFD7-557DF9F69234" style="display:none;"></object>
+    </head>
+    <body class="body-home">
+        <!--Header-->
+        <div id="divHeader" class="container-fluid">
+            <div class="row">
+                <div class="col-xs-2">
+                    <img alt="Arrow CRM" src="../../assets/images/arrow.png" class="bca-logo-header"/>
+                </div>
+                <div class="col-xs-1 versionStyle font-crm1">
+                    <div class="modal fade" id="myModalVersioning" role="dialog">
+                        <div class="modal-dialog">
+                            <!-- Modal content-->
+                            <div class="modal-content">
+                                <div class="modal-header text-center">
+                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                    <img src="@Url.Content("~/assets/images/Login/BCACRM.png")" alt="bg2" width="300px"/>
+                                </div>
+                                <div class="modal-body pen-black">
+                                    This Application is copyright of PT. Bank Central Asia, Tbk. - © Customer Relationship Management 2016. All rights reserved.
+                                    This Application created by :
+                                    <ul>
+                                        <li>Ronny Atmanda Siswadi</li>
+                                        <li>Devri Riza Setyawan</li>
+                                        <li>Yogie Adithya Mulyono</li>
+                                        <li>William Kwesnady</li>
+                                        <li>Mitra Kreasindo Team</li>
+                                    </ul>
+                                    Supported by : 
+                                    <ul>
+                                        <li>Ekhsanor Effendi</li>
+                                        <li>Nathan Indrawan</li>
+                                        <li>Agustina Chrisyanti</li>
+                                    </ul>
+                                </div>
+                                <div class="modal-footer text-center">
+                                    <span id="copyright">BCA CRM Ver. 2.0 Made by CRM HALO TEAM In Partnership with Mitra Kreasindo © 2016</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="col-xs-7">
+                </div>
+                <div class="col-xs-2 float-right">
+                    @*<img alt="BCA CRM" src="../../assets/images/bcacrmw.png" height="35" class="bcacrm-logo-white float-right" />*@
+                </div>
+            </div>
+        </div>
+
+        <!-- MenuBar -->
+        <div class="container-fluid">
+            <div class="row">
+                <div id="divMenuBar">
+                    <div class="menuBar-in col-sm-9 font-crm3" style="z-index: 1001;">
+                        <ul class="nav navbar-nav">
+                            
+                            <li role="presentation" class="active">
+                                <a name="Homepage" class="haloinfo ajaxMenu menu-bar" data-ajax="true" data-ajax-mode="replace" data-ajax-update="#page_content" href="/Homepage/Index">
+                                    <span class="glyphicon glyphicon-home icon-bar" aria-hidden="true"></span>
+                                    Home
+                                </a>
+                            </li>
+                            
+                            <li role="presentation" class="dropdown" id="BroadcastMessageContainer">
+                                <a class="dropdown-toggle menu-bar" data-toggle="dropdown" href="#" role="button" aria-expanded="false">
+                                    <span class="glyphicon glyphicon-bullhorn icon-bar" aria-hidden="true"></span>
+                                    BroadCast Messages
+                                    <span class="caret"></span>
+                                </a>
+                                <ul class="dropdown-menu" role="menu">
+                                    <li id="broadcastCreateMessage"><a href="#" class="broadcast-menu">Create Broadcast Message</a></li>
+                                    <li id="broadcastViewMessageWindow"><a href="#" class="broadcast-menu">View Broadcast Message</a></li>
+                                </ul>
+                            </li>
+                            
+                            <li role="presentation" class="dropdown">
+                                <a class="dropdown-toggle menu-bar" data-toggle="dropdown" href="#" role="button" id="a-customer" aria-expanded="false">
+                                    <span class="glyphicon glyphicon-folder-open icon-bar" aria-hidden="true"></span>
+                                    Customer
+                                </a>
+                            </li>
+                            
+                            @*<li role="presentation" class="active">
+                                <a href="http://mybca/sites/HaloInfo/default.aspx" class="haloinfo menu-bar" target="_blank">
+                                    <span class="glyphicon glyphicon-blackboard icon-bar" aria-hidden="true"></span>
+                                    Halo Info
+                                </a>
+                            </li>*@
+                            
+                           @* <li role="presentation" class="active">
+                                <a data-toggle="modal" data-target="#myModalVersioning" class="menu-bar" target="_blank">
+                                    <span class="glyphicon glyphicon-info-sign icon-bar" aria-hidden="true"></span>
+                                    About
+                                </a>
+                            </li>*@
+
+                        </ul>
+
+                    </div>
+
+                    <div class="menuBar-in col-sm-3 font-crm3">
+                        <ul class="nav navbar-nav pull-right">
+                            
+                            <li role="presentation" class="dropdown" id="BroadcastMessageContainer2">
+                                <a class="dropdown-toggle menu-bar" data-toggle="dropdown" href="#" role="button" aria-expanded="false">
+                                    <span class="notification">
+                                        <span class="glyphicon glyphicon-globe icon-bar" aria-hidden="true"></span>
+                                        <span class="button-badge" id="notification-count"></span>
+                                    </span>
+                                </a>
+                                <ul id="notification-center" class="dropdown-menu" role="menu">
+                                    
+                                </ul>
+                            </li>
+
+                            <li role="presentation" class="active">
+                                <a class="menu-bar" target="_blank">
+                                    <span class="glyphicon glyphicon-user icon-bar" aria-hidden="true"></span>
+                                    @if (Session["Fullname"] != null)
+                                    {
+                                        @Session["Fullname"].ToString()
+                                    }
+                                </a>
+                            </li>
+
+                            <li role="presentation" class="active">
+                                <a id="logout-link" class="menu-bar" target="_blank">
+                                    <span class="glyphicon glyphicon-log-out icon-bar" aria-hidden="true"></span>
+                                    Log Out
+                                </a>
+                            </li>
+
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sidebar -->
+        <div class="row">
+            <div class="col-sm-2 sidebarHome sidebar">
+                <div class="panel-group" id="accordion">
+
+                    @{
+                        //retrieve XML role object from logged on user's role
+                        CCARE.Models.Role.Root roleObject = new CCARE.Models.Role.Root();
+                        if(Session["RoleID"] != null){
+                            roleObject = CCARE.App_Function.RoleNPrivilege.getRoleObject(new Guid(Session["RoleID"].ToString()));
+                        }
+                    }
+
+                    @if(Session["RoleID"] != null){
+                        
+                        foreach (CCARE.Models.Role.RootMenu menu in roleObject.Menu.Where(x => x.check == true))
+                        {
+                            string expand = ""; //"Service".Equals(menu.name) ? "in" : string.Empty;
+                            //Create Menu row
+                            <div class="panel panel-default">
+                                <div class="panel-heading heading-menu" data-toggle="collapse" data-parent="#accordion" href="#collapse@(menu.name)">
+                                    <h3 class="panel-title">
+                                        <span class="crm-icon24 @(menu.name.ToLower())-icon"></span><span class="main-menu">@(menu.text)</span>
+                                    </h3>
+                                </div>
+                                <div id="collapse@(menu.name)" class="panel-collapse collapse @(expand)" >
+                                    @foreach (CCARE.Models.Role.RootMenuSubmenu subMenu in menu.Submenu.Where(x => x.check == true))
+                                    {
+                                        string expandSub = "";  //"RequestManagement".Equals(subMenu.name) ? "in" : string.Empty;
+                                        //Create Sub Menu Row
+                                        <div class="panel panel-default">
+                                            <div class="panel-heading heading-menu" data-toggle="collapse" href="#collapse@(subMenu.name)">
+                                                <h4 class="panel-title">
+                                                     <span class="sub-menu">@(subMenu.text)</span>
+                                                </h4>
+                                            </div>
+                                            <div id="collapse@(subMenu.name)" class="panel-collapse collapse @(expandSub)">
+                                                <div class="list-group">
+                                                    @foreach (CCARE.Models.Role.RootMenuSubmenuEntity entity in subMenu.Entity.Where(x => x.check == true))
+                                                    {
+                                                        //Skip entity Broadcastmessage - invisible for role purpose
+                                                        if (entity.name == "BroadcastMessage") 
+                                                        { 
+                                                            continue; 
+                                                        }
+                                                        
+                                                        //Create Sub Menu Row
+                                                        if (entity.path == "" || entity.path == null)
+                                                        {
+                                                            <a name="@(entity.name)" class="list-group-item ajaxMenu" data-ajax="true" data-ajax-mode="replace" data-ajax-update="#page_content" href="/@(entity.name)/Index">
+                                                                <span class="glyphicon glyphicon-tasks icon-bar"></span>
+                                                                <span class="sub-sub-menu">@(entity.text)</span>
+                                                            </a>
+                                                        }
+                                                        else
+                                                        {
+                                                            <a name="@(entity.name)" class="list-group-item ajaxMenu" data-ajax="true" data-ajax-mode="replace" data-ajax-update="#page_content" href="@(entity.path)">
+                                                                <span class="glyphicon glyphicon-tasks icon-bar"></span>
+                                                                <span class="sub-sub-menu">@(entity.text)</span>
+                                                            </a>
+                                                        }
+                                                    }
+                                                </div>
+                                            </div>
+                                        </div>
+                                    }
+                                </div>
+                            </div>
+                        }
+                    }
+                </div>
+            </div>
+
+            <!-- /#sidebar-wrapper -->
+
+            @Scripts.Render("~/bundles/jquerynBootstrap")
+            @Scripts.Render("~/bundles/jqueryval")
+            @Scripts.Render("~/bundles/jqgrid")
+            <script type="text/javascript">
+                $(document).ready(function () {
+                    $('#logout-link').click(function () {
+                        var logoutUrl = '@Url.Action("doLogout", "Login")';
+                        window.location.replace(logoutUrl);
+                    });
+
+                    $("[name='@(System.Configuration.ConfigurationManager.AppSettings["homePage"].ToString())']").addClass('activeMenu');
+
+                    $(".ajaxMenu").click(function(){
+                        $('.ajaxMenu').removeClass('activeMenu');
+                        $(this).addClass('activeMenu');
+                        $('body').focus();
+                    });
+                });
+            </script>
+
+            <!-- Page Content -->
+            <div class="container-fluid">
+                <div class="row">
+                    <div id="homeContainer" class="col-sm-10 col-sm-offset-2 mainHome">
+                        <div id="page_content" class="row">
+                            @RenderBody()
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            @*Broadcast Message*@
+            <div id="broadcast-modal"></div>
+        </div>
+        <!--End of content-->
+
+        @RenderSection("scripts", required: false)
+
+        <script type="text/javascript">
+
+            function timerIncrement() {
+                var timeout = @System.Configuration.ConfigurationManager.AppSettings["pushLogout"];
+                localStorage.clickcount = Number(localStorage.clickcount)+1;
+                if (localStorage.clickcount > timeout) { // 20 minutes
+                    var url = "/Login/doLogout";
+                    window.location.href = url; 
+                }
+            }
+
+            $(document).ready(function () {
+
+                $("#a-customer").click(function(){
+                    $("#collapseService").collapse('show');
+                    $("#collapseCustomerManagement").collapse('show');
+                    $("#collapseCustomerManagement").find("a[name=Customer]").click();
+                });
+
+                @if (Session["RoleID"] != null)
+                {
+                    string entity = ViewContext.Controller.ControllerContext.RouteData.Values["controller"].ToString();
+                    Guid roleID = new Guid(Session["RoleID"].ToString());
+
+                    if (CCARE.App_Function.RoleNPrivilege.isEntityChecked(roleID, entity) == false && entity != "Homepage")
+                    {
+                        <text>
+                            window.location.href = '/Homepage/Index';
+                        </text>
+                    }
+
+                    if (CCARE.App_Function.RoleNPrivilege.isEntityChecked(roleID, "BroadcastMessage") == false)
+                    {
+                        <text>
+                            $('#BroadcastMessageContainer').hide();
+                        </text>
+                    }
+
+                    if (CCARE.App_Function.RoleNPrivilege.isEntityChecked(roleID, "BroadcastMessage") == true)
+                    {
+                        <text>
+                            pollBroadcast();
+                        </text>
+                    }
+
+                    if (CCARE.App_Function.RoleNPrivilege.checkEntityButtonByRoleID(roleID, entity, "Create") == false)
+                    {
+                        <text>
+                            $('#btn_new').hide();
+                        </text>
+                    }
+                    else if (CCARE.App_Function.RoleNPrivilege.checkEntityButtonByRoleID(roleID, entity, "Write") == false)
+                    {
+                        <text>
+                            $('#btn_new').hide();
+                            $('#btn_FilterMyCreatedTask').hide();
+                        </text>
+                    }
+                }
+
+                //Auto logout when browser idle more than 20 minutes
+                //Increment the idle time counter every minute.
+                var idleInterval = setInterval(timerIncrement, 60000); // 1 minute
+
+                //Zero the idle timer on mouse movement.
+                $(this).mousemove(function (e) {
+                    localStorage.clickcount = 0;
+                });
+                $(this).keypress(function (e) {
+                    localStorage.clickcount = 0;
+                });
+
+
+                $('.ajaxMenu').click(function () {
+                    checkSessionEnd();
+                });
+
+                $("#broadcastViewMessage").click(function () {
+                    BroadcastMessage('@Url.Action("_broadcastViewContent", "Popup", new { type = "broadcast" })');
+                });
+
+                $("#broadcastCreateMessage").click(function () {
+                    BroadcastMessage('@Url.Action("_broadcastCreateContent", "Popup", new { type = "broadcast" })');
+                });
+
+                $("#broadcastViewMessageWindow").click(function () {
+                    BroadcastMessageWindow('@Url.Action("_broadcastViewContentWindow", "Popup", new { type = "broadcast" })');
+                });
+
+
+                // Polling Popup Broadcast Message & Notification
+                function pollBroadcast() {       
+                    var crId = "@Session["CurrentUserID"].ToString()";
+                    var lastB = localStorage.getItem("lastBroadcast-"+crId);
+                    $.ajax({
+                        global: false,
+                        url: "@Url.Action("_broadcastPolling", "Popup", new { type = "broadcast" })", 
+                        success: function (data) {
+                            if (data == null || data == "") { } 
+                            else {
+                                if (lastB == null || lastB == "") {
+                                    localStorage.setItem("lastBroadcast-"+crId, data);
+                                }
+                                if(new Date(data) > new Date(lastB)){
+                                    try {
+                                        if( ($("#myBroadcastModal").data('bs.modal') || {}).isShown || ($("#myModal").data('bs.modal') || {}).isShown ) { } 
+                                        else {
+                                            BroadcastMessageWindow('@Url.Action("_broadcastViewContentWindow", "Popup", new { type = "broadcast" })');
+                                        }
+                                    } 
+                                    catch(Exception) { };
+                                }
+                            }
+                        },
+                        dataType: "json",
+                        type: 'POST',
+                        data: { data: "998" },
+                        complete: 
+                            setTimeout(function() { pollBroadcast(); }, parseInt('@(System.Configuration.ConfigurationManager.AppSettings["TOBroadcast"].ToString())')),
+                        timeout: 10000
+                    });
+                }
+                
+                function RetreiveNotification(){
+                    var count = 0;
+                    $.ajax({
+                        global: false,
+                        dataType: "json",
+                        type: 'POST',
+                        url: "@Url.Action("RetreiveNotification", "Notification")", 
+                        success: function (data){
+                            if (data.flag == true) {
+                                if(data.TaskCount == 0)
+                                {
+                                    $("#task-count").removeClass("red-highlight");
+                                    $("#notification-count").hide();
+                                }
+                                else{
+                                    $("#task-count").addClass("red-highlight");
+                                    $("#notification-count").show();
+
+                                    // Create Notification Top 10
+                                    $("ul#notification-center").empty();
+                                    for(var t = 0; t < data.Task.length ; t++){
+                                        $("ul#notification-center").append('<li><a href="/Task/Edit?id=' + data.Task[t].ID + '" target="_blank" class="broadcast-menu"><span>Task <strong>' + data.Task[t].TaskID + '</strong></span></a></li>');
+                                    }
+
+                                    if(data.TaskCount > 10){
+                                        $("ul#notification-center").append('<li id="task-notification"><a href="#" class="broadcast-menu"><span><i>Load more Task...</i></span></a></li>');
+                                        var sc = '<script type="text/javascript">$("#task-notification").click(function(){$("#collapseWorkplace").collapse("show");$("#collapseMyWork").collapse("show");$("#collapseMyWork").find("a[name=Task]").click();});<\/script>';
+                                        $("ul#notification-center").append(sc);
+                                    }
+                                }
+                                count += data.TaskCount;
+                                $("#notification-count").html(count);
+                            }
+                        },
+                        error: function (xhr, status, err) { },
+                        complete: 
+                            setTimeout(function() { RetreiveNotification(); }, parseInt('@(System.Configuration.ConfigurationManager.AppSettings["TOBroadcast"].ToString())')),
+                        timeout: 10000
+                    });
+                }
+
+                RetreiveNotification();
+
+               
+
+            });
+        </script>
+        
+        @if (Session["RoleID"] != null)
+        {
+            Guid roleID = new Guid(Session["RoleID"].ToString());
+            //bool checkButton = CCARE.App_Function.RoleNPrivilege.checkEntityButtonByRoleID(roleID, "Customer", "CallWrapUp");
+            bool checkButton = CCARE.App_Function.RoleNPrivilege.isEntityChecked(roleID, "CallWrapUp");
+
+            if (checkButton == true)
+            {
+                <script type="text/javascript">
+                    ////Connect to cti
+                    try{
+                        myobject.ConnectIC();
+                    }catch(e){
+
+                    }
+
+                    function setLocalStorageCti(){ // Pop up Call Wrap Up
+                        localStorage.callstart = ctiFormatDate(myobject.CallStartDateTime);
+                        localStorage.callend = ctiFormatDate(myobject.CallEndDateTime);
+
+                        openOneWindow('/CallWrapUp/Create','PopUpCallWrapUp'+myobject.CallStartDateTime); 
+                    }
+
+                    function checkCustomerPopup(){
+                        var anyNumberValue = '';
+                        var customerType = '';
+                        var msg = "";
+                        msg += "Customer Type : " + myobject.CustomerType + "\n";
+                        msg += "Account Number : " + myobject.AccountNumber + "\n";
+                        msg += "Credit Customer Number : " + myobject.CreditCustomerNumber + "\n";
+                        msg += "ATM Card Number : " + myobject.ATMCardNumber + "\n";
+                        msg += "Credit Card Number : " + myobject.CreditCardNumber + "\n";
+                        msg += "Finish!";
+                        alert(msg);
+                        if(myobject.CustomerType != ''){
+                            if(myobject.CustomerType == "deposit"){
+                                if(myobject.AccountNumber != ''){
+                                    anyNumberValue = myobject.AccountNumber;
+                                    customerType = 'AccountNo';
+                                }
+                                else if(myobject.CreditCustomerNumber != ''){
+                                    customerType = 'CreditCardCustomerNo';
+                                    anyNumberValue = myobject.CreditCustomerNumber;
+                                }
+                                else if(myobject.ATMCardNumber != ''){
+                                    anyNumberValue = myobject.ATMCardNumber;
+                                    customerType = 'AtmCardNo';
+                                }
+                            }
+                            else if(myobject.CustomerType == "creditcard"){
+                                customerType = 'CreditCardNo';
+                                anyNumberValue = myobject.CreditCardNumber;
+                            }
+                            
+                            openOneWindow('/Customer/CustomerSearch?'+customerType+'='+anyNumberValue + '&isPopup=on', 'PopUpCustomer'+anyNumberValue);
+                        }
+                    }
+                    
+                    //On disconnect update callendtime on Active CWU
+                    
+                    
+                    function onHangUp(endTime) {
+                        alert(localStorage.ActiveCWUID + ' ' + endTime);
+                        if(localStorage.ActiveCWUID != ""){
+                            $.ajax({
+                                type: "POST",
+                                url: "@Url.Action("EditEndTime", "CallWrapUp")",
+                                data: JSON.stringify({ "id": localStorage.ActiveCWUID, "CallEndTime": endTime }),
+                                dataType: "json",
+                                contentType: "application/json; charset=utf-8",
+                                success: function (data) {
+                                    if (data.flag == true) {
+                                        alert("CWU berhasil diupdate");
+                                    }
+                                    else {
+                                        alert(data.Message);
+                                        $(".divFormMessage").text(data.Message);
+                                    }
+                                    localStorage.ActiveCWUID = "";
+                                },
+                                error: function (xhr, status, err) {
+                                    alert(err + status + xhr.getAllResponseHeaders);
+                                    localStorage.ActiveCWUID = "";
+                                }
+                            });
+                        }
+                    }
+
+                </script>
+                if (System.Configuration.ConfigurationManager.AppSettings["PopUpCustomer"].ToString() == "On")
+                {
+                    <script type='text/javascript' for="myobject" event="CallConnected()">checkCustomerPopup(); </script>
+                }
+                <script type='text/javascript' for="myobject" event="CallDisconnected()">onHangUp(ctiFormatDateStartDay(myobject.CallEndDateTime)); localStorage.flagCWU = "0"; @{Session.Remove("customerSearchGuid");} </script>
+            }
+        }
+    </body>
+</html>

@@ -1,0 +1,169 @@
+﻿@model CCARE.Models.CallType
+
+
+@{
+    ViewBag.Title = "Create";
+    Layout = "~/Views/Shared/_LayoutEntity.cshtml";
+}
+
+@section title
+{
+    Call Type
+}
+
+@section entityLogo
+{
+    <img class="crm-logo" src="~/assets/images/ico_lrg_112.gif" />
+}
+
+@section formTitle
+{
+    <div class="text_title">
+        <h1>Information</h1>
+        Call Type: New
+    </div>
+}
+
+@section navHeader
+{
+    <ul class="nav navbar-nav navbar-left">
+        <li><a id="btn_save" href="#">Save</a></li>
+        <li><a id="btn_savenclose" href="#">Save & Close</a></li>
+
+    </ul>
+}
+
+@section footerStatus
+{
+    <div class="footer_text"> Status :
+
+        
+    </div>
+}
+
+@section sidebarMenu
+{
+    <li class="active"><a href="#">Information</a></li>
+}
+
+
+
+<div class="container-fluid">
+    <!-- tabs -->
+    <div class="row">
+        <div class="col-sm-12 panel panel-default panel_form_parent">
+            <br />
+            <div class="tab-content myContent_noTab">
+                <div class="tab-pane fade active in" id="general" aria-labelledby="general-tab">
+                    <!-- panel content -->
+                    <div class="col-sm-12">
+
+                        @using (Html.BeginForm("CreateCallType", "CallWrapUp", FormMethod.Post, new { id = "form_CallType" }))
+                        {
+                            <!-- title 1 -->
+                            <div class="row form_text">
+                                <div class="panel panel-default panel_form_child">
+                                    <div class="panel-heading">
+                                        <label class="control-label sv-header"><strong>General</strong></label>
+                                    </div>
+                                    <br />
+                                    <div class="panel-body">
+                                        <div class="form-horizontal">
+
+                                            <div class="row">
+                                                <div class="col-sm-6">                                        
+                                                    <div class="form-group">                                                  
+                                                        <label class="col-sm-4 control-label mandatory">Category</label>
+                                                        <div class="col-sm-8">
+                                                            <input type="hidden" id="CallWrapUpCategoryID" name="CallWrapUpCategoryID" value="" class="form-control" style="margin-bottom:-50px;" />
+                                                            <div class="input-group">
+                                                                <input type="text" id="CategoryName" name="CategoryName" class="form-control" value="">
+                                                                <div tabindex="0" id="CategoryName-label" class="form-control typeahead-label hide" style="border-top-left-radius:3px;border-bottom-left-radius:3px">
+                                                                </div>
+                                                                <div tabindex="0" class="input-group-addon btn rest4" id="Category-popup">
+                                                                    <i class="fa fa-search"></i>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                             </div>                                        
+                                             <div class="row">
+                                                <div class="col-sm-6">                                        
+                                                    <div class="form-group">
+                                                        <label class="col-sm-4 control-label">Summary</label>
+                                                        <div class="col-sm-8">
+                                                            <input type="text" id="Summary" name="Summary" class="form-control"/>
+                                                            @Html.HiddenFor(x=>x.CallWrapUpID)
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                                                   
+                                        </div>
+                                    </div>                               
+                                </div>
+                            </div>         
+                        }              
+                    </div>
+                </div>
+            </div>
+        </div>        
+    </div>    
+</div>
+<div class="row form_text">
+</div>
+
+<div id="response-modal"></div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+    
+        function validateForm(action, formName) {
+            if ($("#CallWrapUpCategoryID").val() == "") {
+                if ($("#CategoryName").val() == "")
+                    alert("@Resources.CallType.MandatoryCategory");
+                else
+                    alert("@Resources.CallType.MandatoryCategory2");
+                return false;
+            }
+
+            formSubmit(action, formName);
+        }
+
+        $("#btn_save").click(function () {
+            validateForm("save", $("#form_CallType"));
+        });
+
+        $("#btn_savenclose").click(function () {
+            validateForm("saveNClose", $("#form_CallType"));
+        });
+
+
+
+        $('#Category-popup').on('click', function (e) {
+            urlModalPopup = '@Url.Action("_popupContent", "Popup", new { type = "callwrapupcategory", _entity = "" })';
+            colModelsName = [
+            { label: 'ID', name: 'Id', index: 'Id', key: true, width: 175, hidden: true },
+            { label: 'Description', name: 'Name', width: 100 },
+            { label: 'Created On', name: 'Createdon', width: 175, formatter: "date", formatoptions: { srcformat: "ISO8601Long", newformat: "d/m/Y" } }
+         
+            ];
+            var id = $(this).parent().find('input:last').attr('id');
+            $('#' + id).trigger("blur");
+            e.preventDefault();
+        });
+
+
+        var CategoryTypeahead = new PopupClass();
+        CategoryTypeahead.setId("CategoryName");
+        CategoryTypeahead.setUrl('@Url.Action("CallWrapUpCategory", "Popup")');
+        CategoryTypeahead.setHiddenId("CallWrapUpCategoryID");
+        CategoryTypeahead.init();
+
+
+        
+  
+
+    });
+</script>

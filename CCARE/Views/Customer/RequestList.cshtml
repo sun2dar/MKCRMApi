@@ -1,0 +1,247 @@
+﻿@{
+    ViewBag.Title = "Request List";
+    if (Request.IsAjaxRequest())
+    {
+        Layout = null;
+    }
+    else
+    {
+        Layout = "~/Views/Shared/_LayoutEntity.cshtml";
+    }
+}
+
+@section title
+{
+    Edit  
+}
+
+@section entityLogo
+{
+    <img class="crm-logo" src="~/assets/images/ico_lrg_112.gif" />
+}
+
+@section formTitle
+{
+    <div class="text_title">
+        <h1>Request List</h1>
+    </div>
+}
+
+@section navHeader
+{
+    <ul class="nav navbar-nav navbar- left">
+        @*<li id="btn_FinancialTransaction" role="presentation" class="dropdown">
+            <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+                Layanan Prioritas <span class="caret"></span>
+            </a>
+            <ul class="dropdown-menu">
+                <li><a id="btn_fundtransfer" href="#">Fund Transfer</a></li>
+                <li><a id="btn_payment" class="btn_assignto" href="#">Payment</a></li>
+                <li><a id="btn_purchase" class="btn_assignto" href="#">Purchase</a></li>
+                <li><a id="btn_transferlist" class="btn_assignto" href="#">Transfer List</a></li>
+            </ul>
+        </li>*@
+        <li>
+            Halo Bandung
+        </li>
+    </ul>
+}
+
+@section footerStatus
+{
+    <div class="footer_text">Status: New</div>
+}
+
+@section sidebarMenu
+{
+    
+}
+
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-12 panel panel-default panel_form_parent scroll-y">
+            <br />
+            <!-- Content -->
+            <div class="col-sm-12">
+                <div class="row form_text">
+                    <form id="form_inquiry">
+                        <div class="col-lg-12 inquiry_left">
+                            <div class="input-group">
+                                <span class="input-group-btn inquiry_dropdown">
+                                    <select id="inquiry_param" class="form-control">
+                                        <option value="searchRequestId">Request Id</option>
+                                        <option value="searchNoCustomer">No Customer</option>
+                                        <option value="searchNoKartu">No Kartu</option>
+                                        <option value="searchNoRekening">No Rekening</option>
+                                    </select>
+                                </span>
+                                <span class="input-group-btn input_space"></span>
+                                <input type="text" class="form-control" id="inquiry_val" >
+                                <span class="input-group-btn">
+                                    <button id="btn_search" class="btn btn-primary" type="submit"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></button>
+                                </span>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <br />
+                <!-- Table result -->
+
+                <div class="row form_text">
+                    <div class="panel panel-default panel_form_child">
+                        
+                        <div class="panel-heading">
+                            <label class="control-label sv-header">
+                                <strong>Search Result</strong>
+                            </label>
+
+                            @*<button id="btn_new" type="button" style="text-align:right">New Request</button>*@
+
+                        </div>
+                        
+                        <br />
+
+                        <div class="panel-body">
+                            <form class="form-horizontal">
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <div class="divGrid">
+                                            <table id="gridTable"></table>
+                                            <div id="jqGridPager"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        var gridId = "#gridTable";
+        var entityName = 'Request';
+
+        @if(Session["RoleID"] != null){
+            string entity = "Request";
+            Guid roleID = new Guid(Session["RoleID"].ToString());
+            if (CCARE.App_Function.RoleNPrivilege.checkEntityButtonByRoleID(roleID, entity, "Create") == false)
+            {
+                <text>
+                    //$('#btn_new').hide();
+                </text>
+            }
+        }
+
+        $('#form_inquiry').submit(function (event) {
+            (event.preventDefault) ? event.preventDefault() : event.returnValue = false;
+
+            var postData = {
+                _param: function () { return $("#inquiry_param").val(); },
+                _val: function () { return $("#inquiry_val").val(); },
+                _filter: function () { return $("#inquiry_filter").val(); },
+                _customerId: function () { return "@(ViewBag.CustomerId)"; },
+                _customerIdName: function () { return "@(ViewBag.CustomerIdName)"; },
+                _type: "customer"
+            };
+            loadJqgrid(postData);
+        });
+
+        $("#inquiry_filter").change(function () {
+            var postData = {
+                _val: function () { return $("#inquiry_val").val(); },
+                _filter: function () { return $("#inquiry_filter").val(); },
+                _customerId: function () { return "@(ViewBag.CustomerId)"; },
+                _customerIdName: function () { return "@(ViewBag.CustomerIdName)"; },
+                _type: "customer"
+            };
+            loadJqgrid(postData);
+        });
+
+        if (entityName != "Request" || entityName != "Customer") {
+            $('#form_inquiry').trigger('submit');
+        }
+
+        function loadJqgrid(postData) {
+            $.jgrid.gridUnload(gridId);
+            var colModels = getColModels("Request");
+            var customVal = getCustomVal("Request");
+            var url = '/Request/LoadGrid';
+            $(gridId).jqGrid({
+                url: url,
+                mtype: "POST",
+                datatype: "json",
+                postData: postData,
+                colModel: colModels,
+                shrinkToFit: false,
+                width: '100%',
+                autowidth: true,
+                height: '100%',
+                rowNum: customVal.rowNum,
+                rowList: [20, 30],
+                rownumbers: true,
+                pager: $("#jqGridPager"),
+                sortname: 'Id',
+                viewrecords: true,
+                sortorder: "desc",
+                loadComplete: function (data) {
+                    
+                    //Remove total page on footer
+                    $("#sp_1_jqGridPager").hide();
+                    $("#input_jqGridPager").contents().filter(function () { return this.nodeType == 3; }).remove();
+                    $("#input_jqGridPager").prepend("<text>Page  </text>");
+
+                    //Hide First and last on paging
+                    $("#first_jqGridPager").hide();
+                    $("#last_jqGridPager").hide();
+
+                    // Disabled input page number in jqgrid paging
+                    $("#input_jqGridPager").find("input").attr('disabled', 'disabled');
+
+                    /* Remove rm padding from selbox */
+                    $(".ui-pg-selbox").removeClass("rm-padding");
+
+                    //Hide records per page
+                    //$(".ui-pg-selbox").hide();
+
+                    if (data.rows.length == 0) {
+                    //if (data.records == 0) {
+                        var emptyText = '';
+                        emptyText += '<table class="ui-jqgrid-btable"><tr><td>&nbsp;&nbsp;&nbsp;</td><td><center><h2>No Records Found</h2><center></td></tr></table>';
+                        var grid = $(gridId);
+                        var container = grid.parents('.ui-jqgrid-view');
+                        container.find('.ui-jqgrid-bdiv').children("table").remove();
+                        container.find('.ui-jqgrid-bdiv').append(emptyText);
+                    }
+                },
+                jsonreader: {
+                    root: "rows", //array containing actual data
+                    page: "page", //current page
+                    total: "total", //total pages for the query
+                    records: "records", //total number of records
+                    cell: 'cell',
+                    repeatitems: false,
+                    id: "Id" //index of the column with the pk in it
+                },
+                ondblClickRow: function (rowid, iRow, iCol) {
+                    var url = '@Url.Action("Edit", "Request")';
+                    openWindow(url + '?id=' + rowid);
+                }
+            })
+            .navGrid("#jqGridPager", { edit: false, add: false, del: false, search: false });
+        }
+
+        $('#btn_new').click(function () {
+            var CustomerId = '@ViewBag.CustomerId';
+            var CustomerIdName = '@ViewBag.CustomerIdName';
+            var url = '@Url.Action("Create", "Request")';
+
+            openWindow(url + "?customerID=" + CustomerId + "&customerName=" + CustomerIdName + "&customerType=customer");
+        });
+    });
+</script>

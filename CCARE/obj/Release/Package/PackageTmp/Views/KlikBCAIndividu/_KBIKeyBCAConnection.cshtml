@@ -1,0 +1,537 @@
+﻿<div class="panel-body" id="messagebox"></div>
+
+@if (ViewBag.searchResultsCount > 0)
+{
+    if (ViewBag.StatusChange != "")
+    {
+        <script type="text/javascript">ChangeStatusMessageBox("#messagebox", "@ViewBag.StatusChange", "@ViewBag.RequestId", "@ViewBag.TicketNumber");</script>
+    }
+    <div class="row form_text">
+        <div class="panel panel-default panel_form_child">
+            <div class="panel-heading" id="contentHeaderDiv">
+                <label class="control-label sv-header">
+                    <strong>Koneksi KeyBCA Individu</strong>
+                </label>
+                <a class="pull-right" data-toggle="collapse" href="#collapseContentDiv" aria-expanded="true" aria-controls="collapseContentDiv">
+                    <i class="fa fa-angle-double-up fa-lg"></i>
+                </a>
+            </div>
+
+            <div class="col-sm-offset-10 btn-change-status">
+                <input class="btn btn-primary btn-crm-layout" type="button" value="Change Status" id="changeStatusBtn" />
+            </div>
+            <div class="panel panel-default panel_form_child" id="statusDiv">
+                <div class="panel-heading" id="statusHeaderDiv">
+                    <label class="control-label sv-header">
+                        <strong>Change Status</strong>
+                    </label>
+                    <a class="pull-right" data-toggle="collapse" href="#collapseStatusDiv" aria-expanded="true" aria-controls="collapseStatusDiv">
+                        <i class="fa fa-angle-double-up fa-lg"></i>
+                    </a>          
+                </div>
+                <div id="collapseStatusDiv" class="panel-collapse collapse in" aria-labelledby="headingOne">
+                    <br />
+                    <div class="row form-horizontal">
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">Status</label>
+                                <div class="col-sm-2">
+                                    <select id="statusDdl" name="statusDdl" class="form-control">
+                                        <option value="">-- Select Status --</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row form-horizontal">
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">Change Status To</label>
+                                <div class="col-sm-2">
+                                    <select id="nextStatusDdl" name="nextStatusDdl" class="form-control" disabled>
+                                        <option value="">-- Select Status --</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row form-horizontal">
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">Alasan</label>
+                                <div class="col-sm-4">
+                                    <input id="reasonTxt" name="reasonTxt" type="text" class="" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row form-horizontal" id="bukablokirDiv">
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">Kode Mohon Buka Blokir</label>
+                                <div class="col-sm-4">
+                                    <input id="bukablokirTxt" name="bukablokirTxt" type="text" class="" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                                <div class="col-sm-offset-2">
+                                    <input class="btn btn-primary btn-crm-layout" type="button" value="Kirim" id="sendBtn" data-loading-text="Processing..." />
+                                    <input class="btn btn-default btn-crm-layout" type="button" value="Batal" id="cancelBtn" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="collapseContentDiv" class="panel-collapse collapse in" aria-labelledby="headingOne">
+                <div class="panel-body">
+                    <div class="form-horizontal">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="divGrid">
+                                    <table id="gridKeyBCAConnection"></table>
+                                    <div id="gridKeyBCAConnectionPager"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <br />
+            <div class="panel panel-default panel_form_child" id="resynchDiv">
+                <div class="panel-heading" id="resynchHeaderDiv">
+                    <label class="control-label"><strong>Resynchronize Key BCA</strong></label>
+                    <a class="pull-right" data-toggle="collapse" href="#collapseResynchDiv" aria-expanded="true" aria-controls="collapseResynchDiv">
+                        <i class="fa fa-angle-double-up fa-lg"></i>
+                    </a>          
+                </div>
+                <div id="collapseResynchDiv" class="panel-collapse collapse in" aria-labelledby="headingOne">
+                    <br />
+                    <div class="row form-horizontal">
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">Status saat ini</label>
+                                <div class="col-sm-2">
+                                    <input type="text" class="form-control" value="">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">Cabang KeyBCA</label>
+                                <div class="col-sm-2">
+                                    <input type="text" class="form-control" value="">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">Merk KeyBCA</label>
+                                <div class="col-sm-2">
+                                    <input type="text" class="form-control" value="">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">Ubah status terakhir oleh</label>
+                                <div class="col-sm-2">
+                                    <input type="text" class="form-control" value="">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">Resinkronisasi terakhir oleh</label>
+                                <div class="col-sm-2">
+                                    <input type="text" class="form-control" value="">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="confirm-summary" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content" style="background-color:#ecf1f5;">
+                <div class="modal-header" style="background-color:#639CCE; color:white;">
+                    <h2>Summary</h2>
+                    <h4>Add your summary.</h4>
+                </div>
+                <div class="modal-body input-lg" style="height:250px;">
+                    <div class="container-fluid form-horizontal">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="form-group">
+                                    <div class="col-sm-3">
+                                        <label class="control-label">Summary</label>
+                                    </div>
+                                    <div class="col-sm-9">
+                                        <input type="text" class="form-control" id="Summary" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <br />
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                    <a class="btn btn-danger btn-ok">Ok</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script src="~/assets/js/changeStatusJs.js"></script>
+    <script type="text/javascript">
+        var entityType = 9;
+        var statusList = { 1: "" };
+        var statusLabelList = { 1: "" };
+
+        var keyId = "";
+        var tokenType = "";
+        var updateOfficer = "";
+        var lastUpdatedDate = "";
+        var snToken = "";
+        var atmNo = "";
+        var firstName = "";
+        var applicationCode = "";
+
+        //Channel
+        var customerId = "@ViewBag.Channel.CustomerId";
+        var hasCIS = customerId == "00000000-0000-0000-0000-000000000000" ? false : true;
+        var channelTypeId = "@ViewBag.Channel.ChannelTypeId";
+@*        var channelType = "@ViewBag.Channel.ChannelType";
+        var customerIdName = "@ViewBag.Channel.CustomerIdName";*@
+        var cardNo = "@ViewBag.Channel.CardNo";
+        var userId = "@ViewBag.Channel.UserId";
+        var emailAddress = "@ViewBag.Channel.EmailAddress";
+        var hpNo = "@ViewBag.Channel.HpNo";
+        var corpId = "@ViewBag.Channel.CorpId";
+        var accountNo = "@ViewBag.Channel.AccountNo";
+        var customerNo = "@ViewBag.Channel.CustomerNo";
+        var snKeyBCA = "@ViewBag.Channel.SNKeyBCA";
+        var category = "@ViewBag.Channel.Category";
+
+        var params = "customerId=" + customerId;
+        params += "&channelTypeId=" + channelTypeId;
+        //params += "&channelType=" + channelType;
+        //params += "&customerIdName=" + customerIdName;
+        params += "&cardNo=" + cardNo;
+        params += "&userId=" + userId;
+        params += "&emailAddress=" + emailAddress;
+        params += "&hpNo=" + hpNo;
+        params += "&corpId=" + corpId;
+        params += "&accountNo=" + accountNo;
+        params += "&customerNo=" + customerNo;
+        params += "&snKeyBCA=" + snKeyBCA;
+        params += "&category=" + category;
+
+        var statusType;
+        var statusTypeLabel;
+        var oldStatus;
+        var newStatus;
+        var oldStatusLabel;
+        var newStatusLabel;
+        var reason;
+
+
+        var gridId = '#gridKeyBCAConnection';
+
+        function setGrid() {
+            jQuery(gridId).setGridParam({
+                onSelectRow: function (rowid) {
+                    var rowData = jQuery(gridId).getRowData(rowid);
+                    statusList[1] = rowData.StatusKey;
+                    statusLabelList[1] = rowData.Status;
+                    keyId = rowData.KeyId;
+                    tokenType = rowData.TokenTypeKey;
+                    updateOfficer = rowData.UpdatedBy;
+                    lastUpdatedDate = rowData.LastUpdatedDate;
+                    snToken = rowData.SNToken;
+                    atmNo = rowData.CardNo;
+                    firstName = rowData.CustomerName;
+                    applicationCode = rowData.ApplicationName;
+                    getDDlLabel(entityType, statusList);
+                }
+            });
+        }
+
+        $(document).ready(function () {
+            initHideStatus();
+            $("#resynchDiv").hide();
+
+            if (set(@Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(@ViewBag.searchResultsCount))) > 0) {
+                var keyBCAConnectionList = set(@Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(@ViewBag.searchResults)));
+                loadLocalJqgrid(gridId, keyBCAConnectionList, "KeyBCAConnection");
+                setGrid();
+                $("#reasonTxt").removeAttr('disabled');
+                $("#bukablokirTxt").removeAttr('disabled');
+            }
+        });
+
+        //$("#resynchKeyBCABtn").click(function () {
+        //    var rowid = jQuery(gridId).getGridParam('selrow');
+        //    if (rowid) {
+        //        $("#messagebox").html("");
+        //        showResynchAll();
+        //    } else {
+        //        $("#messagebox").html(MessageText('alert', "You have not selected a record / No record Exists for change status / You don't have permission to perform change status operation."));
+        //    }
+        //});
+
+        $("#changeStatusBtn").click(function () {
+            var rowid = jQuery(gridId).getGridParam('selrow');
+            if (rowid) {
+                $("#messagebox").html("");
+                $("#bukablokirDiv").hide();
+                showAll();
+            } else {
+                $("#messagebox").html(MessageText('alert', "You have not selected a record / No record Exists for change status / You don't have permission to perform change status operation."));
+            }
+        });
+
+        $("#cancelBtn").click(function () {
+            $("#reasonTxt").val("");
+            $("#bukablokirTxt").val("");
+            hideAll();
+        });
+
+        $("#statusDdl").change(function () {
+            statusType = $(this).val();
+            var currentStatus = getValueByKey(statusList, statusType);
+            ddlLabelChange(entityType, statusType, currentStatus);
+        });
+
+        $("#nextStatusDdl").change(function () {
+            ddlStatusChange();
+        });
+
+        $("#sendBtn").click(function () {
+            $("#sendBtn").button('loading');
+            if ($("#reasonTxt").val() == '') {
+                alert('Please enter a valid text for Alasan.');
+            } else {
+                statusType = $("#statusDdl").val();
+                if (statusType == '') {
+                    alert('Please select a status');
+                } else {
+                    statusTypeLabel = $("#statusDdl :selected").text();
+                    oldStatusLabel = getValueByKey(statusLabelList, statusType);
+                    newStatusLabel = $("#nextStatusDdl :selected").text();
+
+                    if (confirm('Are you sure you want to change status from ' + oldStatusLabel + ' to ' + newStatusLabel + ' ?')) {
+
+                        oldStatus = getValueByKey(statusList, statusType);
+                        newStatus = $("#nextStatusDdl").val();
+                        reason = $("#reasonTxt").val();
+
+                        if (hasCIS) {
+                            $("#confirm-summary").modal('show');
+                            $("#Summary").prop('disabled', false);
+                        } else {
+                            changeStatusViaInquiry();
+                        }
+                    }
+                }
+            }
+        });
+
+        $("#confirm-summary").on('show.bs.modal', function (e) {
+            $(this).find('.btn-ok').one("click", function () {
+                var additionalSummary = $("#Summary").val();
+                var createreq;
+                var change;
+                var updatereq;
+                var statusresult;
+
+                if (newStatus == "BukaBlokir") { // statusType == 1 -> special case
+                    var random = $("#bukablokirTxt").val();
+
+                    createreq = createRequest(
+                        entityType, statusType, oldStatus, newStatus,
+                        customerId, accountNo, cardNo, hpNo, customerNo, userId, emailAddress, snKeyBCA, corpId, category, reason,
+                        additionalSummary);
+
+                    if (createreq.status == RequestSuccess) {
+                        change = keyBCABukaBlokir(entityType, keyId, tokenType, random);
+
+                        if (change.status) {
+                            updatereq = updateRequest('close', createreq.requestId, change);
+
+                            if (updatereq.status) {
+                                statusresult = StatusChangeSuccess;
+                            } else {
+                                statusresult = StatusChangeSuccessButRequestCantClose;
+                            }
+                        } else {
+                            updatereq = updateRequest('cancel', createreq.requestId, change);
+
+                            if (updatereq.status) {
+                                statusresult = StatusChangeFailRequestCancel;
+                            } else {
+                                statusresult = StatusChangeFailButRequestCantCancel;
+                            }
+                        }
+
+                    } else if (createreq.status == RequestNotCreated) {
+                        change = keyBCABukaBlokir(entityType, keyId, tokenType, random);
+
+                        if (change.status) {
+                            statusresult = StatusChangeRequestNotCreated;
+                        } else {
+                            statusresult = StatusChangeFail;
+                        }
+
+                    } else { // if (createreq.status == RequestFail) {
+                        change = keyBCABukaBlokir(entityType, keyId, tokenType, random);
+
+                        if (change.status) {
+                            statusresult = StatusChangeNoRequest;
+                        } else {
+                            statusresult = StatusChangeFail;
+                        }
+
+                    }
+
+                    writeLog(entityType, statusTypeLabel, oldStatusLabel, newStatusLabel, statusresult, createreq.requestId, createreq.ticketNumber);
+
+                    if (change.status) {
+                        var log = keyBCAWriteToLog(entityType, "", keyId, updateOfficer, lastUpdatedDate, snToken, atmNo, firstName, applicationCode, reason, "", "buka_blokir");
+                        if (log.status) {
+                            if (log.result == 1) {
+                                statusresult = StatusChangeBukaBlokir;
+                            } else {
+                                statusresult = StatusChangeBukaBlokirLogFail;
+                            }
+                        } else {
+                            statusresult = StatusChangeBukaBlokirLogFail;
+                        }
+                    }
+                    $("#partialView").load("/KlikBCAIndividu/KBIKeyBCAConnectionPartial?" + params + "&statusChange=" + statusresult + "&ticketNumber=" + change.kodeblokir, " #partialView");
+
+                } else {
+                    createreq = createRequest(
+                        entityType, statusType, oldStatus, newStatus,
+                        customerId, accountNo, cardNo, hpNo, customerNo, userId, emailAddress, snKeyBCA, corpId, category, reason,
+                        additionalSummary);
+
+                    if (createreq.status == RequestSuccess) {
+                        change = changeStatus();
+
+                        if (change.status) {
+                            updatereq = updateRequest('close', createreq.requestId, change);
+
+                            if (updatereq.status) {
+                                statusresult = StatusChangeSuccess;
+                            } else {
+                                statusresult = StatusChangeSuccessButRequestCantClose;
+                            }
+                        } else {
+                            updatereq = updateRequest('cancel', createreq.requestId, change);
+
+                            if (updatereq.status) {
+                                statusresult = StatusChangeFailRequestCancel;
+                            } else {
+                                statusresult = StatusChangeFailButRequestCantCancel;
+                            }
+                        }
+
+                    } else if (createreq.status == RequestNotCreated) {
+                        change = changeStatus();
+
+                        if (change.status) {
+                            statusresult = StatusChangeRequestNotCreated;
+                        } else {
+                            statusresult = StatusChangeFail;
+                        }
+
+                    } else { // if (createreq.status == RequestFail) {
+                        change = changeStatus();
+
+                        if (change.status) {
+                            statusresult = StatusChangeNoRequest;
+                        } else {
+                            statusresult = StatusChangeFail;
+                        }
+
+                    }
+
+                    writeLog(entityType, statusTypeLabel, oldStatusLabel, newStatusLabel, statusresult, createreq.requestId, createreq.ticketNumber);
+                    $("#partialView").load("/KlikBCAIndividu/KBIKeyBCAConnectionPartial?" + params + "&statusChange=" + statusresult + "&requestId=" + createreq.requestId + "&ticketNumber=" + createreq.ticketNumber, " #partialView");
+
+                }
+
+                $('.btn-default').click();
+                $("#Summary").val("");
+            });
+        });
+
+        function changeStatusViaInquiry() {
+            var change;
+            var statusresult;
+
+            if (newStatus == "BukaBlokir") { // statusType == 1 -> special case
+                var random = $("#bukablokirTxt").val();
+
+                change = keyBCABukaBlokir(entityType, keyId, tokenType, random);
+                if (change.status) {
+                    statusresult = StatusChangeSuccessViaInquiry;
+                } else {
+                    statusresult = StatusChangeFail;
+                }
+
+                writeLog(entityType, statusTypeLabel, oldStatusLabel, newStatusLabel, statusresult, "", "");
+
+                if (change.status) {
+                    var log = keyBCAWriteToLog(entityType, "", keyId, updateOfficer, lastUpdatedDate, snToken, atmNo, firstName, applicationCode, reason, "", "buka_blokir");
+                    if (log.status) {
+                        if (log.result == 1) {
+                            statusresult = StatusChangeBukaBlokir;
+                        } else {
+                            statusresult = StatusChangeBukaBlokirLogFail;
+                        }
+                    } else {
+                        statusresult = StatusChangeBukaBlokirLogFail;
+                    }
+                }
+                $("#partialView").load("/KlikBCAIndividu/KBIKeyBCAConnectionPartial?" + params + "&statusChange=" + statusresult + "&ticketNumber=" + change.kodeblokir, " #partialView");
+
+            } else {
+                change = changeStatus();
+                if (change.status) {
+                    statusresult = StatusChangeSuccessViaInquiry;
+                } else {
+                    statusresult = StatusChangeFail;
+                }
+
+                writeLog(entityType, statusTypeLabel, oldStatusLabel, newStatusLabel, statusresult, "", "");
+                $("#partialView").load("/KlikBCAIndividu/KBIKeyBCAConnectionPartial?" + params + "&statusChange=" + statusresult, " #partialView");
+            }
+        }
+
+        function changeStatus() {
+            var change;
+            switch (statusType) {
+                case '1':
+                    change = changeKeyBCAStatus(entityType, keyId, oldStatus, newStatus, reason);
+                    break;
+            }
+            return change;
+        }
+
+    </script>
+}
+else
+{
+    <script type="text/javascript">$("#messagebox").html(MessageText('error', 'No Record Found'));</script>
+}

@@ -1,0 +1,87 @@
+﻿@model CCARE.Models.Team
+
+@{
+    ViewBag.Title = "Edit";
+    if (Request.IsAjaxRequest())
+    {
+        Layout = null;
+    }
+    else
+    {
+        Layout = "~/Views/Shared/_LayoutEntity.cshtml";
+    }
+}
+
+@section title
+{
+    Team: @Model.Name
+}
+
+@section entityLogo
+{
+    <img class="crm-logo" src="~/assets/images/ico_lrg_112.gif" />
+}
+
+@section formTitle
+{
+    <div id="t-information" class="text_title">
+        <h1>Information</h1>
+        Team: @Model.Name
+    </div>
+}
+
+@section navHeader
+{
+    <ul class="nav navbar-nav navbar-left">
+        <li><a id="btn_save" href="#">Save</a></li>
+        <li><a id="btn_savenclose" href="#">Save & Close</a></li>
+        <li><a id="btn_savenopen" href="#">Save & New</a></li>
+    </ul>
+}
+
+@section footerStatus
+{
+    <div class="footer_text">Status: Existing</div>
+}
+
+@section sidebarMenu
+{
+    <li><a id="teamMemberInformation" href="#">Information</a></li>
+    <li><a id="teamMemberView" href="#">Members</a></li>
+}
+
+
+<div class="container-fluid">
+    <!-- tabs -->
+    <div class="row">
+        <div class="col-sm-12 panel panel-default panel_form_parent">
+            @RenderBody()            
+        </div>
+    </div>
+    
+    <div id="response-modal"></div>
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        //validasi kosong untuk mandatory
+        function AddTeamMembers(url) {
+            $.ajax({
+                type: "GET",
+                url: url,
+                cache: false,
+                beforeSend: function (jqXHR, settings) {
+                },
+                success: function (data, textStatus, jqXHR) {
+                    $("#response-modal").html(data);
+                    script = $(this).text();
+                    $.globalEval(script);
+                }
+            })
+        }
+        
+        $("#addTeamMembers").click(function () {
+            AddTeamMembers('@Url.Action("_addMember", "TeamMember", new { teamId = Model.TeamID, type = "members" })');
+        });
+    });
+</script>

@@ -1,0 +1,453 @@
+﻿@model CCARE.Models.TaskArchive
+
+@{
+    ViewBag.Title = "Edit";
+    Layout = "~/Views/Shared/_LayoutEntity.cshtml";
+}
+
+@section title
+{
+    Task
+}
+
+@section entityLogo
+{
+    <img class="crm-logo" src="~/assets/images/ico_lrg_112.gif" />
+}
+
+@section formTitle
+{
+    <div class="text_title">
+        <h1>Information</h1>
+        Task: @Model.Subject
+    </div>  
+}
+
+@section navHeader
+{
+    <ul class="nav navbar-nav navbar-left">
+
+        @*<li><a id="btn_del" href="#" data-toggle="modal" data-target="#confirm-delete">Delete Task</a></li>*@
+    </ul>
+}
+
+@section footerStatus
+{
+    <div class="footer_text"> Status : @Model.ActivityStatusLabel
+
+        
+    </div>
+}
+
+@section sidebarMenu
+{
+    <li class="active"><a href="#">Information</a></li>
+}
+
+
+<div class="modal fade" id="confirm-delete" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1>Confirm Deletion</h1>
+            </div>
+            <div class="modal-body input-lg">
+                The system will delete this record. This action cannot be undone, To continue click "Delete".
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                <a class="btn btn-danger btn-ok">Delete</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container-fluid">
+    <!-- tabs -->
+    <div class="row">
+        <div class="col-sm-12 panel panel-default panel_form_parent">
+            <ul id="myTab2" class="nav nav-tabs crm-padding-top-10">
+                <li class="active"><a href="#general" id="general-tab" data-toggle="tab">General</a></li>
+                <li ><a href="#notes" id="notes-tab" data-toggle="tab">Notes</a></li>
+                <li ><a href="#documents" id="documents-tab" data-toggle="tab">Documents</a></li>
+
+            </ul>             
+            <br />        
+                 
+            <div class="tab-content myContent_Tab">
+                <div class="tab-pane fade active in" id="general" aria-labelledby="general-tab">
+             @using (Html.BeginForm("Edit", "Task", FormMethod.Post, new { id = "form_Task_gen" }))
+             {
+                <div class="modal fade" id="confirm-closetask" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h1>Confirm</h1>
+                            </div>
+                            <div class="modal-body input-lg confirm-change-status">
+                               Select the Status of selected Task :  
+                                <select id="newstatus" name="newstatus">
+                                    <option value ="1">Completed</option>
+                                    <option value ="2">Canceled</option>
+                                </select>
+
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                                <a class="btn btn-danger btn-ok">Ok</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                      @Html.HiddenFor(x => x.TaskID)
+                      @Html.Hidden("hidden_displayStatus", "", new { @id = "hidden_displayStatus" })
+                    
+                    <!-- panel content -->
+                    <div class="col-sm-12">
+                      
+                        <!-- title 1 -->
+                        <div class="row form_text">
+                            <div class="panel panel-default panel_form_child">
+                                <div class="panel-heading">
+                                    <label class="control-label"><strong>General</strong></label>
+                                </div>
+                                <div class="panel-body">
+                                    <div class="form-horizontal crm-padding-top-10">
+                                        <div class="row">
+                                            <div class="col-sm-12">                                        
+                                                <div class="form-group">
+                                                    <label class="col-sm-2 control-label mandatory">Summary</label>
+                                                    <div class="col-sm-10">
+                                                        @(ViewContext.RouteData.Values["parameterName"])
+                                                        @Html.TextBoxFor(x => x.Subject, new { @class = "form-control", @readonly = "readonly" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-12">                                        
+                                                <div class="form-group">
+                                                    <label class="col-sm-2 control-label">Task ID</label>
+                                                    <div class="col-sm-10">
+                                                        @Html.TextBoxFor(x => x.TaskNumber, new { @class = "form-control", @readonly = "readonly" })
+                                                        <input type="hidden" id="ObjectId" name="ObjectId" class="form-control" value="@Model.TaskID" />
+                                                        <input type="hidden" id="ObjectTypeCode" name="ObjectTypeCode" class="form-control" value="4212" />    
+                                                        @*<input type="hidden" id="BusinessUnitID" name="BusinessUnitID" class="form-control" value="@Model.BusinessUnitID" />
+                                                        *@<input type="hidden" id="entityname" name="entityname" value="task" />
+                                                   
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-12">                                        
+                                                <div class="form-group">
+                                                    <label class="col-sm-2 control-label">Request ID</label>
+                                                    <div class="col-sm-10">
+                                                        @Html.TextBoxFor(x => x.RequestTicketNumber, new { @class = "form-control", @readonly = "readonly" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-12">                                        
+                                                <div class="form-group">
+                                                    <label class="col-sm-2 control-label">Regarding</label>
+                                                    <div class="col-sm-10">
+                                                        @Html.HiddenFor(x => x.RequestID)
+                                                        @Html.TextBoxFor(x => x.Regarding, new { @class = "form-control", @readonly = "readonly" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-6">                                        
+                                                <div class="form-group">
+                                                    <label class="col-sm-4 control-label">Status</label>
+                                                    <div class="col-sm-8">
+                                                         @Html.TextBoxFor(x => x.ActivityStatusLabel, new { @class = "form-control", @readonly = "readonly" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-6">                                                                              
+                                                <div class="form-group">
+                                                    <label class="col-sm-4 control-label">Priority</label>
+                                                    <div class="col-sm-8">
+                                                         @Html.TextBoxFor(x => x.PriorityLabel, new { @class = "form-control", @readonly = "readonly" })
+                                                        @*@Html.DropDownListFor(x => x.Priority, (SelectList)ViewBag.SL_Priority, "", new { @class = "form-control" })*@
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-6">                                        
+                                                <div class="form-group">
+                                                    <label class="col-sm-4 control-label mandatory  ">Owner</label>
+                                                    <div class="col-sm-8">
+                                                            @Html.TextBoxFor(x => x.OwnerName, new { @class = "form-control", @readonly = "readonly" })
+                                                      
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-6">                                                                              
+                                                <div class="form-group">
+                                                    <label class="col-sm-4 control-label">Workgroup</label>
+                                                    <div class="col-sm-8">
+                                                        @Html.TextBoxFor(x => x.WorkGroupName, new { @class = "form-control", @readonly = "readonly" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>                               
+                            </div>
+                        </div>     
+                        
+                                         <!-- title 2 -->
+                        <div class="row form_text">
+                            <div class="panel panel-default panel_form_child">
+                                <div class="panel-heading">
+                                    <label class="control-label"><strong>Time Stamp Information</strong></label>
+                                </div>
+                                <div class="panel-body">  
+                                     <div class="form-horizontal crm-padding-top-10">
+                                        <div class="row">
+                                            <div class="col-sm-6">                                        
+                                                <div class="form-group">
+                                                    <label class="col-sm-4 control-label">Created By</label>
+                                                    <div class="col-sm-8">
+                                                        @Html.TextBoxFor(x => x.CreatedByName, new { @class = "form-control", @readonly = "readonly" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-6">                                                                              
+                                                <div class="form-group">
+                                                    <label class="col-sm-4 control-label">Created On</label>
+                                                    <div class="col-sm-8">
+                                                        @Html.TextBoxFor(x => x.CreatedOn, new { @class = "form-control", @readonly = "readonly" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-6">                                        
+                                                <div class="form-group">
+                                                    <label class="col-sm-4 control-label">Modified By</label>
+                                                    <div class="col-sm-8">
+                                                        @Html.TextBoxFor(x => x.ModifiedByName, new { @class = "form-control", @readonly = "readonly" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-6">                                                                              
+                                                <div class="form-group">
+                                                    <label class="col-sm-4 control-label">Modified On</label>
+                                                    <div class="col-sm-8">
+                                                        @Html.TextBoxFor(x => x.ModifiedOn, new { @class = "form-control", @readonly = "readonly" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                          <div class="row">
+                                            <div class="col-sm-6">                                                                              
+                                                <div class="form-group">
+                                                    <label class="col-sm-4 control-label">Archived On</label>
+                                                    <div class="col-sm-8">
+                                                        @Html.TextBoxFor(x => x.ArchivedOn, new { @class = "form-control", @readonly = "readonly" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                     </div>
+                                </div>                               
+                            </div>
+                        </div>     
+                        
+                    </div>
+                   }
+                </div>
+                
+                <div class="tab-pane fade" id="notes" aria-labelledby="notes-tab">
+                    <div class="col-sm-12">
+                        <div class="row">
+                            <div class="panel panel-default panel_form_child">
+                                <div class="panel-heading">
+                                    <label class="control-label"><strong>Notes</strong></label>
+                                </div>
+                                <div class="panel-body">
+                                    <div class="row">
+                                        <div class="col-sm-12">
+                                           <div class="form-horizontal">
+                                            <div class="row notes-padding">
+                                                <div class="col-sm-12">
+                                                    <div class="form-group">
+                                                    <br />
+                                                            <textarea class="form-control txtArea textareaDisplay" rows="50" style="height:300px; min-height:300px; max-height:300px;">                                                            
+                                                               
+                                                                    @Model.Note
+                                                                
+                                                            </textarea>
+                                                        
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                      </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tab-pane fade" id="documents" aria-labelledby="documents-tab">
+                    <div class="col-sm-12">
+                        <div class="row">
+                            @*<ol class="breadcrumb">
+                                <li><a id="btn_attach" class="functionalBtn" href="#">Attach New File</a></li>
+                            </ol>*@
+                            <div class="panel panel-default panel_form_child">
+                                
+                                <div class="panel-heading">
+                                    <label class="control-label"><strong>Document</strong></label>
+                                </div>
+                                <div class="panel-body">
+                                    <div class="row">
+                                        <div class="col-sm-12">
+                                          @foreach (var x in ViewBag.docl)
+                                            {
+                                                <div class="form-horizontal crm-padding-top-10">
+                                                    <div class="row">
+                                                        <div class="col-sm-6">                                        
+                                                            <div class="form-group">
+                                                                <label class="col-sm-12 control-label text-left-i">Title: @x.Subject</label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-sm-6">                                        
+                                                            <div class="form-group">
+                                                                <label class="col-sm-12 control-label text-left-i">Note created on @x.CreatedOn.ToString("dd/MM/yyyy HH:mm")</label>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-sm-6">                                        
+                                                            <div class="form-group">
+                                                                <label class="col-sm-12 control-label">Note modified on @x.ModifiedOn.ToString("dd/MM/yyyy HH:mm")</label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-sm-12">                                        
+                                                            <div class="form-group">
+                                                                 <a href="javascript:void(0)" class="col-sm-12 control-label text-left-i btnDownload" id="@x.AnnotationID"><b>@x.FileName (@x.FileSize.ToString("#,###0") Byte(s))</b></a>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            }
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+                
+        </div>        
+    </div>    
+    </div>
+    <div class="row form_text">
+    </div>
+
+    <div id="response-modal"></div>
+<script type="text/javascript">
+    $(document).ready(function () {
+        function validateForm(action, formName) {
+
+            if ($("#Subject").val() == "") {
+                alert("@Resources.Task.TaskMandatorySummary");
+                return false;
+            }
+
+            if ($("#RequestID").val() == "") {
+                alert("@Resources.Task.TaskMandatoryRegarding");
+                return false;
+            }
+
+            if ($("#OwnerID").val() == "") {
+                alert("@Resources.Task.TaskMandatoryOwner");
+                return false;
+            }
+
+            formSubmit(action, formName);
+        }
+
+        $("#btn_save").click(function () {
+            validateForm("save", $("#form_Task_gen"));
+        });
+
+        $("#btn_savenclose").click(function () {
+            validateForm("saveNClose", $("#form_Task_gen"));
+        });
+
+        if ('@(ViewBag.TabPosition)' == "documents") {
+            var tab = "documents";
+            $('.nav-tabs a[href="#' + tab + '"]').tab('show');
+        }
+
+       
+        
+        $('#RequestName-popup').on('click', function (e) {
+            urlModalPopup = '@Url.Action("_popupContent", "Popup", new { type = "request", _entity = "" })';
+            colModelsName = [
+                { label: 'ID', name: 'Id', index: 'Id', key: true, width: 75, hidden: true },
+                { label: 'Summary', name: 'Name', width: 100 },
+                { label: 'CCQ Request ID', name: 'ccqreqid', width: 100 },
+                { label: 'Category', name: 'category', width: 150 },
+                { label: 'Product', name: 'product', width: 150 },
+                { label: 'Status', name: 'status', width: 70 },
+                { label: 'Created On', name: 'createdon', width: 150, formatter: 'date', formatoptions: { srcformat: "ISO8601Long", newformat: "m/d/Y h:i A" } },
+                { label: 'Due Date', name: 'duedate', width: 150, formatter: 'date', formatoptions: { srcformat: "ISO8601Long", newformat: "m/d/Y h:i A" } }
+            ];
+            var id = $(this).parent().find('input:last').attr('id');
+            $('#' + id).trigger("blur");
+            e.preventDefault();
+        });
+
+        if ('@(ViewBag.TabPosition)' == "documents") {
+            var tab = "documents";
+            $('.nav-tabs a[href="#' + tab + '"]').tab('show');
+        }
+
+        $("#confirm-closetask").on('show.bs.modal', function (e) {
+            $(this).find('.btn-ok').click(function () {
+                var postData = {
+                    _resolution: "",
+                    _description: ""
+                };
+                otherAction($("#form_Task_gen"), "/Task/ChangeStatus", "changestatus", postData)
+            });
+        });
+       
+        var Status = '@(Model.ActivityStatus)';
+        if (Status == 1 || Status == 2) {
+            $("select").attr('disabled', 'disabled');
+            $("#Subject").attr('disabled', 'disabled');
+            $(".functionalBtn").attr('disabled', 'disabled');
+            $("#RequestName-popup").attr('disabled', 'disabled');
+            $("#OwnerName-popup").attr('disabled', 'disabled');
+            $("#btnInputNotes").attr('disabled', 'disabled');
+            $("#textareaInput").attr('readonly', 'readonly');
+        }
+
+        $("#btn_attach").click(function () {
+            var Status = '@(Model.ActivityStatus)';
+            if (Status != 1 && Status != 2) {
+                $("#attach-file").modal();
+            }
+        });
+    });
+</script>

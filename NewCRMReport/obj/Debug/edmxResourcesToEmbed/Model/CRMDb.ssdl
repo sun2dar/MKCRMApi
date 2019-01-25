@@ -1,0 +1,421 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="BCAUAT_MSCRMModel.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2008" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityContainer Name="BCAUAT_MSCRMModelStoreContainer">
+    <EntitySet Name="Request" EntityType="BCAUAT_MSCRMModel.Store.Request" store:Type="Views" store:Schema="CRM" store:Name="Request">
+      <DefiningQuery>SELECT 
+      [Request].[RequestID] AS [RequestID], 
+      [Request].[CCQRequestID] AS [CCQRequestID], 
+      [Request].[TicketNumber] AS [TicketNumber], 
+      [Request].[CustomerIdType] AS [CustomerIdType], 
+      [Request].[ForCustomer] AS [ForCustomer], 
+      [Request].[CustomerID] AS [CustomerID], 
+      [Request].[CustomerName] AS [CustomerName], 
+      [Request].[NonCustomerID] AS [NonCustomerID], 
+      [Request].[NonCustomerName] AS [NonCustomerName], 
+      [Request].[AccountNo] AS [AccountNo], 
+      [Request].[CardNo] AS [CardNo], 
+      [Request].[CustomerNo] AS [CustomerNo], 
+      [Request].[LoanNo] AS [LoanNo], 
+      [Request].[ContactMethod] AS [ContactMethod], 
+      [Request].[ContactMethodLabel] AS [ContactMethodLabel], 
+      [Request].[CustomerAttitude] AS [CustomerAttitude], 
+      [Request].[CustomerAttitudeLabel] AS [CustomerAttitudeLabel], 
+      [Request].[InteractionCount] AS [InteractionCount], 
+      [Request].[Location] AS [Location], 
+      [Request].[LocationLabel] AS [LocationLabel], 
+      [Request].[Address1] AS [Address1], 
+      [Request].[Address2] AS [Address2], 
+      [Request].[City] AS [City], 
+      [Request].[PostalCode] AS [PostalCode], 
+      [Request].[CompanyName] AS [CompanyName], 
+      [Request].[CommunicationPhone] AS [CommunicationPhone], 
+      [Request].[CategoryID] AS [CategoryID], 
+      [Request].[CategoryName] AS [CategoryName], 
+      [Request].[ProductID] AS [ProductID], 
+      [Request].[ProductName] AS [ProductName], 
+      [Request].[WorkgroupID] AS [WorkgroupID], 
+      [Request].[WorkgroupName] AS [WorkgroupName], 
+      [Request].[ServiceLevel] AS [ServiceLevel], 
+      [Request].[PriorityCode] AS [PriorityCode], 
+      [Request].[PriorityLabel] AS [PriorityLabel], 
+      [Request].[StatusCode] AS [StatusCode], 
+      [Request].[StatusLabel] AS [StatusLabel], 
+      [Request].[Title] AS [Title], 
+      [Request].[TransactionTime] AS [TransactionTime], 
+      [Request].[TransactionTimeZone] AS [TransactionTimeZone], 
+      [Request].[TransactionTimeZoneLabel] AS [TransactionTimeZoneLabel], 
+      [Request].[Currency] AS [Currency], 
+      [Request].[CurrencyLabel] AS [CurrencyLabel], 
+      [Request].[TransactionAmount] AS [TransactionAmount], 
+      [Request].[TransactionAmount_txt] AS [TransactionAmount_txt], 
+      [Request].[WsIdID] AS [WsIdID], 
+      [Request].[WsIdName] AS [WsIdName], 
+      [Request].[CaseOriginCode] AS [CaseOriginCode], 
+      [Request].[CaseOriginLabel] AS [CaseOriginLabel], 
+      [Request].[Lokasi] AS [Lokasi], 
+      [Request].[BranchID] AS [BranchID], 
+      [Request].[BranchName] AS [BranchName], 
+      [Request].[UserBranchID] AS [UserBranchID], 
+      [Request].[UserBranchName] AS [UserBranchName], 
+      [Request].[CauseID] AS [CauseID], 
+      [Request].[CauseName] AS [CauseName], 
+      [Request].[Reason] AS [Reason], 
+      [Request].[CreatedBy] AS [CreatedBy], 
+      [Request].[CreatedByName] AS [CreatedByName], 
+      [Request].[ModifiedBy] AS [ModifiedBy], 
+      [Request].[ModifiedByName] AS [ModifiedByName], 
+      [Request].[OwnerID] AS [OwnerID], 
+      [Request].[OwnerName] AS [OwnerName], 
+      [Request].[CreatedOn] AS [CreatedOn], 
+      [Request].[ModifiedOn] AS [ModifiedOn], 
+      [Request].[DueDate] AS [DueDate], 
+      [Request].[ClosedOn] AS [ClosedOn], 
+      [Request].[ReopenedOn] AS [ReopenedOn], 
+      [Request].[BusinessUnitID] AS [BusinessUnitID], 
+      [Request].[Source] AS [Source], 
+      [Request].[DeletionStateCode] AS [DeletionStateCode], 
+      [Request].[StateCode] AS [StateCode], 
+      [Request].[ReferenceNumber] AS [ReferenceNumber], 
+      [Request].[RefTicketNumber] AS [RefTicketNumber], 
+      [Request].[IncomingPhoneNumber] AS [IncomingPhoneNumber], 
+      [Request].[ExtraCardType] AS [ExtraCardType], 
+      [Request].[ExtraCardLabel] AS [ExtraCardLabel], 
+      [Request].[ExtraCardNumber] AS [ExtraCardNumber], 
+      [Request].[Profession] AS [Profession]
+      FROM [CRM].[Request] AS [Request]</DefiningQuery>
+    </EntitySet>
+    <EntitySet Name="SystemUser" EntityType="BCAUAT_MSCRMModel.Store.SystemUser" store:Type="Views" store:Schema="CRM" store:Name="SystemUser">
+      <DefiningQuery>SELECT 
+      [SystemUser].[SystemUserID] AS [SystemUserID], 
+      [SystemUser].[FirstName] AS [FirstName], 
+      [SystemUser].[DomainName] AS [DomainName], 
+      [SystemUser].[EmployeeID] AS [EmployeeID], 
+      [SystemUser].[FullName] AS [FullName], 
+      [SystemUser].[LastName] AS [LastName], 
+      [SystemUser].[HomePhone] AS [HomePhone], 
+      [SystemUser].[InternalEMailAddress] AS [InternalEMailAddress], 
+      [SystemUser].[MobilePhone] AS [MobilePhone], 
+      [SystemUser].[Title] AS [Title], 
+      [SystemUser].[DeletionStateCode] AS [DeletionStateCode], 
+      [SystemUser].[ActiveDirectoryGuid] AS [ActiveDirectoryGuid], 
+      [SystemUser].[IsActiveDirectoryUser] AS [IsActiveDirectoryUser], 
+      [SystemUser].[IsDisabled] AS [IsDisabled], 
+      [SystemUser].[CreatedOn] AS [CreatedOn], 
+      [SystemUser].[ModifiedOn] AS [ModifiedOn], 
+      [SystemUser].[CreatedBy] AS [CreatedBy], 
+      [SystemUser].[ModifiedBy] AS [ModifiedBy], 
+      [SystemUser].[DisplayInServiceViews] AS [DisplayInServiceViews], 
+      [SystemUser].[BranchLoginName] AS [BranchLoginName], 
+      [SystemUser].[CCQId] AS [CCQId], 
+      [SystemUser].[Department] AS [Department], 
+      [SystemUser].[Location] AS [Location], 
+      [SystemUser].[Site] AS [Site], 
+      [SystemUser].[TandemUserGroup] AS [TandemUserGroup], 
+      [SystemUser].[TandemUserNum] AS [TandemUserNum], 
+      [SystemUser].[InternalAddressId] AS [InternalAddressId], 
+      [SystemUser].[Fax] AS [Fax], 
+      [SystemUser].[Phone] AS [Phone], 
+      [SystemUser].[Phone2] AS [Phone2], 
+      [SystemUser].[pager] AS [pager], 
+      [SystemUser].[OrganizationID] AS [OrganizationID], 
+      [SystemUser].[BusinessUnitID] AS [BusinessUnitID], 
+      [SystemUser].[BusinessUnitName] AS [BusinessUnitName], 
+      [SystemUser].[BranchID] AS [BranchID], 
+      [SystemUser].[BranchName] AS [BranchName], 
+      [SystemUser].[PreferredPhoneCode] AS [PreferredPhoneCode], 
+      [SystemUser].[PreferredPhone] AS [PreferredPhone], 
+      [SystemUser].[CRMUserID] AS [CRMUserID], 
+      [SystemUser].[Config_UserID] AS [Config_UserID], 
+      [SystemUser].[AuthInfo] AS [AuthInfo], 
+      [SystemUser].[DefaultOrganizationID] AS [DefaultOrganizationID], 
+      [SystemUser].[SecurityRoleID] AS [SecurityRoleID], 
+      [SystemUser].[RoleName] AS [RoleName], 
+      [SystemUser].[SystemUserRoleID] AS [SystemUserRoleID]
+      FROM [CRM].[SystemUser] AS [SystemUser]</DefiningQuery>
+    </EntitySet>
+    <EntitySet Name="Task" EntityType="BCAUAT_MSCRMModel.Store.Task" store:Type="Views" store:Schema="CRM" store:Name="Task">
+      <DefiningQuery>SELECT 
+      [Task].[TaskID] AS [TaskID], 
+      [Task].[PartyUserID] AS [PartyUserID], 
+      [Task].[PartyUserName] AS [PartyUserName], 
+      [Task].[TaskNumber] AS [TaskNumber], 
+      [Task].[CCQID] AS [CCQID], 
+      [Task].[RequestTicketNumber] AS [RequestTicketNumber], 
+      [Task].[Subject] AS [Subject], 
+      [Task].[Regarding] AS [Regarding], 
+      [Task].[RequestStatusCode] AS [RequestStatusCode], 
+      [Task].[RequestStatusLabel] AS [RequestStatusLabel], 
+      [Task].[TaskStatus] AS [TaskStatus], 
+      [Task].[TaskStatusLabel] AS [TaskStatusLabel], 
+      [Task].[ActivityStatus] AS [ActivityStatus], 
+      [Task].[ActivityStatusLabel] AS [ActivityStatusLabel], 
+      [Task].[Priority] AS [Priority], 
+      [Task].[PriorityLabel] AS [PriorityLabel], 
+      [Task].[DueDate] AS [DueDate], 
+      [Task].[StartDate] AS [StartDate], 
+      [Task].[OwnerID] AS [OwnerID], 
+      [Task].[OwnerName] AS [OwnerName], 
+      [Task].[WorkGroupID] AS [WorkGroupID], 
+      [Task].[WorkGroupName] AS [WorkGroupName], 
+      [Task].[CreatedBy] AS [CreatedBy], 
+      [Task].[CreatedOn] AS [CreatedOn], 
+      [Task].[CreatedByName] AS [CreatedByName], 
+      [Task].[ModifiedBy] AS [ModifiedBy], 
+      [Task].[ModifiedOn] AS [ModifiedOn], 
+      [Task].[ModifiedByName] AS [ModifiedByName], 
+      [Task].[DeletionStateCode] AS [DeletionStateCode], 
+      [Task].[BusinessUnitID] AS [BusinessUnitID], 
+      [Task].[RequestID] AS [RequestID], 
+      [Task].[Pointer_ActivityId] AS [Pointer_ActivityId]
+      FROM [CRM].[Task] AS [Task]</DefiningQuery>
+    </EntitySet>
+    <EntitySet Name="CallWrapUpReport" EntityType="BCAUAT_MSCRMModel.Store.CallWrapUpReport" store:Type="Views" store:Schema="rpt" store:Name="CallWrapUpReport">
+      <DefiningQuery>SELECT 
+      [CallWrapUpReport].[CallWrapUpID] AS [CallWrapUpID], 
+      [CallWrapUpReport].[CustomerID] AS [CustomerID], 
+      [CallWrapUpReport].[CustomerName] AS [CustomerName], 
+      [CallWrapUpReport].[NonCustomerID] AS [NonCustomerID], 
+      [CallWrapUpReport].[NonCustomerName] AS [NonCustomerName], 
+      [CallWrapUpReport].[CallEndTime] AS [CallEndTime], 
+      [CallWrapUpReport].[CallStartTime] AS [CallStartTime], 
+      [CallWrapUpReport].[Source] AS [Source], 
+      [CallWrapUpReport].[SourceDesc] AS [SourceDesc], 
+      [CallWrapUpReport].[CreatedOn] AS [CreatedOn], 
+      [CallWrapUpReport].[CreatedByName] AS [CreatedByName], 
+      [CallWrapUpReport].[CreatedBy] AS [CreatedBy], 
+      [CallWrapUpReport].[ModifiedOn] AS [ModifiedOn], 
+      [CallWrapUpReport].[ModifiedByName] AS [ModifiedByName], 
+      [CallWrapUpReport].[ModifiedBy] AS [ModifiedBy], 
+      [CallWrapUpReport].[DeletionStateCode] AS [DeletionStateCode], 
+      [CallWrapUpReport].[StateCode] AS [StateCode], 
+      [CallWrapUpReport].[StatusCode] AS [StatusCode], 
+      [CallWrapUpReport].[CategoryName] AS [CategoryName], 
+      [CallWrapUpReport].[HandphoneNo] AS [HandphoneNo], 
+      [CallWrapUpReport].[PhoneNo] AS [PhoneNo]
+      FROM [rpt].[CallWrapUpReport] AS [CallWrapUpReport]</DefiningQuery>
+    </EntitySet>
+  </EntityContainer>
+  <!--Errors Found During Generation:
+      warning 6002: The table/view 'BCAUAT_MSCRM.CRM.CallWrapUp' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.
+      -->
+  <!--Errors Found During Generation:
+      warning 6002: The table/view 'BCAUAT_MSCRM.CRM.Request' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.
+      -->
+  <EntityType Name="Request">
+    <Key>
+      <PropertyRef Name="RequestID" />
+      <PropertyRef Name="CustomerIdType" />
+      <PropertyRef Name="StateCode" />
+    </Key>
+    <Property Name="RequestID" Type="uniqueidentifier" Nullable="false" />
+    <Property Name="CCQRequestID" Type="nvarchar" MaxLength="100" />
+    <Property Name="TicketNumber" Type="nvarchar" MaxLength="100" />
+    <Property Name="CustomerIdType" Type="int" Nullable="false" />
+    <Property Name="ForCustomer" Type="bit" />
+    <Property Name="CustomerID" Type="uniqueidentifier" />
+    <Property Name="CustomerName" Type="nvarchar" MaxLength="160" />
+    <Property Name="NonCustomerID" Type="uniqueidentifier" />
+    <Property Name="NonCustomerName" Type="nvarchar" MaxLength="200" />
+    <Property Name="AccountNo" Type="nvarchar" MaxLength="100" />
+    <Property Name="CardNo" Type="nvarchar" MaxLength="100" />
+    <Property Name="CustomerNo" Type="nvarchar" MaxLength="100" />
+    <Property Name="LoanNo" Type="nvarchar" MaxLength="100" />
+    <Property Name="ContactMethod" Type="int" />
+    <Property Name="ContactMethodLabel" Type="nvarchar" MaxLength="1000" />
+    <Property Name="CustomerAttitude" Type="int" />
+    <Property Name="CustomerAttitudeLabel" Type="nvarchar" MaxLength="1000" />
+    <Property Name="InteractionCount" Type="nvarchar" MaxLength="100" />
+    <Property Name="Location" Type="int" />
+    <Property Name="LocationLabel" Type="nvarchar" MaxLength="1000" />
+    <Property Name="Address1" Type="nvarchar" MaxLength="100" />
+    <Property Name="Address2" Type="nvarchar" MaxLength="100" />
+    <Property Name="City" Type="nvarchar" MaxLength="40" />
+    <Property Name="PostalCode" Type="nvarchar" MaxLength="5" />
+    <Property Name="CompanyName" Type="nvarchar" MaxLength="100" />
+    <Property Name="CommunicationPhone" Type="nvarchar" MaxLength="100" />
+    <Property Name="CategoryID" Type="uniqueidentifier" />
+    <Property Name="CategoryName" Type="nvarchar" MaxLength="100" />
+    <Property Name="ProductID" Type="uniqueidentifier" />
+    <Property Name="ProductName" Type="nvarchar" MaxLength="100" />
+    <Property Name="WorkgroupID" Type="uniqueidentifier" />
+    <Property Name="WorkgroupName" Type="nvarchar" MaxLength="200" />
+    <Property Name="ServiceLevel" Type="int" />
+    <Property Name="PriorityCode" Type="int" />
+    <Property Name="PriorityLabel" Type="nvarchar" MaxLength="1000" />
+    <Property Name="StatusCode" Type="int" />
+    <Property Name="StatusLabel" Type="nvarchar" MaxLength="1000" />
+    <Property Name="Title" Type="nvarchar" MaxLength="200" />
+    <Property Name="TransactionTime" Type="nvarchar" MaxLength="50" />
+    <Property Name="TransactionTimeZone" Type="int" />
+    <Property Name="TransactionTimeZoneLabel" Type="nvarchar" MaxLength="1000" />
+    <Property Name="Currency" Type="int" />
+    <Property Name="CurrencyLabel" Type="nvarchar" MaxLength="1000" />
+    <Property Name="TransactionAmount" Type="decimal" Precision="23" Scale="10" />
+    <Property Name="TransactionAmount_txt" Type="varchar" />
+    <Property Name="WsIdID" Type="uniqueidentifier" />
+    <Property Name="WsIdName" Type="nvarchar" MaxLength="100" />
+    <Property Name="CaseOriginCode" Type="int" />
+    <Property Name="CaseOriginLabel" Type="nvarchar" MaxLength="1000" />
+    <Property Name="Lokasi" Type="nvarchar" MaxLength="100" />
+    <Property Name="BranchID" Type="uniqueidentifier" />
+    <Property Name="BranchName" Type="nvarchar" MaxLength="100" />
+    <Property Name="UserBranchID" Type="uniqueidentifier" />
+    <Property Name="UserBranchName" Type="nvarchar" MaxLength="100" />
+    <Property Name="CauseID" Type="uniqueidentifier" />
+    <Property Name="CauseName" Type="nvarchar" MaxLength="100" />
+    <Property Name="Reason" Type="nvarchar" MaxLength="200" />
+    <Property Name="CreatedBy" Type="uniqueidentifier" />
+    <Property Name="CreatedByName" Type="nvarchar" MaxLength="160" />
+    <Property Name="ModifiedBy" Type="uniqueidentifier" />
+    <Property Name="ModifiedByName" Type="nvarchar" MaxLength="160" />
+    <Property Name="OwnerID" Type="uniqueidentifier" />
+    <Property Name="OwnerName" Type="nvarchar" MaxLength="160" />
+    <Property Name="CreatedOn" Type="datetime" />
+    <Property Name="ModifiedOn" Type="datetime" />
+    <Property Name="DueDate" Type="datetime" />
+    <Property Name="ClosedOn" Type="datetime" />
+    <Property Name="ReopenedOn" Type="datetime" />
+    <Property Name="BusinessUnitID" Type="uniqueidentifier" />
+    <Property Name="Source" Type="int" />
+    <Property Name="DeletionStateCode" Type="int" />
+    <Property Name="StateCode" Type="int" Nullable="false" />
+    <Property Name="ReferenceNumber" Type="nvarchar" MaxLength="100" />
+    <Property Name="RefTicketNumber" Type="nvarchar" MaxLength="100" />
+    <Property Name="IncomingPhoneNumber" Type="nvarchar" MaxLength="100" />
+    <Property Name="ExtraCardType" Type="int" />
+    <Property Name="ExtraCardLabel" Type="varchar" MaxLength="11" />
+    <Property Name="ExtraCardNumber" Type="nvarchar" MaxLength="100" />
+    <Property Name="Profession" Type="nvarchar" MaxLength="100" />
+  </EntityType>
+  <!--Errors Found During Generation:
+      warning 6002: The table/view 'BCAUAT_MSCRM.CRM.SystemUser' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.
+      -->
+  <EntityType Name="SystemUser">
+    <Key>
+      <PropertyRef Name="SystemUserID" />
+      <PropertyRef Name="DomainName" />
+      <PropertyRef Name="DeletionStateCode" />
+      <PropertyRef Name="IsActiveDirectoryUser" />
+      <PropertyRef Name="BusinessUnitID" />
+    </Key>
+    <Property Name="SystemUserID" Type="uniqueidentifier" Nullable="false" />
+    <Property Name="FirstName" Type="nvarchar" MaxLength="50" />
+    <Property Name="DomainName" Type="nvarchar" Nullable="false" MaxLength="255" />
+    <Property Name="EmployeeID" Type="nvarchar" MaxLength="100" />
+    <Property Name="FullName" Type="nvarchar" MaxLength="160" />
+    <Property Name="LastName" Type="nvarchar" MaxLength="50" />
+    <Property Name="HomePhone" Type="nvarchar" MaxLength="50" />
+    <Property Name="InternalEMailAddress" Type="nvarchar" MaxLength="255" />
+    <Property Name="MobilePhone" Type="nvarchar" MaxLength="50" />
+    <Property Name="Title" Type="nvarchar" MaxLength="100" />
+    <Property Name="DeletionStateCode" Type="int" Nullable="false" />
+    <Property Name="ActiveDirectoryGuid" Type="uniqueidentifier" />
+    <Property Name="IsActiveDirectoryUser" Type="bit" Nullable="false" />
+    <Property Name="IsDisabled" Type="bit" />
+    <Property Name="CreatedOn" Type="datetime" />
+    <Property Name="ModifiedOn" Type="datetime" />
+    <Property Name="CreatedBy" Type="uniqueidentifier" />
+    <Property Name="ModifiedBy" Type="uniqueidentifier" />
+    <Property Name="DisplayInServiceViews" Type="bit" />
+    <Property Name="BranchLoginName" Type="nvarchar" MaxLength="100" />
+    <Property Name="CCQId" Type="int" />
+    <Property Name="Department" Type="nvarchar" MaxLength="20" />
+    <Property Name="Location" Type="nvarchar" MaxLength="20" />
+    <Property Name="Site" Type="nvarchar" MaxLength="40" />
+    <Property Name="TandemUserGroup" Type="nvarchar" MaxLength="4" />
+    <Property Name="TandemUserNum" Type="nvarchar" MaxLength="9" />
+    <Property Name="InternalAddressId" Type="uniqueidentifier" />
+    <Property Name="Fax" Type="nvarchar" MaxLength="50" />
+    <Property Name="Phone" Type="nvarchar" MaxLength="50" />
+    <Property Name="Phone2" Type="nvarchar" MaxLength="50" />
+    <Property Name="pager" Type="nvarchar" MaxLength="50" />
+    <Property Name="OrganizationID" Type="uniqueidentifier" />
+    <Property Name="BusinessUnitID" Type="uniqueidentifier" Nullable="false" />
+    <Property Name="BusinessUnitName" Type="nvarchar" MaxLength="160" />
+    <Property Name="BranchID" Type="uniqueidentifier" />
+    <Property Name="BranchName" Type="nvarchar" MaxLength="100" />
+    <Property Name="PreferredPhoneCode" Type="int" />
+    <Property Name="PreferredPhone" Type="nvarchar" MaxLength="255" />
+    <Property Name="CRMUserID" Type="uniqueidentifier" />
+    <Property Name="Config_UserID" Type="uniqueidentifier" />
+    <Property Name="AuthInfo" Type="nvarchar" MaxLength="128" />
+    <Property Name="DefaultOrganizationID" Type="uniqueidentifier" />
+    <Property Name="SecurityRoleID" Type="uniqueidentifier" />
+    <Property Name="RoleName" Type="nvarchar" MaxLength="100" />
+    <Property Name="SystemUserRoleID" Type="uniqueidentifier" />
+  </EntityType>
+  <!--Errors Found During Generation:
+      warning 6002: The table/view 'BCAUAT_MSCRM.CRM.Task' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.
+      -->
+  <EntityType Name="Task">
+    <Key>
+      <PropertyRef Name="TaskID" />
+      <PropertyRef Name="ActivityStatus" />
+      <PropertyRef Name="DeletionStateCode" />
+      <PropertyRef Name="Pointer_ActivityId" />
+    </Key>
+    <Property Name="TaskID" Type="uniqueidentifier" Nullable="false" />
+    <Property Name="PartyUserID" Type="uniqueidentifier" />
+    <Property Name="PartyUserName" Type="nvarchar" MaxLength="160" />
+    <Property Name="TaskNumber" Type="nvarchar" MaxLength="100" />
+    <Property Name="CCQID" Type="nvarchar" MaxLength="100" />
+    <Property Name="RequestTicketNumber" Type="nvarchar" MaxLength="100" />
+    <Property Name="Subject" Type="nvarchar" MaxLength="200" />
+    <Property Name="Regarding" Type="nvarchar" MaxLength="200" />
+    <Property Name="RequestStatusCode" Type="int" />
+    <Property Name="RequestStatusLabel" Type="nvarchar" MaxLength="1000" />
+    <Property Name="TaskStatus" Type="int" />
+    <Property Name="TaskStatusLabel" Type="nvarchar" MaxLength="1000" />
+    <Property Name="ActivityStatus" Type="int" Nullable="false" />
+    <Property Name="ActivityStatusLabel" Type="nvarchar" MaxLength="1000" />
+    <Property Name="Priority" Type="int" />
+    <Property Name="PriorityLabel" Type="nvarchar" MaxLength="1000" />
+    <Property Name="DueDate" Type="datetime" />
+    <Property Name="StartDate" Type="datetime" />
+    <Property Name="OwnerID" Type="uniqueidentifier" />
+    <Property Name="OwnerName" Type="nvarchar" MaxLength="160" />
+    <Property Name="WorkGroupID" Type="uniqueidentifier" />
+    <Property Name="WorkGroupName" Type="nvarchar" MaxLength="200" />
+    <Property Name="CreatedBy" Type="uniqueidentifier" />
+    <Property Name="CreatedOn" Type="datetime" />
+    <Property Name="CreatedByName" Type="nvarchar" MaxLength="160" />
+    <Property Name="ModifiedBy" Type="uniqueidentifier" />
+    <Property Name="ModifiedOn" Type="datetime" />
+    <Property Name="ModifiedByName" Type="nvarchar" MaxLength="160" />
+    <Property Name="DeletionStateCode" Type="int" Nullable="false" />
+    <Property Name="BusinessUnitID" Type="uniqueidentifier" />
+    <Property Name="RequestID" Type="uniqueidentifier" />
+    <Property Name="Pointer_ActivityId" Type="uniqueidentifier" Nullable="false" />
+  </EntityType>
+  <!--Errors Found During Generation:
+      warning 6002: The table/view 'BCAUAT_MSCRM.rpt.CallWrapUpReport' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.
+      -->
+  <EntityType Name="CallWrapUpReport">
+    <Key>
+      <PropertyRef Name="CallWrapUpID" />
+      <PropertyRef Name="SourceDesc" />
+      <PropertyRef Name="StateCode" />
+    </Key>
+    <Property Name="CallWrapUpID" Type="uniqueidentifier" Nullable="false" />
+    <Property Name="CustomerID" Type="uniqueidentifier" />
+    <Property Name="CustomerName" Type="nvarchar" MaxLength="160" />
+    <Property Name="NonCustomerID" Type="uniqueidentifier" />
+    <Property Name="NonCustomerName" Type="nvarchar" MaxLength="200" />
+    <Property Name="CallEndTime" Type="datetime" />
+    <Property Name="CallStartTime" Type="datetime" />
+    <Property Name="Source" Type="int" />
+    <Property Name="SourceDesc" Type="varchar" Nullable="false" MaxLength="11" />
+    <Property Name="CreatedOn" Type="datetime" />
+    <Property Name="CreatedByName" Type="nvarchar" MaxLength="160" />
+    <Property Name="CreatedBy" Type="uniqueidentifier" />
+    <Property Name="ModifiedOn" Type="datetime" />
+    <Property Name="ModifiedByName" Type="nvarchar" MaxLength="160" />
+    <Property Name="ModifiedBy" Type="uniqueidentifier" />
+    <Property Name="DeletionStateCode" Type="int" />
+    <Property Name="StateCode" Type="int" Nullable="false" />
+    <Property Name="StatusCode" Type="int" />
+    <Property Name="CategoryName" Type="nvarchar" MaxLength="100" />
+    <Property Name="HandphoneNo" Type="nvarchar" MaxLength="100" />
+    <Property Name="PhoneNo" Type="nvarchar" MaxLength="100" />
+  </EntityType>
+</Schema>

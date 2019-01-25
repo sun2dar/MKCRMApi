@@ -1,0 +1,23 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="Site.master.cs" Inherits="NewCRMReport.Site" %>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head id="Head" runat="server">
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <meta http-equiv="x-ua-compatible" content="IE=8" />
+        <link rel="shortcut icon" type="image/x-icon" href="images/icon.ico" />
+        <title>Report NEW CRM</title>
+        <link href="/Content/bootstrap.min.css" rel="stylesheet" type="text/css" />
+        <link href="/Content/general.css" rel="stylesheet" type="text/css" />
+        <script src="/Scripts/jquery.min.js" type="text/javascript" ></script> 
+        <script src="/Scripts/bootstrap.min.js" type="text/javascript" ></script> 
+        <script src="/Scripts/respond.min.js" type="text/javascript" ></script> 
+    </head>
+    <body>
+        <form id="ReportForm" runat="server">
+            <div class="container-fluid">
+                <asp:ContentPlaceHolder ID="Content" runat="server">
+                </asp:ContentPlaceHolder>
+            </div>
+        </form>
+    </body>
+</html>

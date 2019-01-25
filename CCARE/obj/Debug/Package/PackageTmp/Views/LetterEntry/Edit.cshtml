@@ -1,0 +1,503 @@
+﻿@model CCARE.Models.LetterEntryView
+
+@{
+    Layout = "~/Views/Shared/_LayoutEntity.cshtml";
+}
+
+@section title
+{
+    @ViewBag.Title
+}
+
+@section entityLogo
+{
+    <img class="crm-logo" src="~/assets/images/ico_lrg_112.gif" />
+}
+
+
+@section formTitle
+{
+    <div class="text_title">
+        <h1>Information</h1>
+        Letter Entry: @Model.LetterEntry.TemplateName
+    </div>
+}
+
+@section navHeader
+{
+    <ul class="nav navbar-nav navbar-left">
+        <li>
+            <a id="btn_changestatus" href="#" data-toggle="modal" data-target="#confirm-changestatus">
+            @if (Model.LetterEntry.StateCode == 0)
+            {
+                <text>Deactivate</text>
+            }
+            else
+            {
+                <text>Activate</text>
+            }
+            </a>
+        </li>
+        
+        @*<li><a id="btn_delete" href="#" data-toggle="modal" data-target="#confirm-delete">Delete</a></li>*@
+        
+    </ul>
+}
+
+@section footerStatus
+{
+    <div class="footer_text">Status: 
+    @if (Model.LetterEntry.StateCode == 0)
+    {
+        <text>Active</text>
+    }
+    else
+    {
+        <text>Inactive</text>
+    }
+
+    </div>
+}
+
+@section sidebarMenu
+{
+    <li class="active"><a href="#">Information</a></li>
+}
+
+<div class="modal fade" id="confirm-delete" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1>Confirm Deletion</h1>
+            </div>
+            <div class="modal-body input-lg">
+                The system will delete this record. This action cannot be undone, To continue click "Delete".
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                <a class="btn btn-danger btn-ok">Delete</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="confirm-changestatus" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1>Confirm @if (Model.LetterEntry.StateCode == 0)
+                            {<text>Letter Entry Deactivation</text>}
+                            else
+                            {<text>Letter Entry Activation</text>}</h1>
+            </div>
+            <div class="modal-body input-lg confirm-change-status">
+                This action will change the status of selected Letter Entry to @if (Model.LetterEntry.StateCode == 0)
+                                                                                          {<text>Inactive</text>}
+                                                                                          else
+                                                                                          {<text>Active</text>}. To continue click "Ok"
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                <a class="btn btn-danger btn-ok">Ok</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container-fluid">
+    <!-- tabs -->
+    <div class="row">
+        <div class="col-sm-12 panel panel-default panel_form_parent">
+            <div class="myContent_noTab">
+                <div class="tab-pane fade active in" id="general" aria-labelledby="general-tab">
+                @using (Html.BeginForm("Edit", "LetterEntry", FormMethod.Post, new { id = "form_letterentry" }))
+                {                    
+                    <!-- panel content -->
+                    <div class="col-sm-12">
+                        @Html.HiddenFor(x => x.LetterEntry.LetterEntryID)
+                        @Html.HiddenFor(x => x.LetterEntry.ModifiedBy)
+                        @Html.HiddenFor(x => x.LetterEntry.StatusCode)
+                        <!-- START title 1 -->
+                        <div class="row form_text">
+                            <div class="panel panel-default panel_form_child">
+                                <div class="panel-heading">
+                                    <label class="control-label sv-header"><strong>General</strong></label>
+                                </div>
+                                <br />
+                                <div class="panel-body">
+                                    <div class="form-horizontal">
+                                        <div class="row">
+                                            <div class="col-sm-6">                                        
+                                                <div class="form-group">
+                                                    <label class="col-sm-4 control-label">Summary</label>
+                                                    <div class="col-sm-8">
+                                                        @Html.TextBoxFor(x => x.LetterEntry.RequestName, new { @class = "form-control" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-6">                                                                              
+                                                <div class="form-group">
+                                                    <label class="col-sm-4 control-label">ATM Attch?</label>
+                                                    <div class="col-sm-8">
+                                                        <label class="radio-inline">@Html.RadioButtonFor(x => x.LetterEntry.AttchATM, false) No</label>
+                                                        <label class="radio-inline">@Html.RadioButtonFor(x => x.LetterEntry.AttchATM, true) Yes</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-6">                                        
+                                                <div class="form-group">
+                                                    <label class="col-sm-4 control-label">Request ID</label>
+                                                    <div class="col-sm-8">
+                                                        @Html.TextBoxFor(x => x.LetterEntry.TicketNumber, new { @class = "form-control", @readonly = true })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-6">                                        
+                                                <div class="form-group">
+                                                    <label class="col-sm-4 control-label">Debit Attch?</label>
+                                                    <div class="col-sm-8">
+                                                        <label class="radio-inline">@Html.RadioButtonFor(x => x.LetterEntry.AttchDebit, false) No</label>
+                                                        <label class="radio-inline">@Html.RadioButtonFor(x => x.LetterEntry.AttchDebit, true) Yes</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-6">                                        
+                                                <div class="form-group">
+                                                    <label class="col-sm-4 control-label">Template</label>
+                                                    <div class="col-sm-8">
+                                                        @Html.TextBoxFor(x => x.LetterEntry.TemplateName, new { @class = "form-control", @readonly = true })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-6">                                        
+                                                <div class="form-group">
+                                                    <label class="col-sm-4 control-label">Cirrus Attch?</label>
+                                                    <div class="col-sm-8">
+                                                        <label class="radio-inline">@Html.RadioButtonFor(x => x.LetterEntry.AttchCirrus, false) No</label>
+                                                        <label class="radio-inline">@Html.RadioButtonFor(x => x.LetterEntry.AttchCirrus, true) Yes</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-6">                                        
+                                                <div class="form-group">
+                                                    <label class="col-sm-4 control-label">Date</label>
+                                                    <div class="col-sm-8">
+                                                        @Html.TextBoxFor(x => x.LetterEntry.LetterDate, new { Value = @Model.LetterEntry.LetterDate.HasValue ? @Model.LetterEntry.LetterDate.Value.ToString("dd/MM/yyyy") : "", @class = "form-control", @disabled = "disabled" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-6">                                        
+                                                <div class="form-group">
+                                                    <label class="col-sm-4 control-label">Maestro Attch?</label>
+                                                    <div class="col-sm-8">
+                                                        <label class="radio-inline">@Html.RadioButtonFor(x => x.LetterEntry.AttchMaestro, false) No</label>
+                                                        <label class="radio-inline">@Html.RadioButtonFor(x => x.LetterEntry.AttchMaestro, true) Yes</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-6">                                        
+                                                <div class="form-group">
+                                                    <label class="col-sm-4 control-label">No</label>
+                                                    <div class="col-sm-8">
+                                                        @Html.TextBoxFor(x => x.LetterEntry.LetterNo, new { @class = "form-control", @readonly = true })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-6">                                        
+                                                <div class="form-group">
+                                                    <label class="col-sm-4 control-label">ATM Switching Attch?</label>
+                                                    <div class="col-sm-8">
+                                                        <label class="radio-inline">@Html.RadioButtonFor(x => x.LetterEntry.AttchATMSwitching, false) No</label>
+                                                        <label class="radio-inline">@Html.RadioButtonFor(x => x.LetterEntry.AttchATMSwitching, true) Yes</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-6">                                        
+                                                <div class="form-group">
+                                                    <label class="col-sm-4 control-label">CC</label>
+                                                    <div class="col-sm-8">
+                                                        @Html.TextBoxFor(x => x.LetterEntry.CC_Name, new { @class = "form-control", @disabled = "disabled" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-6">                                        
+                                                <div class="form-group">
+                                                    <label class="col-sm-4 control-label">Attch Duration</label>
+                                                    <div class="col-sm-8">
+                                                        @Html.DropDownListFor(x => x.LetterEntry.AttchDuration, (List<SelectListItem>)ViewBag.ddl_durations, new { @class = "form-control", @disabled = "disabled" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-12">                                        
+                                                <div class="form-group">
+                                                    <label class="col-sm-2 control-label">Description 1</label>
+                                                    <div class="col-sm-10">
+                                                        @Html.TextBoxFor(x => x.LetterEntry.Description1, new { @class = "form-control" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-12">                                        
+                                                <div class="form-group">
+                                                    <label class="col-sm-2 control-label">Description 2</label>
+                                                    <div class="col-sm-10">
+                                                        @Html.TextBoxFor(x => x.LetterEntry.Description2, new { @class = "form-control" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-12">                                        
+                                                <div class="form-group">
+                                                    <label class="col-sm-2 control-label">Description 3</label>
+                                                    <div class="col-sm-10">
+                                                        @Html.TextBoxFor(x => x.LetterEntry.Description3, new { @class = "form-control" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-12">                                        
+                                                <div class="form-group">
+                                                    <label class="col-sm-2 control-label">Description 4</label>
+                                                    <div class="col-sm-10">
+                                                        @Html.TextBoxFor(x => x.LetterEntry.Description4, new { @class = "form-control" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                            </div>
+                        </div>
+                        <!-- END title 1 -->
+                        <!-- START title 2 -->
+                        <div class="row form_text">
+                            <div class="panel panel-default panel_form_child">
+                                <div class="panel-heading">
+                                    <label class="control-label sv-header"><strong>Customer Information</strong></label>
+                                </div>
+                                <br />
+                                <div class="panel-body">
+                                    <div class="form-horizontal">
+
+                                        <div class="row">
+                                            <div class="col-sm-6">
+                                                <div class="form-group">
+                                                    <label class="col-sm-4 control-label">Full Name</label>
+                                                    <div class="col-sm-8">
+                                                        @Html.TextBoxFor(x => x.LetterEntry.FullName, new { @class = "form-control", @disabled = "disabled" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-6">                                        
+                                                <div class="form-group">
+                                                    <label class="col-sm-4 control-label">Address 1</label>
+                                                    <div class="col-sm-8">
+                                                        @Html.TextBoxFor(x => x.LetterEntry.Address1, new { @class = "form-control", @disabled = "disabled" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-sm-6">                                        
+                                                <div class="form-group">
+                                                    <label class="col-sm-4 control-label">Account No</label>
+                                                    <div class="col-sm-8">
+                                                        @Html.TextBoxFor(x => x.LetterEntry.AccountNo, new { @class = "form-control", @disabled = "disabled" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-6">                                                                              
+                                                <div class="form-group">
+                                                    <label class="col-sm-4 control-label">Address 2</label>
+                                                    <div class="col-sm-8">
+                                                        @Html.TextBoxFor(x => x.LetterEntry.Address2, new { @class = "form-control", @disabled = "disabled" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-sm-6">                                        
+                                                <div class="form-group">
+                                                    <label class="col-sm-4 control-label">Card No</label>
+                                                    <div class="col-sm-8">
+                                                        @Html.TextBoxFor(x => x.LetterEntry.CardNo, new { @class = "form-control", @disabled = "disabled" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-6">                                                                              
+                                                <div class="form-group">
+                                                    <label class="col-sm-4 control-label">Address 3</label>
+                                                    <div class="col-sm-8">
+                                                        @Html.TextBoxFor(x => x.LetterEntry.Address3, new { @class = "form-control", @disabled = "disabled" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-sm-6">                                        
+                                                <div class="form-group">
+                                                    <label class="col-sm-4 control-label">&nbsp;</label>
+                                                    <div class="col-sm-8">&nbsp;</div>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-6">                                                                              
+                                                <div class="form-group">
+                                                    <label class="col-sm-4 control-label">City</label>
+                                                    <div class="col-sm-8">
+                                                        @Html.TextBoxFor(x => x.LetterEntry.City, new { @class = "form-control", @disabled = "disabled" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-sm-6">                                        
+                                                <div class="form-group">
+                                                    <label class="col-sm-4 control-label">&nbsp;</label>
+                                                    <div class="col-sm-8">&nbsp;</div>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-6">                                                                              
+                                                <div class="form-group">
+                                                    <label class="col-sm-4 control-label">ZIP/Postal Code</label>
+                                                    <div class="col-sm-8">
+                                                        @Html.TextBoxFor(x => x.LetterEntry.ZIPPostalCode, new { @class = "form-control", @disabled = "disabled" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- END title 2 -->      
+                        <!-- START title 3 -->
+                        @if (Model.Annotation != null)
+                        {
+                        <div class="row form_text">
+                            <div class="panel panel-default panel_form_child">
+                                <div class="panel-heading">
+                                    <label class="control-label sv-header"><strong>Attachment</strong></label>
+                                </div>
+                                <br />
+                                <div class="panel-body">
+                                    <div class="form-horizontal">
+                                        <div class="row">
+                                            <div class="col-sm-6">                                        
+                                                <div class="form-group">
+                                                    @Html.HiddenFor(x => x.Annotation.AnnotationID)
+                                                    <label class="col-sm-12 control-label text-left-i">Title: @Model.Annotation.Subject</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-6">                                        
+                                                <div class="form-group">
+                                                    <label class="col-sm-12 control-label text-left-i">Note created on @Model.Annotation.CreatedOn.Value.ToString("dd/MM/yyyy HH:mm")</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-6">                                        
+                                                <div class="form-group">
+                                                    <label class="col-sm-12 control-label">Note modified on @Model.Annotation.ModifiedOn.Value.ToString("dd/MM/yyyy HH:mm")</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-6">                                        
+                                                <div class="form-group">
+                                                    <label class="col-sm-12 control-label text-left-i">By @Model.Annotation.CreatedBy</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-6">                                        
+                                                <div class="form-group">
+                                                    <label class="col-sm-12 control-label">By @Model.Annotation.ModifiedBy</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-6">                                        
+                                                <div class="form-group">
+                                                    <a href="javascript:void(0)" class="col-sm-12 control-label text-left-i" id="btnDownload"><b>@Model.Annotation.FileName (@Model.Annotation.FileSize.Value.ToString("#,###0") Byte(s))</b></a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        }
+                        <!-- END title 3 -->
+                    </div>
+                }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        var entityName = '@ViewContext.RouteData.Values["Controller"].ToString()';
+
+        $("#form_letterentry select").attr('disabled', 'disabled');
+        $("#form_letterentry :radio").attr('disabled', 'disabled');
+        $("#form_letterentry input").attr('readonly', true);
+        
+        $("#confirm-delete").on('show.bs.modal', function (e) {
+            $(this).find('.btn-ok').click(function () {
+                var postData = {
+                    _resolution: "",
+                    _description: ""
+                };
+
+                otherAction($("#form_letterentry"), "/" + entityName + "/Delete", "delete", postData)
+            });
+        });
+
+        $("#confirm-changestatus").on('show.bs.modal', function (e) {
+            $(this).find('.btn-ok').click(function () {
+                var postData = {
+                    _resolution: "",
+                    _description: ""
+                };
+
+                otherAction($("#form_letterentry"), "/" + entityName + "/ChangeStatus", "changestatus", postData)
+            });
+        });
+
+        $("#btnDownload").click(function () {
+            var form = document.createElement("form");
+            form.action = '@(Url.Action("DownloadFile", "LetterTemplate"))';
+            form.method = 'POST';
+            form.target = '_blank';
+            var input = document.createElement("textarea");
+            input.name = 'annotationID';
+            input.value = $("#Annotation_AnnotationID").val();
+            form.appendChild(input);
+            form.style.display = 'none';
+            document.body.appendChild(form);
+            form.submit();
+        });
+
+    });
+</script>

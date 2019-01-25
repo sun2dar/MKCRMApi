@@ -1,0 +1,450 @@
+﻿@model CCARE.Models.Role.RetrieveRole
+
+@{
+    ViewBag.Title = "Security Role";
+    if (Request.IsAjaxRequest())
+    {
+        Layout = null;
+    }
+    else
+    {
+        Layout = "~/Views/Shared/_LayoutEntity.cshtml";
+    }
+    string actionPage = ViewContext.Controller.ControllerContext.RouteData.Values["action"].ToString();
+}
+
+
+@section entityLogo
+{
+    <img class="crm-logo" src="~/assets/images/ico_lrg_112.gif" />
+}
+
+@section formTitle
+{
+    <div class="text_title">
+        <h1>Information</h1>
+        Security Role : 
+        @if (actionPage == "Create")
+        {
+            <text>New Role</text>
+        }
+        else if (actionPage == "Edit")
+        {
+            <text>@(Model.role.Name)</text>
+        }
+    </div>
+}
+
+@section navHeader
+{
+    <ul class="nav navbar-nav navbar-left" id="divActionButton">
+        <li><a id="btn_save" href="#">Save</a></li>
+        <li><a id="btn_savenclose" href="#">Save & Close</a></li>
+        <li><a id="btn_savenopen" href="#">Save & New</a></li>
+    </ul>
+}
+
+@section footerStatus
+{
+    <div class="footer_text">Status: 
+        @if (actionPage == "Create")
+        {
+            <text>New</text>
+        }
+        else if (actionPage == "Edit")
+        {
+            if(Model.role.Status == 0){
+                <text>Active</text>
+            }
+            else if(Model.role.Status == 1){
+                <text>Inactive</text>
+            }
+        }
+    </div>
+}
+
+@section title
+{
+    Security Role: @Model.role.Name    
+}
+
+@section sidebarMenu
+{
+    @if (ViewBag.actionType == "Edit")
+    {
+        <li><a data-ajax="true" data-ajax-mode="replace" data-ajax-update="#page_content" href="/SecurityRole/Edit?id=@(Model.role.SecurityRoleId)">Security Role</a></li>
+        <li><a data-ajax="true" data-ajax-mode="replace" data-ajax-update="#page_content" href="/PrivilegeException/Index?Roleid=@(Model.role.SecurityRoleId)">Privillege Exceptions</a></li>
+        <li><a data-ajax="true" data-ajax-mode="replace" data-ajax-update="#page_content" href="/ReportMapping/Reports?Roleid=@(Model.role.SecurityRoleId)">Report Mapping</a></li>
+        <li><a data-ajax="true" data-ajax-mode="replace" data-ajax-update="#page_content" href="/ReportMappingNew/Reports?Roleid=@(Model.role.SecurityRoleId)">Report Mapping New</a></li>
+    }
+    else
+    {
+        <li><a data-ajax="true" data-ajax-mode="replace" data-ajax-update="#page_content" href="#">Security Role</a></li>
+    }
+}
+
+@using (Html.BeginForm(actionPage, "SecurityRole", FormMethod.Post, new { id = "form_securityrole" }))
+{
+    @Html.EditorForModel()
+<div class="container-fluid">
+    <!-- tabs -->
+    <div class="row">
+        <div class="col-sm-12 panel panel-default panel_form_parent">
+            <!--Define Tab-->
+            <ul id="myTab" class="nav nav-tabs crm-padding-top-10" role="tablist">
+                <li class="active"><a href="#divGeneral" role="tab" data-toggle="tab">General</a></li>
+
+                @if (ViewContext.Controller.ControllerContext.RouteData.Values["action"].ToString() == "Edit")
+                {
+                    @Html.HiddenFor(model => model.role.SecurityRoleId)
+                    @Html.HiddenFor(model => model.role.BusinessUnitId)
+                    @Html.HiddenFor(model => model.role.CreatedBy)
+                    @Html.HiddenFor(model => model.role.CreatedOn)
+                    @Html.HiddenFor(model => model.role.Status)
+                    @Html.HiddenFor(model => model.role.DeletionStateCode)
+                }
+
+                @foreach (CCARE.Models.Role.RootMenu menu in Model.xmlRole.Menu)
+                {
+                    <li><a href="#div@(menu.name)" id="tab@(menu.name)" role="tab" data-toggle="tab">@(menu.text)</a></li>
+                }
+            </ul>
+                <!-- Tab panes -->
+                <div class="tab-content">
+                    <!--General tab-->
+                    <div class="tab-pane fade active in" id="divGeneral">
+                        <div class="panel panel-default panel_form_child">
+                            <!--Panel Header for section title-->
+                            <div class="panel-heading">
+                                <label class="control-label sv-header"><strong>General</strong></label>
+                            </div>
+                            <!--Body panel for input form-->
+                            <br />
+                            <div class="panel-body">
+                                <div class="form-horizontal">
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <label class="col-sm-3 control-label mandatory">Name</label>
+                                                <div class="col-sm-9">
+                                                    @Html.TextBoxFor(model => model.role.Name, new { @id = "roleName", @class = "form-control" })
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <label class="col-sm-3 control-label mandatory">Business Unit</label>
+                                                <div class="col-sm-9">
+                                                    @* ==========================================================================================================*@
+                                                    @Html.HiddenFor(model => model.role.BusinessUnitId, new { @id="role_BusinessUnitId" , @class = "form-control" })
+                                                    <div class="input-group" id="BusinessUnit-Group">
+                                                        @Html.TextBoxFor(model=> model.role.businessUnit.Name, new { @id="role_businessUnit_Name" , @class = "form-control" })
+                                                        <div tabindex="1" id="BusinessUnitName-label" class="form-control typeahead-label hide">
+                                                        </div>
+                                                        <div tabindex="1" class="input-group-addon btn" id="BusinessUnitName-popup">
+                                                            <i class="fa fa-search"></i>
+                                                        </div>
+                                                    </div>
+                                                    @* ==========================================================================================================*@
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="panel panel-default panel_form_child">
+                            <div class="panel-heading">
+                                <label class="control-label sv-header"><strong>Menu</strong></label>
+                            </div>
+                            <!--Body panel for input form-->
+                            <br />
+                            <div class="panel-body">
+                                
+                                <!--Loop menu checklist-->     
+                                @for (int i = 0; i < Model.xmlRole.Menu.Count(); i++)
+                                {
+                                    @Html.HiddenFor(model => model.xmlRole.Menu[i].name)
+                                    @Html.HiddenFor(model => model.xmlRole.Menu[i].text);
+                                    <div class="row">
+                                        <div class="col-sm-6">                                        
+                                            <div class="form-group">
+                                                <label class="col-sm-4 control-label">@(Model.xmlRole.Menu[i].text)</label>
+                                                <div class="col-sm-4">
+                                                    @Html.CheckBoxFor(model => model.xmlRole.Menu[i].check, new { @id = "check" + Model.xmlRole.Menu[i].name, @class = "form-control" })
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                            </div>
+
+                        </div>
+                    </div>
+
+                    @RenderBody()
+
+                    @for (int i = 0; i < Model.xmlRole.Menu.Count(); i++)
+                    {
+                    <!--General workplace-->
+                    <div class="tab-pane fade" id="div@(Model.xmlRole.Menu[i].name)">
+                        <div class="panel panel-default panel_form_child scrollTab">
+                            <!--Panel Header for section title-->
+                            @if (Model.xmlRole.Menu[i].Submenu != null)
+                            {
+                                for (int sm = 0; sm < Model.xmlRole.Menu[i].Submenu.Count(); sm++)
+                                {
+                                    @Html.HiddenFor(model => model.xmlRole.Menu[i].Submenu[sm].name)
+                                    @Html.HiddenFor(model => model.xmlRole.Menu[i].Submenu[sm].text)
+                                    <div class="panel-heading submenuStyle">
+                                        <label class="control-label sv-header">
+                                            @Html.CheckBoxFor(model => model.xmlRole.Menu[i].Submenu[sm].check, new { @id = "checkSubmenu" + Model.xmlRole.Menu[i].Submenu[sm].name })
+                                            &nbsp;
+                                            <strong>@(Model.xmlRole.Menu[i].Submenu[sm].text)</strong> 
+                                        </label>
+                                    </div>
+                                    <!--Body panel for input form-->
+                                    <div class="panel-body">
+                                        <div class="row" style="border-bottom:1px dashed blue;">
+                                            <div class="col-sm-3">                                        
+                                                <div class="form-group">
+                                                    <label class="col-sm-3 labelRole">
+                                                        @*<input type="checkbox" id="checkSubmenu@(Model.xmlRole.Menu[i].Submenu[sm].name)" />*@
+                                                    </label>
+                                                    <label class="col-sm-9 labelRole">Entity</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-9">                                                                              
+                                                <div class="form-group">
+                                                    <label class="col-sm-1 labelRole">Action</label>
+                                                    
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    @if (Model.xmlRole.Menu[i].Submenu[sm].Entity != null)
+                                    {
+                                        for (int ent = 0; ent < Model.xmlRole.Menu[i].Submenu[sm].Entity.Count(); ent++)
+                                        {
+                                            string entityName = Model.xmlRole.Menu[i].Submenu[sm].Entity[ent].name;
+                                            string entityText = Model.xmlRole.Menu[i].Submenu[sm].Entity[ent].text;
+                                            
+                                            @Html.HiddenFor(model => model.xmlRole.Menu[i].Submenu[sm].Entity[ent].name)
+                                            @Html.HiddenFor(model => model.xmlRole.Menu[i].Submenu[sm].Entity[ent].text)
+                                            @Html.HiddenFor(model => model.xmlRole.Menu[i].Submenu[sm].Entity[ent].path)
+                                            <div class="row" style="@if (ent % 2 == 0)
+                                                                    {<text>background-color:lightgray;</text>}">
+                                                <div class="col-sm-3">                                        
+                                                    <div class="form-group">
+                                                        <div class="col-sm-3">
+                                                            @Html.CheckBoxFor(model => Model.xmlRole.Menu[i].Submenu[sm].Entity[ent].check, new { @id = "check" + entityName, @class = "" })
+                                                        </div>
+                                                        <label class="col-sm-9 labelRole">@(entityText)</label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-9">                                                                              
+                                                    <div class="form-group">
+                                                        <div class="col-sm-12">
+                                                            @if (Model.xmlRole.Menu[i].Submenu[sm].Entity[ent].Action != null)
+                                                            {
+                                                                for (int act = 0; act < Model.xmlRole.Menu[i].Submenu[sm].Entity[ent].Action.Count(); act++)
+                                                                {
+                                                                    string actionName = Model.xmlRole.Menu[i].Submenu[sm].Entity[ent].Action[act].name;
+                                                                    string actionText = Model.xmlRole.Menu[i].Submenu[sm].Entity[ent].Action[act].text;
+                                                                    
+                                                                    @Html.HiddenFor(model => model.xmlRole.Menu[i].Submenu[sm].Entity[ent].Action[act].name)
+                                                                    @Html.HiddenFor(model => model.xmlRole.Menu[i].Submenu[sm].Entity[ent].Action[act].text)
+                                                                    @Html.CheckBoxFor(model => Model.xmlRole.Menu[i].Submenu[sm].Entity[ent].Action[act].check, new { @id = "check" + entityName + actionName, @class = "" }) <text> @(actionText)&nbsp;&nbsp;&nbsp;</text>
+                                                                }
+                                                            }
+                                                        </div>
+                                                        
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        }
+                                    }
+                                </div>
+                                }
+                            }
+                        </div>
+                    </div>
+                    }
+                </div>
+            @*</form>*@
+        </div>
+    </div>
+    <div id="response-modal"></div>
+</div>
+}
+
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        $("#divGeneral").find("input").addClass("rm-padding");
+        $("#divGeneral").find("select").addClass("rm-padding");
+        $("#divGeneral").find(":radio").removeClass("rm-padding");
+
+        //Popup Business Unit
+        $('#BusinessUnitName-popup').on('click', function (e) {
+            urlModalPopup = '@Url.Action("_popupContent", "Popup", new { type = "businessunit", _entity = "" })';
+            colModelsName = [
+                { label: 'ID', name: 'Id', index: 'Id', key: true, width: 75, hidden: true },
+                { label: 'Name', name: 'Name', index: 'Name', width: 500 }
+
+            ];
+            var id = $(this).parent().find('input:last').attr('id');
+            $('#' + id).trigger("blur");
+            e.preventDefault();
+        });
+
+        var BusinessUnitReq = new PopupClass();
+        BusinessUnitReq.setId("role_businessUnit_Name");
+        BusinessUnitReq.setUrl('@Url.Action("BusinessUnit", "Popup")');
+        BusinessUnitReq.setHiddenId("role_BusinessUnitId");
+        BusinessUnitReq.init();
+
+
+        $("form").submit(function( event ) {
+            if($('#btn_save').is(":visible")){}
+            else{
+                event.preventDefault();
+            }
+        });
+
+        var entityName = '@ViewContext.RouteData.Values["Controller"].ToString()';
+
+        @foreach (CCARE.Models.Role.RootMenu menu in Model.xmlRole.Menu)
+        {
+            <text>
+                //Hide tab when menu is not check - onload
+                if ($('#check@(menu.name)').is(':checked')) {
+
+                }
+                else {
+                    $("#tab@(menu.name)").hide();
+                }
+
+                //validation on menu checked or unchecked
+                $("#check@(menu.name)").click(function () {
+                    $("#tab@(menu.name)").toggle();
+                    //if menu is uncheck then uncheck all the entity and action in that menu
+                    if ($("#check@(menu.name)").prop('checked') == false) 
+                    {
+                        @foreach (CCARE.Models.Role.RootMenuSubmenu submenu in menu.Submenu)
+                        {
+                            <text>
+                                //Uncheck all submenu below this menu submenu
+                                if ($("#checkSubmenu@(submenu.name)").prop('checked') == true) {
+                                    $("#checkSubmenu@(submenu.name)").trigger("click");
+                                }
+                            </text>
+                            foreach (CCARE.Models.Role.RootMenuSubmenuEntity entity in submenu.Entity)
+                            {
+                                <text>
+                                    //Uncheck all entity below this menu submenu
+                                    if ($("#check@(entity.name)").prop('checked') == true) {
+                                        $("#check@(entity.name)").trigger("click");
+                                    }
+                                </text>
+                            }
+                        }
+                    }
+                })
+            </text>
+            
+            foreach (CCARE.Models.Role.RootMenuSubmenu submenu in menu.Submenu)
+            {
+                <text>
+                    $("#checkSubmenu@(submenu.name)").click(function () {
+                        @foreach (CCARE.Models.Role.RootMenuSubmenuEntity entity in submenu.Entity)
+                        {
+                            <text>
+                                //If submenu uncheck, uncheck all entity below submenu
+                                if ($("#checkSubmenu@(submenu.name)").prop('checked') == false) 
+                                {
+                                    if ($("#check@(entity.name)").prop('checked') == true)
+                                    {
+                                        $("#check@(entity.name)").trigger("click");
+                                    }
+                                }
+                            </text>
+                        }
+                    })
+        </text>
+                            
+                foreach (CCARE.Models.Role.RootMenuSubmenuEntity entity in submenu.Entity)
+                {
+                    if (entity.Action != null)
+                    {
+                        foreach (CCARE.Models.Role.RootMenuSubmenuEntityAction action in entity.Action)
+                        {
+                            <text>
+                                //If action is checked when its parent entity is not checked than check the parent
+                                $("#check@(entity.name)@(action.name)").click(function () {
+                                    if ($("#check@(entity.name)").prop('checked') == false)
+                                    {
+                                        $("#check@(entity.name)").trigger("click");
+                                    }
+                                })
+                            </text>
+                        }
+                    }
+                                
+                    <text>
+                        $("#check@(entity.name)").click(function () {
+                            @if (entity.Action != null)
+                            {
+                                foreach (CCARE.Models.Role.RootMenuSubmenuEntityAction action in entity.Action)
+                                {
+                                    <text>
+                                        //Uncheck the action below when entity unchecked
+                                        if ($("#check@(entity.name)").prop('checked') == false) {
+                                            if ($("#check@(entity.name)@(action.name)").prop('checked') == true) {
+                                                $("#check@(entity.name)@(action.name)").trigger("click");
+                                            }
+                                        }
+                                    </text>
+                                }
+                            }
+                            if ($("#checkSubmenu@(submenu.name)").prop('checked') == false) {
+                                $("#checkSubmenu@(submenu.name)").trigger("click");
+                            }
+                        })
+                    </text>
+                }
+            }
+        }
+
+
+        function validateForm(action, formName) {
+            if ($("#roleName").val() == "") {
+                alert("Field Name harus diisi");
+                return false;
+            }
+            else if ($("#role_BusinessUnitId").val() == "") {
+                if ($("#role_businessUnit_Name").val() == "")
+                    alert("Field Business Unit harus diisi");
+                else
+                    alert("Business Unit tidak ada");
+                return false;
+            }
+            formSubmit(action, formName);
+        }
+
+        $("#btn_save").click(function () {
+            validateForm("save", $("#form_securityrole"));
+        });
+
+        $("#btn_savenclose").click(function () {
+            validateForm("saveNClose", $("#form_securityrole"));
+        });
+
+        $("#btn_savenopen").click(function () {
+            validateForm("saveNOpen", $("#form_securityrole"));
+        });
+
+        $('#divActionButton').show();
+
+    });
+</script>

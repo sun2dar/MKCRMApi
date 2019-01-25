@@ -1,0 +1,182 @@
+﻿@model CCARE.Models.Channel
+
+@{
+    ViewBag.Title = "e-Banking: ";
+    if (Request.IsAjaxRequest())
+    {
+        Layout = null;
+    }
+    else
+    {
+        Layout = "~/Views/Shared/_LayoutEntity.cshtml";
+    }
+}
+
+@section title
+{
+    SMS BCA
+}
+
+@section entityLogo
+{
+    <img class="crm-logo" src="~/assets/images/ico_lrg_112.gif" />
+}
+
+@section formTitle
+{
+    <div class="text_title">
+        <h1>Information</h1>
+        SMS BCA: @Model.HpNo
+    </div>
+}
+@section navHeader
+{
+
+}
+
+@section footerStatus
+{
+    <div class="footer_text">Status: Active</div>
+}
+
+@section sidebarMenu
+{
+    <li><a data-ajax="true" data-ajax-mode="replace" data-ajax-update="#page_content" href="/SMSBCA/Index?Id=@Model.Id&CustomerId=@Model.CustomerId&CustomerIdName=@Model.CustomerIdName&ChannelTypeId=@Model.ChannelTypeId&ChannelType=@Model.ChannelType&CardNo=@Model.CardNo&UserId=@Model.UserId&EmailAddress=@Model.EmailAddress&HpNo=@Model.HpNo&CorpId=@Model.CorpId&AccountNo=@Model.AccountNo&CustomerNo=@Model.CustomerNo&SNKeyBCA=@Model.SNKeyBCA&Category=@Model.Category">Information</a></li>
+}
+
+<div id="page_content" class="container-fluid">
+    <!-- tabs -->
+    <div class="row">
+        <div class="col-sm-12 panel panel-default panel_form_parent">
+            <br />
+            <div class="tab-content myTabContent tab-content-custom1">
+                <div class="tab-pane fade active in" id="general" aria-labelledby="general-tab">
+
+                    <!-- panel content -->
+                    <div class="col-sm-12">
+                        <!-- title 1 -->
+                        <div class="row form_text">
+                            <div class="panel panel-default panel_form_child">
+                                
+                                <div class="panel-heading">
+                                    <label class="control-label sv-header">
+                                        <strong>General</strong>
+                                    </label>
+                                </div>
+
+                                <div class="panel-body">
+                                    <form class="form-horizontal">
+                                        <div class="row">
+                                            <div class="col-sm-6">
+                                                <div class="form-group">
+                                                    <label class="col-sm-4 control-label">e-Banking Type</label>
+                                                    <div class="col-sm-8">
+                                                        @Html.HiddenFor(x => x.ChannelTypeId)
+                                                        @Html.TextBoxFor(x => x.ChannelType, new { @class = "form-control" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <div class="form-group">
+                                                    <label class="col-sm-4 control-label">Customer</label>
+                                                    <div class="col-sm-8">
+                                                        @Html.HiddenFor(x => x.CustomerId)
+                                                        @Html.TextBoxFor(x => x.CustomerIdName, new { @class = "form-control" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-6">
+                                                <div class="form-group">
+                                                    <label class="col-sm-4 control-label">No Kartu</label>
+                                                    <div class="col-sm-8">
+                                                        @Html.TextBoxFor(x => x.CardNo, new { @class = "form-control" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-6">
+                                                <div class="form-group">
+                                                    <label class="col-sm-4 control-label">Hand Phone Number</label>
+                                                    <div class="col-sm-8">
+                                                        @Html.TextBoxFor(x => x.HpNo, new { @class = "form-control" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- partial view -->
+                        <div class="row form-horizontal">
+                            <div class="col-sm-12">
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label">Inquiry Status</label>
+                                    <div class="col-sm-2">
+                                        <select id="inquiryDdl" name="inquiryDdl" class="form-control">
+                                            <option value="smsbca">SMS BCA</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="partialView"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row form_text">
+
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#myTab a').click(function (e) {
+            e.preventDefault()
+            $(this).tab('show')
+        })
+
+    });
+
+    $("#inquiryDdl").change(function () {
+        var postData = {
+            channelTypeId: function () { return "@Model.ChannelTypeId"; },
+            channelType: function () { return "@Model.ChannelType"; },
+            customerId: function () { return "@Model.CustomerId"; },
+            customerIdName: function () { return "@Model.CustomerIdName"; },
+            cardNo: function () { return "@Model.CardNo"; },
+            userId: function () { return "@Model.UserId"; },
+            emailAddress: function () { return "@Model.EmailAddress"; },
+            hpNo: function () { return "@Model.HpNo"; },
+            corpId: function () { return "@Model.CorpId"; },
+            accountNo: function () { return "@Model.AccountNo"; },
+            customerNo: function () { return "@Model.CustomerNo"; },
+            snKeyBCA: function () { return "@Model.SNKeyBCA"; },
+            category: function () { return "@Model.Category"; }
+        };
+
+        $.ajax({
+            type: "GET",
+            url: "/SMSBCA/SMSBCAPartial/",
+            data: postData,
+            cache: false,
+            contentType: "application/html; charset=utf-8",
+            dataType: "html",
+            success: function (viewHTML) {
+                $("#partialView").html(viewHTML);
+            },
+            error: function (errorData) {
+                //onError(errorData);
+            }
+        });
+    });
+
+    $("#inquiryDdl").trigger("change");
+
+</script>

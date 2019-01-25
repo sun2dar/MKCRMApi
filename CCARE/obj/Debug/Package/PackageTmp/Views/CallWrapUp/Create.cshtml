@@ -1,0 +1,306 @@
+﻿
+
+@{
+    ViewBag.Title = "Create";
+    Layout = "~/Views/Shared/_LayoutEntity.cshtml";
+}
+
+@section title
+{
+    Call Wrap Up
+}
+
+@section entityLogo
+{
+    <img class="crm-logo" src="~/assets/images/ico_lrg_112.gif" />
+}
+
+@section formTitle
+{
+    <div class="text_title">
+        <h1>Information</h1>
+        Call Wrap Up: New
+    </div>
+}
+
+@section navHeader
+{
+    <ul class="nav navbar-nav navbar-left">
+        <li><a id="btn_save" href="#">Save</a></li>
+        <li><a id="btn_savenclose" href="#">Save & Close</a></li>
+    </ul>
+}
+
+@section footerStatus
+{
+    <div class="footer_text"> Status :
+
+        
+    </div>
+}
+
+@section sidebarMenu
+{
+    <li class="active"><a href="#">Information</a></li>
+}
+
+<div class="container-fluid">
+    <!-- tabs -->
+    <div class="row">
+        <div class="col-sm-12 panel panel-default panel_form_parent">
+            <br />        
+            <div class="tab-content myContent_noTab">
+                <div class="tab-pane fade active in" id="general" aria-labelledby="general-tab">
+                      <!-- panel content -->
+                    <div class="col-sm-12">
+                         @using (Html.BeginForm("Create", "CallWrapUp", FormMethod.Post, new { id = "form_CallWrapUp" }))
+                         {
+                                                                   
+                            <!-- title 1 -->
+                            <div class="row form_text">
+                                <div class="panel panel-default panel_form_child">
+                                    <div class="panel-heading">
+                                        <label class="control-label sv-header"><strong>General</strong></label>
+                                    </div>
+                                    <br />
+                                    <div class="panel-body">
+                                        <div class="form-horizontal">
+                                            <div class="row">
+                                                 <div class="col-sm-6">                                        
+                                                    <div class="form-group">
+                                                        <label class="col-sm-4 control-label">Call Start Time</label>
+                                                        <div class="col-sm-8">
+                                                            <input type="text" id="CallStartTime" name="CallStartTime" class="form-control" readonly =" readonly" />                                             
+                                                        </div>
+                                                    </div>
+                                                 </div>                                       
+                                                 <div class="col-sm-6">                                        
+                                                    <div class="form-group">
+                                                        <label class="col-sm-4 control-label">Call End Time</label>
+                                                        <div class="col-sm-8">
+                                                             <input type="text" id="CallEndTime" name="CallEndTime" class="form-control" readonly =" readonly" />                                             
+                                                        </div>
+                                                    </div>
+                                                 </div>
+                                                </div>
+                                            <div class="row">
+                                                <div class="col-sm-6">                                        
+                                                    <div class="form-group">
+                                                        <label class="col-sm-4 control-label">For Customer</label>
+                                                        <div class="col-sm-8">
+                                                       
+                                                            <label class="radio inline">
+                                                                <input id="c_radio" type="radio" name="optionsRadios" value="customer" checked />
+                                                                Customer
+                                                            </label>
+                                                            <label class="radio inline">
+                                                                <input id="nc_radio" type="radio" name="optionsRadios" value="noncustomer" />  
+                                                                Non Customer
+                                                            </label>
+                                                     
+                                                            <input type="hidden" name="flagc" id ="flagc" />
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-sm-6">                                        
+                                                    <div class="form-group cust">                                                  
+                                                          <label class="col-sm-4 control-label mandatory rest">Customer</label>
+                                                        <div class="col-sm-8">
+                                                            <input type="hidden" id="CustomerID" name="CustomerID" value="" class="form-control rest1" style="margin-bottom:-50px;" />
+                                                            <div class="input-group">
+                                                                <input type="text" id="CustomerName" name="CustomerName" class="form-control rest2" value="">
+                                                                <div tabindex="0" id="CustomerName-label" class="form-control typeahead-label hide rest3" style="border-top-left-radius:3px;border-bottom-left-radius:3px">
+                                                                </div>
+                                                                <div tabindex="0" class="input-group-addon btn rest4" id="Customer-popup">
+                                                                    <i class="fa fa-search"></i>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                    </div>
+                                                    <div class="form-group ncust">
+                                                  
+                                                          <label class="col-sm-4 control-label mandatory rest">Non Customer</label>
+                                                        <div class="col-sm-8">
+                                                            <input type="hidden" id="NonCustomerID" name="NonCustomerID" value="" class="form-control rest1" style="margin-bottom:-50px;" />
+                                                            <div class="input-group">
+                                                                <input type="text" id="NonCustomerName" name="NonCustomerName" class="form-control rest2" value="">
+                                                                <div tabindex="0" id="NonCustomerName-label" class="form-control typeahead-label hide rest3" style="border-top-left-radius:3px;border-bottom-left-radius:3px">
+                                                                </div>
+                                                                <div tabindex="0" class="input-group-addon btn rest4" id="NonCustomer-popup">
+                                                                    <i class="fa fa-search"></i>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+                                             </div>
+                                             <div class="row">
+                                                <div class="col-sm-6">                                        
+                                                    <div class="form-group">
+                                                        <label class="col-sm-4 control-label">Agent</label>
+                                                        <div class="col-sm-8">
+                                                            <input type="text" id="CreatedByName" name="CreatedByName" class="form-control" readonly =" readonly" />
+                                                         </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                                                   
+                                        </div>
+                                    </div>                               
+                                </div>
+                            </div>         
+                        }              
+                    </div>
+             
+                </div>
+            </div>
+        </div>        
+    </div>    
+</div>
+<div class="row form_text">
+</div>
+
+<div id="response-modal"></div>
+<script type="text/javascript">
+
+    $(window).unload(function () {
+        localStorage.callstart = '';
+        localStorage.callend = '';
+    });
+
+    $(document).ready(function () {
+        $('#CreatedBy').val('@Session["CurrentUserID"].ToString()');
+        $('#CreatedByName').val('@Session["Fullname"].ToString()');
+
+        if ($("#c_radio").is(":checked")) {
+            $('.cust').show();
+            $('.ncust').hide();
+            $('#flagc').val('cust')
+
+        } else if ($("#nc_radio").is(":checked")) {
+            $('.cust').hide();
+            $('.ncust').show();
+            $('#flagc').val('ncust')
+
+
+
+        }
+
+        $(".radio input[type='radio']").on('click', function () {
+            if ($("#c_radio").is(":checked")) {
+                $('.cust').show();
+                $('.ncust').hide();
+                $('#flagc').val('cust')
+            } else if ($("#nc_radio").is(":checked")) {
+                $('.cust').hide();
+                $('.ncust').show();
+                $('#flagc').val('ncust')
+
+            }
+        });
+
+
+
+
+        $("#btn_save").click(function () {
+            if ($('#CallStartTime').val() == "") {
+                alert("@Resources.CallWrapUp.CallStartTimeMandatory");
+            }
+            else if ($('#c_radio').checked == true) {
+                if ($('#CustomerID').val() == "") {
+                    alert("@Resources.CallWrapUp.CustomerIDMandatory");
+                }
+            }
+            else if ($('#nc_radio').checked == true) {
+                if ($('#NonCustomerID').val() == "") {
+                    alert("@Resources.CallWrapUp.NonCustomerIDMandatory");
+                }
+            }
+            else {
+                formSubmit("save", $("#form_CallWrapUp"));
+            }
+        });
+
+        $("#btn_savenclose").click(function () {
+            formSubmit("saveNClose", $("#form_CallWrapUp"));
+        });
+
+
+
+        $('#Customer-popup').on('click', function (e) {
+            urlModalPopup = '@Url.Action("_popupContent", "Popup", new { type = "customer", _entity = "" })';
+            colModelsName = [
+            { label: 'ID', name: 'Id', index: 'Id', key: true, width: 75, hidden: true },
+            { label: 'Full Name', name: 'Name', width: 100 },
+            { label: 'CIS Number', name: 'CISNumber', width: 100 },
+            { label: 'ID Number', name: 'IDNumber', width: 150 },
+            { label: 'Business No.', name: 'BusinessNo', width: 150 },
+            { label: 'E-mail', name: 'EMail', width: 150 }
+            ];
+            var id = $(this).parent().find('input:last').attr('id');
+            $('#' + id).trigger("blur");
+            e.preventDefault();
+        });
+
+
+        var customerTypeahead = new PopupClass();
+        customerTypeahead.setId("CustomerName");
+        customerTypeahead.setUrl('@Url.Action("Customer", "Popup")');
+                customerTypeahead.setHiddenId("CustomerID");
+                customerTypeahead.init();
+
+
+
+        $('#NonCustomer-popup').on('click', function (e) {
+            urlModalPopup = '@Url.Action("_popupContent", "Popup", new { type = "noncustomer", _entity = "" })';
+              colModelsName = [
+                  { label: 'ID', name: 'Id', index: 'Id', key: true, width: 75, hidden: true },
+                  { label: 'Full Name', name: 'Name', width: 200 },
+                  { label: 'Phone Number', name: 'Name', width: 200 }
+              ];
+              var id = $(this).parent().find('input:last').attr('id');
+              $('#' + id).trigger("blur");
+              e.preventDefault();
+          });
+
+
+          var noncustomerTypeahead = new PopupClass();
+          noncustomerTypeahead.setId("NonCustomerName");
+          noncustomerTypeahead.setUrl('@Url.Action("NonCustomer", "Popup")');
+               noncustomerTypeahead.setHiddenId("NonCustomerID");
+               noncustomerTypeahead.init();
+
+        //Set CTI value on page load
+        getCtiValues();
+       
+    });
+
+    //Connect to cti
+    myobject.ConnectIC();
+
+    //Set CTI value on page load
+    getCtiValues();
+
+    //Function set cti value to input form
+    function getCtiValues() {
+        @*if (myobject.CallStartDateTime == '') {
+            $('#CallStartTime').val(localStorage.callstart);
+            $('#CallEndTime').val(localStorage.callend);
+
+            $('#CustomerID').val('@Session["customerSearchGuid"]');
+            $('#CustomerName').val('@Session["customerSearchName"]');
+        }
+        else {*@
+            $('#CallStartTime').val(ctiFormatDate(myobject.CallStartDateTime));
+            $('#CallEndTime').val(ctiFormatDate(myobject.CallEndDateTime));
+        //}
+    }
+
+</script>
+
+<script type='text/javascript' for="myobject" event="CallConnected()"> getCtiValues();</script>
+<script type='text/javascript' for="myobject" event="CallDisconnected()"> getCtiValues();</script>

@@ -1,0 +1,183 @@
+﻿/*Created by Ardi, for Print Ticket (20151106)*/
+body {
+  padding-top: 27px;
+  overflow-y: visible;
+}
+
+html,
+body {
+    margin: 0;
+    /*background-color: #EAEAEA;*/
+}
+
+.mainPrint {
+    position:absolute;
+	top:40px;
+	left:5px;
+	right:5px;
+}
+
+@media print {
+    .mainPrint {
+        position:absolute;
+	    top:0px;
+	    left:5px;
+	    right:5px;
+    }
+
+    .no-print, .no-print * {
+        display: none !important;
+    }
+
+    .page-break {
+        display: block;
+        page-break-before: always;
+    }
+}
+
+.main .page-header {
+  margin-top: 0;
+}
+
+.main_panel
+{
+    background-color: #EAEAEA;
+}
+
+.header_image
+{
+    background-image: url(../images/layout_entity_header.png) !important;
+    background-repeat: repeat-x;
+}
+
+.form_text
+{
+    font-size: small;
+    font-weight: lighter;
+}
+
+.text_main_title
+{
+    font-size: x-large;
+    font-weight: bold;
+}
+
+.text_title
+{
+    font-size: 14px;
+    font-weight: bold;
+    
+}
+
+.form-group
+{
+    margin-bottom: 5px;
+}
+.control-label
+{
+    font-size: 11px;
+    padding-bottom: 0;
+}
+.header-label
+{
+    font-size: 13px;
+    padding-bottom: 0;
+}
+
+.form-control
+{
+    height: 28px !important;
+    font-size: 10px !important;
+}
+
+.form-group
+{
+    text-align: left;
+}
+
+.print-label {
+    margin-bottom: 0;
+    padding-top: 7px;
+    font-size: 11px;
+    padding-bottom: 0;
+}
+
+.panel {
+    margin-bottom: 5px !important;
+}
+
+.panel > .panel-heading {
+    /* As Request SPC, For Reduce Ink Cost when Printing, Dev @ 31 10 2016 */
+    /* background-color: #ecf1f5; */
+    background-color: white;
+    border-color: #639CCE;
+    color: black;
+    height: 5px;
+    line-height:2px;
+}
+
+.notes-gap {
+    padding: 0px !important;
+}
+
+br {
+    display: block;
+    margin: 10px 0;
+}
+
+.panel > .panel-body
+{
+    padding-top: 0;
+    padding-bottom: 0;
+}
+
+.panel_form_parent
+{
+    position: absolute;
+    height: 100%;
+    width: 100%;
+}
+
+.panel_form_child
+{
+    /* As Request SPC, For Reduce Ink Cost when Printing, Dev @ 31 10 2016 */
+    /* background-color: #ecf1f5; */
+    background-color: white;
+}
+
+.header_color
+{
+    background-color: #3B7FAA;
+    border-bottom: 1px solid #655b5b;
+    color: black;
+}
+
+
+/* ---------------
+    navbar header    
+*/
+.navbar-nav > li > a, .navbar-brand {
+    padding-top:6px !important; 
+    padding-bottom:0 !important;
+    height: 28px;
+}
+.navbar {min-height:28px !important;}
+
+.navbar .nav > li > a {
+    float: none;
+    line-height: 19px;
+    padding: 9px 10px 11px;
+    text-decoration: none;
+    color: #428bca;
+}
+.navbar .nav > li > a:hover {
+    color: blue;
+}
+
+.navbar-default .navbar-brand {
+    color: #fcd900;
+}
+
+.navbar-fixed-top {
+  border: 0;
+}

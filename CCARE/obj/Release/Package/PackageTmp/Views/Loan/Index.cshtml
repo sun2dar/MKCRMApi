@@ -1,0 +1,182 @@
+﻿@model CCARE.Models.Loan
+
+@{
+    ViewBag.Title = "Loan: " + Model.AccountNo;
+    if (Request.IsAjaxRequest())
+    {
+        Layout = null;
+    }
+    else
+    {
+        Layout = "~/Views/Shared/_LayoutEntity.cshtml";
+    }
+}
+
+@section entityLogo
+{
+    <img class="crm-logo" src="~/assets/images/ico_lrg_112.gif" />
+}
+
+@section title
+{
+    Loan: @Model.AccountNo
+}
+
+@section formTitle
+{
+    <div class="text_title">
+        <h1>Information</h1>
+        Loan: @Model.AccountNo
+    </div>
+}
+
+@section buttonRequest
+{
+    <a href="#">
+        <img id="btn_create_request" class="btn-create-request"  data-toggle="tooltip" data-placement="left"
+           title="" data-original-title="Create Request" src="~/assets/images/request.png" />
+    </a>
+    
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#btn_create_request").tooltip('show');
+            $('#btn_create_request').click(function () {
+                var CustomerId = '@Model.CustomerId';
+                var CustomerIdName = '@Model.CustomerIdName';
+                var LoanNo = '@Model.LoanNumber';
+                var AccountNo = '@Model.AccountNo';
+                var url = '@Url.Action("Create", "Request")';
+
+                openWindow(url + "?customerID=" + CustomerId + "&customerName=" + CustomerIdName + "&loanNo=" + LoanNo + "&accountNo=" + AccountNo + "&customerType=customer_loan");
+            });
+        });
+    </script>
+}
+
+
+@section navHeader
+{
+
+}
+
+@section footerStatus
+{
+    <div class="footer_text">Status: Active</div>
+}
+
+@section sidebarMenu
+{
+    <li><a data-ajax="true" data-ajax-mode="replace" data-ajax-update="#page_content" href="/Loan/Index?Id=@Model.Id&AccountNo=@Model.AccountNo&LoanNumber=@Model.LoanNumber&CustomerId=@Model.CustomerId&CustomerIdName=@Model.CustomerIdName&LoanTypeIdCode=@Model.LoanTypeIdCode&LoanTypeIdName=@Model.LoanTypeIdName">Information</a></li>
+}
+
+<div id="page_content" class="container-fluid">
+    <!-- tabs -->
+    <div class="row">
+        <div class="col-sm-12 panel panel-default panel_form_parent">
+            <br />
+            <div class="tab-content myTabContent tab-content-custom1">
+                <div class="tab-pane fade active in" id="general" aria-labelledby="general-tab">
+
+                    <!-- panel content -->
+                    <div class="col-sm-12">
+                        <!-- title 1 -->
+                        <div class="row form_text">
+                            <div class="panel panel-default panel_form_child">
+                                
+                                <div class="panel-heading">
+                                    <label class="control-label sv-header">
+                                        <strong>General</strong>
+                                    </label>
+                                </div>
+                                
+                                <br />
+                                
+                                <div class="panel-body">
+                                    <form class="form-horizontal">
+                                        <div class="row">
+                                            <div class="col-sm-6">
+                                                <div class="form-group">
+                                                    <label class="col-sm-4 control-label">Loan Number</label>
+                                                    <div class="col-sm-8">
+                                                        @Html.TextBoxFor(x => x.LoanNumber, new { @class = "form-control" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <div class="form-group">
+                                                    <label class="col-sm-4 control-label">Customer</label>
+                                                    <div class="col-sm-8">
+                                                        @Html.TextBoxFor(x => x.CustomerIdName, new { @class = "form-control" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-6">
+                                                <div class="form-group">
+                                                    <label class="col-sm-4 control-label">Loan Account Number</label>
+                                                    <div class="col-sm-8">
+                                                        @Html.TextBoxFor(x => x.AccountNo, new { @class = "form-control" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <div class="form-group">
+                                                    <label class="col-sm-4 control-label">Loan Type</label>
+                                                    <div class="col-sm-8">
+                                                        @Html.TextBoxFor(x => x.LoanTypeIdName, new { @class = "form-control" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            
+                            </div>
+                        </div>
+
+                        <!-- partial view -->
+                        <div id="partialView"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row form_text">
+
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#myTab a').click(function (e) {
+            e.preventDefault()
+            $(this).tab('show')
+        })
+
+        $("#btn_save").click(function () {
+            formSubmit("save", $("#form_customer"));
+        });
+
+        var postData = {
+            accountNo: function () { return "@Model.AccountNo"; },
+            loanNumber: function () { return "@Model.LoanNumber"; }
+        };
+
+        $.ajax({
+            type: "GET",
+            url: "/Loan/LoanPartial/",
+            data: postData,
+            cache: false,
+            contentType: "application/html; charset=utf-8",
+            dataType: "html",
+            success: function (viewHTML) {
+                $("#partialView").html(viewHTML);
+            },
+            error: function (errorData) {
+                //onError(errorData);
+            }
+        });
+    });
+
+</script>

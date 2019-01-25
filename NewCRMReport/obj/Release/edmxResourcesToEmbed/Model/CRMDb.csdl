@@ -1,0 +1,217 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="BCAUAT_MSCRMModel" Alias="Self" p1:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:p1="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityContainer Name="BCAUAT_MSCRMEntities" p1:LazyLoadingEnabled="true">
+    <EntitySet Name="Requests" EntityType="BCAUAT_MSCRMModel.Request" />
+    <EntitySet Name="SystemUsers" EntityType="BCAUAT_MSCRMModel.SystemUser" />
+    <EntitySet Name="Tasks" EntityType="BCAUAT_MSCRMModel.Task" />
+    <EntitySet Name="CallWrapUpReports" EntityType="BCAUAT_MSCRMModel.CallWrapUpReport" />
+  </EntityContainer>
+  <EntityType Name="Request">
+    <Key>
+      <PropertyRef Name="RequestID" />
+      <PropertyRef Name="CustomerIdType" />
+      <PropertyRef Name="StateCode" />
+    </Key>
+    <Property Name="RequestID" Type="Guid" Nullable="false" />
+    <Property Name="CCQRequestID" Type="String" MaxLength="100" Unicode="true" FixedLength="false" />
+    <Property Name="TicketNumber" Type="String" MaxLength="100" Unicode="true" FixedLength="false" />
+    <Property Name="CustomerIdType" Type="Int32" Nullable="false" />
+    <Property Name="ForCustomer" Type="Boolean" />
+    <Property Name="CustomerID" Type="Guid" />
+    <Property Name="CustomerName" Type="String" MaxLength="160" Unicode="true" FixedLength="false" />
+    <Property Name="NonCustomerID" Type="Guid" />
+    <Property Name="NonCustomerName" Type="String" MaxLength="200" Unicode="true" FixedLength="false" />
+    <Property Name="AccountNo" Type="String" MaxLength="100" Unicode="true" FixedLength="false" />
+    <Property Name="CardNo" Type="String" MaxLength="100" Unicode="true" FixedLength="false" />
+    <Property Name="CustomerNo" Type="String" MaxLength="100" Unicode="true" FixedLength="false" />
+    <Property Name="LoanNo" Type="String" MaxLength="100" Unicode="true" FixedLength="false" />
+    <Property Name="ContactMethod" Type="Int32" />
+    <Property Name="ContactMethodLabel" Type="String" MaxLength="1000" Unicode="true" FixedLength="false" />
+    <Property Name="CustomerAttitude" Type="Int32" />
+    <Property Name="CustomerAttitudeLabel" Type="String" MaxLength="1000" Unicode="true" FixedLength="false" />
+    <Property Name="InteractionCount" Type="String" MaxLength="100" Unicode="true" FixedLength="false" />
+    <Property Name="Location" Type="Int32" />
+    <Property Name="LocationLabel" Type="String" MaxLength="1000" Unicode="true" FixedLength="false" />
+    <Property Name="Address1" Type="String" MaxLength="100" Unicode="true" FixedLength="false" />
+    <Property Name="Address2" Type="String" MaxLength="100" Unicode="true" FixedLength="false" />
+    <Property Name="City" Type="String" MaxLength="40" Unicode="true" FixedLength="false" />
+    <Property Name="PostalCode" Type="String" MaxLength="5" Unicode="true" FixedLength="false" />
+    <Property Name="CompanyName" Type="String" MaxLength="100" Unicode="true" FixedLength="false" />
+    <Property Name="CommunicationPhone" Type="String" MaxLength="100" Unicode="true" FixedLength="false" />
+    <Property Name="CategoryID" Type="Guid" />
+    <Property Name="CategoryName" Type="String" MaxLength="100" Unicode="true" FixedLength="false" />
+    <Property Name="ProductID" Type="Guid" />
+    <Property Name="ProductName" Type="String" MaxLength="100" Unicode="true" FixedLength="false" />
+    <Property Name="WorkgroupID" Type="Guid" />
+    <Property Name="WorkgroupName" Type="String" MaxLength="200" Unicode="true" FixedLength="false" />
+    <Property Name="ServiceLevel" Type="Int32" />
+    <Property Name="PriorityCode" Type="Int32" />
+    <Property Name="PriorityLabel" Type="String" MaxLength="1000" Unicode="true" FixedLength="false" />
+    <Property Name="StatusCode" Type="Int32" />
+    <Property Name="StatusLabel" Type="String" MaxLength="1000" Unicode="true" FixedLength="false" />
+    <Property Name="Title" Type="String" MaxLength="200" Unicode="true" FixedLength="false" />
+    <Property Name="TransactionTime" Type="String" MaxLength="50" Unicode="true" FixedLength="false" />
+    <Property Name="TransactionTimeZone" Type="Int32" />
+    <Property Name="TransactionTimeZoneLabel" Type="String" MaxLength="1000" Unicode="true" FixedLength="false" />
+    <Property Name="Currency" Type="Int32" />
+    <Property Name="CurrencyLabel" Type="String" MaxLength="1000" Unicode="true" FixedLength="false" />
+    <Property Name="TransactionAmount" Type="Decimal" Precision="23" Scale="10" />
+    <Property Name="TransactionAmount_txt" Type="String" MaxLength="8000" Unicode="false" FixedLength="false" />
+    <Property Name="WsIdID" Type="Guid" />
+    <Property Name="WsIdName" Type="String" MaxLength="100" Unicode="true" FixedLength="false" />
+    <Property Name="CaseOriginCode" Type="Int32" />
+    <Property Name="CaseOriginLabel" Type="String" MaxLength="1000" Unicode="true" FixedLength="false" />
+    <Property Name="Lokasi" Type="String" MaxLength="100" Unicode="true" FixedLength="false" />
+    <Property Name="BranchID" Type="Guid" />
+    <Property Name="BranchName" Type="String" MaxLength="100" Unicode="true" FixedLength="false" />
+    <Property Name="UserBranchID" Type="Guid" />
+    <Property Name="UserBranchName" Type="String" MaxLength="100" Unicode="true" FixedLength="false" />
+    <Property Name="CauseID" Type="Guid" />
+    <Property Name="CauseName" Type="String" MaxLength="100" Unicode="true" FixedLength="false" />
+    <Property Name="Reason" Type="String" MaxLength="200" Unicode="true" FixedLength="false" />
+    <Property Name="CreatedBy" Type="Guid" />
+    <Property Name="CreatedByName" Type="String" MaxLength="160" Unicode="true" FixedLength="false" />
+    <Property Name="ModifiedBy" Type="Guid" />
+    <Property Name="ModifiedByName" Type="String" MaxLength="160" Unicode="true" FixedLength="false" />
+    <Property Name="OwnerID" Type="Guid" />
+    <Property Name="OwnerName" Type="String" MaxLength="160" Unicode="true" FixedLength="false" />
+    <Property Name="CreatedOn" Type="DateTime" Precision="3" />
+    <Property Name="ModifiedOn" Type="DateTime" Precision="3" />
+    <Property Name="DueDate" Type="DateTime" Precision="3" />
+    <Property Name="ClosedOn" Type="DateTime" Precision="3" />
+    <Property Name="ReopenedOn" Type="DateTime" Precision="3" />
+    <Property Name="BusinessUnitID" Type="Guid" />
+    <Property Name="Source" Type="Int32" />
+    <Property Name="DeletionStateCode" Type="Int32" />
+    <Property Name="StateCode" Type="Int32" Nullable="false" />
+    <Property Name="ReferenceNumber" Type="String" MaxLength="100" Unicode="true" FixedLength="false" />
+    <Property Name="RefTicketNumber" Type="String" MaxLength="100" Unicode="true" FixedLength="false" />
+    <Property Name="IncomingPhoneNumber" Type="String" MaxLength="100" Unicode="true" FixedLength="false" />
+    <Property Name="ExtraCardType" Type="Int32" />
+    <Property Name="ExtraCardLabel" Type="String" MaxLength="11" Unicode="false" FixedLength="false" />
+    <Property Name="ExtraCardNumber" Type="String" MaxLength="100" Unicode="true" FixedLength="false" />
+    <Property Name="Profession" Type="String" MaxLength="100" Unicode="true" FixedLength="false" />
+  </EntityType>
+  <EntityType Name="SystemUser">
+    <Key>
+      <PropertyRef Name="SystemUserID" />
+      <PropertyRef Name="DomainName" />
+      <PropertyRef Name="DeletionStateCode" />
+      <PropertyRef Name="IsActiveDirectoryUser" />
+      <PropertyRef Name="BusinessUnitID" />
+    </Key>
+    <Property Name="SystemUserID" Type="Guid" Nullable="false" />
+    <Property Name="FirstName" Type="String" MaxLength="50" Unicode="true" FixedLength="false" />
+    <Property Name="DomainName" Type="String" Nullable="false" MaxLength="255" Unicode="true" FixedLength="false" />
+    <Property Name="EmployeeID" Type="String" MaxLength="100" Unicode="true" FixedLength="false" />
+    <Property Name="FullName" Type="String" MaxLength="160" Unicode="true" FixedLength="false" />
+    <Property Name="LastName" Type="String" MaxLength="50" Unicode="true" FixedLength="false" />
+    <Property Name="HomePhone" Type="String" MaxLength="50" Unicode="true" FixedLength="false" />
+    <Property Name="InternalEMailAddress" Type="String" MaxLength="255" Unicode="true" FixedLength="false" />
+    <Property Name="MobilePhone" Type="String" MaxLength="50" Unicode="true" FixedLength="false" />
+    <Property Name="Title" Type="String" MaxLength="100" Unicode="true" FixedLength="false" />
+    <Property Name="DeletionStateCode" Type="Int32" Nullable="false" />
+    <Property Name="ActiveDirectoryGuid" Type="Guid" />
+    <Property Name="IsActiveDirectoryUser" Type="Boolean" Nullable="false" />
+    <Property Name="IsDisabled" Type="Boolean" />
+    <Property Name="CreatedOn" Type="DateTime" Precision="3" />
+    <Property Name="ModifiedOn" Type="DateTime" Precision="3" />
+    <Property Name="CreatedBy" Type="Guid" />
+    <Property Name="ModifiedBy" Type="Guid" />
+    <Property Name="DisplayInServiceViews" Type="Boolean" />
+    <Property Name="BranchLoginName" Type="String" MaxLength="100" Unicode="true" FixedLength="false" />
+    <Property Name="CCQId" Type="Int32" />
+    <Property Name="Department" Type="String" MaxLength="20" Unicode="true" FixedLength="false" />
+    <Property Name="Location" Type="String" MaxLength="20" Unicode="true" FixedLength="false" />
+    <Property Name="Site" Type="String" MaxLength="40" Unicode="true" FixedLength="false" />
+    <Property Name="TandemUserGroup" Type="String" MaxLength="4" Unicode="true" FixedLength="false" />
+    <Property Name="TandemUserNum" Type="String" MaxLength="9" Unicode="true" FixedLength="false" />
+    <Property Name="InternalAddressId" Type="Guid" />
+    <Property Name="Fax" Type="String" MaxLength="50" Unicode="true" FixedLength="false" />
+    <Property Name="Phone" Type="String" MaxLength="50" Unicode="true" FixedLength="false" />
+    <Property Name="Phone2" Type="String" MaxLength="50" Unicode="true" FixedLength="false" />
+    <Property Name="pager" Type="String" MaxLength="50" Unicode="true" FixedLength="false" />
+    <Property Name="OrganizationID" Type="Guid" />
+    <Property Name="BusinessUnitID" Type="Guid" Nullable="false" />
+    <Property Name="BusinessUnitName" Type="String" MaxLength="160" Unicode="true" FixedLength="false" />
+    <Property Name="BranchID" Type="Guid" />
+    <Property Name="BranchName" Type="String" MaxLength="100" Unicode="true" FixedLength="false" />
+    <Property Name="PreferredPhoneCode" Type="Int32" />
+    <Property Name="PreferredPhone" Type="String" MaxLength="255" Unicode="true" FixedLength="false" />
+    <Property Name="CRMUserID" Type="Guid" />
+    <Property Name="Config_UserID" Type="Guid" />
+    <Property Name="AuthInfo" Type="String" MaxLength="128" Unicode="true" FixedLength="false" />
+    <Property Name="DefaultOrganizationID" Type="Guid" />
+    <Property Name="SecurityRoleID" Type="Guid" />
+    <Property Name="RoleName" Type="String" MaxLength="100" Unicode="true" FixedLength="false" />
+    <Property Name="SystemUserRoleID" Type="Guid" />
+  </EntityType>
+  <EntityType Name="Task">
+    <Key>
+      <PropertyRef Name="TaskID" />
+      <PropertyRef Name="ActivityStatus" />
+      <PropertyRef Name="DeletionStateCode" />
+      <PropertyRef Name="Pointer_ActivityId" />
+    </Key>
+    <Property Name="TaskID" Type="Guid" Nullable="false" />
+    <Property Name="PartyUserID" Type="Guid" />
+    <Property Name="PartyUserName" Type="String" MaxLength="160" Unicode="true" FixedLength="false" />
+    <Property Name="TaskNumber" Type="String" MaxLength="100" Unicode="true" FixedLength="false" />
+    <Property Name="CCQID" Type="String" MaxLength="100" Unicode="true" FixedLength="false" />
+    <Property Name="RequestTicketNumber" Type="String" MaxLength="100" Unicode="true" FixedLength="false" />
+    <Property Name="Subject" Type="String" MaxLength="200" Unicode="true" FixedLength="false" />
+    <Property Name="Regarding" Type="String" MaxLength="200" Unicode="true" FixedLength="false" />
+    <Property Name="RequestStatusCode" Type="Int32" />
+    <Property Name="RequestStatusLabel" Type="String" MaxLength="1000" Unicode="true" FixedLength="false" />
+    <Property Name="TaskStatus" Type="Int32" />
+    <Property Name="TaskStatusLabel" Type="String" MaxLength="1000" Unicode="true" FixedLength="false" />
+    <Property Name="ActivityStatus" Type="Int32" Nullable="false" />
+    <Property Name="ActivityStatusLabel" Type="String" MaxLength="1000" Unicode="true" FixedLength="false" />
+    <Property Name="Priority" Type="Int32" />
+    <Property Name="PriorityLabel" Type="String" MaxLength="1000" Unicode="true" FixedLength="false" />
+    <Property Name="DueDate" Type="DateTime" Precision="3" />
+    <Property Name="StartDate" Type="DateTime" Precision="3" />
+    <Property Name="OwnerID" Type="Guid" />
+    <Property Name="OwnerName" Type="String" MaxLength="160" Unicode="true" FixedLength="false" />
+    <Property Name="WorkGroupID" Type="Guid" />
+    <Property Name="WorkGroupName" Type="String" MaxLength="200" Unicode="true" FixedLength="false" />
+    <Property Name="CreatedBy" Type="Guid" />
+    <Property Name="CreatedOn" Type="DateTime" Precision="3" />
+    <Property Name="CreatedByName" Type="String" MaxLength="160" Unicode="true" FixedLength="false" />
+    <Property Name="ModifiedBy" Type="Guid" />
+    <Property Name="ModifiedOn" Type="DateTime" Precision="3" />
+    <Property Name="ModifiedByName" Type="String" MaxLength="160" Unicode="true" FixedLength="false" />
+    <Property Name="DeletionStateCode" Type="Int32" Nullable="false" />
+    <Property Name="BusinessUnitID" Type="Guid" />
+    <Property Name="RequestID" Type="Guid" />
+    <Property Name="Pointer_ActivityId" Type="Guid" Nullable="false" />
+  </EntityType>
+  <EntityType Name="CallWrapUpReport">
+    <Key>
+      <PropertyRef Name="CallWrapUpID" />
+      <PropertyRef Name="SourceDesc" />
+      <PropertyRef Name="StateCode" />
+    </Key>
+    <Property Type="Guid" Name="CallWrapUpID" Nullable="false" />
+    <Property Type="Guid" Name="CustomerID" />
+    <Property Type="String" Name="CustomerName" MaxLength="160" FixedLength="false" Unicode="true" />
+    <Property Type="Guid" Name="NonCustomerID" />
+    <Property Type="String" Name="NonCustomerName" MaxLength="200" FixedLength="false" Unicode="true" />
+    <Property Type="DateTime" Name="CallEndTime" Precision="3" />
+    <Property Type="DateTime" Name="CallStartTime" Precision="3" />
+    <Property Type="Int32" Name="Source" />
+    <Property Type="String" Name="SourceDesc" Nullable="false" MaxLength="11" FixedLength="false" Unicode="false" />
+    <Property Type="DateTime" Name="CreatedOn" Precision="3" />
+    <Property Type="String" Name="CreatedByName" MaxLength="160" FixedLength="false" Unicode="true" />
+    <Property Type="Guid" Name="CreatedBy" />
+    <Property Type="DateTime" Name="ModifiedOn" Precision="3" />
+    <Property Type="String" Name="ModifiedByName" MaxLength="160" FixedLength="false" Unicode="true" />
+    <Property Type="Guid" Name="ModifiedBy" />
+    <Property Type="Int32" Name="DeletionStateCode" />
+    <Property Type="Int32" Name="StateCode" Nullable="false" />
+    <Property Type="Int32" Name="StatusCode" />
+    <Property Type="String" Name="CategoryName" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Type="String" Name="HandphoneNo" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Type="String" Name="PhoneNo" MaxLength="100" FixedLength="false" Unicode="true" />
+  </EntityType>
+</Schema>

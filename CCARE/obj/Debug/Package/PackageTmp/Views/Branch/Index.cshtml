@@ -1,0 +1,59 @@
+﻿@{
+    Layout = "~/Views/Shared/_LayoutInquiry.cshtml";
+}
+
+@section title
+{
+    
+}
+
+@section mainmenu{ Search }
+@section submenu{ Knowledge Base }
+@section menu{ Branch }
+
+<div class="col-lg-9 inquiry_left">
+    <div class="input-group">
+        <span class="input-group-btn inquiry_dropdown">
+            <select id="inquiry_param" class="form-control">
+                <option value="searchBranchCode" selected="selected">Kode Kantor</option>
+                <option value="searchInitial">Inisial</option>
+                <option value="searchName">Nama Kantor</option>
+                <option value="searchRegionName">Kanwil</option>
+                <option value="searchAddress">Alamat</option>
+                <option value="searchCity">Kota</option>
+                <option value="searchTelephone">Telepon</option>
+            </select>
+        </span>
+        <span class="input-group-btn input_space"></span>
+        <input type="text" class="form-control" id="inquiry_val">
+        <span class="input-group-btn">
+            <button id="btn_search" class="btn btn-primary" type="submit"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></button>
+        </span>
+    </div>
+    </div>
+    <div class="col-lg-3 inquiry_right">
+    <div class="input-group col-lg-12">
+        <span class="inquiry_dropdown">
+            <select id="inquiry_filter" class="form-control">
+                <option value="1">Active Branch</option>
+                <option value="2">Inactive Branch</option>
+            </select>
+        </span>
+    </div>
+</div>
+
+
+@section scriptExt{
+    @if(Session["RoleID"] != null){
+        string entity = ViewContext.Controller.ControllerContext.RouteData.Values["controller"].ToString();
+        Guid roleID = new Guid(Session["RoleID"].ToString());
+        bool checkButton = CCARE.App_Function.RoleNPrivilege.checkEntityButtonByRoleID(roleID, entity, "Write");
+
+        if(checkButton == false)
+        {
+            <text>
+                $('#btn_new').hide();
+            </text>
+        }
+    }
+}

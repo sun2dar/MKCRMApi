@@ -1,0 +1,2689 @@
+﻿@{
+    ViewBag.Title = "Report";
+    Layout = "~/Views/Shared/_LayoutInquiry.cshtml";
+
+    var tempData = ViewBag.Filters;
+    var a = tempData;
+}
+    <div class="col-lg-12 inquiry_left">
+        <div class="input-group">
+            <input type="text" class="form-control" id="inquiry_val" >
+            <span class="input-group-btn">
+                <button id="btn_search" class="btn btn-primary" type="submit"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></button>
+            </span>
+        </div>
+    </div>
+
+@section title
+{
+    
+}
+
+@section mainmenu{ Workplace }
+@section submenu{ My Work }
+@section menu{ Reports }
+
+@section scriptExt{
+ 
+}
+
+@section ReportViewer{
+    <div class="container-fluid" id="ReportParameter">
+        <div id="response-modal"></div>
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="container-fluid content_container">
+                    <div class="row">
+                        <div class="col-sm-12" >
+                            <br />
+
+                            <ol class="breadcrumb">
+                                <li class="active"><a id="reportparameter_btn" href="#">Report Parameter</a></li>
+                                <li class="active"><a id="reportfilter_btn" href="#">Report Filter</a></li>
+                            </ol>
+
+                            <div class="form-horizontal" id="div_reportparameter">
+                                
+                                <div class="row">
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <label class="col-sm-3 control-label">Report Name</label>
+                                                <div class="col-sm-9">
+                                                    <input type="text" class="form-control" id="Selected-Report" readonly="readonly"/>
+                                                    <input type="hidden" class="form-control" id="Selected-Rdl" />
+                                                    <input type="hidden" class="form-control" id="Selected-ReportID" />
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-sm-6"></div>
+                                    </div>
+                                </div>
+
+                                <div class="row" id="Date">
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <label class="col-sm-3 control-label">Date</label>
+                                                <div class="col-sm-9">
+                                                    <div class="input-group" id="DateTP">
+                                                        <input type="text" class="form-control" id="StartDate" />
+                                                        <span class="input-group-addon">
+                                                            <i class="fa fa-calendar fa-lg"></i>
+                                                        </span>
+                                                        <span class="input-group-btn input_space"></span>
+                                                        <input type="text" class="form-control" id="EndDate" />
+                                                        <span class="input-group-addon">
+                                                            <i class="fa fa-calendar fa-lg"></i>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-sm-6">
+                                            <div class="btn-group" data-toggle="buttons">
+                                                <label class="btn btn-danger" id="DateLbl">
+                                                    <input type="checkbox" id="DateCB"> Choose
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row" id="CreatedOn">
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <label class="col-sm-3 control-label">Created On</label>
+                                                <div class="col-sm-9">
+                                                    <div class="input-group" id="CreatedOnDTP">
+                                                        <input type="text" class="form-control" id="StartCreatedOn" />
+                                                        <span class="input-group-addon">
+                                                            <i class="fa fa-calendar fa-lg"></i>
+                                                        </span>
+                                                        <span class="input-group-btn input_space"></span>
+                                                        <input type="text" class="form-control" id="EndCreatedOn" />
+                                                        <span class="input-group-addon">
+                                                            <i class="fa fa-calendar fa-lg"></i>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-sm-6">
+                                            <div class="btn-group" data-toggle="buttons">
+                                                <label class="btn btn-danger" id="CreatedOnLbl">
+                                                    <input type="checkbox" id="CreatedOnCB"> Choose
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row" id="ModifiedOn">
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <label class="col-sm-3 control-label">Modified On</label>
+                                                <div class="col-sm-9">
+                                                    <div class="input-group" id="ModifiedOnDTP">
+                                                        <input type="text" class="form-control" id="StartModifiedOn" />
+                                                        <span class="input-group-addon">
+                                                            <i class="fa fa-calendar fa-lg"></i>
+                                                        </span>
+                                                        <span class="input-group-btn input_space"></span>
+                                                        <input type="text" class="form-control" id="EndModifiedOn" />
+                                                        <span class="input-group-addon">
+                                                            <i class="fa fa-calendar fa-lg"></i>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-sm-6">
+                                            <div class="btn-group" data-toggle="buttons">
+                                                <label class="btn btn-danger" id="ModifiedOnLbl">
+                                                    <input type="checkbox" id="ModifiedOnCB"> Choose
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row" id="Actual">
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <label class="col-sm-3 control-label">Actual Date</label>
+                                                <div class="col-sm-9">
+                                                    <div class="input-group" id="ActualDTP">
+                                                        <input type="text" class="form-control" id="StartActual" />
+                                                        <span class="input-group-addon">
+                                                            <i class="fa fa-calendar fa-lg"></i>
+                                                        </span>
+                                                        <span class="input-group-btn input_space"></span>
+                                                        <input type="text" class="form-control" id="EndActual" />
+                                                        <span class="input-group-addon">
+                                                            <i class="fa fa-calendar fa-lg"></i>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-sm-6">
+                                            <div class="btn-group" data-toggle="buttons">
+                                                <label class="btn btn-danger" id="ActualLbl">
+                                                    <input type="checkbox" id="ActualCB"> Choose
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row" id="ClosedOn">
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <label class="col-sm-3 control-label">Closed On</label>
+                                                <div class="col-sm-9">
+                                                    <div class="input-group" id="ClosedOnDTP">
+                                                        <input type="text" class="form-control" id="StartClosedOn" />
+                                                        <span class="input-group-addon">
+                                                            <i class="fa fa-calendar fa-lg"></i>
+                                                        </span>
+                                                        <span class="input-group-btn input_space"></span>
+                                                        <input type="text" class="form-control" id="EndClosedOn" />
+                                                        <span class="input-group-addon">
+                                                            <i class="fa fa-calendar fa-lg"></i>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <div class="btn-group" data-toggle="buttons">
+                                                <label class="btn btn-danger" id="ClosedOnLbl">
+                                                    <input type="checkbox" id="ClosedOnCB"> Choose
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row" id="DueDate">
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <label class="col-sm-3 control-label">Due Date</label>
+                                                <div class="col-sm-9">
+                                                    <div class="input-group" id="DueDateDTP">
+                                                        <input type="text" class="form-control" id="StartDueDate" />
+                                                        <span class="input-group-addon">
+                                                            <i class="fa fa-calendar fa-lg"></i>
+                                                        </span>
+                                                        <span class="input-group-btn input_space"></span>
+                                                        <input type="text" class="form-control" id="EndDueDate" />
+                                                        <span class="input-group-addon">
+                                                            <i class="fa fa-calendar fa-lg"></i>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <div class="btn-group" data-toggle="buttons">
+                                                <label class="btn btn-danger" id="DueDateLbl">
+                                                    <input type="checkbox" id="DueDateCB"> Choose
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row" id="ReopenOn">
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <label class="col-sm-3 control-label">Reopen On</label>
+                                                <div class="col-sm-9">
+                                                    <div class="input-group" id="ReopenOnDTP">
+                                                        <input type="text" class="form-control" id="StartReopenOn" />
+                                                        <span class="input-group-addon">
+                                                            <i class="fa fa-calendar fa-lg"></i>
+                                                        </span>
+                                                        <span class="input-group-btn input_space"></span>
+                                                        <input type="text" class="form-control" id="ReopenOnEnd" />
+                                                        <span class="input-group-addon">
+                                                            <i class="fa fa-calendar fa-lg"></i>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <div class="btn-group" data-toggle="buttons">
+                                                <label class="btn btn-danger" id="ReopenOnLbl">
+                                                    <input type="checkbox" id="ReopenOnCB"> Choose
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row" id="CategoryZone">
+                                    <div class="row">
+                                        <div class="col-sm-6">                                        
+                                            <div class="form-group">
+                                                <label class="col-sm-3 control-label">Category</label>
+                                                <div class="col-sm-9">
+                                                    @* ==========================================================================================================*@
+                                                    <input type="hidden" id="CategoryID" class="form-control" />
+                                                    <div class="input-group" id="CategoryID-Group">
+                                                        <input type="text" id="CategoryIDName" class="form-control" />
+                                                        <div tabindex="1" id="CategoryIDName-label" class="form-control typeahead-label hide">
+                                                        </div>
+                                                        <div tabindex="1" class="input-group-addon btn" id="CategoryIDName-popup">
+                                                            <i class="fa fa-search"></i>
+                                                        </div>
+                                                    </div>
+                                                    @* ==========================================================================================================*@
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <div class="btn-group" data-toggle="buttons">
+                                                <label class="btn btn-danger" id="CategoryLbl">
+                                                    <input type="checkbox" id="CategoryCB"> Choose
+                                                </label>
+                                                <span class="input-group-btn">
+                                                    <button class="btn btn-success" type="button" id="CategoryBtnAdd">ADD</button>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <label class="col-sm-3 control-label">Selected Category</label>
+                                                <div class="col-sm-9">
+                                                    <input type="text" class="form-control" id="Selected-Category" readonly="readonly"/>
+                                                    <input type="hidden" class="form-control" id="Selected-CategoryID" />
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-sm-6">
+                                            <div class="btn-group" data-toggle="buttons">
+                                                <span class="input-group-btn">
+                                                    <button class="btn btn-danger" type="button" id="CategoryBtnClear">Clear</button>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row" id="ProductZone">
+                                    <div class="row">
+                                        <div class="col-sm-6">                                        
+                                            <div class="form-group">
+                                                <label class="col-sm-3 control-label">Product</label>
+                                                <div class="col-sm-9">
+                                                    @* ==========================================================================================================*@
+                                                    <input type="hidden" id="ProductID" class="form-control" />
+                                                    <div class="input-group" id="ProductID-Group">
+                                                        <input type="text" id="ProductIDName" class="form-control" />
+                                                        <div tabindex="0" id="ProductIDName-label" class="form-control typeahead-label hide">
+                                                        </div>
+                                                        <div tabindex="0" class="input-group-addon btn" id="ProductIDName-popup">
+                                                            <i class="fa fa-search"></i>
+                                                        </div>
+                                                    </div>
+                                                    @* ==========================================================================================================*@
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <div class="btn-group" data-toggle="buttons">
+                                                <label class="btn btn-danger" id="ProductLbl">
+                                                    <input type="checkbox" id="ProductCB"> Choose
+                                                </label>
+                                                <span class="input-group-btn">
+                                                    <button class="btn btn-success" type="button" id="ProductBtnAdd">ADD</button>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <label class="col-sm-3 control-label">Selected Product</label>
+                                                <div class="col-sm-9">
+                                                    <input type="text" class="form-control" id="Selected-Product" readonly="readonly"/>
+                                                    <input type="hidden" class="form-control" id="Selected-ProductID" />
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-sm-6">
+                                            <div class="btn-group" data-toggle="buttons">
+                                                <span class="input-group-btn">
+                                                    <button class="btn btn-danger" type="button" id="ProductBtnClear">Clear</button>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row" id="WorkgroupZone">
+                                    <div class="row">
+                                        <div class="col-sm-6">                                                                              
+                                            <div class="form-group">
+                                                <label class="col-sm-3 control-label">Workgroup</label>
+                                                <div class="col-sm-9">
+                                                    @* ==========================================================================================================*@
+                                                    <input type="hidden" id="WorkgroupID" class="form-control" />
+                                                    <div class="input-group" id="WorkgroupID-Group">
+                                                        <input type="text" id="WorkgroupIDName" class="form-control" />
+                                                        <div tabindex="2" id="WorkgroupIDName-label" class="form-control typeahead-label hide">
+                                                        </div>
+                                                        <div tabindex="2" class="input-group-addon btn" id="WorkgroupIDName-popup">
+                                                            <i class="fa fa-search"></i>
+                                                        </div>
+                                                    </div>
+                                                    @* ==========================================================================================================*@
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <div class="btn-group" data-toggle="buttons">
+                                                <label class="btn btn-danger" id="WorkgroupLbl">
+                                                    <input type="checkbox" id="WorkgroupCB"> Choose
+                                                </label>
+                                                <span class="input-group-btn">
+                                                    <button class="btn btn-success" type="button" id="WorkgroupBtnAdd">ADD</button>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <label class="col-sm-3 control-label">Selected Workgroup</label>
+                                                <div class="col-sm-9">
+                                                    <input type="text" class="form-control" id="Selected-Workgroup" readonly="readonly"/>
+                                                    <input type="hidden" class="form-control" id="Selected-WorkgroupID" />
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-sm-6">
+                                            <div class="btn-group" data-toggle="buttons">
+                                                <span class="input-group-btn">
+                                                    <button class="btn btn-danger" type="button" id="WorkgroupBtnClear">Clear</button>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row" id="ActionZone">
+                                    <div class="row">
+                                        <div class="col-sm-6">                                        
+                                            <div class="form-group">
+                                                <label class="col-sm-3 control-label">Action</label>
+                                                <div class="col-sm-9">
+                                                    @* ==========================================================================================================*@
+                                                    <input type="hidden" id="ActionID" class="form-control" />
+                                                    <div class="input-group" id="ActionID-Group">
+                                                        <input type="text" id="ActionIDName" class="form-control" />
+                                                        <div tabindex="0" id="ActionIDName-label" class="form-control typeahead-label hide">
+                                                        </div>
+                                                        <div tabindex="0" class="input-group-addon btn" id="ActionIDName-popup">
+                                                            <i class="fa fa-search"></i>
+                                                        </div>
+                                                    </div>
+                                                    @* ==========================================================================================================*@
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <div class="btn-group" data-toggle="buttons">
+                                                <label class="btn btn-danger" id="ActionLbl">
+                                                    <input type="checkbox" id="ActionCB"> Choose
+                                                </label>
+                                                <span class="input-group-btn">
+                                                    <button class="btn btn-success" type="button" id="ActionBtnAdd">ADD</button>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <label class="col-sm-3 control-label">Selected Action</label>
+                                                <div class="col-sm-9">
+                                                    <input type="text" class="form-control" id="Selected-Action" readonly="readonly"/>
+                                                    <input type="hidden" class="form-control" id="Selected-ActionID" />
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-sm-6">
+                                            <div class="btn-group" data-toggle="buttons">
+                                                <span class="input-group-btn">
+                                                    <button class="btn btn-danger" type="button" id="ActionBtnClear">Clear</button>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row" id="StatusZone">
+                                    <div class="row">
+                                        <div class="col-sm-6">                                                                              
+                                            <div class="form-group">
+                                                <label class="col-sm-3 control-label">Status</label>
+                                                <div class="col-sm-9">
+                                                    <select id="statusDd" class="form-control">
+                                                        <option value="">- Pilih -</option>
+                                                        <option value="1">New</option>
+                                                        <option value="2">Assigned</option>
+                                                        <option value="3">Owned</option>
+                                                        <option value="4">Incomplete</option>
+                                                        <option value="5">Closed</option>
+                                                        <option value="6">Canceled</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <div class="btn-group" data-toggle="buttons">
+                                                <label class="btn btn-danger" id="StatusLbl">
+                                                    <input type="checkbox" id="StatusCB"> Choose
+                                                </label>
+                                                <span class="input-group-btn">
+                                                    <button class="btn btn-success" type="button" id="StatusBtnAdd">ADD</button>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <label class="col-sm-3 control-label">Selected Status</label>
+                                                <div class="col-sm-9">
+                                                    <input type="text" class="form-control" id="Selected-Status" readonly="readonly"/>
+                                                    <input type="hidden" class="form-control" id="Selected-StatusID" />
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-sm-6">
+                                            <div class="btn-group" data-toggle="buttons">
+                                                <span class="input-group-btn">
+                                                    <button class="btn btn-danger" type="button" id="StatusBtnClear">Clear</button>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row" id="StateZone">
+                                    <div class="row">
+                                        <div class="col-sm-6">                                                                              
+                                            <div class="form-group">
+                                                <label class="col-sm-3 control-label">State</label>
+                                                <div class="col-sm-9">
+                                                    <select id="StateDd" class="form-control">
+                                                        <option value="">- Pilih -</option>
+                                                        <option value="0">Open</option>
+                                                        <option value="1">Completed</option>
+                                                        <option value="2">Canceled</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <div class="btn-group" data-toggle="buttons">
+                                                <label class="btn btn-danger" id="StateLbl">
+                                                    <input type="checkbox" id="StateCB"> Choose
+                                                </label>
+                                                <span class="input-group-btn">
+                                                    <button class="btn btn-success" type="button" id="StateBtnAdd">ADD</button>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <label class="col-sm-3 control-label">Selected State</label>
+                                                <div class="col-sm-9">
+                                                    <input type="text" class="form-control" id="Selected-State" readonly="readonly"/>
+                                                    <input type="hidden" class="form-control" id="Selected-StateID" />
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-sm-6">
+                                            <div class="btn-group" data-toggle="buttons">
+                                                <span class="input-group-btn">
+                                                    <button class="btn btn-danger" type="button" id="StateBtnClear">Clear</button>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row" id="IsDisabledStatusZone">
+                                    <div class="row">
+                                        <div class="col-sm-6">                                                                              
+                                            <div class="form-group">
+                                                <label class="col-sm-3 control-label">IsDisabled Status</label>
+                                                <div class="col-sm-9">
+                                                    <select id="IsDisabledStatusDd" class="form-control">
+                                                        <option value="">- Pilih -</option>
+                                                        <option value="0">Active</option>
+                                                        <option value="1">Inactive</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <div class="btn-group" data-toggle="buttons">
+                                                <label class="btn btn-danger" id="IsDisabledStatusLbl">
+                                                    <input type="checkbox" id="IsDisabledStatusCB"> Choose
+                                                </label>
+                                                <span class="input-group-btn">
+                                                    <button class="btn btn-success" type="button" id="IsDisabledStatusBtnAdd">ADD</button>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <label class="col-sm-3 control-label">Selected IsDisabled Status</label>
+                                                <div class="col-sm-9">
+                                                    <input type="text" class="form-control" id="Selected-IsDisabledStatus" readonly="readonly"/>
+                                                    <input type="hidden" class="form-control" id="Selected-IsDisabledStatusID" />
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-sm-6">
+                                            <div class="btn-group" data-toggle="buttons">
+                                                <span class="input-group-btn">
+                                                    <button class="btn btn-danger" type="button" id="IsDisabledStatusBtnClear">Clear</button>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row" id="ContactMethodZone">
+                                    <div class="row">
+                                        <div class="col-sm-6">                                                                              
+                                            <div class="form-group">
+                                                <label class="col-sm-3 control-label">Contact Method</label>
+                                                <div class="col-sm-9">
+                                                    <select id="ContactMethodDd" class="form-control">
+                                                        <option value="">- Pilih -</option>
+                                                        <option value="1">Phone</option>
+                                                        <option value="2">Mail</option>
+                                                        <option value="3">Fax</option>
+                                                        <option value="4">Email</option>
+                                                        <option value="5">Web Chat</option>
+                                                        <option value="6">Media Cetak</option>
+                                                        <option value="7">Media Elektronik</option>
+                                                        <option value="8">Walk-in</option>
+                                                        <option value="9">Cabang</option>
+                                                        <option value="10">Video Banking</option>
+                                                        <option value="11">Video Calls</option>
+                                                        <option value="12">Social Media</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <div class="btn-group" data-toggle="buttons">
+                                                <label class="btn btn-danger" id="ContactMethodLbl">
+                                                    <input type="checkbox" id="ContactMethodCB"> Choose
+                                                </label>
+                                                <span class="input-group-btn">
+                                                    <button class="btn btn-success" type="button" id="ContactMethodBtnAdd">ADD</button>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <label class="col-sm-3 control-label">Selected Contact Method</label>
+                                                <div class="col-sm-9">
+                                                    <input type="text" class="form-control" id="Selected-ContactMethod" readonly="readonly"/>
+                                                    <input type="hidden" class="form-control" id="Selected-ContactMethodID" />
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-sm-6">
+                                            <div class="btn-group" data-toggle="buttons">
+                                                <span class="input-group-btn">
+                                                    <button class="btn btn-danger" type="button" id="ContactMethodBtnClear">Clear</button>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row" id="UserZone">
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <label class="col-sm-3 control-label"><span class="userlabel">User</span></label>
+                                                <div class="col-sm-9">
+                                                    @* ==========================================================================================================*@
+                                                    <input type="hidden" id="UserID" class="form-control" />
+                                                    <div class="input-group" id="UserID-Group">
+                                                        <input type="text" id="UserIDName" class="form-control" />
+                                                        <div tabindex="0" id="UserIDName-label" class="form-control typeahead-label hide">
+                                                        </div>
+                                                        <div tabindex="0" class="input-group-addon btn" id="UserIDName-popup">
+                                                            <i class="fa fa-search"></i>
+                                                        </div>
+                                                    </div>
+                                                    @* ==========================================================================================================*@
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <div class="btn-group" data-toggle="buttons">
+                                                <label class="btn btn-danger" id="UserLbl">
+                                                    <input type="checkbox" id="UserCB"> Choose
+                                                </label>
+                                                <span class="input-group-btn">
+                                                    <button class="btn btn-success" type="button" id="UserBtnAdd">ADD</button>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <label class="col-sm-3 control-label">Selected <span class="userlabel">User</span></label>
+                                                <div class="col-sm-9">
+                                                    <input type="text" class="form-control" id="Selected-User" readonly="readonly"/>
+                                                    <input type="hidden" class="form-control" id="Selected-UserID" />
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-sm-6">
+                                            <div class="btn-group" data-toggle="buttons">
+                                                <span class="input-group-btn">
+                                                    <button class="btn btn-danger" type="button" id="UserBtnClear">Clear</button>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row" id="BranchZone">
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <label class="col-sm-3 control-label">Branch</label>
+                                                <div class="col-sm-9">
+                                                    @* ==========================================================================================================*@
+                                                    <input type="hidden" id="BranchID" class="form-control" />
+                                                    <div class="input-group" id="BranchID-Group">
+                                                        <input type="text" id="BranchIDName" class="form-control" />
+                                                        <div tabindex="0" id="BranchIDName-label" class="form-control typeahead-label hide">
+                                                        </div>
+                                                        <div tabindex="0" class="input-group-addon btn" id="BranchIDName-popup">
+                                                            <i class="fa fa-search"></i>
+                                                        </div>
+                                                    </div>
+                                                    @* ==========================================================================================================*@
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <div class="btn-group" data-toggle="buttons">
+                                                <label class="btn btn-danger" id="BranchLbl">
+                                                    <input type="checkbox" id="BranchCB"> Choose
+                                                </label>
+                                                <span class="input-group-btn">
+                                                    <button class="btn btn-success" type="button" id="BranchBtnAdd">ADD</button>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <label class="col-sm-3 control-label">Selected Branch</label>
+                                                <div class="col-sm-9">
+                                                    <input type="text" class="form-control" id="Selected-Branch" readonly="readonly"/>
+                                                    <input type="hidden" class="form-control" id="Selected-BranchID" />
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-sm-6">
+                                            <div class="btn-group" data-toggle="buttons">
+                                                <span class="input-group-btn">
+                                                    <button class="btn btn-danger" type="button" id="BranchBtnClear">Clear</button>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row" id="SecurityRoleZone">
+                                    <div class="row">
+                                        <div class="col-sm-6">                                        
+                                            <div class="form-group">
+                                                <label class="col-sm-3 control-label">SecurityRole</label>
+                                                <div class="col-sm-9">
+                                                    @* ==========================================================================================================*@
+                                                    <input type="hidden" id="SecurityRoleID" class="form-control" />
+                                                    <div class="input-group" id="SecurityRoleID-Group">
+                                                        <input type="text" id="SecurityRoleIDName" class="form-control" />
+                                                        <div tabindex="1" id="SecurityRoleIDName-label" class="form-control typeahead-label hide">
+                                                        </div>
+                                                        <div tabindex="1" class="input-group-addon btn" id="SecurityRoleIDName-popup">
+                                                            <i class="fa fa-search"></i>
+                                                        </div>
+                                                    </div>
+                                                    @* ==========================================================================================================*@
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <div class="btn-group" data-toggle="buttons">
+                                                <label class="btn btn-danger" id="SecurityRoleLbl">
+                                                    <input type="checkbox" id="SecurityRoleCB"> Choose
+                                                </label>
+                                                <span class="input-group-btn">
+                                                    <button class="btn btn-success" type="button" id="SecurityRoleBtnAdd">ADD</button>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <label class="col-sm-3 control-label">Selected SecurityRole</label>
+                                                <div class="col-sm-9">
+                                                    <input type="text" class="form-control" id="Selected-SecurityRole" readonly="readonly"/>
+                                                    <input type="hidden" class="form-control" id="Selected-SecurityRoleID" />
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-sm-6">
+                                            <div class="btn-group" data-toggle="buttons">
+                                                <span class="input-group-btn">
+                                                    <button class="btn btn-danger" type="button" id="SecurityRoleBtnClear">Clear</button>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row" id="BusinessUnitZone">
+                                    <div class="row">
+                                        <div class="col-sm-6">                                        
+                                            <div class="form-group">
+                                                <label class="col-sm-3 control-label">Business Unit</label>
+                                                <div class="col-sm-9">
+                                                    @* ==========================================================================================================*@
+                                                    <input type="hidden" id="BusinessUnitID" class="form-control" />
+                                                    <div class="input-group" id="BusinessUnitID-Group">
+                                                        <input type="text" id="BusinessUnitIDName" class="form-control" />
+                                                        <div tabindex="1" id="BusinessUnitIDName-label" class="form-control typeahead-label hide">
+                                                        </div>
+                                                        <div tabindex="1" class="input-group-addon btn" id="BusinessUnitIDName-popup">
+                                                            <i class="fa fa-search"></i>
+                                                        </div>
+                                                    </div>
+                                                    @* ==========================================================================================================*@
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <div class="btn-group" data-toggle="buttons">
+                                                <label class="btn btn-danger" id="BusinessUnitLbl">
+                                                    <input type="checkbox" id="BusinessUnitCB"> Choose
+                                                </label>
+                                                <span class="input-group-btn">
+                                                    <button class="btn btn-success" type="button" id="BusinessUnitBtnAdd">ADD</button>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <label class="col-sm-3 control-label">Selected Business Unit</label>
+                                                <div class="col-sm-9">
+                                                    <input type="text" class="form-control" id="Selected-BusinessUnit" readonly="readonly"/>
+                                                    <input type="hidden" class="form-control" id="Selected-BusinessUnitID" />
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-sm-6">
+                                            <div class="btn-group" data-toggle="buttons">
+                                                <span class="input-group-btn">
+                                                    <button class="btn btn-danger" type="button" id="BusinessUnitBtnClear">Clear</button>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row" id="CustomerNoZone">
+                                    <div class="row">
+                                        <div class="col-sm-6">                                        
+                                            <div class="form-group">
+                                                <label class="col-sm-3 control-label">Customer No</label>
+                                                <div class="col-sm-9">
+                                                    <input type="text" id="CustNo" class="form-control" maxlength="16"/>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <div class="btn-group" data-toggle="buttons">
+                                                <label class="btn btn-danger" id="CustomerNoLbl">
+                                                    <input type="checkbox" id="CustomerNoCB"> Choose
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row" id="AccountNoZone">
+                                    <div class="row">
+                                        <div class="col-sm-6">                                        
+                                            <div class="form-group">
+                                                <label class="col-sm-3 control-label">Account No</label>
+                                                <div class="col-sm-9">
+                                                    <input type="text" id="AcctNo" class="form-control" maxlength="16"/>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <div class="btn-group" data-toggle="buttons">
+                                                <label class="btn btn-danger" id="AccountNoLbl">
+                                                    <input type="checkbox" id="AccountNoCB"> Choose
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row" id="RequestZone">
+                                    <div class="row">
+                                        <div class="col-sm-6">                                        
+                                            <div class="form-group">
+                                                <label class="col-sm-3 control-label">Request ID</label>
+                                                <div class="col-sm-9">
+                                                    <input type="text" id="RequestID" class="form-control" maxlength="16"/>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <div class="btn-group" data-toggle="buttons">
+                                                <label class="btn btn-danger" id="RequestLbl">
+                                                    <input type="checkbox" id="RequestCB"> Choose
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                       
+                                <div class="row" id="Action">
+                                    <div class="row">
+                                        <div class="col-sm-offset-5 col-sm-1">
+                                            <div class="input-group">
+                                                <span class="input-group-btn">
+                                                    <button class="btn btn-primary btn-crm-layout" type="button" id="btnRunReport">
+                                                        <span class="glyphicon glyphicon-book glyp-space" aria-hidden="true"></span>
+                                                        Run Report
+                                                    </button>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="form-horizontal" id="div_reportfilter">
+                                
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container-fluid" id="ReportViewer">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="container-fluid content_container">
+                    <div class="row">
+                        <div class="col-sm-12 content_col" id="root">
+                            <div id="Reports-Location"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container-fluid" id="ReportFilter">
+
+    </div>
+
+    <script type="text/javascript">
+
+        var ReportBU = "@ViewBag.ReportBU";
+        var usr = "@Session["Fullname"].ToString()";
+
+        ReportBU = ReportBU == "Business Unit/Branch Support" ? "BUS" : ReportBU;
+        var uid = "UserIDs";
+
+        $("#ReportParameter").hide();
+        $("#ReportViewer").hide();
+        var reportH = $(document).height();
+        $("#Reports-Location").css("height", reportH - 150);
+
+        function SetReportFilters() {
+            var reportID = $("#Selected-ReportID").val();
+            var postData = { _reportID: reportID };
+            var url = '/Report/GetFilters';
+            $.ajax({
+                type: "POST",
+                url: url,
+                data: postData,
+                beforeSend: function () { },
+                success: function (data) {
+                    $.each(data, function (i, value) {
+                        $("#FilterType").append($('<option>').text(value.Text).attr('value', value.Value));
+                        switch (value.Value) {
+                            case "StartActualEnd":
+                                $("#Actual").show();
+                                if (!$("#ActualCB").is(":checked")) {
+                                    $("#ActualCB").trigger("click");
+                                    $("#ActualLbl").hide();
+                                }
+                                break;
+                            case "EndActualEnd":
+                                $("#Actual").show();
+                                if (!$("#ActualCB").is(":checked")) {
+                                    $("#ActualCB").trigger("click");
+                                    $("#ActualLbl").hide();
+                                }
+                                break;
+
+                            case "StartClosedOn":
+                                $("#ClosedOn").show();
+                                if (!$("#ClosedOnCB").is(":checked")) {
+                                    $("#ClosedOnCB").trigger("click");
+                                    $("#ClosedOnLbl").hide();
+                                }
+                                break;
+                            case "EndClosedOn":
+                                $("#ClosedOn").show();
+                                if (!$("#ClosedOnCB").is(":checked")) {
+                                    $("#ClosedOnCB").trigger("click");
+                                    $("#ClosedOnLbl").hide();
+                                }
+                                break;
+
+                            case "StartCreatedOn":
+                                $("#CreatedOn").show();
+                                if (!$("#CreatedOnCB").is(":checked")) {
+                                    $("#CreatedOnCB").trigger("click");
+                                    $("#CreatedOnLbl").hide();
+                                }
+                                break;
+                            case "EndCreatedOn":
+                                $("#CreatedOn").show();
+                                if (!$("#CreatedOnCB").is(":checked")) {
+                                    $("#CreatedOnCB").trigger("click");
+                                    $("#CreatedOnLbl").hide();
+                                }
+                                break;
+
+                            case "StartModifiedOn":
+                                $("#ModifiedOn").show();
+                                if (!$("#ModifiedOnCB").is(":checked")) {
+                                    $("#ModifiedOnCB").trigger("click");
+                                    $("#ModifiedOnLbl").hide();
+                                }
+                                break;
+                            case "EndModifiedOn":
+                                $("#ModifiedOn").show();
+                                if (!$("#ModifiedOnCB").is(":checked")) {
+                                    $("#ModifiedOnCB").trigger("click");
+                                    $("#ModifiedOnLbl").hide();
+                                }
+                                break;
+
+                            case "StartDate":
+                                $("#Date").show();
+                                if (!$("#DateCB").is(":checked")) {
+                                    $("#DateCB").trigger("click");
+                                    $("#DateLbl").hide();
+                                }
+                                break;
+                            case "EndDate":
+                                $("#Date").show();
+                                if (!$("#DateCB").is(":checked")) {
+                                    $("#DateCB").trigger("click");
+                                    $("#DateLbl").hide();
+                                }
+                                break;
+
+                            case "StartDueDate":
+                                $("#DueDate").show();
+                                if (!$("#DueDateCB").is(":checked")) {
+                                    $("#DueDateCB").trigger("click");
+                                    $("#DueDateLbl").hide();
+                                }
+                                break;
+                            case "EndDueDate":
+                                $("#DueDate").show();
+                                if (!$("#DueDateCB").is(":checked")) {
+                                    $("#DueDateCB").trigger("click");
+                                    $("#DueDateLbl").hide();
+                                }
+                                break;
+
+                            case "Category":
+                                $("#CategoryZone").show(); $("#CategoryCB").trigger("click"); $("#CategoryLbl").hide();
+                                break;
+                            case "Product":
+                                $("#ProductZone").show(); $("#ProductCB").trigger("click"); $("#ProductLbl").hide();
+                                break;
+                            case "Workgroup":
+                                $("#WorkgroupZone").show(); $("#WorkgroupCB").trigger("click"); $("#WorkgroupLbl").hide();
+                                break;
+                            case "Branch":
+                                $("#BranchZone").show(); $("#BranchCB").trigger("click"); $("#BranchLbl").hide();
+                                break;
+                            case "SecurityRole":
+                                $("#SecurityRoleZone").show(); $("#SecurityRoleCB").trigger("click"); $("#SecurityRoleLbl").hide();
+                                break;
+                            case "BusinessUnit":
+                                $("#BusinessUnitZone").show(); $("#BusinessUnitCB").trigger("click"); $("#BusinessUnitLbl").hide();
+                                break;
+                            case "Action":
+                                $("#ActionZone").show(); $("#ActionCB").trigger("click"); $("#ActionLbl").hide();
+                                break;
+
+                            case "StateCode":
+                                $("#StateZone").show(); $("#StateCB").trigger("click"); $("#StateLbl").hide();
+                                break;
+                            case "StatusCode":
+                                $("#StatusZone").show(); $("#StatusCB").trigger("click"); $("#StatusLbl").hide();
+                                break;
+                            case "IsDisabledStatus":
+                                $("#IsDisabledStatusZone").show(); $("#IsDisabledStatusCB").trigger("click"); $("#IsDisabledStatusLbl").hide();
+                                break;
+                            case "ContactMethod":
+                                $("#ContactMethodZone").show(); $("#ContactMethodCB").trigger("click"); $("#ContactMethodLbl").hide();
+                                break;
+
+                            case "CreatedBy":
+                                $("#UserZone").show(); $("#UserCB").trigger("click"); $("#UserLbl").hide();
+                                $(".userlabel").html("Created By");
+                                uid = "CreatedBys";
+                                break;
+                            case "Owner":
+                                $("#UserZone").show(); $("#UserCB").trigger("click"); $("#UserLbl").hide();
+                                $(".userlabel").html("Owner");
+                                uid = "OwnerIDs";
+                                break;
+                            case "PerformedByNames":
+                                $("#UserZone").show(); $("#UserCB").trigger("click"); $("#UserLbl").hide();
+                                $(".userlabel").html("Performed By Names");
+                                uid = "PerformedByNames";
+                                break;
+
+                            case "CustomerNo":
+                                $("#CustomerNoZone").show(); $("#CustomerNoCB").trigger("click"); $("#CustomerNoLbl").hide();
+                                break;
+
+                            case "AccountNo":
+                                $("#AccountNoZone").show(); $("#AccountNoCB").trigger("click"); $("#AccountNoLbl").hide();
+                                break;
+
+                            case "Request":
+                                $("#RequestZone").show(); $("#RequestCB").trigger("click"); $("#RequestLbl").hide();
+                                break;
+                        }
+                        $("#Action").show();
+                    });
+                },
+                error: function (xhr, textStatus, errorThrown) { },
+                complete: function () { }
+            });
+            GetFilterValue();
+        }
+
+        function GetFilterValue() {
+            var reportID = $("#Selected-ReportID").val();
+            var postData = { _reportID: reportID };
+            var url = '/Report/GetFiltersValue';
+            $.ajax({
+                type: "POST",
+                url: url,
+                data: postData,
+                beforeSend: function () { },
+                success: function (data) {
+                    for (var i = 0 ; i < data.length ; i++) {
+                        switch (data[i].key) {
+                            case "Category":
+                                $("#Selected-CategoryID").val(data[i].gid);
+                                $("#Selected-Category").val(data[i].val);
+                                break;
+                            case "Product":
+                                $("#Selected-ProductID").val(data[i].gid);
+                                $("#Selected-Product").val(data[i].val);
+                                break;
+                            case "Workgroup":
+                                $("#Selected-WorkgroupID").val(data[i].gid);
+                                $("#Selected-Workgroup").val(data[i].val);
+                                break;
+                            case "Branch":
+                                $("#Selected-BranchID").val(data[i].gid);
+                                $("#Selected-Branch").val(data[i].val);
+                                break;
+                            case "SecurityRole":
+                                $("#Selected-SecurityRoleID").val(data[i].gid);
+                                $("#Selected-SecurityRole").val(data[i].val);
+                                break;
+                            case "BusinessUnit":
+                                $("#Selected-BusinessUnitID").val(data[i].gid);
+                                $("#Selected-BusinessUnit").val(data[i].val);
+                                break;
+                            case "Action":
+                                $("#Selected-ActionID").val(data[i].gid);
+                                $("#Selected-Action").val(data[i].val);
+                                break;
+
+                            case "StateCode":
+                                $("#Selected-StateID").val(data[i].val);
+                                $("#Selected-State").val(MappingSC(data[i].val, "statecode"));
+                                break;
+                            case "StatusCode":
+                                $("#Selected-StatusID").val(data[i].val);
+                                $("#Selected-Status").val(MappingSC(data[i].val, "statuscode"));
+                                break;
+                            case "IsDisabledStatusLbl":
+                                $("#Selected-IsDisabledStatusID").val(data[i].val);
+                                $("#Selected-IsDisabledStatus").val(MappingSC(data[i].val, "IsDisabledStatus"));
+                                break;
+                            case "ContactMethod":
+                                $("#Selected-ContactMethodID").val(data[i].val);
+                                $("#Selected-ContactMethod").val(MappingSC(data[i].val, "ContactMethod"));
+                                break;
+
+                            case "CreatedBy":
+                                $("#Selected-UserID").val(data[i].gid);
+                                $("#Selected-User").val(data[i].val);
+                                break;
+                            case "Owner":
+                                $("#Selected-UserID").val(data[i].gid);
+                                $("#Selected-User").val(data[i].val);
+                                break;
+
+                            case "PerformedByNames":
+                                // specially for report user
+                                $("#Selected-UserID").val(data[i].val);
+                                $("#Selected-User").val(data[i].val);
+                                break;
+                            case "CustomerNo":
+                                $("#CustNo").val(data[i].val);
+                                break;
+                            case "AccountNo":
+                                $("#AcctNo").val(data[i].val);
+                                break;
+                            case "Request":
+                                $("#RequestID").val(data[i].val);
+                                break;
+                        }
+                    }
+                },
+                error: function (xhr, textStatus, errorThrown) { },
+                complete: function () { }
+            });
+        }
+
+        function MappingSC(input, mode) {
+            var sc = input.split(',');
+            var result = "";
+            for (var i = 0; i < sc.length ; i++) {
+                result = result == "" ? result : result + ",";
+                if (mode == "statecode") {
+                    result += sc[i] == 0 ? "Open"
+                        : sc[i] == 1 ? "Completed"
+                        : sc[i] == 2 ? "Canceled"
+                        : "";
+                } else if (mode == "statuscode") {
+                    result += sc[i] == 0 ? "Open"
+                        : sc[i] == 1 ? "New" : sc[i] == 2 ? "Assigned"
+                        : sc[i] == 3 ? "Owned" : sc[i] == 4 ? "Incomplete"
+                        : sc[i] == 5 ? "Closed" : sc[i] == 6 ? "Canceled"
+                        : "";
+                } else if (mode == "IsDisabledStatus") {
+                    result += sc[i] == 0 ? "Active"
+                        : sc[i] == 1 ? "Inactive"
+                        : "";
+                } else if (mode == "ContactMethod") {
+                    result += sc[i] == 1 ? "Phone"
+                        : sc[i] == 2 ? "Mail"
+                        : sc[i] == 3 ? "Fax"
+                        : sc[i] == 4 ? "Email"
+                        : sc[i] == 5 ? "Web Chat"
+                        : sc[i] == 6 ? "Media Cetak"
+                        : sc[i] == 7 ? "Media Elektronik"
+                        : sc[i] == 8 ? "Walk-in"
+                        : sc[i] == 9 ? "Cabang"
+                        : sc[i] == 10 ? ">Video Banking"
+                        : sc[i] == 11 ? ">Video Calls"
+                        : sc[i] == 12 ? ">Social Media"
+                        : "";
+                }
+            }
+            return result;
+        }
+
+        $("#CategoryBtnClear").click(function () {
+            $("#Selected-CategoryID").val('');
+            $("#Selected-Category").val('');
+        });
+        $("#ProductBtnClear").click(function () {
+            $("#Selected-ProductID").val('');
+            $("#Selected-Product").val('');
+        });
+        $("#WorkgroupBtnClear").click(function () {
+            $("#Selected-WorkgroupID").val('');
+            $("#Selected-Workgroup").val('');
+        });
+        $("#BranchBtnClear").click(function () {
+            $("#Selected-BranchID").val('');
+            $("#Selected-Branch").val('');
+        });
+        $("#SecurityRoleBtnClear").click(function () {
+            $("#Selected-SecurityRoleID").val('');
+            $("#Selected-SecurityRole").val('');
+        });
+        $("#BusinessUnitBtnClear").click(function () {
+            $("#Selected-BusinessUnitID").val('');
+            $("#Selected-BusinessUnit").val('');
+        });
+        $("#ActionBtnClear").click(function () {
+            $("#Selected-ActionID").val('');
+            $("#Selected-Action").val('');
+        });
+        $("#StatusBtnClear").click(function () {
+            $("#Selected-StatusID").val('');
+            $("#Selected-Status").val('');
+        });
+        $("#StateBtnClear").click(function () {
+            $("#Selected-StateID").val('');
+            $("#Selected-State").val('');
+        });
+        $("#IsDisabledStatusBtnClear").click(function () {
+            $("#Selected-IsDisabledStatusID").val('');
+            $("#Selected-IsDisabledStatus").val('');
+        });
+        $("#ContactMethodBtnClear").click(function () {
+            $("#Selected-ContactMethodID").val('');
+            $("#Selected-ContactMethod").val('');
+        });
+        $("#UserBtnClear").click(function () {
+            $("#Selected-UserID").val('');
+            $("#Selected-User").val('');
+        });
+
+        function default_state() {
+            uncheck_parameters();
+            hide_parameters();
+        }
+
+        function hide_parameters() {
+            $("#Date").hide();
+            $("#CreatedOn").hide();
+            $("#ModifiedOn").hide();
+            $("#Actual").hide();
+            $("#ClosedOn").hide();
+            $("#DueDate").hide();
+            $("#ReopenOn").hide();
+            $("#CategoryZone").hide();
+            $("#ProductZone").hide();
+            $("#WorkgroupZone").hide();
+            $("#ActionZone").hide();
+            $("#StatusZone").hide();
+            $("#StateZone").hide();
+            $("#IsDisabledStatusZone").hide();
+            $("#ContactMethodZone").hide();
+            $("#UserZone").hide();
+            $("#BranchZone").hide();
+            $("#SecurityRoleZone").hide();
+            $("#BusinessUnitZone").hide();
+            $("#CustomerNoZone").hide();
+            $("#AccountNoZone").hide();
+            $("#RequestZone").hide();
+
+            $("#Action").hide();
+        }
+
+        function uncheck_parameters() {
+            if ($("#DateCB").is(":checked")) $("#DateCB").trigger("click");
+            if ($("#CreatedOnCB").is(":checked")) $("#CreatedOnCB").trigger("click");
+            if ($("#ModifiedOnCB").is(":checked")) $("#ModifiedOnCB").trigger("click");
+            if ($("#ActualCB").is(":checked")) $("#ActualCB").trigger("click");
+            if ($("#ClosedOnCB").is(":checked")) $("#ClosedOnCB").trigger("click");
+            if ($("#DueDateCB").is(":checked")) $("#DueDateCB").trigger("click");
+            if ($("#ReopenOnCB").is(":checked")) $("#ReopenOnCB").trigger("click");
+            if ($("#CategoryCB").is(":checked")) $("#CategoryCB").trigger("click");
+            if ($("#ProductCB").is(":checked")) $("#ProductCB").trigger("click");
+            if ($("#WorkgroupCB").is(":checked")) $("#WorkgroupCB").trigger("click");
+            if ($("#StatusCB").is(":checked")) $("#StatusCB").trigger("click");
+            if ($("#StateCB").is(":checked")) $("#StateCB").trigger("click");
+            if ($("#IsDisabledStatusCB").is(":checked")) $("#IsDisabledStatusCB").trigger("click");
+            if ($("#ContactMethodCB").is(":checked")) $("#ContactMethodCB").trigger("click");
+            if ($("#UserCB").is(":checked")) $("#UserCB").trigger("click");
+            if ($("#BranchCB").is(":checked")) $("#BranchCB").trigger("click");
+            if ($("#SecurityRoleCB").is(":checked")) $("#SecurityRoleCB").trigger("click");
+            if ($("#BusinessUnitCB").is(":checked")) $("#BusinessUnitCB").trigger("click");
+            if ($("#CustomerNoCB").is(":checked")) $("#CustomerNoCB").trigger("click");
+            if ($("#AccountNoCB").is(":checked")) $("#AccountNoCB").trigger("click");
+            if ($("#RequestCB").is(":checked")) $("#RequestLbl").trigger("click");
+            if ($("#ActionCB").is(":checked")) $("#ActionCB").trigger("click");
+        }
+
+        $(document).ready(function () {
+
+            @* ==========================================================================================================*@
+
+            $(".form-horizontal").find("input").addClass("rm-padding");
+            $(".form-horizontal").find("select").addClass("rm-padding");
+            $(".form-horizontal").find(":radio").removeClass("rm-padding");
+
+            @* ==========================================================================================================*@
+
+            $("#btnRunReport").click(function () {
+                var params = "&";
+                var limitdate = '@System.Configuration.ConfigurationManager.AppSettings["LimitRangeDate"]';
+
+                if ($("#DateCB").is(":checked")) {
+                    if ($("#StartDate").val() == "") {
+                        alert("Date Harus di isi!");
+                        return false;
+                    }
+                    if (!CheckRangeDate($("#StartDate").val(), $("#EndDate").val())) {
+
+                        limitdate = $("#Selected-Rdl").val() == '@System.Configuration.ConfigurationManager.AppSettings["RdlNameSA"]' ? '@System.Configuration.ConfigurationManager.AppSettings["LimitRangeDateSA"]' : limitdate;
+
+                        if (LimitRangeDate(limitdate, $("#StartDate").val(), $("#EndDate").val())) {
+                            params += "StartDate=" + ddmmyyyy_yyyymmdd($("#StartDate").val()) + "&" + "EndDate=" + ddmmyyyy_yyyymmdd($("#EndDate").val()) + "&";
+                        } else {
+                            alert("Range Tanggal MAX " + limitdate + " Hari!");
+                            return false;
+                        }
+                    }
+                    else {
+                        alert("Start Date Harus Lebih Kecil dari pada End Date!");
+                        return false;
+                    }
+                }
+
+                if ($("#CreatedOnCB").is(":checked")) {
+                    if ($("#StartCreatedOn").val() == "") {
+                        alert("Created Date Harus di isi!");
+                        return false;
+                    }
+
+                    if (!CheckRangeDate($("#StartCreatedOn").val(), $("#EndCreatedOn").val())) {
+                        if (LimitRangeDate(limitdate, $("#StartCreatedOn").val(), $("#EndCreatedOn").val())) {
+                            params += "StartCreatedOn=" + ddmmyyyy_yyyymmdd($("#StartCreatedOn").val()) + "&" + "EndCreatedOn=" + ddmmyyyy_yyyymmdd($("#EndCreatedOn").val()) + "&";
+                        } else {
+                            alert("Range Tanggal MAX " + limitdate + " Hari!");
+                            return false;
+                        }
+                    }
+                    else {
+                        alert("Start Created On Harus Lebih Kecil dari pada End Created On!");
+                        return false;
+                    }
+                }
+
+                if ($("#ModifiedOnCB").is(":checked")) {
+                    if ($("#StartModifiedOn").val() == "") {
+                        alert("Modified Date Harus di isi!");
+                        return false;
+                    }
+
+                    if (!CheckRangeDate($("#StartModifiedOn").val(), $("#EndModifiedOn").val())) {
+                        if (LimitRangeDate(limitdate, $("#StartModifiedOn").val(), $("#EndModifiedOn").val())) {
+                            params += "StartModifiedOn=" + ddmmyyyy_yyyymmdd($("#StartModifiedOn").val()) + "&" + "EndModifiedOn=" + ddmmyyyy_yyyymmdd($("#EndModifiedOn").val()) + "&";
+                        } else {
+                            alert("Range Tanggal MAX " + limitdate + " Hari!");
+                            return false;
+                        }
+                    }
+                    else {
+                        alert("Start Modified On Harus Lebih Kecil dari pada End Modified On!");
+                        return false;
+                    }
+                }
+
+                if ($("#ActualCB").is(":checked")) {
+                    if ($("#StartActual").val() == "") {
+                        alert("Actual Date Harus di isi!");
+                        return false;
+                    }
+                    if (!CheckRangeDate($("#StartActual").val(), $("#EndActual").val())) {
+                        if (LimitRangeDate(limitdate, $("#StartActual").val(), $("#EndActual").val())) {
+                            params += "StartActual=" + ddmmyyyy_yyyymmdd($("#StartActual").val()) + "&" + "EndActual=" + ddmmyyyy_yyyymmdd($("#EndActual").val()) + "&";
+                        } else {
+                            alert("Range Tanggal MAX " + limitdate + " Hari!");
+                            return false;
+                        }
+                    }
+                    else {
+                        alert("Start Actual Date Harus Lebih Kecil dari pada End Actual Date!");
+                        return false;
+                    }
+                }
+
+                if ($("#ClosedOnCB").is(":checked")) {
+                    if ($("#StartClosedOn").val() == "") {
+                        alert("Closed On Harus di isi!");
+                        return false;
+                    }
+                    if (!CheckRangeDate($("#StartClosedOn").val(), $("#EndClosedOn").val())) {
+                        if (LimitRangeDate(limitdate, $("#StartClosedOn").val(), $("#EndClosedOn").val())) {
+                            params += "StartClosedOn=" + ddmmyyyy_yyyymmdd($("#StartClosedOn").val()) + "&" + "EndClosedOn=" + ddmmyyyy_yyyymmdd($("#EndClosedOn").val()) + "&";
+                        } else {
+                            alert("Range Tanggal MAX " + limitdate + " Hari!");
+                            return false;
+                        }
+                    }
+                    else {
+                        alert("Start Closed On Harus Lebih Kecil dari pada End Closed On!");
+                        return false;
+                    }
+                }
+
+                if ($("#DueDateCB").is(":checked")) {
+                    if ($("#StartDueDate").val() == "") {
+                        alert("Due Date Harus di isi!");
+                        return false;
+                    }
+                    if (!CheckRangeDate($("#StartDueDate").val(), $("#EndDueDate").val())) {
+                        if (LimitRangeDate(limitdate, $("#StartDueDate").val(), $("#EndDueDate").val())) {
+                            params += "StartDueDate=" + ddmmyyyy_yyyymmdd($("#StartDueDate").val()) + "&" + "EndDueDate=" + ddmmyyyy_yyyymmdd($("#EndDueDate").val()) + "&";
+                        } else {
+                            alert("Range Tanggal MAX " + limitdate + " Hari!");
+                            return false;
+                        }
+                    }
+                    else {
+                        alert("Start Due Date Harus Lebih Kecil dari pada End Due Date!");
+                        return false;
+                    }
+                }
+
+                if ($("#ReopenOnCB").is(":checked")) {
+                    if ($("#StartReopenOn").val() == "") {
+                        alert("Reopen Date Harus di isi!");
+                        return false;
+                    }
+                    if (!CheckRangeDate($("#StartReopenOn").val(), $("#EndReopenOn").val())) {
+                        if (LimitRangeDate(limitdate, $("#StartReopenOn").val(), $("#EndReopenOn").val())) {
+                            params += "StartReopenOn=" + ddmmyyyy_yyyymmdd($("#StartReopenOn").val()) + "&" + "EndReopenOn=" + ddmmyyyy_yyyymmdd($("#EndReopenOn").val()) + "&";
+                        } else {
+                            alert("Range Tanggal MAX " + limitdate + " Hari!");
+                            return false;
+                        }
+                    }
+                    else {
+                        alert("Start Reopen On Harus Lebih Kecil dari pada End Reopen On!");
+                        return false;
+                    }
+                }
+
+                if ($("#CategoryCB").is(":checked")) {
+                    if ($("#Selected-CategoryID").val() != "") {
+                        params += "CategoryIDs=" + $("#Selected-CategoryID").val() + "&";
+                    }
+                    else {
+                        alert("Category Harus di Pilih!");
+                        return false;
+                    }
+                }
+
+                if ($("#ProductCB").is(":checked")) {
+                    if ($("#Selected-ProductID").val() != "") {
+                        params += "ProductIDs=" + $("#Selected-ProductID").val() + "&";
+                    }
+                    else {
+                        alert("Product Harus di Pilih!");
+                        return false;
+                    }
+                }
+
+                if ($("#WorkgroupCB").is(":checked")) {
+                    if ($("#Selected-WorkgroupID").val() != "") {
+                        params += "WorkgroupIDs=" + $("#Selected-WorkgroupID").val() + "&";
+                    }
+                    else {
+                        alert("Workgroup Harus di Pilih!");
+                        return false;
+                    }
+                }
+
+                if ($("#ActionCB").is(":checked")) {
+                    if ($("#Selected-ActionID").val() != "") {
+                        params += "CauseIDs=" + $("#Selected-ActionID").val() + "&";
+                    }
+                    else {
+                        alert("Action Harus di Pilih!");
+                        return false;
+                    }
+                }
+
+                if ($("#StatusCB").is(":checked")) {
+                    if ($("#Selected-StatusID").val() != "") {
+                        params += "StatusCodes=" + $("#Selected-StatusID").val() + "&";
+                    }
+                    else {
+                        alert("Status Harus di Pilih!");
+                        return false;
+                    }
+                }
+
+                if ($("#StateCB").is(":checked")) {
+                    if ($("#Selected-StateID").val() != "") {
+                        params += "StateCodes=" + $("#Selected-StateID").val() + "&";
+                    }
+                    else {
+                        alert("State Harus di Pilih!");
+                        return false;
+                    }
+                }
+
+                if ($("#IsDisabledStatusCB").is(":checked")) {
+                    if ($("#Selected-IsDisabledStatusID").val() != "") {
+                        params += "IsDisabledStatus=" + $("#Selected-IsDisabledStatusID").val() + "&";
+                    }
+                    else {
+                        alert("IsDisabled Status Harus di Pilih!");
+                        return false;
+                    }
+                }
+
+                if ($("#ContactMethodCB").is(":checked")) {
+                    if ($("#Selected-ContactMethodID").val() != "") {
+                        params += "ContactMethods=" + $("#Selected-ContactMethodID").val() + "&";
+                    }
+                    else {
+                        alert("ContactMethod Harus di Pilih!");
+                        return false;
+                    }
+                }
+
+                if ($("#UserCB").is(":checked")) {
+                    if ($("#Selected-UserID").val() != "") {
+                        // Special for Report Aktifitas SA
+                        if ($("#Selected-Rdl").val() == '@System.Configuration.ConfigurationManager.AppSettings["RdlNameSA"]') {
+                            params += "PerformedByNames=" + $("#Selected-User").val() + "&";
+                        }
+                        else {
+                            params += uid + "=" + $("#Selected-UserID").val() + "&";
+                        }
+                    }
+                    else if ($("#Selected-UserID").val() == "" &&
+                        ($("#Selected-Rdl").val() == 'HALO_Kriminal_Operasional' ||
+                        $("#Selected-Rdl").val() == 'HALO_CWU_Report')) {
+                        params += uid + "= &";
+                    }
+                    else {
+                        alert("User Harus di Pilih!");
+                        return false;
+                    }
+                }
+
+                if ($("#BranchCB").is(":checked")) {
+                    if ($("#Selected-BranchID").val() != "") {
+                        params += "BranchIDs=" + $("#Selected-BranchID").val() + "&";
+                    }
+                    else {
+                        alert("Branch Harus di Pilih!");
+                        return false;
+                    }
+                }
+
+                if ($("#SecurityRoleCB").is(":checked")) {
+                    if ($("#Selected-SecurityRoleID").val() != "") {
+                        // params += "SecurityRoleIDs=" + $("#Selected-SecurityRoleID").val() + "&";
+                        params += "RoleIDs=" + $("#Selected-SecurityRoleID").val() + "&";
+                    }
+                    else {
+                        alert("Security Role Harus di Pilih!");
+                        return false;
+                    }
+                }
+
+                if ($("#BusinessUnitCB").is(":checked")) {
+                    if ($("#Selected-BusinessUnitID").val() != "") {
+                        params += "BusinessUnitIDs=" + $("#Selected-BusinessUnitID").val() + "&";
+                    }
+                    else {
+                        alert("Business Unit Harus di Pilih!");
+                        return false;
+                    }
+                }
+
+                if ($("#CustomerNoCB").is(":checked")) {
+                    if ($("#CustNo").val() != "") {
+                        params += "CustomerNumber=" + $("#CustNo").val() + "&";
+                    }
+                    else {
+                        alert("Customer No harus di Isi!");
+                        return false;
+                    }
+                }
+
+                if ($("#AccountNoCB").is(":checked")) {
+                    if ($("#AcctNo").val() != "") {
+                        params += "AccountNo=" + $("#AcctNo").val() + "&";
+                    }
+                    else {
+                        alert("Account No harus di Isi!");
+                        return false;
+                    }
+                }
+
+                if ($("#RequestCB").is(":checked")) {
+                    if ($("#RequestID").val() != "") {
+                        params += "RequestID=" + $("#RequestID").val() + "&";
+                    }
+                    else {
+                        alert("Request ID harus di Isi!");
+                        return false;
+                    }
+                }
+
+                params += "BU=" + ReportBU + "&";
+                params += "USR=" + usr;
+
+                var reports = "@System.Configuration.ConfigurationManager.AppSettings["ReportServer"]" + $("#Selected-Rdl").val() + params;
+                openWindow(reports);
+                //var iframe = "<iframe src='" + reports + "' id='iframe' scrolling='yes' seamless='seamless'></iframe>";
+                //$("#ReportViewer").show();
+                //$("#Reports-Location").html(iframe);
+            });
+
+            @* ==========================================================================================================*@
+
+            $("#StartDate").datepicker({ format: "dd/mm/yyyy", autoclose: true });
+            $("#EndDate").datepicker({ format: "dd/mm/yyyy", autoclose: true });
+            $("#StartDate").prop("disabled", true);
+            $("#EndDate").prop("disabled", true);
+            $("#DateCB").change(function () {
+                var check = true;
+                if ($(this).is(":checked")) {
+                    check = false;
+                    $("#DateLbl").removeClass("btn-danger").addClass("btn-primary");
+                } else {
+                    $("#DateLbl").removeClass("btn-primary").addClass("btn-danger");
+                }
+                $("#StartDate").prop("disabled", check);
+                $("#EndDate").prop("disabled", check);
+            });
+
+            @* ==========================================================================================================*@
+
+            $("#StartCreatedOn").datepicker({ format: "dd/mm/yyyy", autoclose: true });
+            $("#EndCreatedOn").datepicker({ format: "dd/mm/yyyy", autoclose: true });
+            $("#StartCreatedOn").prop("disabled", true);
+            $("#EndCreatedOn").prop("disabled", true);
+            $("#CreatedOnCB").change(function () {
+                var check = true;
+                if ($(this).is(":checked")) {
+                    check = false;
+                    $("#CreatedOnLbl").removeClass("btn-danger").addClass("btn-primary");
+                } else {
+                    $("#CreatedOnLbl").removeClass("btn-primary").addClass("btn-danger");
+                }
+                $("#StartCreatedOn").prop("disabled", check);
+                $("#EndCreatedOn").prop("disabled", check);
+            });
+
+            @* ==========================================================================================================*@
+
+            $("#StartModifiedOn").datepicker({ format: "dd/mm/yyyy", autoclose: true });
+            $("#EndModifiedOn").datepicker({ format: "dd/mm/yyyy", autoclose: true });
+            $("#StartModifiedOn").prop("disabled", true);
+            $("#EndModifiedOn").prop("disabled", true);
+            $("#ModifiedOnCB").change(function () {
+                var check = true;
+                if ($(this).is(":checked")) {
+                    check = false;
+                    $("#ModifiedOnLbl").removeClass("btn-danger").addClass("btn-primary");
+                } else {
+                    $("#ModifiedOnLbl").removeClass("btn-primary").addClass("btn-danger");
+                }
+                $("#StartModifiedOn").prop("disabled", check);
+                $("#EndModifiedOn").prop("disabled", check);
+            });
+
+            @* ==========================================================================================================*@
+
+            $("#StartActual").datepicker({ format: "dd/mm/yyyy", autoclose: true });
+            $("#EndActual").datepicker({ format: "dd/mm/yyyy", autoclose: true });
+            $("#StartActual").prop("disabled", true);
+            $("#EndActual").prop("disabled", true);
+            $("#ActualCB").change(function () {
+                var check = true;
+                if ($(this).is(":checked")) {
+                    check = false;
+                    $("#ActualLbl").removeClass("btn-danger").addClass("btn-primary");
+                } else {
+                    $("#ActualLbl").removeClass("btn-primary").addClass("btn-danger");
+                }
+                $("#StartActual").prop("disabled", check);
+                $("#EndActual").prop("disabled", check);
+            });
+
+            @* ==========================================================================================================*@
+
+            $("#StartClosedOn").datepicker({ format: "dd/mm/yyyy", autoclose: true });
+            $("#EndClosedOn").datepicker({ format: "dd/mm/yyyy", autoclose: true });
+            $("#StartClosedOn").prop("disabled", true);
+            $("#EndClosedOn").prop("disabled", true);
+            $("#ClosedOnCB").change(function () {
+                var check = true;
+                if ($(this).is(":checked")) {
+                    check = false;
+                    $("#ClosedOnLbl").removeClass("btn-danger").addClass("btn-primary");
+                } else {
+                    $("#ClosedOnLbl").removeClass("btn-primary").addClass("btn-danger");
+                }
+                $("#StartClosedOn").prop("disabled", check);
+                $("#EndClosedOn").prop("disabled", check);
+            });
+
+            @* ==========================================================================================================*@
+
+            $("#StartDueDate").datepicker({ format: "dd/mm/yyyy", autoclose: true });
+            $("#EndDueDate").datepicker({ format: "dd/mm/yyyy", autoclose: true });
+            $("#StartDueDate").prop("disabled", true);
+            $("#EndDueDate").prop("disabled", true);
+            $("#DueDateCB").change(function () {
+                var check = true;
+                if ($(this).is(":checked")) {
+                    check = false;
+                    $("#DueDateLbl").removeClass("btn-danger").addClass("btn-primary");
+                } else {
+                    $("#DueDateLbl").removeClass("btn-primary").addClass("btn-danger");
+                }
+                $("#StartDueDate").prop("disabled", check);
+                $("#EndDueDate").prop("disabled", check);
+            });
+
+            @* ==========================================================================================================*@
+
+            $("#StartReopenOn").datepicker({ format: "dd/mm/yyyy", autoclose: true });
+            $("#ReopenOnEnd").datepicker({ format: "dd/mm/yyyy", autoclose: true });
+            $("#StartReopenOn").prop("disabled", true);
+            $("#ReopenOnEnd").prop("disabled", true);
+            $("#ReopenOnCB").change(function () {
+                var check = true;
+                if ($(this).is(":checked")) {
+                    check = false;
+                    $("#ReopenOnLbl").removeClass("btn-danger").addClass("btn-primary");
+                } else {
+                    $("#ReopenOnLbl").removeClass("btn-primary").addClass("btn-danger");
+                }
+                $("#StartReopenOn").prop("disabled", check);
+                $("#ReopenOnEnd").prop("disabled", check);
+            });
+
+            @* ==========================================================================================================*@
+
+            $("#CategoryZone").find('div.typeahead-label, div.input-group-addon').attr('disabled', 'disabled');
+            $("#CategoryCB").change(function () {
+                var check = true;
+                if ($(this).is(":checked")) {
+                    check = false;
+                    $("#CategoryLbl").removeClass("btn-danger").addClass("btn-primary");
+                    $("#CategoryZone").find('div.typeahead-label, div.input-group-addon, input').removeAttr('disabled');
+                    $("#CategoryIDName").css("background-color", "white");
+                } else {
+                    $("#CategoryLbl").removeClass("btn-primary").addClass("btn-danger");
+                    $("#CategoryZone").find('div.typeahead-label, div.input-group-addon, input').attr('disabled', 'disabled');
+                    $("#CategoryIDName").css("background-color", "transparent");
+                }
+            });
+
+            $("#CategoryBtnAdd").click(function () {
+                var id = $("#CategoryID").val();
+                var name = $("#CategoryIDName").val();
+                var sid = $("#Selected-CategoryID").val();
+                var sname = $("#Selected-Category").val();
+                var label = $('#CategoryIDName-label');
+                var del = $.Event('keydown');
+                del.which = 46;
+
+                if (id == "") {
+                    alert("Category belum dipilih");
+                    return false;
+                }
+                else if (sid.indexOf(id) > -1) {
+                    alert("Category telah dipilih");
+                    label.focus();
+                    label.trigger(del);
+                    return false;
+                }
+                else {
+                    sid = sid == "" ? sid : sid + ",";
+                    sname = sname == "" ? sname : sname + ",";
+
+                    sid += id;
+                    sname += name;
+
+                    $("#Selected-CategoryID").val(sid);
+                    $("#Selected-Category").val(sname);
+
+                    label.focus();
+                    label.trigger(del);
+                }
+            });
+            @* ==========================================================================================================*@
+
+            $("#ProductZone").find('div.typeahead-label, div.input-group-addon').attr('disabled', 'disabled');
+            $("#ProductCB").change(function () {
+                var check = true;
+                if ($(this).is(":checked")) {
+                    check = false;
+                    $("#ProductLbl").removeClass("btn-danger").addClass("btn-primary");
+                    $("#ProductZone").find('div.typeahead-label, div.input-group-addon, input').removeAttr('disabled');
+                    $("#ProductIDName").css("background-color", "white");
+                } else {
+                    $("#ProductLbl").removeClass("btn-primary").addClass("btn-danger");
+                    $("#ProductZone").find('div.typeahead-label, div.input-group-addon, input').attr('disabled', 'disabled');
+                    $("#ProductIDName").css("background-color", "transparent");
+                }
+            });
+
+            $("#ProductBtnAdd").click(function () {
+                var id = $("#ProductID").val();
+                var name = $("#ProductIDName").val();
+                var sid = $("#Selected-ProductID").val();
+                var sname = $("#Selected-Product").val();
+                var label = $('#ProductIDName-label');
+                var del = $.Event('keydown');
+                del.which = 46;
+
+                if (id == "") {
+                    alert("Product belum dipilih");
+                    return false;
+                }
+                else if (sid.indexOf(id) > -1) {
+                    alert("Product telah dipilih");
+                    label.focus();
+                    label.trigger(del);
+                    return false;
+                }
+                else {
+                    sid = sid == "" ? sid : sid + ",";
+                    sname = sname == "" ? sname : sname + ",";
+
+                    sid += id;
+                    sname += name;
+
+                    $("#Selected-ProductID").val(sid);
+                    $("#Selected-Product").val(sname);
+
+                    label.focus();
+                    label.trigger(del);
+                }
+            });
+
+            @* ==========================================================================================================*@
+
+            $("#WorkgroupZone").find('div.typeahead-label, div.input-group-addon').attr('disabled', 'disabled');
+            $("#WorkgroupCB").change(function () {
+                var check = true;
+                if ($(this).is(":checked")) {
+                    check = false;
+                    $("#WorkgroupLbl").removeClass("btn-danger").addClass("btn-primary");
+                    $("#WorkgroupZone").find('div.typeahead-label, div.input-group-addon, input').removeAttr('disabled');
+                    $("#WorkgroupIDName").css("background-color", "white");
+                } else {
+                    $("#WorkgroupLbl").removeClass("btn-primary").addClass("btn-danger");
+                    $("#WorkgroupZone").find('div.typeahead-label, div.input-group-addon, input').attr('disabled', 'disabled');
+                    $("#WorkgroupIDName").css("background-color", "transparent");
+                }
+            });
+
+            $("#WorkgroupBtnAdd").click(function () {
+                var id = $("#WorkgroupID").val();
+                var name = $("#WorkgroupIDName").val();
+                var sid = $("#Selected-WorkgroupID").val();
+                var sname = $("#Selected-Workgroup").val();
+                var label = $('#WorkgroupIDName-label');
+                var del = $.Event('keydown');
+                del.which = 46;
+
+                if (id == "") {
+                    alert("Workgroup belum dipilih");
+                    return false;
+                }
+                else if (sid.indexOf(id) > -1) {
+                    alert("Workgroup telah dipilih");
+                    label.focus();
+                    label.trigger(del);
+                    return false;
+                }
+                else {
+                    sid = sid == "" ? sid : sid + ",";
+                    sname = sname == "" ? sname : sname + ",";
+
+                    sid += id;
+                    sname += name;
+
+                    $("#Selected-WorkgroupID").val(sid);
+                    $("#Selected-Workgroup").val(sname);
+
+                    label.focus();
+                    label.trigger(del);
+                }
+            });
+
+            @* ==========================================================================================================*@
+
+            $("#ActionZone").find('div.typeahead-label, div.input-group-addon').attr('disabled', 'disabled');
+            $("#ActionCB").change(function () {
+                var check = true;
+                if ($(this).is(":checked")) {
+                    check = false;
+                    $("#ActionLbl").removeClass("btn-danger").addClass("btn-primary");
+                    $("#ActionZone").find('div.typeahead-label, div.input-group-addon, input').removeAttr('disabled');
+                    $("#ActionIDName").css("background-color", "white");
+                } else {
+                    $("#ActionLbl").removeClass("btn-primary").addClass("btn-danger");
+                    $("#ActionZone").find('div.typeahead-label, div.input-group-addon, input').attr('disabled', 'disabled');
+                    $("#ActionIDName").css("background-color", "transparent");
+                }
+            });
+
+            $("#ActionBtnAdd").click(function () {
+                var id = $("#ActionID").val();
+                var name = $("#ActionIDName").val();
+                var sid = $("#Selected-ActionID").val();
+                var sname = $("#Selected-Action").val();
+                var label = $('#ActionIDName-label');
+                var del = $.Event('keydown');
+                del.which = 46;
+
+                if (id == "") {
+                    alert("Action belum dipilih");
+                    return false;
+                }
+                else if (sid.indexOf(id) > -1) {
+                    alert("Action telah dipilih");
+                    label.focus();
+                    label.trigger(del);
+                    return false;
+                }
+                else {
+                    sid = sid == "" ? sid : sid + ",";
+                    sname = sname == "" ? sname : sname + ",";
+
+                    sid += id;
+                    sname += name;
+
+                    $("#Selected-ActionID").val(sid);
+                    $("#Selected-Action").val(sname);
+
+                    label.focus();
+                    label.trigger(del);
+                }
+            });
+
+            @* ==========================================================================================================*@
+
+            $("#statusDd").prop("disabled", true);
+            $("#StatusCB").change(function () {
+                var check = true;
+                if ($(this).is(":checked")) {
+                    check = false;
+                    $("#StatusLbl").removeClass("btn-danger").addClass("btn-primary");
+                } else {
+                    $("#StatusLbl").removeClass("btn-primary").addClass("btn-danger");
+                }
+                $("#statusDd").prop("disabled", check);
+
+            });
+
+            $("#StatusBtnAdd").click(function () {
+                var id = $("#statusDd").val();
+                var name = $("#statusDd option:selected").text();
+                var sid = $("#Selected-StatusID").val();
+                var sname = $("#Selected-Status").val();
+                var del = $.Event('keydown');
+                del.which = 46;
+
+                if (id == "") {
+                    alert("Status belum dipilih");
+                    return false;
+                }
+                else if (sid.indexOf(id) > -1) {
+                    alert("Status telah dipilih");
+                    $("#statusDd").val('');
+                    $("#statusDd option:selected").text("- Pilih -");
+                    return false;
+                }
+                else {
+                    sid = sid == "" ? sid : sid + ",";
+                    sname = sname == "" ? sname : sname + ",";
+
+                    sid += id;
+                    sname += name;
+
+                    $("#Selected-StatusID").val(sid);
+                    $("#Selected-Status").val(sname);
+                    $("#statusDd").val('');
+                    $("#statusDd option:selected").text("- Pilih -");
+                }
+            });
+
+            @* ==========================================================================================================*@
+
+            $("#StateDd").prop("disabled", true);
+            $("#StateCB").change(function () {
+                var check = true;
+                if ($(this).is(":checked")) {
+                    check = false;
+                    $("#StateLbl").removeClass("btn-danger").addClass("btn-primary");
+                } else {
+                    $("#StateLbl").removeClass("btn-primary").addClass("btn-danger");
+                }
+                $("#StateDd").prop("disabled", check);
+
+            });
+
+            $("#StateBtnAdd").click(function () {
+                var id = $("#StateDd").val();
+                var name = $("#StateDd option:selected").text();
+                var sid = $("#Selected-StateID").val();
+                var sname = $("#Selected-State").val();
+                var del = $.Event('keydown');
+                del.which = 46;
+
+                if (id == "") {
+                    alert("State belum dipilih");
+                    return false;
+                }
+                else if (sid.indexOf(id) > -1) {
+                    alert("State telah dipilih");
+                    $("#StateDd").val('');
+                    $("#StateDd option:selected").text("- Pilih -");
+                    return false;
+                }
+                else {
+                    sid = sid == "" ? sid : sid + ",";
+                    sname = sname == "" ? sname : sname + ",";
+
+                    sid += id;
+                    sname += name;
+
+                    $("#Selected-StateID").val(sid);
+                    $("#Selected-State").val(sname);
+                    $("#StateDd").val('');
+                    $("#StateDd option:selected").text("- Pilih -");
+                }
+            });
+
+            @* ==========================================================================================================*@
+
+            $("#IsDisabledStatusDd").prop("disabled", true);
+            $("#IsDisabledStatusCB").change(function () {
+                var check = true;
+                if ($(this).is(":checked")) {
+                    check = false;
+                    $("#IsDisabledStatusLbl").removeClass("btn-danger").addClass("btn-primary");
+                } else {
+                    $("#IsDisabledStatusLbl").removeClass("btn-primary").addClass("btn-danger");
+                }
+                $("#IsDisabledStatusDd").prop("disabled", check);
+
+            });
+
+            $("#IsDisabledStatusBtnAdd").click(function () {
+                var id = $("#IsDisabledStatusDd").val();
+                var name = $("#IsDisabledStatusDd option:selected").text();
+                var sid = $("#Selected-IsDisabledStatusID").val();
+                var sname = $("#Selected-IsDisabledStatus").val();
+                var del = $.Event('keydown');
+                del.which = 46;
+
+                if (id == "") {
+                    alert("IsDisabled Status belum dipilih");
+                    return false;
+                }
+                else if (sid.indexOf(id) > -1) {
+                    alert("IsDisabled Status telah dipilih");
+                    $("#IsDisabledStatusDd").val('');
+                    $("#IsDisabledStatusDd option:selected").text("- Pilih -");
+                    return false;
+                }
+                else {
+                    sid = sid == "" ? sid : sid + ",";
+                    sname = sname == "" ? sname : sname + ",";
+
+                    sid += id;
+                    sname += name;
+
+                    $("#Selected-IsDisabledStatusID").val(sid);
+                    $("#Selected-IsDisabledStatus").val(sname);
+                    $("#IsDisabledStatusDd").val('');
+                    $("#IsDisabledStatusDd option:selected").text("- Pilih -");
+                }
+            });
+
+            @* ==========================================================================================================*@
+
+            $("#ContactMethodDd").prop("disabled", true);
+            $("#ContactMethodCB").change(function () {
+                var check = true;
+                if ($(this).is(":checked")) {
+                    check = false;
+                    $("#ContactMethodLbl").removeClass("btn-danger").addClass("btn-primary");
+                } else {
+                    $("#ContactMethodLbl").removeClass("btn-primary").addClass("btn-danger");
+                }
+                $("#ContactMethodDd").prop("disabled", check);
+
+            });
+
+            $("#ContactMethodBtnAdd").click(function () {
+                var id = $("#ContactMethodDd").val();
+                var name = $("#ContactMethodDd option:selected").text();
+                var sid = $("#Selected-ContactMethodID").val();
+                var sname = $("#Selected-ContactMethod").val();
+                var del = $.Event('keydown');
+                del.which = 46;
+
+                if (id == "") {
+                    alert("ContactMethod belum dipilih");
+                    return false;
+                }
+                else if (sid.indexOf(id) > -1) {
+                    alert("ContactMethod telah dipilih");
+                    $("#ContactMethodDd").val('');
+                    $("#ContactMethodDd option:selected").text("- Pilih -");
+                    return false;
+                }
+                else {
+                    sid = sid == "" ? sid : sid + ",";
+                    sname = sname == "" ? sname : sname + ",";
+
+                    sid += id;
+                    sname += name;
+
+                    $("#Selected-ContactMethodID").val(sid);
+                    $("#Selected-ContactMethod").val(sname);
+                    $("#ContactMethodDd").val('');
+                    $("#ContactMethodDd option:selected").text("- Pilih -");
+                }
+            });
+
+            @* ==========================================================================================================*@
+
+            $("#UserZone").find('div.typeahead-label, div.input-group-addon').attr('disabled', 'disabled');
+            $("#UserCB").change(function () {
+                var check = true;
+                if ($(this).is(":checked")) {
+                    check = false;
+                    $("#UserLbl").removeClass("btn-danger").addClass("btn-primary");
+                    $("#UserZone").find('div.typeahead-label, div.input-group-addon, input').removeAttr('disabled');
+                    $("#UserIDName").css("background-color", "white")
+                } else {
+                    $("#UserLbl").removeClass("btn-primary").addClass("btn-danger");
+                    $("#UserZone").find('div.typeahead-label, div.input-group-addon, input').attr('disabled', 'disabled');
+                    $("#UserIDName").css("background-color", "transparent")
+                }
+            });
+
+            $("#UserBtnAdd").click(function () {
+                var id = $("#UserID").val();
+                var name = $("#UserIDName").val();
+                var sid = $("#Selected-UserID").val();
+                var sname = $("#Selected-User").val();
+                var label = $('#UserIDName-label');
+                var del = $.Event('keydown');
+                del.which = 46;
+
+                if (id == "") {
+                    alert("User belum dipilih");
+                    return false;
+                }
+                else if (sid.indexOf(id) > -1) {
+                    alert("User telah dipilih");
+                    label.focus();
+                    label.trigger(del);
+                    return false;
+                }
+                else {
+                    sid = sid == "" ? sid : sid + ",";
+                    sname = sname == "" ? sname : sname + ",";
+
+                    sid += id;
+                    sname += name;
+
+                    $("#Selected-UserID").val(sid);
+                    $("#Selected-User").val(sname);
+
+                    label.focus();
+                    label.trigger(del);
+                }
+            });
+
+            @* ==========================================================================================================*@
+
+            $("#BranchZone").find('div.typeahead-label, div.input-group-addon').attr('disabled', 'disabled');
+            $("#BranchCB").change(function () {
+                var check = true;
+                if ($(this).is(":checked")) {
+                    check = false;
+                    $("#BranchLbl").removeClass("btn-danger").addClass("btn-primary");
+                    $("#BranchZone").find('div.typeahead-label, div.input-group-addon, input').removeAttr('disabled');
+                    $("#BranchIDName").css("background-color", "white")
+                } else {
+                    $("#BranchLbl").removeClass("btn-primary").addClass("btn-danger");
+                    $("#BranchZone").find('div.typeahead-label, div.input-group-addon, input').attr('disabled', 'disabled');
+                    $("#BranchIDName").css("background-color", "transparent")
+                }
+            });
+
+            $("#BranchBtnAdd").click(function () {
+                var id = $("#BranchID").val();
+                var name = $("#BranchIDName").val();
+                var sid = $("#Selected-BranchID").val();
+                var sname = $("#Selected-Branch").val();
+                var label = $('#BranchIDName-label');
+                var del = $.Event('keydown');
+                del.which = 46;
+
+                if (id == "") {
+                    alert("Branch belum dipilih");
+                    return false;
+                }
+                else if (sid.indexOf(id) > -1) {
+                    alert("Branch telah dipilih");
+                    label.focus();
+                    label.trigger(del);
+                    return false;
+                }
+                else {
+                    sid = sid == "" ? sid : sid + ",";
+                    sname = sname == "" ? sname : sname + ",";
+
+                    sid += id;
+                    sname += name;
+
+                    $("#Selected-BranchID").val(sid);
+                    $("#Selected-Branch").val(sname);
+
+                    label.focus();
+                    label.trigger(del);
+                }
+            });
+
+            @* ==========================================================================================================*@
+
+            $("#SecurityRoleZone").find('div.typeahead-label, div.input-group-addon').attr('disabled', 'disabled');
+            $("#SecurityRoleCB").change(function () {
+                var check = true;
+                if ($(this).is(":checked")) {
+                    check = false;
+                    $("#SecurityRoleLbl").removeClass("btn-danger").addClass("btn-primary");
+                    $("#SecurityRoleZone").find('div.typeahead-label, div.input-group-addon, input').removeAttr('disabled');
+                    $("#SecurityRoleIDName").css("background-color", "white")
+                } else {
+                    $("#SecurityRoleLbl").removeClass("btn-primary").addClass("btn-danger");
+                    $("#SecurityRoleZone").find('div.typeahead-label, div.input-group-addon, input').attr('disabled', 'disabled');
+                    $("#SecurityRoleIDName").css("background-color", "transparent")
+                }
+            });
+
+            $("#SecurityRoleBtnAdd").click(function () {
+                var id = $("#SecurityRoleID").val();
+                var name = $("#SecurityRoleIDName").val();
+                var sid = $("#Selected-SecurityRoleID").val();
+                var sname = $("#Selected-SecurityRole").val();
+                var label = $('#SecurityRoleIDName-label');
+                var del = $.Event('keydown');
+                del.which = 46;
+
+                if (id == "") {
+                    alert("SecurityRole belum dipilih");
+                    return false;
+                }
+                else if (sid.indexOf(id) > -1) {
+                    alert("SecurityRole telah dipilih");
+                    label.focus();
+                    label.trigger(del);
+                    return false;
+                }
+                else {
+                    sid = sid == "" ? sid : sid + ",";
+                    sname = sname == "" ? sname : sname + ",";
+
+                    sid += id;
+                    sname += name;
+
+                    $("#Selected-SecurityRoleID").val(sid);
+                    $("#Selected-SecurityRole").val(sname);
+
+                    label.focus();
+                    label.trigger(del);
+                }
+            });
+
+            @* ==========================================================================================================*@
+
+            $("#BusinessUnitZone").find('div.typeahead-label, div.input-group-addon').attr('disabled', 'disabled');
+            $("#BusinessUnitCB").change(function () {
+                var check = true;
+                if ($(this).is(":checked")) {
+                    check = false;
+                    $("#BusinessUnitLbl").removeClass("btn-danger").addClass("btn-primary");
+                    $("#BusinessUnitZone").find('div.typeahead-label, div.input-group-addon, input').removeAttr('disabled');
+                    $("#BusinessUnitIDName").css("background-color", "white")
+                } else {
+                    $("#BusinessUnitLbl").removeClass("btn-primary").addClass("btn-danger");
+                    $("#BusinessUnitZone").find('div.typeahead-label, div.input-group-addon, input').attr('disabled', 'disabled');
+                    $("#BusinessUnitIDName").css("background-color", "transparent")
+                }
+            });
+
+            $("#BusinessUnitBtnAdd").click(function () {
+                var id = $("#BusinessUnitID").val();
+                var name = $("#BusinessUnitIDName").val();
+                var sid = $("#Selected-BusinessUnitID").val();
+                var sname = $("#Selected-BusinessUnit").val();
+                var label = $('#BusinessUnitIDName-label');
+                var del = $.Event('keydown');
+                del.which = 46;
+
+                if (id == "") {
+                    alert("BusinessUnit belum dipilih");
+                    return false;
+                }
+                else if (sid.indexOf(id) > -1) {
+                    alert("BusinessUnit telah dipilih");
+                    label.focus();
+                    label.trigger(del);
+                    return false;
+                }
+                else {
+                    sid = sid == "" ? sid : sid + ",";
+                    sname = sname == "" ? sname : sname + ",";
+
+                    sid += id;
+                    sname += name;
+
+                    $("#Selected-BusinessUnitID").val(sid);
+                    $("#Selected-BusinessUnit").val(sname);
+
+                    label.focus();
+                    label.trigger(del);
+                }
+            });
+
+            @* ==========================================================================================================*@
+
+            $("#CustNo").prop("disabled", true);
+            $("#CustomerNoCB").change(function () {
+                var check = true;
+                if ($(this).is(":checked")) {
+                    check = false;
+                    $("#CustomerNoLbl").removeClass("btn-danger").addClass("btn-primary");
+                } else {
+                    $("#CustomerNoLbl").removeClass("btn-primary").addClass("btn-danger");
+                }
+                $("#CustNo").prop("disabled", check);
+            });
+
+            @* ==========================================================================================================*@
+
+            $("#AcctNo").prop("disabled", true);
+            $("#AccountNoCB").change(function () {
+                var check = true;
+                if ($(this).is(":checked")) {
+                    check = false;
+                    $("#AccountNoLbl").removeClass("btn-danger").addClass("btn-primary");
+                } else {
+                    $("#AccountNoLbl").removeClass("btn-primary").addClass("btn-danger");
+                }
+                $("#AcctNo").prop("disabled", check);
+            });
+
+            @* ==========================================================================================================*@
+            @* ============================================ POP UP SECTION ============================================= *@
+            @* ==========================================================================================================*@
+
+            $('#CategoryIDName-popup').on('click', function (e) {
+                if ($(this).attr('disabled') == 'disabled') return false;
+                urlModalPopup = '@Url.Action("_popupContent", "Popup", new { type = "categories", _entity = "" })';
+                colModelsName = [
+                    { label: 'ID', name: 'Id', index: 'Id', key: true, width: 75, hidden: true },
+                    { label: 'Category Name', name: 'Name', index: 'Name', width: 250 },
+                    { label: 'Parent Name', name: 'ParentName', width: 250 },
+                    { label: 'Description Tree', name: 'Description', width: 400 }
+                ];
+                var id = $(this).parent().find('input:last').attr('id');
+                $('#' + id).trigger("blur");
+                e.preventDefault();
+            });
+
+            var categories = new PopupClass();
+            categories.setId("CategoryIDName");
+            categories.setUrl('@Url.Action("Category", "Popup")');
+            categories.setHiddenId("CategoryID");
+            categories.init();
+
+            @* ==========================================================================================================*@
+
+            $('#ProductIDName-popup').on('click', function (e) {
+                if ($(this).attr('disabled') == 'disabled') return false;
+                urlModalPopup = '@Url.Action("_popupContent", "Popup", new { type = "products", _entity = "" })';
+                colModelsName = [
+                    { label: 'ID', name: 'Id', index: 'Id', key: true, width: 75, hidden: true },
+                    { label: 'Product Name', name: 'Name', index: 'Name', width: 250 },
+                    { label: 'Parent Name', name: 'ParentName', width: 250 },
+                    { label: 'Description Tree', name: 'Description', width: 400 }
+                ];
+                var id = $(this).parent().find('input:last').attr('id');
+                $('#' + id).trigger("blur");
+                e.preventDefault();
+            });
+
+            var products = new PopupClass();
+            products.setId("ProductIDName");
+            products.setUrl('@Url.Action("Product", "Popup")');
+            products.setHiddenId("ProductID");
+            products.init();
+
+            @* ==========================================================================================================*@
+
+            $('#WorkgroupIDName-popup').on('click', function (e) {
+                if ($(this).attr('disabled') == 'disabled') return false;
+                urlModalPopup = '@Url.Action("_popupContent", "Popup", new { type = "workgroup", _entity = "" })';
+                colModelsName = [
+                    { label: 'ID', name: 'Id', index: 'Id', key: true, width: 75, hidden: true },
+                    { label: 'Name', name: 'Name', width: 300 },
+                    { label: 'E-Mail', name: 'EMailAddress', width: 300 },
+                    { label: 'Business Unit', name: 'BusinessUnitName', width: 300 }
+                ];
+                var id = $(this).parent().find('input:last').attr('id');
+                $('#' + id).trigger("blur");
+                e.preventDefault();
+            });
+
+            var workgroup = new PopupClass();
+            workgroup.setId("WorkgroupIDName");
+            workgroup.setUrl('@Url.Action("WorkGroup", "Popup")');
+            workgroup.setHiddenId("WorkgroupID");
+            workgroup.init();
+
+            @* ==========================================================================================================*@
+
+            $('#ActionIDName-popup').on('click', function (e) {
+                if ($(this).attr('disabled') == 'disabled') return false;
+                urlModalPopup = '@Url.Action("_popupContent", "Popup", new { type = "cause", _entity = "" })';
+                colModelsName = [
+                    { label: 'ID', name: 'Id', index: 'Id', key: true, width: 75, hidden: true },
+                    { label: 'Name', name: 'Name', width: 250 },
+                    { label: 'Created On', name: 'CreatedOn', width: 150, formatter: "date", formatoptions: { srcformat: "ISO8601Long", newformat: "d/m/Y H:i" } }
+                ];
+                var id = $(this).parent().find('input:last').attr('id');
+                $('#' + id).trigger("blur");
+                e.preventDefault();
+            });
+
+            var Actions = new PopupClass();
+            Actions.setId("ActionIDName");
+            Actions.setUrl('@Url.Action("Cause", "Popup")');
+            Actions.setHiddenId("ActionID");
+            Actions.init();
+
+            @* ==========================================================================================================*@
+
+            $('#UserIDName-popup').on('click', function (e) {
+                if ($(this).attr('disabled') == 'disabled') return false;
+                urlModalPopup = '@Url.Action("_popupContent", "Popup", new { type = "User", _entity = "" })';
+                colModelsName = [
+                    { label: 'ID', name: 'Id', index: 'Id', key: true, width: 75, hidden: true },
+                    { label: 'Name', name: 'Name', width: 100 },
+                    { label: 'Phone', name: 'Phone', width: 100 },
+                    { label: 'Business Unit', name: 'BusinessUnitName', width: 150 }
+                ];
+                var id = $(this).parent().find('input:last').attr('id');
+                $('#' + id).trigger("blur");
+                e.preventDefault();
+            });
+
+            var user = new PopupClass();
+            user.setId("UserIDName");
+            user.setUrl('@Url.Action("SystemUser", "Popup")');
+            user.setHiddenId("UserID");
+            user.init();
+
+            @* ==========================================================================================================*@
+
+            $('#BranchIDName-popup').on('click', function (e) {
+                if ($(this).attr('disabled') == 'disabled') return false;
+                urlModalPopup = '@Url.Action("_popupContent", "Popup", new { type = "branch", _entity = "" })';
+                colModelsName = [
+                    { label: 'ID', name: 'Id', index: 'Id', key: true, width: 75, hidden: true },
+                    { label: 'Nama Kantor', name: 'Name', width: 250 },
+                    { label: 'Kode Kantor', name: 'OfficeCode', width: 250 },
+                    { label: 'Alamat', name: 'Address', width: 250 },
+                    { label: 'Fax', name: 'Fax', width: 250 },
+                    { label: 'Inisial', name: 'Initials', width: 60 },
+                    { label: 'Kode Pos', name: 'Zipcode', width: 60 },
+                    { label: 'Kota', name: 'City', width: 60 },
+                    { label: 'Telephone 1', name: 'Telephone1', width: 60 },
+                    { label: 'Telephone 2', name: 'Telephone2', width: 60 },
+                    { label: 'Kanwil', name: 'RegionName', width: 60 }
+                ];
+                var id = $(this).parent().find('input:last').attr('id');
+                $('#' + id).trigger("blur");
+                e.preventDefault();
+            });
+
+            var branch = new PopupClass();
+            branch.setId("BranchIDName");
+            branch.setUrl('@Url.Action("Branch", "Popup")');
+            branch.setHiddenId("BranchID");
+            branch.init();
+
+            @* ==========================================================================================================*@
+
+            $('#SecurityRoleIDName-popup').on('click', function (e) {
+                urlModalPopup = '@Url.Action("_popupContent", "Popup", new { type = "securityrole", _entity = "" })';
+                colModelsName = [
+                    { label: 'ID', name: 'Id', index: 'Id', key: true, width: 75, hidden: true },
+                    { label: 'Name', name: 'Name', index: 'Name', width: 500 }
+                ];
+                var id = $(this).parent().find('input:last').attr('id');
+                $('#' + id).trigger("blur");
+                e.preventDefault();
+            });
+
+            var SecurityRole = new PopupClass();
+            SecurityRole.setId("SecurityRoleIDName");
+            SecurityRole.setUrl('@Url.Action("SecurityRole", "Popup")');
+            SecurityRole.setHiddenId("SecurityRoleID");
+            SecurityRole.init();
+
+            @* ==========================================================================================================*@
+
+            $('#BusinessUnitIDName-popup').on('click', function (e) {
+                urlModalPopup = '@Url.Action("_popupContent", "Popup", new { type = "businessunit", _entity = "" })';
+                colModelsName = [
+                    { label: 'ID', name: 'Id', index: 'Id', key: true, width: 75, hidden: true },
+                    { label: 'Name', name: 'Name', index: 'Name', width: 500 }
+
+                ];
+                var id = $(this).parent().find('input:last').attr('id');
+                $('#' + id).trigger("blur");
+                e.preventDefault();
+            });
+
+            var BusinessUnit = new PopupClass();
+            BusinessUnit.setId("BusinessUnitIDName");
+            BusinessUnit.setUrl('@Url.Action("BusinessUnit", "Popup")');
+            BusinessUnit.setHiddenId("BusinessUnitID");
+            BusinessUnit.init();
+
+            @* ==========================================================================================================*@
+
+            default_state();
+        });
+    </script>
+}

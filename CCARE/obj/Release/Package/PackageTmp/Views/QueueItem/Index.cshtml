@@ -1,0 +1,618 @@
+﻿@model List<CCARE.Models.QueueUser>
+@{
+    if (Request.IsAjaxRequest())
+    {
+        Layout = null;
+    }
+}
+<script src="~/assets/js/customJs.js"></script>
+
+<ul class="nav nav-stacked nav-pills">
+    <li class="titleBar font-crm4"><a></a></li>
+</ul>
+
+<div class="modal fade" id="confirm-close" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content" style="background-color:#ecf1f5;">
+            <div class="modal-header" style="background-color:#639CCE; color:white;">
+                <h2>Close Request</h2>
+                <h4>Provide information in the following boxes to resolve this case.</h4>
+            </div>
+            <div class="modal-body input-lg" style="height:250px;">
+                <div class="container-fluid form-horizontal">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                                <div class="col-sm-3">
+                                    <label class="control-label">Resolution Type</label>
+                                </div>
+                                <div class="col-sm-9">
+                                    <select class="form-control">
+                                        <option value="closed">Closed</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-sm-3">
+                                    <label class="control-label">Resolution</label>
+                                </div>
+                                <div class="col-sm-9">
+                                    <input type="text" class="form-control" id="Resolution" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <br />
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">Description</label>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-sm-12">
+                                    <textarea class="form-control" id="Description" style="height:100px; min-height:100px; max-height:100px;"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                <a class="btn btn-danger btn-ok">Ok</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="confirm-accept" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content" style="background-color:#ecf1f5;">
+            <div class="modal-header" style="background-color:#639CCE; color:white;">
+                <h2>Accept Request</h2>
+            </div>
+            <div class="modal-body input-lg" style="height:100px;">
+                <h4>Are you sure to accept selected request(s)?</h4>
+            </div>
+            <div class="modal-footer">
+                <button type="button" id="btn_cancel" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                <a class="btn btn-danger btn-ok">Ok</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="confirm-assignto" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content" style="background-color:#ecf1f5;">
+            <div class="modal-header" style="background-color:#639CCE; color:white;">
+                <h2>Assign Request</h2>
+            </div>
+            <div class="modal-body input-lg" style="height:100px;">
+                <h4>Are you sure to assign selected request(s)?</h4>
+            </div>
+            <div class="modal-footer">
+                <button type="button" id="btn_cancel_assign" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                <a class="btn btn-danger btn-ok">Ok</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="response-modal"></div>
+
+<div class="row">
+    <div class="col-sm-12" >
+        
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <form id="form_inquiry">
+                    <div class="col-lg-12 inquiry_left">
+                        <ol class="breadcrumb">
+                            <li class="active">Workplace</li>
+                            <li class="active">My Work</li>
+                            <li class="active"><a href="#">Queue</a></li>
+                        </ol>
+                        <div class="input-group">
+                            <span class="input-group-btn inquiry_dropdown">
+                                <select id="inquiry_search" class="form-control">
+                                    <option value="searchCategory" selected="selected">Category</option>
+                                    <option value="searchProduct">Product</option>
+                                </select>
+                            </span>
+                            <span class="input-group-btn input_space"></span>
+                            <input type="text" class="form-control" id="inquiry_val" >
+                            <span class="input-group-btn">
+                                <button id="btn_search" class="btn btn-primary" type="submit"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></button>
+                            </span>
+                        </div>
+                        <br />
+                        <br />
+                    </div>
+                    <input type="hidden" value="" id="tempQueueID"/>
+                </form>
+                
+                <div class="row">
+                    <div class="col-sm-2">
+                        <div class="panel-group" id="accordion">
+                            
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h4 class="panel-title">
+                                        <a class="qitem-menu" data-toggle="collapse" data-parent="#accordion" href="#collapseMywork">
+                                            My Request
+                                        </a>
+                                    </h4>
+                                </div>
+                                <div id="MyCreatedRequest" class="panel-collapse collapse in">
+                                    <div class="list-group">
+                                        <button id="my_request" class="list-group-item QClass" value="2">My Created Request</button> 
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h4 class="panel-title">
+                                        <a class="qitem-menu" data-toggle="collapse" data-parent="#accordion" href="#collapseMywork">
+                                            My Work
+                                        </a>
+                                    </h4>
+                                </div>
+                                <div id="collapseWorkplace" class="panel-collapse collapse in">
+                                    <div class="list-group">
+                                        <button id="inquiry_filter" class="list-group-item QClass" value="1">In Progress</button> 
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h4 class="panel-title">
+                                        <a class="qitem-menu" data-toggle="collapse" data-parent="#accordion" href="#collapseQueues">
+                                            Queues
+                                        </a>
+                                    </h4>
+                                </div>
+                                <div id="Queues" class="panel-collapse collapse in">
+                                    <div class="list-group">
+                                        @{
+                                            foreach (var x in Model.OrderBy(x=>x.Queue).Distinct())
+                                            {
+                                                <a href="#" id="@x.QueueId" class ="list-group-item qid QClass" >@x.Queue</a>
+                                            }
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-10 ">
+                        @if(Session["RoleID"] != null){
+                            string entity = ViewContext.Controller.ControllerContext.RouteData.Values["controller"].ToString();
+                            Guid roleID = new Guid(Session["RoleID"].ToString());
+                            bool checkButton = CCARE.App_Function.RoleNPrivilege.checkEntityButtonByRoleID(roleID, "Request", "Update");
+                            bool isspv = CCARE.App_Function.RoleNPrivilege.checkEntityButtonByRoleID(roleID, "Request", "AssignMultiple");
+                            bool isspvanother = CCARE.App_Function.RoleNPrivilege.checkEntityButtonByRoleID(roleID, "Request", "AssignMultipleAnother");
+                            
+                            if(checkButton == true)
+                            {
+                                <text>
+                                    <ol id="li_close" class="breadcrumb br-req">                                                                 
+                                        <li><a id="btn_close" href="#" data-toggle="modal" data-target="#confirm-close"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span> Close Request</a></li>
+                                        @if (isspvanother)
+                                        {
+                                            <li><a id="btn_assignto_another" href="#"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span> Assign to Another User</a></li>
+                                        }
+                                    </ol>
+                                    <ol id="li_accept" class="breadcrumb br-req">
+                                        <li><a id="btn_accept" href="#" data-toggle="modal" data-target="#confirm-accept"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span> Accept Request</a></li>
+                                        @if (isspv)
+                                        {
+                                            <li><a id="btn_assignto" href="#"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span> Assign to User</a></li>
+                                            
+                                        }
+                                    </ol>
+                                    @if (isspv)
+                                    { 
+                                        <input type="hidden" id="IsSPV" value="Yes"/>
+                                        <a id="btn_assignto_yes" href="#" data-toggle="modal" data-target="#confirm-assignto"></a>
+                                    }
+                                    <ol id="li_mycr" class="breadcrumb br-req">
+                                        <li><a href="#" class="no-text-decoration"><span class="glyphicon glyphicon-tag" aria-hidden="true"></span> My Created Request</a></li>
+                                    </ol>
+                                </text>
+                            }
+                        }
+                        <div class="divGrid">
+                            <table id="gridTable"></table>
+                            <div id="jqGridPager"></div>
+                        </div>
+                    </div>
+                </div>
+                <br />
+
+                <div class="row" id="spv-assign-to">
+                    <div class="col-sm-2">
+                    </div>
+                    <div class="col-sm-10">
+                        <div class="form-horizontal">
+                            <div class="row">
+                                <div class="col-sm-6"></div>
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label class="col-sm-3 control-label"></label>
+                                        <div class="col-sm-9">
+                                            <input type="hidden" id="OwnerID" class="form-control" />
+                                            <div class="input-group" id="OwnerID-Group">
+                                                <input type="text" id="OwnerIDName" class="form-control" />
+                                                <div tabindex="0" id="OwnerIDName-label" class="form-control typeahead-label hide">
+                                                </div>
+                                                <div tabindex="0" class="input-group-addon btn" id="OwnerIDName-popup">
+                                                    <i class="fa fa-search"></i>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        var gridId = "#gridTable";
+        var isspv = $("#IsSPV").length > 0 ? true : false;
+        var entityname = "QueueItem";
+
+        $("#form_inquiry").find("input").addClass("rm-padding");
+        $("#form_inquiry").find("select").addClass("rm-padding");
+        $("#form_inquiry").find(":radio").removeClass("rm-padding");
+
+        $(".QClass").click(function () {
+            $('.QClass').removeClass('activeMenu');
+            $(this).addClass('activeMenu');
+            $('#inquiry_val').val("");
+            $('body').focus();
+        });
+
+        var postData =
+            {
+                _param1: function () { return ""; },
+                _filter: function () { return $("#inquiry_filter").val(); },
+                _search: function () { return $("#inquiry_search").val(); },
+                _val: function () { return $("#inquiry_val").val(); }
+            };
+
+        function loadJqgrid(gridId, postData, entityname) {
+            $.jgrid.gridUnload(gridId);
+
+            var url = '/' + 'QueueItem' + '/' + 'LoadGrid';
+            url = entityname.includes("Request") ? '/' + 'QueueItem' + '/' + 'MyCreatedRequest' : url;
+
+            var customVal = {
+                height: 400,
+                rowNum: 20
+            };
+
+            var colModels = [
+                { label: 'ID', name: 'Id', index: 'Id', key: true, width: 75, hidden: true },
+                { label: 'id', name: 'Objectid', index: 'Id', key: true, width: 150, hidden: true },
+                { label: 'Request ID', name: 'Ticketnum', width: 150 },
+                { label: 'Category', name: 'Category', width: 150 },
+                { label: 'Product', name: 'Product', width: 150 },
+                { label: 'Service Level', name: 'Servicelevel', width: 150 },
+                { label: 'Created Date', name: 'CreatedDate', width: 130, formatter: "date", formatoptions: { srcformat: "ISO8601Long", newformat: "m/d/Y H:i:s" } },
+                { label: 'Due Date', name: 'Duedate', width: 130, formatter: "date", formatoptions: { srcformat: "ISO8601Long", newformat: "m/d/Y H:i:s" } },
+                { label: 'Summary', name: 'Name', width: 180 }
+            ];
+
+            $(gridId).jqGrid({
+                url: url,
+                mtype: "POST",
+                datatype: "json",
+                postData: postData,
+                colModel: colModels,
+                shrinkToFit: false,
+                width: '100%',
+                autowidth: true,
+
+                multiselect: entityname.includes("Request") ? false : true,
+                multiboxonly: false,
+                //height: '100%',
+                height: customVal.height,
+                rowNum: customVal.rowNum,
+                rowList: [20, 30],
+                rownumbers: true,
+                pager: $("#jqGridPager"),
+                sortname: 'Id',
+                viewrecords: true,
+                sortorder: "desc",
+                loadComplete: function (data) {
+                    $("#sp_1_jqGridPager").hide();
+                    $("#input_jqGridPager").contents().filter(function () { return this.nodeType == 3; }).remove();
+                    $("#input_jqGridPager").prepend("<text>Page  </text>");
+
+                    //Hide First and last on paging
+                    $("#first_jqGridPager").hide();
+                    $("#last_jqGridPager").hide();
+
+                    // Disabled input page number in jqgrid paging
+                    $("#input_jqGridPager").find("input").attr('disabled', 'disabled');
+
+                    /* Remove rm padding from selbox */
+                    $(".ui-pg-selbox").removeClass("rm-padding");
+
+                    //Hide records per page
+                    //$(".ui-pg-selbox").hide();
+
+                    if (data.rows.length == 0) {
+                    //if (data.records == 0) {
+                        var emptyText = '';
+                        emptyText += '<table class="ui-jqgrid-btable"><tr><td>&nbsp;&nbsp;&nbsp;</td><td><center><h2>No Records Found</h2><center></td></tr></table>';
+                        var grid = $(gridId);
+                        var container = grid.parents('.ui-jqgrid-view');
+                        container.find('.ui-jqgrid-bdiv').children("table").remove();
+                        container.find('.ui-jqgrid-bdiv').append(emptyText);
+                    }
+                },
+                jsonreader: {
+                    root: "rows", //array containing actual data
+                    page: "page", //current page
+                    total: "total", //total pages for the query
+                    records: "records", //total number of records
+                    cell: 'cell',
+                    repeatitems: false,
+                    id: "Id" //index of the column with the pk in it
+                },
+                ondblClickRow: function (rowid, iRow, iCol) {
+                    var rowData = jQuery(this).getRowData(rowid);
+                    //if (rowData.type == "Request") {
+                    var url = '@Url.Action("Edit", "Request")';
+                    openWindow(url + '?id=' + rowData.Objectid);
+                  @*  } else if (rowData.type == "Task") {
+                        var url = '@Url.Action("Edit", "Task")';
+                        openWindow(url + '?id=' + rowData.objectid);
+                    } comment karena hanya butuh request*@
+
+                }
+
+            })
+                .navGrid("#jqGridPager", { edit: false, add: false, del: false, search: false });
+        }
+
+        loadJqgrid(gridId, postData, entityname);
+
+        $("#tempQueueID").val("");
+        $(".qid").click(function () {
+            entityname = "QueueItem";
+            var qid = ($(this).attr("id"));
+            $("#tempQueueID").val(qid);
+            var postData = {
+                _param: function () { return qid; }
+            };
+
+            loadJqgrid(gridId, postData, entityname);
+        });
+
+
+        $("#my_request").click(function () {
+            entityname = "Request";
+            $("#tempQueueID").val("");
+            var postData = {
+                _param1: function () { return $("").val(); },
+                _filter: function () { return $("#my_request").val(); }
+            };
+            $("#li_accept").hide();
+            $("#li_close").hide();
+            $("#li_mycr").show();
+            loadJqgrid(gridId, postData, entityname);
+        });
+
+        $("#inquiry_filter").click(function () {
+            entityname = "QueueItem";
+            $("#tempQueueID").val("");
+            var postData = {
+                _param1: function () { return $("").val(); },
+                _filter: function () { return $("#inquiry_filter").val(); }
+            };
+            loadJqgrid(gridId, postData, entityname);
+        });
+
+        $("#confirm-close").on('show.bs.modal', function (e) {
+            $(this).find('.btn-ok').click(function () {
+                var postData = {
+                    _resolution: $("#Resolution").val(),
+                    _description: $("#Description").val()
+                };
+                
+                action(postData);
+            });
+        });
+
+        $("#li_accept").hide(); 
+        $("#spv-assign-to").hide();
+
+        $("#inquiry_filter").click(function () {
+            $("#li_accept").hide();
+            $("#li_close").show();
+            $("#li_mycr").hide();
+        });
+
+        $(".qid").click(function () {
+            $("#li_accept").show();
+            $("#li_mycr").hide();
+            $("#li_close").hide();
+        });
+
+        $("#confirm-accept").on('show.bs.modal', function (e) {
+            $(this).find('.btn-ok').unbind().click(function () {
+                $("#confirm-accept").find('#btn_cancel').click();
+                acceptMultiple(true);
+            });
+        });
+
+        $("#btn_close").click(function () {
+            var myGrid = $('#gridTable'),
+            selectedRowId = myGrid.jqGrid('getGridParam', 'selrow'),
+            cellValue = myGrid.jqGrid('getCell', selectedRowId, 'columnName');
+            selectedRowId = myGrid.jqGrid('getGridParam', 'selarrrow');
+
+            if (selectedRowId == "") {
+                alert("No selected request(s) found");
+                return false;
+            }
+        });
+
+        $("#btn_accept").click(function () {
+            var myGrid = $('#gridTable'),
+            selectedRowId = myGrid.jqGrid('getGridParam', 'selrow'),
+            cellValue = myGrid.jqGrid('getCell', selectedRowId, 'columnName');
+            selectedRowId = myGrid.jqGrid('getGridParam', 'selarrrow');
+
+            if (selectedRowId == "") {
+                alert("No selected request(s) found");
+                return false;
+            }
+        });
+
+        function acceptMultiple(assign2me) {
+            var myGrid = $('#gridTable'),
+            selectedRowId = myGrid.jqGrid('getGridParam', 'selrow'),
+            cellValue = myGrid.jqGrid('getCell', selectedRowId, 'columnName');
+            selectedRowId = myGrid.jqGrid('getGridParam', 'selarrrow');
+
+            var x = JSON.stringify(selectedRowId);
+            var dt = "requestIds=" + x;
+            if (!assign2me) {
+                dt += "&assignee=" + $("#OwnerID").val()
+            }
+
+            $.ajax({
+                type: "POST",
+                url: "/Request/AcceptMultiple",
+                data: dt,
+                dataType: "json",
+                success: function (data) {
+                    alert(data.acceptSucceed + " Request(s) successfully accepted\n" + data.acceptFailed + " Request(s) failed to accept");
+
+                    var gridId = "#gridTable";
+                    reloadGrid(gridId);
+                },
+                error: function (xhr, status, err) {
+                }
+            });
+            return false;
+        }
+
+        function action(postData) {
+            var myGrid = $('#gridTable'),
+                selectedRowId = myGrid.jqGrid('getGridParam', 'selrow'),
+                cellValue = myGrid.jqGrid('getCell', selectedRowId, 'columnName');
+                selectedRowId = myGrid.jqGrid('getGridParam', 'selarrrow');
+
+            var x = JSON.stringify(selectedRowId);
+
+            $.ajax({
+                type: "POST",
+                url: "/Request/CloseMultiple",
+                data: "requestIds=" + x + "&Resolution=" + postData._resolution + "&Description=" + postData._description,
+                dataType: "json",
+                success: function (data) {
+                    alert(data.closeSucceed + " Request(s) successfully closed\n" + data.closeFailed + " Request(s) failed to close");
+                    
+                    $('.btn-default').click();
+                    $("#Resolution").val("");
+                    $("#Description").val("");
+
+                    var gridId = "#gridTable";
+                    reloadGrid(gridId);
+                },
+                error: function (xhr, status, err) {
+                }
+            });
+            return false;
+        }
+        
+        $('#form_inquiry').submit(function (event) {
+            (event.preventDefault) ? event.preventDefault() : event.returnValue = false;
+            var postData =
+            {
+                _filter: function () { return $("#inquiry_filter").val(); },
+                _param: function () { return $("#tempQueueID").val(); },
+                _val: function () { return $("#inquiry_val").val(); },
+                _lookUp: function () { return $("#inquiry_search").val(); }
+            };
+
+            loadJqgrid(gridId, postData, entityname);
+        });
+
+        var owner = new PopupClass();
+        owner.setId("OwnerIDName");
+        owner.setUrl('@Url.Action("User", "Popup")');
+        owner.setHiddenId("OwnerID");
+        owner.init();
+        
+        $('#OwnerIDName-popup').on('click', function (e) {
+            urlModalPopup = '@Url.Action("_popupContent", "Popup", new { type = "User", _entity = "" })';
+            colModelsName = [
+                { label: 'ID', name: 'Id', index: 'Id', key: true, width: 75, hidden: true },
+                { label: 'Name', name: 'Name', width: 100 },
+                { label: 'Phone', name: 'Phone', width: 100 },
+                { label: 'Business Unit', name: 'BusinessUnitName', width: 150 },
+                { label: 'Site', name: 'Site', width: 150 },
+                { label: 'Title', name: 'Title', width: 150 },
+                { label: 'E-mail', name: 'EMail', width: 150 }
+            ];
+            var id = $(this).parent().find('input:last').attr('id');
+            $('#' + id).trigger("blur");
+            e.preventDefault();
+        });
+
+        $("#btn_assignto, #btn_assignto_another").click(function (e) {
+            var myGrid = $('#gridTable'),
+            selectedRowId = myGrid.jqGrid('getGridParam', 'selrow'),
+            cellValue = myGrid.jqGrid('getCell', selectedRowId, 'columnName');
+            selectedRowId = myGrid.jqGrid('getGridParam', 'selarrrow');
+
+            if (selectedRowId == "") {
+                alert("No selected request(s) found");
+                return false;
+            }
+            else {
+                $("#spv-assign-to").show();
+                $('#OwnerIDName-popup').removeAttr('disabled', 'disabled');
+                $('#OwnerIDName-popup').focus();
+                $('#OwnerIDName-popup').click();
+            }
+        });
+
+        $('#OwnerID').change(function () {
+            $("#spv-assign-to").hide();
+            if ($("#OwnerID").val() != "") {
+                $("#btn_assignto_yes").click();
+            }
+        });
+
+        $("#confirm-assignto").on('show.bs.modal', function (e) {
+            $(this).find('.btn-ok').unbind().click(function () {
+                $("#confirm-assignto").find('#btn_cancel_assign').click();
+                acceptMultiple(false);
+            });
+        });
+
+        window.refreshGrid = function refreshGrid() { /*Added By Ardi For Auto Reload Grid After Submission (20151207)*/
+            var gridId = "#gridTable";
+            reloadGrid(gridId);
+        }
+
+        $("#inquiry_filter").click();
+    });
+</script>

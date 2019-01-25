@@ -1,0 +1,349 @@
+﻿@model CCARE.Models.ServiceLevel
+
+@{
+    ViewBag.Title = "Service Level Segmentation: " + Model.Name;
+    if (Request.IsAjaxRequest())
+    {
+        Layout = null;
+    }
+    else
+    {
+        Layout = "~/Views/Shared/_LayoutEntity.cshtml";
+    }
+}
+
+@section title
+{
+    Segmentation
+}
+
+@section entityLogo
+{
+    <img class="crm-logo" src="~/assets/images/ico_lrg_112.gif" />
+}
+
+@section formTitle
+{
+    <div class="text_title">
+        <h1>Segmentation</h1>
+    </div>
+}
+
+@section navHeader
+{
+}
+
+@section footerStatus
+{
+}
+
+@section sidebarMenu
+{
+}
+
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-12 panel panel-default panel_form_parent scroll-y">
+            <br />
+            <div class="col-sm-12">
+                @using (Html.BeginForm("ChildOperation", "ServiceLevel", FormMethod.Post, new { id = "form_serviceLevelChild" }))
+                {
+                    @Html.HiddenFor(x => x.ServiceLevelID, new { @id = "ServiceLevelID" });
+                    @Html.HiddenFor(x => x.ParentID, new { @class = "form-control" })
+                    @Html.HiddenFor(x => x.CategoryID, new { @class = "form-control" })
+                    @Html.HiddenFor(x => x.CategoryIDName, new { @class = "form-control" })
+                    @Html.HiddenFor(x => x.ProductID, new { @class = "form-control" })
+                    @Html.HiddenFor(x => x.ProductIDName, new { @class = "form-control" })
+                <!-- title 1 -->
+                <div class="row form_text">
+                    <div class="panel panel-default panel_form_child">
+                        
+                        <div class="panel-heading">
+                            <label class="control-label sv-header">
+                                <strong>Search Segmentation</strong>
+                            </label>
+                        </div>
+                        <br />
+                        <div class="panel-body">
+                            <div class="form-horizontal">
+                                <div class="row">
+                                    <div class="col-sm-6">                                        
+                                        <div class="form-group">
+                                            <label class="col-sm-4 control-label mandatory">Product</label>
+                                            <div class="col-sm-8">
+                                                <input type="text" class="form-control" readonly="readonly" value="@Model.ProductIDName" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6">                                        
+                                        <div class="form-group">
+                                            <label class="col-sm-4 control-label mandatory">Category</label>
+                                            <div class="col-sm-8">
+                                                <input type="text" class="form-control" readonly="readonly" value="@Model.CategoryIDName" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-sm-6">                                        
+                                        <div class="form-group">
+                                            <label class="col-sm-4 control-label mandatory">Kota</label>
+                                            <div class="col-sm-8">
+                                                @Html.DropDownList("KotaID",(SelectList)ViewBag.Kota, "Default Empty", new { @id="KotaID", @class = "form-control" })
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6">                                        
+                                        <div class="form-group">
+                                            <label class="col-sm-4 control-label mandatory">Segment</label>
+                                            <div class="col-sm-8">
+                                                @Html.DropDownList("SegmentationID",(SelectList)ViewBag.Segmentation, "Default Empty", new { @id="SegmentationID", @class = "form-control"})
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <br />
+                        <!--Button div-->
+                        <div class="panel-body">
+                            <div class="row">
+                                <span class="col-sm-12" style="text-align:center" id="workflowGroupButton">
+                                    <button id="btnSearch" type="button" class="btn btn-primary btn-crm-layout"><span class="glyphicon glyphicon-search glyp-space" aria-hidden="true"></span>Search</button>
+                                </span>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <!-- END title 1 -->
+                
+                <div id="messageBox"></div>
+                                        
+                <!-- Title 2 - Create New SL -->    
+                <div class="row form_text" id="divNewChild">
+                    <div class="panel panel-default panel_form_child">
+                        <div class="panel-heading">
+                            <label class="control-label sv-header"><strong>New Service Level Child</strong></label>
+                        </div>
+                        <br />
+                        <div class="panel-body">
+                            <div class="form-horizontal">
+
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <label class="col-sm-4 control-label mandatory">Workgroup</label>
+                                            <div class="col-sm-8">
+                                               @* ==========================================================================================================*@
+                                                @Html.HiddenFor(x => x.WorkgroupID, new {  @class = "form-control" })
+                                                <div class="input-group" id="WorkgroupID-Group">
+                                                    @Html.TextBoxFor(x => x.WorkgroupIDName, new { @class = "form-control" })
+                                                    <div tabindex="2" id="WorkgroupIDName-label" class="form-control typeahead-label hide">
+                                                    </div>
+                                                    <div tabindex="2" class="input-group-addon btn" id="WorkgroupIDName-popup">
+                                                        <i class="fa fa-search"></i>
+                                                    </div>
+                                                </div>
+                                                @* ==========================================================================================================*@
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6">                                        
+                                        <div class="form-group">
+                                            <label class="col-sm-4 control-label mandatory">SLA Days</label>
+                                            <div class="col-sm-8">
+                                                @Html.TextBoxFor(x => x.SLADays, new { @class = "form-control", @maxlength="3" })
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <br />
+                        <!--Button div-->
+                        <div class="panel-body">
+                            <div class="row">
+                                <span class="col-sm-12" style="text-align:center" id="newSLChildGroupBtn">
+                                    <button id="btnNewChild" type="button" class="btn btn-primary btn-crm-layout"><span class="glyphicon glyphicon-plus glyp-space" aria-hidden="true"></span>Create New Child</button>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--End Title 2-->
+                }
+
+                <div id="divWorkflow">
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+<div id="response-modal"></div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        $('.onlyParent').hide();
+
+        function clearPopup(fieldName) {
+            var rl = $(fieldName);
+            if (!rl.hasClass('hide')) {
+                var ev = jQuery.Event('keydown');
+                ev.which = 46;
+                rl.trigger(ev);
+            }
+        }
+
+        //Hide panel to create new child
+        $('#divNewChild').hide();
+
+        $('#btnSearch').click(function () {
+            $('#messageBox').html('');
+
+            if ($('#KotaID').val() == '' && $('#SegmentationID').val() == '') {
+                $('#messageBox').html(MessageText('alert','Mohon pilih kota atau segment sebelum mencari'));
+            }
+            else {
+                //send kota, segment null if not selected
+                var slid = '@Model.ParentID';
+                var segment = null;
+                var kota = null;
+                if ($('#SegmentationID').val() != -1) { segment = $('#SegmentationID').val(); }
+                if ($('#KotaID').val() != -1) { kota = $('#KotaID').val(); }
+
+                //var postData = JSON.stringify({ model: $('#form_privilegeexception').serializeObject(), actionString: actionString });
+                var postData = {
+                    slid: slid,
+                    segment: segment,
+                    kota: kota
+                };
+                searchSLChild(postData);
+            }
+        });
+
+        function searchSLChild(postData) {
+            var url = '/ServiceLevel/SearchChild';
+
+            $.ajax({
+                type: "GET",
+                url: url,
+                data: postData,
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (data) {
+                    //SL child exist
+                    if (data.flag == true) {
+                        loadWorkflow(data.slChildId, 'exist');
+                        $('#divWorkflow').show();
+                        $('#divNewChild').hide();
+                    }
+                    //Not exist show create new SL child
+                    else if (data.flag == false) {
+                        //loadWorkflow(data.slParent, 'new');
+                        $('#divNewChild').show();
+                        $('#divWorkflow').hide();
+                        resetNewChildForm();
+                        $('#messageBox').html('Segmentasi atau kota tidak ditemukan. Silahkan membuat data baru...');
+                    }
+                },
+                error: function (xhr, status, err) {
+                    alert("Search Error" + xhr.error);
+                }
+            });
+        }
+        
+        function loadWorkflow(id, oprType) {
+            $.ajax({
+                type: "GET",
+                url: "/ServiceLevel/_Workflow/?id=" + id + "&oprType=" + oprType,
+                contentType: "application/html; charset=utf-8",
+                dataType: "html",
+                success: function (viewHTML) {
+                    $("#divWorkflow").html(viewHTML);
+                },
+                error: function (errorData) { onError(errorData); }
+            });
+        }
+
+        @* ==========================================================================================================*@
+        $('#WorkgroupIDName-popup').on('click', function (e) {
+            urlModalPopup = '@Url.Action("_popupContent", "Popup", new { type = "workgroup", _entity = "" })';
+            colModelsName = [
+                { label: 'ID', name: 'Id', index: 'Id', key: true, width: 75, hidden: true },
+                { label: 'Name', name: 'Name', width: 300 },
+                { label: 'E-Mail', name: 'EMailAddress', width: 300 },
+                { label: 'Business Unit', name: 'BusinessUnitName', width: 300 }
+            ];
+            var id = $(this).parent().find('input:last').attr('id');
+            $('#' + id).trigger("blur");
+            e.preventDefault();
+        });
+
+        var workgroup = new PopupClass();
+        workgroup.setId("WorkgroupIDName");
+        workgroup.setUrl('@Url.Action("WorkGroup", "Popup")');
+        workgroup.setHiddenId("WorkgroupID");
+        workgroup.init();
+
+        if ("@Model.WorkgroupID".length > 0) {
+            popupCheckFirst("WorkgroupIDName", "@Model.WorkgroupID", "@Html.Raw(Model.WorkgroupIDName)");
+        }
+        @* ==========================================================================================================*@
+        $("#SLADays").keyup(function () {
+            isNumber($(this).val(), "#SLADays");
+        });
+
+        //Reset new form value
+        function resetNewChildForm(){
+            clearPopup('#WorkgroupIDName-label');
+            $('#SLADays').val('1');
+        }
+
+        //Create new segmentation records
+        function executeNewChild(actionString) {
+            var postData = JSON.stringify({ model: $('#form_serviceLevelChild').serializeObject(), actionString: actionString });
+            var url = '/ServiceLevel/saveNewChild';
+
+            $.ajax({
+                type: "POST",
+                url: url,
+                data: postData,
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (msg) {
+                    if (msg.flag == true) {
+                        resetNewChildForm();
+                        loadWorkflow(msg.slChildId, 'exist');
+                        $('#divWorkflow').show();
+                        $('#divNewChild').hide();
+                    }
+                    $("#messageBox").html(MessageText("info", msg.Message));
+
+                },
+                error: function (xhr, status, err) {
+                    $("#messageBox").html(MessageText('error', "Segmentasi atau kota tidak berhasil disimpan"));
+                }
+            });
+        }
+
+        $('#btnNewChild').unbind().click(function () {
+            $('#messageBox').html('');
+            if($('#WorkgroupID').val() == ''){
+                $('#messageBox').html(MessageText('alert','@Resources.ServiceLevel.SLAMandatroyWG'));
+            }
+            else if ($('#SLADays').val() == '' || $('#SLADays').val() < '1') {
+                $('#messageBox').html(MessageText('alert','@Resources.ServiceLevel.SLAMandatoryDays'));
+            }
+            else {
+                executeNewChild('Create');
+            }
+        });
+    });
+</script>

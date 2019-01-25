@@ -1,0 +1,188 @@
+﻿@model CCARE.Models.Request
+
+@{
+    ViewBag.Title = "Letter Entries";
+    if (Request.IsAjaxRequest())
+    {
+        Layout = null;
+    }
+    else
+    {
+        Layout = "~/Views/Shared/_LayoutEntity.cshtml";
+    }
+}
+
+@section title
+{
+    Letter Entries  
+}
+
+@section entityLogo
+{
+    <img class="crm-logo" src="~/assets/images/ico_lrg_112.gif" />
+}
+
+@section formTitle
+{
+    <div class="text_title">
+        <h1>Information</h1>
+        Letter Entry: @Model.TicketNumber
+    </div>
+}
+
+@section navHeader
+{
+    
+}
+
+@section footerStatus
+{
+    
+}
+
+@section sidebarMenu
+{
+    
+}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-12 panel panel-default panel_form_parent scroll-y">
+            <br />
+            <div class="col-sm-12">
+                <!-- title 1 -->
+                <div class="row form_text">
+                    <div class="panel panel-default panel_form_child">
+                        
+                        <div class="panel-heading">
+                            <label class="control-label sv-header">
+                                <strong>Letter Entries</strong>
+                            </label>
+                        </div>
+
+                        <br />
+
+                        <div class="panel-body">
+                            <form class="form-horizontal">
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <div class="divGrid">
+                                            <table id="gridTable"></table>
+                                            <div id="jqGridPager"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    
+                    </div>
+                </div>
+            
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        var gridId = "#gridTable";
+        var requestId = '@(Model.RequestID)';
+
+        var postData = {
+            _param: function () { return ""; },
+            _val: function () { return ""; },
+            _filter: function () { return "1"; },
+            _requestId: requestId
+        };
+
+        loadJqgrid(postData);
+
+        $("#inquiry_filter").change(function () {
+            var postData = {
+                _val: function () { return $("#inquiry_val").val(); },
+                _filter: function () { return $("#inquiry_filter").val(); },
+                _requestId: requestId
+            };
+            loadJqgrid(postData);
+        });
+
+
+        function loadJqgrid(postData) {
+            $.jgrid.gridUnload(gridId);
+            var colModels = [
+                { label: 'ID', name: 'Id', index: 'Id', key: true, width: 75, hidden: true },
+                { label: 'TemplateID', name: 'TemplateID', index: 'TemplateID', hidden: true },
+                { label: 'Template', name: 'TemplateName', index: 'TemplateName', width: 300, formatter: returnHyperLink },
+                { label: 'Date', name: 'LetterDate', index: 'LetterDate', width: 150, formatter: "date", formatoptions: { srcformat: "ISO8601Long", newformat: "d/m/Y" } },
+                { label: 'Full Name', name: 'FullName', index: 'FullName', width: 300 },
+                { label: 'Account No', name: 'AccountNo', index: 'AccountNo', width: 138 },
+                { label: 'Card No', name: 'CardNo', index: 'CardNo', width: 138 }
+            ];;
+            var customVal = getCustomVal("LetterEntry");
+            var url = '/LetterEntry/LoadGrid';
+            $(gridId).jqGrid({
+                url: url,
+                mtype: "POST",
+                datatype: "json",
+                postData: postData,
+                colModel: colModels,
+                shrinkToFit: false,
+                width: '100%',
+                autowidth: true,
+                height: '100%',
+                rowNum: customVal.rowNum,
+                rowList: [20, 30],
+                rownumbers: true,
+                pager: $("#jqGridPager"),
+                sortname: 'Id',
+                viewrecords: true,
+                sortorder: "desc",
+                loadComplete: function (data) {
+                    //Remove total page on footer
+                    $("#sp_1_jqGridPager").hide();
+                    $("#input_jqGridPager").contents().filter(function () { return this.nodeType == 3; }).remove();
+                    $("#input_jqGridPager").prepend("<text>Page  </text>");
+
+                    //Hide First and last on paging
+                    $("#first_jqGridPager").hide();
+                    $("#last_jqGridPager").hide();
+
+                    // Disabled input page number in jqgrid paging
+                    $("#input_jqGridPager").find("input").attr('disabled', 'disabled');
+
+                    /* Remove rm padding from selbox */
+                    $(".ui-pg-selbox").removeClass("rm-padding");
+
+                    //Hide records per page
+                    //$(".ui-pg-selbox").hide();
+
+                    if (data.rows.length == 0) {
+                    //if (data.records == 0) {
+                        var emptyText = '';
+                        emptyText += '<table class="ui-jqgrid-btable"><tr><td>&nbsp;&nbsp;&nbsp;</td><td><center><h2>No Records Found</h2><center></td></tr></table>';
+                        var grid = $(gridId);
+                        var container = grid.parents('.ui-jqgrid-view');
+                        container.find('.ui-jqgrid-bdiv').children("table").remove();
+                        container.find('.ui-jqgrid-bdiv').append(emptyText);
+                    }
+                },
+                jsonreader: {
+                    root: "rows", //array containing actual data
+                    page: "page", //current page
+                    total: "total", //total pages for the query
+                    records: "records", //total number of records
+                    cell: 'cell',
+                    repeatitems: false,
+                    id: "Id" //index of the column with the pk in it
+                },
+                ondblClickRow: function (rowid, iRow, iCol) {
+                    var url = '@Url.Action("Edit", "LetterEntry")';
+                    
+                    openWindow(url + '?id=' + rowid);
+                }
+            })
+            .navGrid("#jqGridPager", { edit: false, add: false, del: false, search: false });
+        }
+    });
+</script>

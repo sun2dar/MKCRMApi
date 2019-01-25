@@ -1,0 +1,327 @@
+﻿@model CCARE.Models.OrganizationClosure
+
+@{
+    ViewBag.Title = "Organization Closure: " + @Model.Name;
+    Layout = "~/Views/Shared/_LayoutEntity.cshtml";
+}
+
+@section title
+{
+    Organization Closure
+}
+
+@section entityLogo
+{
+    <img class="crm-logo" src="~/assets/images/ico_lrg_112.gif" />
+}
+
+@section formTitle
+{
+    <div class="text_title">
+        <h1>Information</h1>
+        Organization Closure: @Model.Name
+    </div>
+}
+
+@section navHeader
+{
+    <ul class="nav navbar-nav navbar-left">
+        @if (Session["RoleID"] != null)
+        {
+            string entity = ViewContext.Controller.ControllerContext.RouteData.Values["controller"].ToString();
+            Guid roleID = new Guid(Session["RoleID"].ToString());
+            bool checkButton = CCARE.App_Function.RoleNPrivilege.checkEntityButtonByRoleID(roleID, entity, "Write");
+            bool checkButton2 = CCARE.App_Function.RoleNPrivilege.checkEntityButtonByRoleID(roleID, entity, "Delete");
+
+            if (checkButton == true)
+            {
+                if (Model.StateCode == 0)
+                {
+                    <text>
+                        <li><a id="btn_save" href="#">Save</a></li>
+                        <li><a id="btn_savenclose" href="#">Save & Close</a></li>
+                        <li><a id="btn_savenopen" href="#">Save & New</a></li>
+                    </text>
+                }
+                <li>
+                    <a id="btn_changestatus" href="#" data-toggle="modal" data-target="#confirm-changestatus">
+                    @if (Model.StateCode == 0)
+                    {
+                        <text>Deactivate</text>
+                    }
+                    else
+                    {
+                        <text>Activate</text>
+                    }
+                    </a>
+                </li>
+            }
+
+            if (checkButton2 == true)
+            {
+            <text>
+                <li><a id="btn_delete" href="#" data-toggle="modal" data-target="#confirm-delete">Delete</a></li>
+            </text>
+            }
+        }
+    </ul>
+}
+
+@section footerStatus
+{
+    <div class="footer_text">
+        Status: @Model.StateLabel
+    </div>
+}
+
+@section sidebarMenu
+{
+    <li class="active"><a href="#">Information</a></li>
+}
+@Scripts.Render("~/bundles/jquerynBootstrap")
+<div class="modal fade" id="confirm-delete" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1>Confirm Deletion</h1>
+            </div>
+            <div class="modal-body input-lg">
+                The system will delete this record. This action cannot be undone, To continue click "Delete".
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                <a class="btn btn-danger btn-ok">Delete</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="confirm-changestatus" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1>Confirm @if (Model.StateCode == 0)
+                            {<text>Organization Closure Deactivation</text>}
+                            else
+                            {<text>Organization Closure Activation</text>}</h1>
+            </div>
+            <div class="modal-body input-lg confirm-change-status">
+                This action will change the status of selected Organization Closure to @if (Model.StateCode == 0)
+                                                                                       {<text>Inactive</text>}
+                                                                                       else
+                                                                                       {<text>Active</text>}. To continue click "Ok"
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                <a class="btn btn-danger btn-ok">Ok</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container-fluid">
+    <!-- tabs -->
+    <div class="row">
+        <div class="col-sm-12 panel panel-default panel_form_parent">
+        <div class="myContent_noTab">
+        @using (Html.BeginForm("Edit", "OrganizationClosure", FormMethod.Post, new { id = "form_organizationClosure" }))
+        {
+            @Html.Hidden("hidden_displayStatus", "", new { @id = "hidden_displayStatus" })
+            @Html.HiddenFor(x => x.OrganizationClosureID);
+                    
+            <!-- panel content -->
+            <div class="col-sm-12">
+
+                <!-- START title 1 -->
+                <div class="row form_text">
+                    <div class="panel panel-default panel_form_child">
+                        <div class="panel-heading">
+                            <label class="control-label sv-header"><strong>General</strong></label>
+                        </div>
+                        <br />
+                        <div class="panel-body">
+                            <div class="form-horizontal">
+                                
+                                <div class="row">
+                                    <div class="col-sm-12">                                        
+                                        <div class="form-group">
+                                            <label class="col-sm-2 control-label mandatory">Name</label>
+                                            <div class="col-sm-10">
+                                                @Html.TextBoxFor(x => x.Name, new { @class = "form-control" })
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-sm-6">                                                                              
+                                        <div class="form-group">
+                                            <label class="col-sm-4 control-label mandatory">Start Date</label>
+                                            <div class="col-sm-8">
+                                                <div class="input-group date">
+                                                    @Html.TextBoxFor(x => x.StartDate, new { Value = @Model.StartDate.Value.ToString("dd/MM/yyyy"), @class = "form-control" })
+                                                    <span class="input-group-addon">
+                                                        <i class="fa fa-calendar fa-lg"></i>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6">                                                                              
+                                        <div class="form-group">
+                                            <label class="col-sm-4 control-label mandatory">End Date</label>
+                                            <div class="col-sm-8">
+                                                <div class="input-group date">
+                                                    @Html.TextBoxFor(x => x.EndDate, new { Value = @Model.EndDate.Value.ToString("dd/MM/yyyy"), @class = "form-control" })
+                                                    <span class="input-group-addon">
+                                                        <i class="fa fa-calendar fa-lg"></i>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                                
+                    </div>
+                </div>
+                <!-- END title 1 -->        
+                <!-- START title 2 -->
+                <div class="row form_text">
+                    <div class="panel panel-default panel_form_child">
+                        <div class="panel-heading">
+                            <label class="control-label sv-header"><strong>Timestamp Information</strong></label>
+                        </div>
+                        <br />
+                        <div class="panel-body">
+                            <div class="form-horizontal">
+
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <label class="col-sm-4 control-label">Created By</label>
+                                            <div class="col-sm-8">
+                                                @Html.TextBoxFor(x => x.CreatedByName, new { @class = "form-control", @disabled = "disabled" })
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6">                                        
+                                        <div class="form-group">
+                                            <label class="col-sm-4 control-label">Created On</label>
+                                            <div class="col-sm-8">
+                                                @Html.TextBoxFor(x => x.CreatedOn, new { Value = @Model.CreatedOn.Value.ToString("dd/MM/yyyy HH:mm"), @class = "form-control", @disabled = "disabled" })
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-sm-6">                                        
+                                        <div class="form-group">
+                                            <label class="col-sm-4 control-label">Modified By</label>
+                                            <div class="col-sm-8">
+                                                @Html.TextBoxFor(x => x.ModifiedByName, new { @class = "form-control", @disabled = "disabled" })
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6">                                                                              
+                                        <div class="form-group">
+                                            <label class="col-sm-4 control-label">Modified On</label>
+                                            <div class="col-sm-8">
+                                                @Html.TextBoxFor(x => x.ModifiedOn, new { Value = @Model.ModifiedOn.Value.ToString("dd/MM/yyyy HH:mm"), @class = "form-control", @disabled = "disabled" })
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- END title 2 -->
+            </div>
+        }
+        </div>
+        </div>
+    </div>
+    <div id="response-modal"></div>
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        var entityName = '@ViewContext.RouteData.Values["Controller"].ToString()';
+       
+        var stateCode = '@(Model.StateCode)';
+        if (stateCode == 1) {
+            $("#form_organizationClosure select").attr('disabled', 'disabled');
+            $("#form_organizationClosure input").attr('readonly', true);
+        }
+
+        function validateForm(action, formName) {
+            if ($("#Name").val() == "") {
+                alert("@Resources.OrganizationClosure.OCMandatoryName");
+                return false;
+            } else if ($("#StartDate").val() == "") {
+                alert("@Resources.OrganizationClosure.OCMandatoryStartDate");
+                return false;
+            } else if ($("#EndDate").val() == "") {
+                alert("@Resources.OrganizationClosure.OCMandatoryEndDate");
+                return false;
+            }
+            $("#StartDate").val(js_yyyy_mm_dd_hh_mm_ss(stringToDate($("#StartDate").val(), "dd/mm/yyyy", "/")));
+            $("#EndDate").val(js_yyyy_mm_dd_hh_mm_ss(stringToDate($("#EndDate").val(), "dd/mm/yyyy", "/")));
+            formSubmit(action, formName);
+        }
+
+        $("#btn_save").click(function () {
+            validateForm("save", $("#form_organizationClosure"));
+        });
+
+        $("#btn_savenclose").click(function () {
+            validateForm("saveNClose", $("#form_organizationClosure"));
+        });
+
+        $("#btn_savenopen").click(function () {
+            validateForm("saveNOpen", $("#form_organizationClosure"));
+        });
+
+        $("#confirm-delete").on('show.bs.modal', function (e) {
+            //$("#StartDate").val(js_yyyy_mm_dd_hh_mm_ss(stringToDate($("#StartDate").val(), "dd/mm/yyyy", "/")));
+            //$("#EndDate").val(js_yyyy_mm_dd_hh_mm_ss(stringToDate($("#EndDate").val(), "dd/mm/yyyy", "/")));
+            $(this).find('.btn-ok').click(function () {
+                var postData = {
+                    _resolution: "",
+                    _description: ""
+                };
+                otherAction($("#form_organizationClosure"), "/OrganizationClosure/Delete", "delete", postData)
+            });
+        });
+
+        $("#confirm-changestatus").on('show.bs.modal', function (e) {
+            //$("#StartDate").val(js_yyyy_mm_dd_hh_mm_ss(stringToDate($("#StartDate").val(), "dd/mm/yyyy", "/")));
+            //$("#EndDate").val(js_yyyy_mm_dd_hh_mm_ss(stringToDate($("#EndDate").val(), "dd/mm/yyyy", "/")));
+            $(this).find('.btn-ok').click(function () {
+                var postData = {
+                    _resolution: "",
+                    _description: ""
+                };
+                otherAction($("#form_organizationClosure"), "/OrganizationClosure/ChangeStatus", "changestatus", postData)
+            });
+        });
+
+        $("#StartDate").datepicker({
+            format: 'dd/mm/yyyy',
+            todayHighlight: true,
+            orientation: "top auto",
+            autoclose: true
+        })
+
+        $("#EndDate").datepicker({
+            format: 'dd/mm/yyyy',
+            todayHighlight: true,
+            orientation: "top auto",
+            autoclose: true
+        })
+    });
+</script>

@@ -1,0 +1,210 @@
+﻿@{
+    Layout = null;    
+}
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="x-ua-compatible" content="IE=8" />
+    <link rel="shortcut icon" type="image/x-icon" href="../../assets/images/icon.ico" />
+    <object progid="ICAgentDLL.ICAgentLib" id="myobject" classid="clsid:17FB5553-FE09-4468-AFD7-557DF9F69234" style="display:none;"></object>
+    <title>@RenderSection("title", required:false)</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    @Styles.Render("~/maincss")
+    @Styles.Render("~/layoutEntitycss")
+    @Styles.Render("~/addOncss")
+    @Scripts.Render("~/bundles/modernizr")
+    @Scripts.Render("~/bundles/respondjs")
+    @Scripts.Render("~/bundles/jquerynBootstrap")
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/jqgrid")
+
+    @RenderSection("Stylesheets", required:false)
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+
+            $(".form-horizontal").find("input").addClass("rm-padding");
+            $(".form-horizontal").find("select").addClass("rm-padding");
+            $(".form-horizontal").find(":radio").removeClass("rm-padding");
+
+            window.refreshGrid = function refreshGrid() { /*Added By SL For prevent error reload*/
+                if ($("#gridTable2").length != 0) {
+                    var gridId = "#gridTable2";
+                    reloadGrid(gridId);
+                    $("#tableNoRecordFound").remove();
+                }
+                else if ($("#gridTable").length != 0) {
+                    var gridId = "#gridTable";
+                    reloadGrid(gridId);
+                }
+            }
+
+            var ParentPopup = {
+                reloadGridParent: function (gridId) {
+                    try {
+                        jQuery('#' + gridId).trigger('reloadGrid');
+                    } catch (e) {
+                        alert(e);
+                    }
+                }
+            };
+
+            @if(Session["RoleID"] != null){
+                string entity = "Request";
+                Guid roleID = new Guid(Session["RoleID"].ToString());
+                if (CCARE.App_Function.RoleNPrivilege.checkEntityButtonByRoleID(roleID, entity, "Create") == false)
+                {
+                    <text>
+                        $("#btn_create_request").hide();
+                    </text>
+                }
+            }
+
+            @if(Session["RoleID"] != null){
+                string entity = ViewContext.Controller.ControllerContext.RouteData.Values["controller"].ToString();
+                string actionPage = ViewContext.Controller.ControllerContext.RouteData.Values["action"].ToString();
+                Guid roleID = new Guid(Session["RoleID"].ToString());
+
+                List<CCARE.Models.Role.RootMenuSubmenuEntityAction> actionList = CCARE.App_Function.RoleNPrivilege.getActionButton(roleID, entity);
+                
+                if(actionPage == "Create"){}
+                else{
+                    if(actionList != null){
+                        foreach(CCARE.Models.Role.RootMenuSubmenuEntityAction action in actionList)
+                        {
+                            if ((action.name.Contains("Write") && action.check == false) || (action.name.Contains("Update") && action.check == false))
+                            {
+                                <text>
+                                    $("#btn_save").hide();
+                                    $("#btn_savenclose").hide();
+                                    $("#btn_assignOption").hide();
+                                    $("#btn_cancel").hide();
+                                    $("#btn_close").hide();
+                                    $("#btn_newtask").hide();
+                                    $("#btn_newletterentry").hide();
+                                    $("#btn_changestatus").hide();
+                                    $("#btn_disable").hide();
+                                    $("#btn_enable").hide();
+                                    $("#privilegeGroupButton").hide();
+                                    $("#btnInputNotes").attr("disabled", "disabled");
+                                    var content = $("#btn_attach").text();
+                                    $("#btn_attach").replaceWith("<div>" + content + "</div>");
+                                </text>
+                            }
+                            else if (action.name.Contains("Delete") && action.check == false)
+                            {
+                                <text>
+                                    $("#btn_delete").hide();
+                                    $(".btn_deleteDocument").hide();
+                                </text>
+                            }
+                            //If user has no privilege then hide list button
+                            else if(action.check == false){
+                                <text>
+                                    $('#btn_@(action.name)').hide();
+                                </text>
+                            }
+                        }
+                    }
+                }
+            }
+        });
+
+        //Perubahan workflow
+        //Get related select list from selected value
+        function GetSelectList(selectID, postData, url, maskingList, selectedKey) {
+            $(selectID).get(0).options.length = 0;
+            $(selectID).get(0).options[0] = new Option("Loading", "-1");
+
+            $.ajax({
+                type: "POST",
+                url: url,
+                data: JSON.stringify(postData),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (msg) {
+                    $(selectID).get(0).options.length = 0;
+                    $(selectID).get(0).options[0] = new Option(maskingList, "-1");
+
+                    $.each(msg, function (index, item) {
+                        if (item.key == selectedKey) {
+                            $(selectID).get(0).options[$(selectID).get(0).options.length] = new Option(item.value, item.key, true, true);
+                        }
+                        else {
+                            $(selectID).get(0).options[$(selectID).get(0).options.length] = new Option(item.value, item.key);
+                        }
+                    });
+                },
+                error: function (xhr, status, err) {
+                    $(selectID).get(0).options.length = 0;
+                    alert("Failed to load select list");
+                }
+            });
+        }
+    </script>
+</head>
+<body>
+
+
+
+<!-- Header -->
+<nav class="navbar navbar-inverse navbar-fixed-top header_color header_image" style="border-bottom:1px solid #6893CF;">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#">
+                @*<img style="max-width:100px; margin-top: -7px;"
+                 src="/assets/images/bcaCrm.gif">*@
+            </a>
+        </div>
+    
+        <div id="navbar" class="navbar-collapse collapse">
+            @RenderSection("navHeader", required:false)
+        </div>
+    </div>
+</nav>
+
+
+<!-- start content -->
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-2">
+            @RenderSection("entityLogo", required:false)
+        </div>
+        <div class="col-sm-8">
+            @RenderSection("formTitle", required:false)
+        </div>
+        <div class="col-sm-2">
+            @RenderSection("buttonRequest", required:false)
+        </div>
+    </div>
+    <div class="row main_panel">
+        <div class="col-sm-2 sidebar z-idx-0">
+            <ul class="nav nav-stacked nav-pills">
+                @RenderSection("sidebarMenu", required:false)
+            </ul>
+        </div>
+        <div class="col-sm-10 col-sm-offset-2 main" id="page_content">
+            @RenderBody()
+        </div>
+    </div>
+</div>
+<!-- end content -->
+
+<footer class="footer" >
+    <div class="container">
+    @*<p class="text-muted">Place sticky footer content here.</p>*@
+        @RenderSection("footerStatus", required:false);
+    </div>
+</footer>
+    @RenderSection("Javascripts", required:false)
+</body>
+</html>

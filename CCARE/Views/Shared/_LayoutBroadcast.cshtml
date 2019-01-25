@@ -1,0 +1,35 @@
+﻿@{
+    Layout = null;    
+}
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <meta http-equiv="x-ua-compatible" content="IE=8" />
+        <link rel="shortcut icon" type="image/x-icon" href="../../assets/images/icon.ico" />
+        <object progid="ICAgentDLL.ICAgentLib" id="myobject" classid="clsid:17FB5553-FE09-4468-AFD7-557DF9F69234" style="display:none;"></object>
+        <title>@RenderSection("title", required:false)</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+        @Styles.Render("~/maincss")
+        @Styles.Render("~/layoutEntitycss")
+        @Styles.Render("~/addOncss")
+        @Scripts.Render("~/bundles/modernizr")
+        @Scripts.Render("~/bundles/respondjs")
+        @Scripts.Render("~/bundles/jquerynBootstrap")
+        @Scripts.Render("~/bundles/jqueryval")
+        @Scripts.Render("~/bundles/jqgrid")
+
+        @RenderSection("Stylesheets", required:false)
+    </head>
+    <body>
+        <div class="container-fluid">
+            <div class="row main_panel">
+                <div class="col-sm-12 main">
+                    @RenderBody()
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

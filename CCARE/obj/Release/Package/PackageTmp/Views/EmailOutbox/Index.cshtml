@@ -1,0 +1,460 @@
+﻿@{
+    Layout = "~/Views/Shared/_LayoutEmail.cshtml";
+    var currentUser = Session["DomainUserName"].ToString();
+    var FullName = Session["Fullname"].ToString();
+    bool checkButtonSPV = false;
+    bool checkButtonWrite = false;
+    if (Session["RoleID"] != null)
+    {
+        string entity = ViewContext.Controller.ControllerContext.RouteData.Values["controller"].ToString();
+        Guid roleID = new Guid(Session["RoleID"].ToString());
+        checkButtonSPV = CCARE.App_Function.RoleNPrivilege.checkEntityButtonByRoleID(roleID, entity, "SPV");
+        checkButtonWrite = CCARE.App_Function.RoleNPrivilege.checkEntityButtonByRoleID(roleID, entity, "Write");
+    }
+}
+
+@section title
+{
+    Outbox
+}
+
+@section mainmenu{ Workplace }
+@section submenu{ KlikBCA Emails }
+@section menu{ Outbox }  
+
+<div class="row">
+    <div class="col-sm-12 content_col">
+        <div id="form_inquiry" class="form-horizontal">
+            
+            <div class="row">
+                
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label for="inputTujuan" class="control-label col-lg-4">Tujuan</label>
+                        <div class="col-lg-8">
+                            <input type="text" class="form-control" id="searchTujuan" value="">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label for="tglAwal" class="control-label col-lg-4">Tgl Awal</label>
+                        <div class="col-lg-8">
+                            <div class="input-group date">
+                                <input type="text" id="searchTglAwal" name="searchTglAwal" class="form-control" value="">
+                                <span class="input-group-addon">
+                                    <i class="fa fa-calendar fa-lg"></i>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label for="tglAkhir" class="control-label col-lg-4">Tgl Akhir</label>
+                        <div class="col-lg-8">
+                            <div class="input-group date">
+                                <input type="text" id="searchTglAkhir" name="searchTglAkhir" class="form-control" value="">
+                                <span class="input-group-addon">
+                                    <i class="fa fa-calendar fa-lg"></i>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="row">
+                <div class="col-sm-4"></div>
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <div class="col-lg-12">
+                            <button type="button" id="SearchOutbox" class="btn btn-primary btn-crm-layout">
+                                <span class="glyphicon glyphicon-search glyp-space" aria-hidden="true"></span>
+                                Search
+                            </button>
+                            <button type="button" id="ClearOutbox" class="btn btn-default btn-crm-layout">
+                                <span class="glyphicon glyphicon-erase glyp-space" aria-hidden="true"></span>
+                                Clear
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-4"></div>
+            </div>
+        
+            <!-- Table result -->
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="panel panel-default">
+                        <div class="panel-heading panel_heading">
+                            <label class="control-label sv-header">
+                                <strong>Search Result</strong>
+                            </label>
+                        </div>
+                        <div class="panel-body">
+                            <div class="divGrid">
+                                <table id="gridTable"></table>
+                                <div id="jqGridPager"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        
+            <div class="row hide" id="contentBerita">      
+
+                <div class="col-lg-12">
+                    <ol class="breadcrumb">
+                        <li class="active"><a href="#">Isi Berita</a></li>
+                    </ol>
+                </div>             
+
+                <div class="col-lg-12">
+                    <div class="form-group">
+                        <label for="inputPengirim" class="control-label col-lg-1">Pengirim</label>
+                        <div class="col-lg-3">
+                            <input type="text" class="form-control" id="inputPengirim" placeholder="">
+                        </div>       
+                        <label for="inputTanggal" class="control-label col-lg-1 col-lg-offset-2">Tanggal</label>
+                        <div class="col-lg-3">
+                            <input type="text" class="form-control" id="inputTanggal" placeholder="">
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-lg-12">
+                    <div class="form-group">
+                        <div class="">
+                            <label for="inputSubject" class="control-label col-lg-1">Subject</label>
+                        </div> 
+                        <div class="col-lg-3">
+                            <input type="text" class="form-control" id="inputSubject" placeholder="">
+                        </div>                            
+                        <label for="inputNoReferensi" class="control-label col-lg-1 col-lg-offset-2">No Referensi</label>
+                        <div class="col-lg-3">
+                            <input type="text" class="form-control" id="inputNoReferensi" placeholder="">
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-lg-12">
+                    <div class="form-group">
+                        <label for="inputIsiBerita" class="control-label col-lg-1">Isi Berita</label>
+                        <div class="col-lg-9">
+                            <textarea id="inputIsiBerita" placeholder="" class="form-control" style="height:200px; min-height:200px; max-height:200px;"></textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-12">
+                    <div class="form-group">
+                        @if (checkButtonWrite == true)
+                        { 
+                            <div class="col-lg-1 col-lg-offset-4">
+                                <button type="button" id="Reply" class="btn btn-primary btn-crm-layout">Update</button>
+                            </div>
+                            <div class="col-lg-1">
+                                <button type="button" id="Kirim" class="btn btn-primary btn-crm-layout">Send Update</button>
+                            </div>
+                        }
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        if (!Array.prototype.indexOf) {
+            Array.prototype.indexOf = function (val) {
+                return jQuery.inArray(val, this);
+            };
+        }
+        if (!Array.indexOf) {
+            Array.prototype.indexOf = function (obj, start) {
+                for (var i = (start || 0) ; i < this.length; i++) {
+                    if (this[i] == obj) {
+                        return i;
+                    }
+                }
+                return -1;
+            }
+        }
+        var gridId = "#gridTable";
+        var entityName = '@ViewContext.RouteData.Values["Controller"].ToString()';
+
+        var currentUser = "@currentUser";
+        var FullName = "@FullName";
+
+        var type = "@ViewBag.Type";
+
+        @{
+            var jss = new System.Web.Script.Serialization.JavaScriptSerializer();
+            var inboxModel = jss.Serialize(ViewBag.inboxModel);
+        }
+
+        $('.input-group.date').datepicker({
+            format: "dd/mm/yyyy",
+            todayBtn: "linked",
+            autoclose: true
+        });
+        function js_dd_mm_yyyy(xdate) {
+            now = new Date(xdate);
+            year = "" + now.getFullYear();
+            month = "" + (now.getMonth() + 1); if (month.length == 1) { month = "0" + month; }
+            day = "" + now.getDate(); if (day.length == 1) { day = "0" + day; }
+            hour = "" + now.getHours(); if (hour.length == 1) { hour = "0" + hour; }
+            minute = "" + now.getMinutes(); if (minute.length == 1) { minute = "0" + minute; }
+            second = "" + now.getSeconds(); if (second.length == 1) { second = "0" + second; }
+            //return day + "/" + month + "/" + year + " " + hour + ":" + minute + ":" + second;
+            return day + "/" + month + "/" + year;
+        }
+
+        $('#searchTglAkhir').val(js_dd_mm_yyyy(new Date()));
+        $('#searchTglAwal').val(js_dd_mm_yyyy(new Date()));
+
+        function outboxLoadGrid() {
+            var outboxModel = [
+                    { label: 'ID', name: 'Id', index: 'Id', key: true, width: 75, hidden: true },
+                    { label: 'No Referensi', name: 'NoReferensi', width: 200 },
+                    { label: 'Tujuan', name: 'Tujuan', width: 250 },
+                    { label: 'Subject', name: 'Subject', width: 250 },
+                    { label: 'Tanggal', name: 'Tanggal', width: 200 },
+                    { label: 'SPV Appv', name: 'SpvAppv', width: 200 },
+                    { label: 'Status Terakhir', name: 'StatusTerakhir', width: 200 },
+            ];
+
+            //------------- start test -------------
+
+            $.jgrid.gridUnload(gridId);
+            var colModels = outboxModel;
+            var customVal = {
+                height: 200,
+                rowNum: 20
+            }
+            var url = '@Url.Action("loadGrid", "EmailOutbox")';
+            var postData = {
+                _type: "outbox",
+                _tujuan: function () { return $("#searchTujuan").val(); },
+                _startDate: function () { return js_yyyy_mm_dd_hh_mm_ss(stringToDate($("#searchTglAwal").val(), 'dd/mm/yyyy', '/')); },
+                _endDate: function () { return js_yyyy_mm_dd_hh_mm_ss(stringToDate($("#searchTglAkhir").val(), 'dd/mm/yyyy', '/')); },
+            };
+
+            $(gridId).jqGrid({
+                url: url,
+                mtype: "POST",
+                datatype: "json",
+                postData: postData,
+                colModel: colModels,
+                shrinkToFit: false,
+                width: '80%',
+                autowidth: true,
+                height: '100%',
+                rowNum: customVal.rowNum,
+                rowList: [20, 30],
+                rownumbers: true,
+                pager: $("#jqGridPager"),
+                sortname: 'Id',
+                viewrecords: true,
+                sortorder: "desc",
+                loadComplete: function (data) {
+                    if (data.records == 0) {
+                        var emptyText = '';
+                        emptyText += '<table class="ui-jqgrid-btable"><tr><td>&nbsp;&nbsp;&nbsp;</td><td><center><h2>No Records Found</h2><center></td></tr></table>';
+                        var grid = $(gridId);
+                        var container = grid.parents('.ui-jqgrid-view');
+                        container.find('.ui-jqgrid-bdiv').children("table").remove();
+                        container.find('.ui-jqgrid-bdiv').append(emptyText);
+                    }
+
+                    /* Remove rm padding from selbox */
+                    $(".ui-pg-selbox").removeClass("rm-padding");
+                },
+                beforeRequest: function () {
+                },
+                jsonreader: {
+                    root: "rows", //array containing actual data
+                    page: "page", //current page
+                    total: "total", //total pages for the query
+                    records: "records", //total number of records
+                    cell: 'cell',
+                    repeatitems: false,
+                    id: "Id" //index of the column with the pk in it
+                },
+                ondblClickRow: function (rowid, iRow, iCol) {
+                    //openWindow(entityname + '/Edit?id=' + rowid);
+                },
+                onSelectRow: function (rowid, status, e) {
+                    $('#contentBerita').find('input, textarea').attr('readonly', 'readonly');
+                    $("#Kirim").attr("disabled", "disabled");
+                    $("#Reply").removeAttr("disabled");
+                    var checkHide = $("#contentBerita").hasClass("hide");
+                    if (checkHide) {
+                        $("#contentBerita").removeClass("hide");
+                    }
+                    var rowData = jQuery(this).getRowData(rowid);
+                    var postData = {
+                        _type: "inboxFindByPKID",
+                        _val: rowData["NoReferensi"],
+                        _filter: function () { return $("#inquiry_filter").val(); }
+                    };
+                    $.ajax({
+                        url: '@Url.Action("EmailDetail", "Email")',
+                        data: postData,
+                        type: 'POST',
+                        dataType: 'JSON',
+                        beforeSend: function (jqXHR, settings) {
+                        },
+                        success: function (data, textStatus, jqXHR) {
+                            if (data.Data.length > 0) {
+                                $("#inputPengirim").val(data.Data[0]["AgentId"]);
+                                $("#inputSubject").val(data.Data[0]["Subject"]);
+                                $("#inputNoReferensi").val(data.Data[0]["NoReferensi"]);
+                                $("#inputTanggal").val(data.Data[0]["Tanggal"]);
+                                $("#inputIsiBerita").val(data.Data[0]["Content"]);
+                            }
+                        },
+                        error: function (xhr, status, err) {
+                            alert("Error");
+                        }
+                    });
+                }
+            })
+            .navGrid("#jqGridPager", { edit: false, add: false, del: false, search: false });
+            //------------- end test -------------
+        }
+
+        // format(dd/mm/yyyy)
+        function compareDate() {
+            var str = document.getElementById("searchTglAwal").value;
+            var end = document.getElementById("searchTglAkhir").value;
+            var year = str.substring(6, 10);
+            var month = str.substring(3, 5);
+            var date = str.substring(0, 2);
+            var endYear = end.substring(6, 10);
+            var endMonth = end.substring(3, 5);
+            var endDate = end.substring(0, 2);
+            var startDate = new Date(year, month - 1, date);
+            var endDate = new Date(endYear, endMonth - 1, endDate);
+            if (startDate > endDate) {
+                //alert('start date should be less than end date');
+                var error = "Tgl Awal should not be greater than Tgl Akhir";
+                alert(error);
+
+                $('#searchTglAkhir').val(js_dd_mm_yyyy(new Date()));
+                $('#searchTglAwal').val(js_dd_mm_yyyy(new Date()));
+                return false;
+            }
+            else { return true; }
+        }
+
+        $("#SearchOutbox").click(function () {
+
+            var checkHide = $("#contentBerita").hasClass("hide");
+            if (!checkHide) {
+                $("#contentBerita").addClass("hide");
+            }
+
+
+            if (compareDate() == false) {
+                return false;
+            }
+            outboxLoadGrid();
+        });
+        $("#ClearOutbox").click(function () {
+            $("#searchTujuan").val("");
+            $('#searchTglAkhir').val(js_dd_mm_yyyy(new Date()));
+            $('#searchTglAwal').val(js_dd_mm_yyyy(new Date()));
+            var checkHide = $("#contentBerita").hasClass("hide");
+            if (!checkHide) {
+                $("#contentBerita").addClass("hide");
+            }
+            $.jgrid.gridUnload(gridId);
+        });
+
+        $("#Reply").click(function () {
+            $('#contentBerita').find('textarea').removeAttr("readonly");
+            //$("#inputPengirim").val(currentUser);
+            //$("#inputSubject").val();
+            //$("#inputNoReferensi").val("");
+            //$("#inputTanggal").val("");
+            //$("#inputIsiBerita").val("");
+
+            var myGrid = $('#gridTable'),
+                        selRowId = myGrid.jqGrid('getGridParam', 'selrow'),
+                        celValue = myGrid.jqGrid('getCell', selRowId, 'Tujuan');
+            //$("#inputTujuan").val(celValue);
+
+            $("#Kirim").removeAttr("disabled");
+            $(this).attr("disabled", "disabled");
+                      
+            
+        });
+
+        $("#Kirim").click(function () {
+            var listError = [];
+            var fields = $('#contentBerita').find('input, textarea');
+            $.each(fields, function (index, element) {
+                var dataType = $(element).data("type");
+                var checkLength = $(element).val().length;
+                if (dataType == "not-blank") {
+                    if (checkLength < 1) {
+                        var error = {};
+                        error["field"] = $(element).attr("id");
+                        error["message"] = "Please provide values before sending Email.";
+                        listError.push(error);
+                        return false;
+                    }
+                }
+            });
+            if (listError.length > 0) {
+                alert("Please provide values before sending Email.");
+                return false;
+            }
+
+            var postData = {
+                _type: "kirimEmail",
+                _val: "",
+                //_pengirim: $("#inputPengirim").val(),
+                _pengirim: $("#inputPengirim").val(),
+                _tujuan: $("#inputTujuan").val(),
+                _subject: $("#inputSubject").val(),
+                _isiBerita: $("#inputIsiBerita").val(),
+                _tanggal: $("#inputTanggal").val(),
+                _noReferensi: $("#inputNoReferensi").val()
+            };
+            $.ajax({
+                url: '@Url.Action("EmailSendDraft", "Email")',
+                data: postData,
+                type: 'POST',
+                dataType: 'JSON',
+                beforeSend: function (jqXHR, settings) {
+                },
+                success: function (data, textStatus, jqXHR) {
+                    if (data.Response == 1) {
+                        alert(data.Value.Message);
+                        //var checkHide = $("#contentBerita").hasClass("hide");
+                        //if (!checkHide) {
+                        //    $("#contentBerita").addClass("hide");
+                        //}
+                        $("#SearchOutbox").trigger("click");
+                    } else {
+                        alert("something wrong!");
+                    }
+                },
+                error: function (xhr, status, err) {
+                    alert("Error");
+                }
+            });
+            return false;
+        });
+
+    });
+</script>

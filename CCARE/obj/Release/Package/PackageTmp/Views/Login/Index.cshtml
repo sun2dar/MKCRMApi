@@ -1,0 +1,136 @@
+﻿<!--Created by : HTML-Sumardi, Javascript-Engga, Updated-kamashwanee, respond.js by gio-->
+@{    
+    Layout = null;
+}
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <meta http-equiv="x-ua-compatible" content="IE=8" />
+        <title>CRM Login</title>
+        <link href="@Url.Content("~/assets/css/Login.css")" rel="stylesheet" type="text/css" />
+        <link rel="shortcut icon" type="image/x-icon" href="../../assets/images/icon.ico" />
+        @Styles.Render("~/maincss")
+        @Scripts.Render("~/bundles/respondjs")
+        @Scripts.Render("~/bundles/jquerynBootstrap")
+        <script type="text/javascript">
+            $(document).ready(function () {
+                $(".form-horizontal").find("input").addClass("rm-padding");
+
+                $("#formLogin").submit(function () {
+
+                    var formName = $("#formLogin");
+                    var action = formName.attr("action");
+                    var domainName = $("#txtUser").val();
+                    var pass = $("#txtPass").val();
+
+                    var serializedForm = formName.serialize();
+
+                    if (domainName == null || domainName == '') {
+                        alert('@Resources.NotifResource.InvalidCredential');
+                        return false;
+                    }
+                    else if (pass == null || pass == '') {
+                        alert('@Resources.NotifResource.InvalidCredential');
+                        return false;
+                    }
+                    else {
+                        $.ajax({
+                            type: "POST",
+                            url: action,
+                            data: serializedForm,
+                            dataType: "json",
+                            success: function (data) {
+                                if (data.flag == true) {
+                                    window.location.replace(data.newUrl);
+                                }
+                                else {
+                                    alert(data.message);
+                                }
+                            }
+                        ,
+                        error: function (jqXHR, exception) {
+                            if (jqXHR.status === 0) {
+                                alert('Not connect.\n Verify Network.');
+                            } else if (jqXHR.status == 404) {
+                                alert('Requested page not found. [404]');
+                            } else if (jqXHR.status == 500) {
+                                alert('Internal Server Error [500].');
+                            } else if (exception === 'parsererror') {
+                                alert('Requested JSON parse failed.');
+                            } else if (exception === 'timeout') {
+                                alert('Time out error.');
+                            } else if (exception === 'abort') {
+                                alert('Ajax request aborted.');
+                            } else {
+                                alert('Uncaught Error.\n' + jqXHR.responseText);
+                            }
+                        }
+                    });
+                    return false;
+                }
+            });
+          });
+        </script>
+    </head>
+    <body>
+        <div id="bg">
+            <img src="@Url.Content("~/assets/images/Login/newbg.png")" alt="bg" />
+        </div>
+
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4"></div>
+                <div class="col-md-4">
+                    <div class="panel panel-default">
+                        <div class="panel-heading text-center">
+                            <a href="#" data-toggle="tooltip" data-placement="bottom" title="HaloBCA">
+                                <img src="@Url.Content("~/assets/images/crm.jpg")" alt="HaloBCA" class="border-radius" width="200" height="150" />
+                            </a>
+                        </div>
+                        <div class="panel-heading text-center">
+                            <img src="@Url.Content("~/assets/images/Login/BCACRM.png")" alt="bg2" width="300px"/>
+                        </div>
+                        
+                        <div class="panel-body">
+                            <div class="form-horizontal">
+                                @using (Html.BeginForm("doLogin", "Login", FormMethod.Post, new { id = "formLogin" }))
+                                {
+                                    <div class="form-group">
+                                        <label for="inputEmail3" class="col-sm-3 control-label">
+                                            User ID
+                                        </label>
+                                        <div class="col-sm-9">
+                                            <input type="text" class="form-control" id="txtUser" name="txtUser" placeholder="User ID" required />
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="inputPassword3" class="col-sm-3 control-label">
+                                            Password</label>
+                                        <div class="col-sm-9">
+                                            <input type="password" class="form-control" id="txtPass" name="txtPass" placeholder="Password" required />
+                                        </div>
+                                    </div>
+                                    <div class="form-group last">
+                                        <div class="col-sm-offset-3 col-sm-9">
+                                            <button type="submit" id="btn-login" class="btn btn-info btn-sm">
+                                                <span class="glyphicon glyphicon-log-in glyp-space" aria-hidden="true"></span>
+                                                Log In
+                                            </button>
+                                        </div>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+
+                        <div class="panel-footer text-right">
+                            @*<img src="@Url.Content("~/assets/images/Login/crm.jpg")" alt="bg3" width="100px"/>*@
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4"></div>
+            </div>
+        </div>
+    </body>
+</html>

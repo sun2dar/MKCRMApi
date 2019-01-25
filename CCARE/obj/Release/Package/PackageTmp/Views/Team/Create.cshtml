@@ -1,0 +1,233 @@
+﻿@model CCARE.Models.Team
+
+@{
+    ViewBag.Title = "Create";
+    if (Request.IsAjaxRequest())
+    {
+        Layout = null;
+    }
+    else
+    {
+        Layout = "~/Views/Shared/_LayoutEntity.cshtml";
+    }
+}
+
+@section title
+{
+    Team: New
+}
+
+@section entityLogo
+{
+    <img class="crm-logo" src="~/assets/images/ico_lrg_112.gif" />
+}
+
+@section formTitle
+{
+    <div class="text_title">
+        <h1>Information</h1>
+        Members
+    </div>
+}
+
+@section navHeader
+{
+    <ul class="nav navbar-nav navbar-left">
+        <li><a id="btn_save" href="#">Save</a></li>
+        <li><a id="btn_savenclose" href="#">Save & Close</a></li>
+        <li><a id="btn_savenopen" href="#">Save & New</a></li>
+    </ul>
+}
+
+@section footerStatus
+{
+    <div class="footer_text">Status: Owned</div>
+}
+
+@section sidebarMenu
+{
+    <li><a data-ajax="true" data-ajax-mode="replace" data-ajax-update="#page_content" href="#">Information</a></li>
+}
+
+
+<div class="container-fluid">
+    <!-- tabs -->
+    <div class="row">
+        <div class="col-sm-12 panel panel-default panel_form_parent">
+           <div class="myContent_noTab">
+                <div class="tab-content">
+                    <div class="tab-pane fade active in" id="general" aria-labelledby="general-tab">
+                    @using (Html.BeginForm("Create", "Team", FormMethod.Post, new { id = "form_team" }))
+                    {
+                        @Html.Hidden("hidden_displayStatus", "", new { @id = "hidden_displayStatus" })
+
+                        <div class="col-sm-12">
+                            <div class="row form_text">
+                                <div class="panel panel-default panel_form_child">
+                                    <div class="panel-heading">
+                                        <label class="control-label sv-header"><strong>General</strong></label>
+                                    </div>
+                                    <br />
+                                    <div class="panel-body">
+                                        <div class="form-horizontal">
+                                            <div class="row">
+                                                <div class="col-sm-6">                                        
+                                                    <div class="form-group">
+                                                        <label class="col-sm-4 control-label mandatory">Team Name</label>
+                                                        <div class="col-sm-8">
+                                                            @Html.TextBoxFor(x => x.Name, new { @class = "form-control" })
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-6">                                                                              
+                                                    <div class="form-group">
+                                                        <label class="col-sm-4 control-label">Business Unit</label>
+                                                        <div class="col-sm-8">
+                                                            <input type="hidden" id="BusinessUnitID" name="BusinessUnitID" class="form-control" data-val-notnull="1" data-key="Business Unit" style="margin-bottom:-50px;" />
+                                                            <div class="input-group" id="BusinessUnitID-Group">
+                                                                <input type="text" id="BusinessUnitName" name="BusinessUnitName" class="form-control" value="">
+                                                                <div tabindex="0" id="BusinessUnitName-label" class="form-control typeahead-label hide" style="border-top-left-radius:3px;border-bottom-left-radius:3px">
+                                                                </div>
+                                                                <div tabindex="0" class="input-group-addon btn" id="BusinessUnitName-popup">
+                                                                    <i class="fa fa-search"></i>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <br />
+                                            <div class="row">
+                                                <div class="col-sm-12">                                        
+                                                    <div class="form-group">
+                                                        <label class="col-sm-2 control-label mandatory">Description</label>
+                                                        <div class="col-sm-10">
+                                                            @Html.TextBoxFor(x => x.Description, new { @class = "form-control" })
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                    }
+                    </div>                
+                
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div id="response-modal"></div>
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {             
+        
+        $('#BusinessUnitName-popup').on('click', function (e) {
+            urlModalPopup = '@Url.Action("_popupContent", "Popup", new { type = "businessunit", _entity = "" })';
+            colModelsName = [
+                { label: 'ID', name: 'Id', index: 'Id', key: true, width: 75, hidden: true },
+                { label: 'Name', name: 'Name', width: 100 },
+                { label: 'IsDisabled', name: 'isDisabled', width: 100 }
+            ];
+            var id = $(this).parent().find('input:last').attr('id');
+            $('#' + id).trigger("blur");
+            e.preventDefault();
+        });
+
+        var businessUnitTypeahead = new PopupClass();
+        businessUnitTypeahead.setId("BusinessUnitName");
+        businessUnitTypeahead.setUrl('@Url.Action("BusinessUnit", "Popup")');
+        businessUnitTypeahead.setHiddenId("BusinessUnitID");
+        businessUnitTypeahead.init();
+
+        if ("@Model.BusinessUnitID".length > 0) {
+            popupCheckFirst("BusinessUnitName", "@Model.BusinessUnitID", "@Model.BusinessUnitName");
+        }
+
+        function formSubmit(type, formName, gridId) {
+            disabledId($("#btn_save"));
+            var action = formName.attr("action");
+            var serializedForm = formName.serialize();
+            //alert(action);
+            $.ajax({
+                type: "POST",
+                url: action,
+                data: serializedForm,
+                dataType: "json",
+                success: function (data) {
+                    if (data.flag == true) {
+
+                        if (window.opener) {
+                            window.opener.ParentPopup.reloadGridParent('gridTable');
+                        }
+
+                        if (type == "save") {
+                            window.location.replace(data.Message);
+                        }
+                        else if (type == "saveNClose") {
+                            window.close();
+                        }
+                        else if (type == "saveNOpen") {
+                            window.location.replace(data.urlNew);
+                        }
+                    }
+                    else {
+                        alert(data.Message);
+                        //setTimeout(function () { $(".divFormMessage").text(data.Message); }, 1000);
+                        $(".divFormMessage").text(data.Message);
+                    }
+                },
+                error: function (xhr, status, err) {
+                    alert("Action Failed");
+                    alert(xhr);
+                }
+            });
+            return false;
+        }
+
+        function validateForm(type, formName) {
+            var fields = $("form").find("[data-val-notnull='1']");
+            var listError = [];
+            $.each(fields, function (index, element) {
+                if ($(element).val() == "") {
+                    var error = {};
+                    error["key"] = $("#" + element.id).data("key");
+                    error["value"] = "You must provide value for " + error["key"] + ".";
+                    listError.push(error);
+                }
+            });
+            $.each(listError, function (index, element) {
+                alert(element["value"]);
+                return false;
+            });
+            if (listError.length > 0) {
+                return false;
+            }
+
+            function triggerReloadGrid() { /*replace for a special reason*/
+                if (window.opener) {
+                    window.opener.ParentPopup.reloadGridParent('gridTable');
+                }
+            }
+
+            formSubmit(type, formName);           
+        }
+
+        $("#btn_save").click(function (e) {
+            validateForm("save", $("#form_team"));
+        });
+
+        $("#btn_savenclose").click(function () {
+            validateForm("saveNClose", $("#form_team"));
+        });
+
+        $("#btn_savenopen").click(function () {
+            validateForm("saveNOpen", $("#form_team"));
+        });
+    });
+</script>

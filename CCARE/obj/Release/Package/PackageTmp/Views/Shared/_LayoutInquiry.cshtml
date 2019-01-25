@@ -1,0 +1,138 @@
+﻿@{
+    if (Request.IsAjaxRequest())
+    {
+        Layout = null;
+    }
+    else{
+        Layout = "~/Views/Shared/_Layout.cshtml";
+    }
+}
+
+<ul class="nav nav-stacked nav-pills">
+    <li class="titleBar font-crm4"><a>
+        @RenderSection("title", required: false)
+        <span class="sr-only">(current)</span></a></li>
+</ul>
+
+
+
+<div class="container-fluid" id="main-results">
+    <div class="row">
+        <div class="col-sm-12">
+            <!-- Content -->
+            <div class="container-fluid content_container">
+                <div class="row">
+                    <div class="col-sm-12 content_col">
+                        <ol class="breadcrumb">
+                            <li class="active">@RenderSection("mainmenu", required: false)</li>
+                            <li class="active">@RenderSection("submenu", required: false)</li>
+                            <li class="active"><a href="#">@RenderSection("menu", required: false)</a></li>
+                            <li class="active float-right" id="btn_new_link"><a id="btn_new" href="#"><span class="glyphicon glyphicon-pencil glyp-space" aria-hidden="true"></span>New</a></li>
+                            @RenderSection("extraButton", required: false)
+                        </ol>
+                        <form id="form_inquiry">
+                            @RenderBody()
+                        </form>
+                    </div>
+                </div>
+                <br />
+                <!-- Table result -->
+                <div class="row">
+                    <div class="col-sm-12" >
+                        <div class="panel panel-default">
+                            
+                            <div class="panel-heading panel_heading">
+                                <label class="control-label sv-header">
+                                    <strong>Search Result</strong>
+                                </label>
+                            </div>
+
+                            <div class="panel-body">
+                                <div class="divGrid">
+                                    <table id="gridTable"></table>
+                                    <div id="jqGridPager"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@RenderSection("ReportViewer", required: false)
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        var gridId = "#gridTable";
+        var entityName = '@ViewContext.RouteData.Values["Controller"].ToString()';
+        
+        $("#form_inquiry").find("input").addClass("rm-padding");
+        $("#form_inquiry").find("select").addClass("rm-padding");
+        $("#form_inquiry").find(":radio").removeClass("rm-padding");
+
+        $('#form_inquiry').submit(function (event) {
+            (event.preventDefault) ? event.preventDefault() : event.returnValue = false;
+            if (entityName == "Request") {
+                var postData = {
+                    _param: function () { return $("#inquiry_param").val(); },
+                    _val: function () { return $("#inquiry_val").val(); }
+                };
+                loadJqgrid(gridId, postData, entityName);
+            }
+            else {
+                var postData = {
+                    _param: function () { return $("#inquiry_param").val(); },
+                    _val: function () { return $("#inquiry_val").val(); },
+                    _filter: function () { return $("#inquiry_filter").val(); }
+                };
+                loadJqgrid(gridId, postData, entityName);
+            }
+        });
+
+        $("#inquiry_filter").change(function () {
+            var postData = {
+                _param: function () { return $("#inquiry_param").val(); },
+                _val: function () { return $("#inquiry_val").val(); },
+                _filter: function () { return $("#inquiry_filter").val(); }
+            };
+            loadJqgrid(gridId, postData, entityName);
+        });
+
+        $('#btn_new').click(function (e) {
+            e.preventDefault();
+            openWindow(entityName + '/Create');
+        });
+
+        if (['Request', 'Customer'].indexOf(entityName) == -1) {
+            $('#form_inquiry').trigger('submit');
+        }
+
+        window.refreshGrid = function refreshGrid() { /*Added By Ardi For Auto Reload Grid After Submission (20151207)*/
+            var gridId = "#gridTable";
+            reloadGrid(gridId);
+        }
+
+        @RenderSection("scriptExt", required:false)
+
+        @*@if(Session["RoleID"] != null){
+            string entity = ViewContext.Controller.ControllerContext.RouteData.Values["controller"].ToString();
+            Guid roleID = new Guid(Session["RoleID"].ToString());
+            bool checkButton = CCARE.App_Function.RoleNPrivilege.checkEntityButtonByRoleID(roleID, entity, "Write");
+
+            if(checkButton == false)
+            {
+                <text>
+                    $('#btn_new_link').hide();
+                    $('#btn_new').hide();
+                </text>
+            }
+        }*@
+
+        if (entityName == "Task") {
+            $('#btn_new_link').hide();
+            $('#btn_new').hide();
+        }
+    });
+</script>

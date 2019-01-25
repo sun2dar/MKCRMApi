@@ -1,0 +1,71 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-COMPATIBLE" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Hallo</title>
+
+    @Styles.Render("~/maincss")
+    @Styles.Render("~/layoutEntitycss")
+    @Styles.Render("~/addOncss")
+    @Scripts.Render("~/bundles/modernizr")
+    @Scripts.Render("~/bundles/respondjs")
+    @Scripts.Render("~/bundles/jquerynBootstrap")
+    <script src="~/assets/js/customJs.js"></script>
+</head>
+<body>
+
+<!-- Header -->
+<nav class="navbar navbar-inverse navbar-fixed-top header_color header_image" style="border-bottom:1px solid #6893CF;">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#">
+                @*<img style="max-width:100px; margin-top: -7px;"
+                 src="/assets/images/bcaCrm.gif">*@
+            </a>
+        </div>
+    
+        <div id="navbar" class="navbar-collapse collapse">
+            @RenderSection("navHeader")
+        </div>
+    </div>
+</nav>
+
+<!-- start content -->
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-2">
+            @RenderSection("entityLogo")
+        </div>
+        <div class="col-sm-10">
+            @RenderSection("formTitle")
+        </div>
+    </div>
+    <div class="row main_panel">
+        <div class="col-sm-12 main">
+            @RenderBody()
+        </div>
+    </div>
+</div>
+<!-- end content -->
+
+<footer class="footer" >
+    <div class="container">
+    @*<p class="text-muted">Place sticky footer content here.</p>*@
+        @RenderSection("footerStatus");
+    </div>
+</footer>
+
+</body>
+</html>

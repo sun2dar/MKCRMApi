@@ -1,0 +1,132 @@
+﻿/*/*Login styles*/
+/*#loginBody{
+	width:800px;
+	height:500px;
+	position:absolute;
+	left:50%;
+	top:50%;
+	margin-left:-400px;
+	margin-top:-250px;
+}
+
+html { 
+    background: url(../images/Login/fbg.jpg) no-repeat center center fixed; 
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+}
+
+
+.wrapper
+{
+    width:800px;
+	height:500px;
+	position:absolute;
+	left:20%;
+	top:50px;
+	overflow:hidden;
+}
+.textlogin
+{
+	font-size: 9pt;
+	font-family: tahoma;
+	width: 96%;
+	height: 19px;
+	border: 1px solid #6699CC;
+	padding-left:3px;
+}
+.labeltext
+{
+	font-family: Verdana;
+	font-size: 9pt;
+	color:#eef2f5;
+}
+.inputbutton
+{
+	border:0px;
+	background-image: url(../images/Login/bg_button.png);
+	width:105px;
+	height:35px;
+	repeat:no-repeat;
+	cursor:pointer;
+}*/
+
+.panel-default 
+{
+    margin: 150px 0px 0px 0px;
+    /*opacity: 0.9;*/
+    filter: alpha(opacity=90);
+
+}
+
+.form-group.last 
+{ 
+    margin-bottom:0px; 
+}
+
+#bg {
+      position: fixed; 
+      top: -50%; 
+      left: -50%; 
+      width: 200%; 
+      height: 200%;
+}
+
+#bg img {
+      position: absolute; 
+      top: 0; 
+      left: 0; 
+      right: 0; 
+      bottom: 0; 
+      margin: auto; 
+      min-width: 50%;
+      min-height: 50%;
+}
+
+.container
+{
+    display:table;
+    width: 100%;
+}
+
+.row
+{
+    height: 100%;
+    display: table-row;
+}
+
+.col-md-1, .col-md-2, .col-md-3, .col-md-4, .col-md-5, .col-md-6, .col-md-7, .col-md-8, .col-md-9, .col-md-10, .col-md-11, .col-md-12
+{
+    display: table-cell;
+}
+
+/* declared in ie.css */
+.border-radius 
+{
+    position: relative;
+    z-index: 0;
+    height: 100px;
+    width: 100px;
+    -webkit-border-radius: 50px;
+    -moz-border-radius: 50px;
+    border-radius: 50px;
+}
+
+#btn-login
+{
+    font-size: 12pt;
+    font-weight: bold;
+    background-color: #3b5998;
+}
+
+.rm-padding
+{
+    padding: 5px 0px 5px 10px !important;
+    vertical-align: middle;
+}
+
+.glyp-space
+{
+    margin-right: 10px;
+}

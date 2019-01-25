@@ -1,0 +1,221 @@
+﻿@model CCARE.Models.ReportView
+
+@{
+    ViewBag.Title = "Report: New";
+    Layout = "~/Views/Shared/_LayoutEntity.cshtml";
+    Model.Hyperlink = false;
+}
+
+@section title
+{
+    Report
+}
+
+@section entityLogo
+{
+    <img class="crm-logo" src="~/assets/images/ico_lrg_112.gif" />
+}
+
+@section formTitle
+{
+    <div class="text_title">
+        <h1>Information</h1>
+        Report Name: New
+    </div>
+}
+
+@section navHeader
+{
+    <ul class="nav navbar-nav navbar-left">
+        <li><a class="btn_information" id="btn_save" href="#">Save</a></li>
+        <li><a class="btn_information" id="btn_savenclose" href="#">Save & Close</a></li>
+    </ul>
+}
+
+@section footerStatus
+{
+    <div class="footer_text">
+        Status: New
+    </div>
+}
+
+@section sidebarMenu
+{
+    <li class="active"><a href="#">Information</a></li>
+}
+
+<div class="container-fluid">
+    <!-- tabs -->
+    <div class="row">
+        <div class="col-sm-12 panel panel-default panel_form_parent">
+        <div class="myContent_noTab">
+        @using (Html.BeginForm("Create", "ReportNew", FormMethod.Post, new { id = "form_report" }))
+        {
+            @Html.Hidden("hidden_displayStatus", "", new { @id = "hidden_displayStatus" })
+            @Html.HiddenFor(x => x.ID);
+                    
+            <!-- panel content -->
+            <div class="col-sm-12">
+
+                <!-- START title 1 -->
+                <div class="row form_text">
+                    <div class="panel panel-default panel_form_child">
+                        <div class="panel-heading">
+                            <label class="control-label"><strong>General</strong></label>
+                        </div>
+                        <div class="panel-body">
+                            <div class="form-horizontal crm-padding-top-10">
+                                <div class="row">
+                                    <div class="col-sm-12">                                        
+                                        <div class="form-group">
+                                            <label class="col-sm-2 control-label mandatory">Name</label>
+                                            <div class="col-sm-10">
+                                                @Html.TextBoxFor(x => x.Name, new { @class = "form-control" })
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-12">                                                                              
+                                        <div class="form-group">
+                                            <label class="col-sm-2 control-label mandatory">Description</label>
+                                            <div class="col-sm-10">
+                                                @Html.TextBoxFor(x => x.Description, new { @class = "form-control" })
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <label class="col-sm-4 control-label mandatory">Entity</label>
+                                            <div class="col-sm-4">
+                                                <select id="EntityID" name="EntityID" class="form-control"> 
+                                                @foreach (var y in ViewBag.ent)
+                                                {                                                    
+                                                   <option value="@y.ID">@y.Name</option>
+                                                }
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row" id="hyperlink_row">
+                                    <div class="col-sm-12">                                                                              
+                                        <div class="form-group">
+                                            <label class="col-sm-2 control-label">Hyperlink</label>
+                                            <div class="col-sm-10" style="margin-top:8px;">
+                                                <label style="font-size:10px;">@Html.CheckBoxFor(x => x.Hyperlink.Value, new { Name = "Hyperlink", @style = "margin-top: -2px;" })  <text>Show request's url on report</text></label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- END title 1 -->        
+                <!-- START title 2 -->
+                <div class="row form_text">
+                    <div class="panel panel-default panel_form_child">
+                        <div class="panel-heading">
+                            <label class="control-label"><strong>Timestamp Information</strong></label>
+                        </div>
+                        <div class="panel-body">
+                            <div class="form-horizontal crm-padding-top-10">                                
+                                <div class="row">                                   
+                                    <div class="col-sm-6">                                        
+                                        <div class="form-group">
+                                            <label class="col-sm-4 control-label">Created On</label>
+                                            <div class="col-sm-8">
+                                                @Html.TextBoxFor(x => x.CreatedOn, new { Value = "", @class = "form-control", @disabled = "disabled" })
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    @*<div class="col-sm-6">                                        
+                                        <div class="form-group">
+                                            <label class="col-sm-4 control-label">Modified By</label>
+                                            <div class="col-sm-8">
+                                                @Html.TextBoxFor(x => x.ModifiedByName, new { @class = "form-control", @disabled = "disabled" })
+                                            </div>
+                                        </div>
+                                    </div>*@
+                                    <div class="col-sm-6">                                                                              
+                                        <div class="form-group">
+                                            <label class="col-sm-4 control-label">Modified On</label>
+                                            <div class="col-sm-8">
+                                                @Html.TextBoxFor(x => x.ModifiedOn, new { Value = "", @class = "form-control", @disabled = "disabled" })
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- END title 2 -->
+            </div>
+        }
+        </div>
+        </div>
+    </div>
+    <div id="response-modal"></div>
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        var entityName = '@ViewContext.RouteData.Values["Controller"].ToString()';
+        $(".btn_information").show();
+       
+        function validateForm(action, formName) {
+            if ($("#ReportName").val() == "") {
+                alert("@Resources.MasterReport.NameMandatory");
+                return false;
+            }
+            else if ($("#Description").val() == "") {
+                alert("@Resources.MasterReport.DescriptionMandatory");
+                return false;
+            }
+            formSubmit(action, formName);
+            //$.ajax({
+            //    type: "POST",
+            //    url: "/ReportFilter/Create?hiddentype=datetype&hiddenname=CreatedOn&reportid=" +  + rowval + "&ReportID=" + ReportID,
+            //    dataType: "json",
+            //    success: function (data) {
+            //        alert("sukses");
+            //    },
+            //    error: function (xhr, status, err) {
+            //        alert("Error");
+            //    }
+            //});
+        }
+
+        $("#btn_save").click(function () {
+            validateForm("save", $("#form_report"));
+        });
+
+        $("#btn_savenclose").click(function () {
+            validateForm("saveNClose", $("#form_report"));
+        });
+
+        $("#btn_savenopen").click(function () {
+            validateForm("saveNOpen", $("#form_report"));
+        });
+
+        $("#hyperlink_row").hide();
+        if ($("#EntityID option:selected").text() == "Request") {
+            $("#hyperlink_row").show();
+        }
+        $("#EntityID").change(function () {
+            if ($("#EntityID option:selected").text() == "Request") {
+                $("#hyperlink_row").show();
+            }
+            else {
+                $("#hyperlink_row").hide();
+            }
+        });
+    });
+</script>

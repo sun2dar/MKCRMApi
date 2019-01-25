@@ -1,0 +1,367 @@
+﻿@model CCARE.Models.Request
+
+@{
+    Layout = "~/Views/Shared/_LayoutPrint.cshtml";
+}
+
+@section title
+{
+    @ViewBag.Title
+}
+
+@section navHeader
+{
+    <ul class="nav navbar-nav navbar-left">
+        <li><a id="btn_print" href="javascript:void(0)" onclick="javascript:window.print();">Print</a></li>
+        <li><a id="btn_close" href="javascript:void(0)" onclick="javascript:window.close();">Close</a></li>
+    </ul>
+}
+
+<div class="col-sm-12">
+                        
+    <div class="form-horizontal">
+        <label class="header-label"><strong>General</strong></label>
+    </div>
+    @Html.HiddenFor(x => x.RequestID)                        
+    <div class="row form_text">
+        <div class="panel panel_form_child">
+            <div class="panel-heading">
+                <label class="control-label"><strong>Overview</strong></label>
+            </div>
+            <div class="panel-body">
+                <div class="form-horizontal">
+                    <table width="100%" border="0">
+                        <tr>
+                            <td width="20%"><label class="print-label">CRM Request ID</label></td>
+                            <td width="30%"><label class="print-label form_text">@Model.TicketNumber</label></td>
+                            <td width="50%" colspan="2"></td>
+                        </tr>
+                        <tr>
+                            <td width="20%"><label class="print-label">For Customer</label></td>
+                            <td width="30%">
+                                @if (Model.ForCustomer.HasValue && Model.ForCustomer.Value)
+                                {
+                                    <label class="print-label form_text">Yes</label>
+                                } 
+                                else
+                                {
+                                    <label class="print-label form_text">No</label>
+                                }
+                            </td>
+                            <td width="50%" colspan="2"></td>
+                        </tr>
+                        <tr>
+                            <td width="20%"><label class="print-label">Customer</label></td>
+                            <td width="30%"><label class="print-label form_text">@Model.CustomerName</label></td>
+                            <td width="50%" colspan="2"><label class="print-label">Customer Product</label></td>
+                        </tr>
+                        <tr>
+                            <td width="20%"><label class="print-label">Non Customer</label></td>
+                            <td width="30%"><label class="print-label form_text">@Model.NonCustomerName</label></td>
+                            <td width="50%" colspan="2"></td>
+                        </tr>
+                        <tr>
+                            <td width="20%"><label class="print-label">No Kartu</label></td>
+                            <td width="30%"><label class="print-label form_text">@Model.CardNo</label></td>
+                            <td width="20%"><label class="print-label">No Rekening</label></td>
+                            <td width="30%"><label class="print-label form_text">@Model.AccountNo</label></td>
+                        </tr>
+                        <tr>
+                            <td width="20%"><label class="print-label">No Customer</label></td>
+                            <td width="30%"><label class="print-label form_text">@Model.CustomerNo</label></td>
+                            <td width="20%"><label class="print-label">No Loan</label></td>
+                            <td width="30%"><label class="print-label form_text">@Model.LoanNo</label></td>
+                        </tr>
+                        <tr>
+                            <td width="20%"><label class="print-label">Contact Method</label></td>
+                            <td width="30%"><label class="print-label form_text">@Model.ContactMethodLabel</label></td>
+                            <td width="20%"><label class="print-label">Customer Attitude</label></td>
+                            <td width="30%"><label class="print-label form_text">@Model.CustomerAttitudeLabel</label></td>
+                        </tr>
+                        <tr>
+                            <td width="20%"><label class="print-label">Interaction Count</label></td>
+                            <td width="30%"><label class="print-label form_text">@Model.InteractionCount</label></td>
+                            <td width="20%"><label class="print-label">Reference ID</label></td>
+                            <td width="30%"><label class="print-label form_text">@Model.RefTicketNumber</label></td>
+                        </tr>
+                        <tr>
+                            <td width="20%"><label class="print-label">Profession</label></td>
+                            <td width="30%"><label class="print-label form_text">@Model.Profession</label></td>
+                            <td width="20%"><label class="print-label">@Model.ExtraCardLabel</label></td>
+                            <td width="30%"><label class="print-label form_text">@Model.ExtraCardNumber</label></td>
+                        </tr>
+                    </table>
+                </div>
+            </div>                                
+        </div>
+    </div>                    
+    <div class="row form_text">
+        <div class="panel panel_form_child">
+            <div class="panel-heading">
+                <label class="control-label"><strong>Communication Address</strong></label>
+            </div>
+            <div class="panel-body">
+                <div class="form-horizontal">
+                    <table width="100%" border="0">
+                        <tr>
+                            <td width="20%"><label class="print-label">Address Type</label></td>
+                            <td width="30%"><label class="print-label form_text">@Model.LocationLabel</label></td>
+                            <td width="50%" colspan="2"></td>
+                        </tr>
+                        <tr>
+                            <td width="20%"><label class="print-label">Address 1</label></td>
+                            <td width="30%"><label class="print-label form_text">@Model.Address1</label></td>
+                            <td width="20%"><label class="print-label">City</label></td>
+                            <td width="30%"><label class="print-label form_text">@Model.City</label></td>
+                        </tr>
+                        <tr>
+                            <td width="20%"><label class="print-label">Address 2</label></td>
+                            <td width="30%"><label class="print-label form_text">@Model.Address2</label></td>
+                            <td width="20%"><label class="print-label">Zip</label></td>
+                            <td width="30%"><label class="print-label form_text">@Model.PostalCode</label></td>
+                        </tr>
+                        <tr>
+                            <td width="20%"><label class="print-label">Company Name</label></td>
+                            <td width="30%"><label class="print-label form_text">@Model.CompanyName</label></td>
+                            <td width="20%"><label class="print-label">Phone</label></td>
+                            <td width="30%"><label class="print-label form_text">@Model.CommunicationPhone</label></td>
+                        </tr>
+                        <tr>
+                            <td width="50%" colspan="2"></td>
+                            <td width="20%"><label class="print-label">Incoming Phone Number</label></td>
+                            <td width="30%"><label class="print-label form_text">@Model.IncomingPhoneNumber</label></td>
+                        </tr>
+                    </table>
+                </div>
+            </div>                                
+        </div>
+    </div>                   
+    <div class="row form_text">
+        <div class="panel panel_form_child">
+            <div class="panel-heading">
+                <label class="control-label"><strong>Service Level Information</strong></label>
+            </div>
+            <div class="panel-body">
+                <div class="form-horizontal">
+                    <table width="100%" border="0">
+                        <tr>
+                            <td width="20%"><label class="print-label">Category</label></td>
+                            <td width="30%"><label class="print-label form_text">@Model.CategoryName</label></td>
+                            <td width="20%"><label class="print-label">Product</label></td>
+                            <td width="30%"><label class="print-label form_text">@Model.ProductName</label></td>
+                        </tr>
+                        <tr>
+                            <td width="20%"><label class="print-label">Workgroup</label></td>
+                            <td width="30%"><label class="print-label form_text">@Model.WorkgroupName</label></td>
+                            <td width="20%"><label class="print-label">Priority</label></td>
+                            <td width="30%"><label class="print-label form_text">@Model.PriorityLabel</label></td>
+                        </tr>
+                        <tr>
+                            <td width="20%"><label class="print-label">Service Level</label></td>
+                            <td width="30%"><label class="print-label form_text">@Model.ServiceLevel</label></td>
+                            <td width="20%"><label class="print-label">Due Date</label></td>
+                            <td width="30%">
+                                @if (Model.DueDate.HasValue)
+                                {
+                                    <label class="print-label form_text">@Model.DueDate.Value.ToString("dd/MM/yyyy HH:mm")</label>
+                                }
+                            </td>
+                        </tr>
+                        <tr>
+                            <td width="20%"><label class="print-label">Status</label></td>
+                            <td width="30%"><label class="print-label form_text">@Model.StatusLabel</label></td>
+                            <td width="50%" colspan="2"></td>
+                        </tr>
+                    </table>
+                </div>
+            </div>                                
+        </div>
+    </div>                  
+    <div class="row form_text">
+        <div class="panel panel_form_child">
+            <div class="panel-heading">
+                <label class="control-label"><strong>Request Information</strong></label>
+            </div>
+            <div class="panel-body">
+                <div class="form-horizontal">
+                    <table width="100%" border="0">
+                        <tr>
+                            <td width="20%"><label class="print-label">Summary</label></td>
+                            <td width="30%"><label class="print-label form_text">@Model.Title</label></td>
+                            <td width="50%" colspan="2"></td>
+                        </tr>
+                        <tr>
+                            <td width="20%"><label class="print-label">Transaction Time</label></td>
+                            <td width="30%"><label class="print-label form_text">@Model.TransactionTime</label></td>
+                            <td width="50%" colspan="2"></td>
+                        </tr>
+                        <tr>
+                            <td width="20%"><label class="print-label">Currency</label></td>
+                            <td width="30%"><label class="print-label form_text">@Model.CurrencyLabel</label></td>
+                            <td width="20%"><label class="print-label">Transaction Amount</label></td>
+                            <td width="30%"><label class="print-label form_text">@Model.TransactionAmount_txt</label></td>
+                        </tr>
+                        <tr>
+                            <td width="20%"><label class="print-label">Channel</label></td>
+                            <td width="30%"><label class="print-label form_text">@Model.CaseOriginLabel</label></td>
+                            <td width="20%"><label class="print-label">WSID</label></td>
+                            <td width="30%"><label class="print-label form_text">@Model.WsIdName</label></td>
+                        </tr>
+                        <tr>
+                            <td width="20%"><label class="print-label">Location</label></td>
+                            <td width="30%"><label class="print-label form_text">@Model.Lokasi</label></td>
+                            <td width="20%"><label class="print-label">Branch</label></td>
+                            <td width="30%"><label class="print-label form_text">@Model.BranchName</label></td>
+                        </tr>
+                        <tr>
+                            <td width="20%"><label class="print-label">Action</label></td>
+                            <td width="30%"><label class="print-label form_text">@Model.CauseName</label></td>
+                            <td width="50%" colspan="2"></td>
+                        </tr>
+                        <tr>
+                            <td width="20%"><label class="print-label">Reason</label></td>
+                            <td width="30%"><label class="print-label form_text">@Model.Reason</label></td>
+                            <td width="50%" colspan="2"></td>
+                        </tr>
+                    </table>
+                </div>
+            </div>                                
+        </div>
+    </div>                  
+    <div class="row form_text">
+        <div class="panel panel_form_child">
+            <div class="panel-heading">
+                <label class="control-label"><strong>Assignment Information</strong></label>
+            </div>
+            <div class="panel-body">
+                <div class="form-horizontal">
+                    <table width="100%" border="0">
+                        <tr>
+                            <td width="20%"><label class="print-label">Agent</label></td>
+                            <td width="30%"><label class="print-label form_text">@Model.CreatedByName</label></td>
+                            <td width="20%"><label class="print-label">Modified By</label></td>
+                            <td width="30%"><label class="print-label form_text">@Model.ModifiedByName</label></td>
+                        </tr>
+                        <tr>
+                            <td width="20%"><label class="print-label">Owner</label></td>
+                            <td width="30%"><label class="print-label form_text">@Model.OwnerName</label></td>
+                            <td width="50%" colspan="2"></td>
+                        </tr>
+                    </table>
+                </div>
+            </div>                                
+        </div>
+    </div>                  
+    <div class="row form_text page-break">
+        <div class="panel panel_form_child">
+            <div class="panel-heading">
+                <label class="control-label"><strong>TimeStamp Information</strong></label>
+            </div>
+            <div class="panel-body">
+                <div class="form-horizontal">
+                    <table width="100%" border="0">
+                        <tr>
+                            <td width="20%"><label class="print-label">Created On</label></td>
+                            <td width="30%">
+                                @if (Model.CreatedOn.HasValue)
+                                {
+                                    <label class="print-label form_text">@Model.CreatedOn.Value.ToString("dd/MM/yyyy HH:mm")</label>
+                                }
+                            </td>
+                            <td width="20%"><label class="print-label">Modified On</label></td>
+                            <td width="30%">
+                                @if (Model.ModifiedOn.HasValue)
+                                {
+                                    <label class="print-label form_text">@Model.ModifiedOn.Value.ToString("dd/MM/yyyy HH:mm")</label>
+                                }
+                            </td>
+                        </tr>
+                        <tr>
+                            <td width="20%"><label class="print-label">Closed On</label></td>
+                            <td width="30%">
+                                @if (Model.ClosedOn.HasValue)
+                                {
+                                    <label class="print-label form_text">@Model.ClosedOn.Value.ToString("dd/MM/yyyy HH:mm")</label>
+                                }
+                            </td>
+                            <td width="20%"><label class="print-label">Reopened On</label></td>
+                            <td width="30%">
+                                @if (Model.ReopenedOn.HasValue)
+                                {
+                                    <label class="print-label form_text">@Model.ReopenedOn.Value.ToString("dd/MM/yyyy HH:mm")</label>
+                                }
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>                                
+        </div>
+    </div>
+         
+    @if (Model.Notes != null && Model.Notes.Count > 0)
+    {
+    <div class="form-horizontal">
+        <label class="header-label"><strong>Notes</strong></label>
+    </div>
+    <div class="row form_text">
+        <div class="panel panel_form_child">
+            <div class="panel-heading">
+                <label class="control-label"><strong>Notes</strong></label>
+            </div>       
+            @foreach (var note in Model.Notes.OrderByDescending(item => item.CreatedOn).ToList())
+            {     
+            <div class="panel-body">
+                <div class="form-horizontal">
+                    <table width="100%" border="0">
+                        <tr>
+                            <td width="100%" colspan="2">
+                                @if (note.IsDocument)
+                                {
+                                    <label class="print-label">Title: @Html.DisplayFor(y => note.Subject)</label>
+                                }
+                                else
+                                {
+                                    <label class="print-label">Title: Note created on @note.CreatedOn.Value.ToString("dd/MM/yyyy HH:mm") by @Html.DisplayFor(y => note.CreatedBy)</label>
+                                }
+                            </td>
+                        </tr>
+                        <tr>
+                            <td width="50%">
+                                @if (note.CreatedOn.HasValue)
+                                {
+                                    <label class="print-label">Note created on @note.CreatedOn.Value.ToString("dd/MM/yyyy HH:mm") by @Html.DisplayFor(y => note.CreatedBy)</label>
+                                }
+                            </td>
+                            <td width="50%">
+                                @if (note.ModifiedOn.HasValue)
+                                {
+                                    <label class="print-label form_text">Edited @note.ModifiedOn.Value.ToString("dd/MM/yyyy HH:mm") by @Html.DisplayFor(y => note.ModifiedBy)</label>
+                                }
+                            </td>
+                        </tr>
+                        @if (note.IsDocument)
+                        {
+                        <tr>
+                            <td width="100%" colspan="2">
+                                <label class="print-label form_text">@note.FileName (@note.FileSize.Value.ToString("#,###0") Byte(s))</label>
+                            </td>
+                        </tr>
+                        }
+                        @if (!string.IsNullOrEmpty(note.NoteText))
+                        {
+                        <tr>
+                            <td width="100%" colspan="2">
+                                <label class="print-label form_text">@Html.DisplayWithBreaksFor(y => note.NoteText)</label>
+                            </td>
+                        </tr>
+                        }
+                    </table>
+                </div>
+            </div>
+            <div class="panel-heading notes-gap"></div>
+            }
+        </div>
+    </div>
+    }
+
+</div>

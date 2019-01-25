@@ -1,0 +1,381 @@
+﻿@model CCARE.Models.CorporateCard
+
+<div class="panel-body" id="messagebox"></div>
+
+@if (ViewBag.searchResultsCount > 0)
+{
+    if (ViewBag.StatusChange != "")
+    {
+        <script type="text/javascript">ChangeStatusMessageBox("#messagebox", "@ViewBag.StatusChange", "@ViewBag.RequestId", "@ViewBag.TicketNumber");</script>
+    }
+    <div class="row form_text">
+        <div class="panel panel-default panel_form_child">
+
+            <div class="col-sm-offset-10 btn-change-status">
+                <input class="btn btn-primary btn-crm-layout" type="button" value="Change Status" id="changeStatusBtn" />
+            </div>
+
+            <div class="panel panel-default panel_form_child" id="statusDiv">
+                <div class="panel-heading" id="statusHeaderDiv">
+                    <label class="control-label sv-header">
+                        <strong>Change Status</strong>
+                    </label>
+                    <a class="pull-right" data-toggle="collapse" href="#collapseStatusDiv" aria-expanded="true" aria-controls="collapseStatusDiv">
+                        <i class="fa fa-angle-double-up fa-lg"></i>
+                    </a>          
+                </div>
+
+                <div id="collapseStatusDiv" class="panel-collapse collapse in" aria-labelledby="headingOne">
+                    <label class="control-label"><strong></strong></label>
+                    <div class="row form-horizontal">
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">Status</label>
+                                <div class="col-sm-2">
+                                    <select id="statusDdl" name="statusDdl" class="form-control">
+                                        <option value="">-- Select Status --</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row form-horizontal">
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">Change Status To</label>
+                                <div class="col-sm-2">
+                                    <select id="nextStatusDdl" name="nextStatusDdl" class="form-control" disabled>
+                                        <option value="">-- Select Status --</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row form-horizontal">
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">Change Reason</label>
+                                <div class="col-sm-4">
+                                    <select id="reasonDdl" name="reasonDdl" class="form-control">
+                                        <option value="">-- Select Reason --</option>
+                                        @foreach (var reason in ViewBag.DDL_Reason)
+                                        {
+                                            <option value="@reason.Value">@reason.Text</option>
+                                        }
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                                <div class="col-sm-offset-2">
+                                    <input class="btn btn-primary btn-crm-layout" type="button" value="Kirim" id="sendBtn" />
+                                    <input class="btn btn-default btn-crm-layout" type="button" value="Batal" id="cancelBtn" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="panel-heading" id="contentHeaderDiv">
+                <label class="control-label"><strong>Status</strong></label>
+                <a class="pull-right" data-toggle="collapse" href="#collapseContentDiv" aria-expanded="true" aria-controls="collapseContentDiv">
+                    <i class="fa fa-angle-double-up fa-lg"></i>
+                </a>
+            </div>
+
+            <div id="collapseContentDiv" class="panel-collapse collapse in" aria-labelledby="headingOne">
+                <div class="panel-body">
+                    <div class="form-horizontal">
+                        <div class="row">
+                            <div class="col-sm-6">                                        
+                                <div class="form-group">
+                                    <label class="col-sm-4 control-label">Nomor Kartu</label>
+                                    <div class="col-sm-8">
+                                        @Html.TextBoxFor(x => x.CardNumber, new { @class = "form-control" })
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-6">                                                                              
+                                <div class="form-group">
+                                    <label class="col-sm-4 control-label">Nomor Rekening</label>
+                                    <div class="col-sm-8">
+                                        @Html.TextBoxFor(x => x.AccountNumber, new { @class = "form-control" })
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-6">                                                                              
+                                <div class="form-group">
+                                    <label class="col-sm-4 control-label">Nama Perusahaan</label>
+                                    <div class="col-sm-8">
+                                        @Html.TextBoxFor(x => x.CompanyName, new { @class = "form-control" })
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-6">                                                                              
+                                <div class="form-group">
+                                    <label class="col-sm-4 control-label">Jenis Kartu</label>
+                                    <div class="col-sm-8">
+                                        @Html.TextBoxFor(x => x.CardType, new { @class = "form-control" })
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-6">                                                                              
+                                <div class="form-group">
+                                    <label class="col-sm-4 control-label">Nama Emboss Kartu</label>
+                                    <div class="col-sm-8">
+                                        @Html.TextBoxFor(x => x.EmbossName, new { @class = "form-control" })
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-6">                                                                              
+                                <div class="form-group">
+                                    <label class="col-sm-4 control-label">Limit</label>
+                                    <div class="col-sm-8">
+                                        @Html.TextBoxFor(x => x.Limit, new { @class = "form-control" })
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-6">                                                                              
+                                <div class="form-group">
+                                    <label class="col-sm-4 control-label">Exp. Limit Kartu</label>
+                                    <div class="col-sm-8">
+                                        <input type="text" class="form-control" value="@(Model.LimitExpiredDate == null ? "-" : String.Format("{0:dd/MM/yyyy}", Model.LimitExpiredDate))">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-6">                                                                              
+                                <div class="form-group">
+                                    <label class="col-sm-4 control-label">Nama Pemegang Kartu</label>
+                                    <div class="col-sm-8">
+                                        @Html.TextBoxFor(x => x.CardHolder, new { @class = "form-control" })
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-6">                                                                              
+                                <div class="form-group">
+                                    <label class="col-sm-4 control-label">Nomor Handphone</label>
+                                    <div class="col-sm-8">
+                                        @Html.TextBoxFor(x => x.Phone, new { @class = "form-control" })
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-6">                                                                              
+                                <div class="form-group">
+                                    <label class="col-sm-4 control-label">Nomor Identitas</label>
+                                    <div class="col-sm-8">
+                                        @Html.TextBoxFor(x => x.IdNumber, new { @class = "form-control" })
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-6">                                                                              
+                                <div class="form-group">
+                                    <label class="col-sm-4 control-label">Alamat Email</label>
+                                    <div class="col-sm-8">
+                                        @Html.TextBoxFor(x => x.Email, new { @class = "form-control" })
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-6">                                                                              
+                                <div class="form-group">
+                                    <label class="col-sm-4 control-label">Kode Pengenal</label>
+                                    <div class="col-sm-8">
+                                        @Html.TextBoxFor(x => x.UniqueKey, new { @class = "form-control" })
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-6">                                                                              
+                                <div class="form-group">
+                                    <label class="col-sm-4 control-label">Status Kartu</label>
+                                    <div class="col-sm-8">
+                                        @Html.TextBoxFor(x => x.StatusLabel, new { @class = "form-control" })
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-6">                                                                              
+                                <div class="form-group">
+                                    <label class="col-sm-4 control-label">Tipe Berkala</label>
+                                    <div class="col-sm-8">
+                                        @Html.TextBoxFor(x => x.RecurringType, new { @class = "form-control" })
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-6">                                                                              
+                                <div class="form-group">
+                                    <label class="col-sm-4 control-label">Periode Berkala</label>
+                                    <div class="col-sm-8">
+                                        @Html.TextBoxFor(x => x.RecurringPeriod, new { @class = "form-control" })
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+        
+    <script src="~/assets/js/changeStatusJs.js"></script>
+    <script type="text/javascript">
+        var entityType = 18;
+        var statusList = { 1: "@Model.Status" };
+        var statusLabelList = { 1: "@Model.StatusLabel" };
+
+        var limit = $("#Limit").val();
+        $("#Limit").val(LimitCardFormat(limit));
+
+        var cardNo = "@Model.CardNumber";
+
+        var params = "_type=card";
+        params += "&_cardNo=" + cardNo;
+
+        var statusType;
+        var statusTypeLabel;
+        var oldStatus;
+        var newStatus;
+        var oldStatusLabel;
+        var newStatusLabel;
+        var reason;
+
+        var isBlockStatusDifferent;
+
+        $(document).ready(function () {
+            initHideStatus();
+            isBlockStatusDifferent = false;
+        });
+
+        $("#changeStatusBtn").click(function () {
+            if (isBlockStatusDifferent) { 
+                ddlLabelChangeEmpty();
+                ChangeStatusException("#messagebox", ExceptionBlockVsTandem);
+            } else {
+                getDDlLabel(entityType, statusList);
+                showAll();
+            }
+        });
+
+        $("#statusDdl").change(function () {
+            statusType = $(this).val();
+            var currentStatus = getValueByKey(statusList, statusType);
+            ddlLabelChange(entityType, statusType, currentStatus);
+        });
+
+        $("#nextStatusDdl").change(function () {
+            ddlStatusChange();
+        });
+
+        $("#reasonDdl").change(function () {
+            ddlReasonChange();
+        });
+
+        $("#cancelBtn").click(function () {
+            hideAll();
+        });
+
+        $("#sendBtn").click(function () {
+            statusType = $("#statusDdl").val();
+            reason = $("#reasonDdl :selected").val();
+            if (statusType == '') {
+                alert('Please select a status');
+            } else {
+                statusTypeLabel = $("#statusDdl :selected").text();
+                oldStatusLabel = getValueByKey(statusLabelList, statusType);
+                newStatusLabel = $("#nextStatusDdl :selected").text();
+                if (reason == '') {
+                    alert('Please select a reason');
+                } else {
+                    if (confirm('Are you sure you want to change status from ' + oldStatusLabel + ' to ' + newStatusLabel + ' ?')) {
+                        cardNo = "@Model.CardNumber";
+                        oldStatus = getValueByKey(statusList, statusType);
+                        newStatus = $("#nextStatusDdl").val();
+                        changeStatusViaInquiry();
+                    }
+                }
+            }
+        });
+
+        function changeStatusViaInquiry() {
+            var change;
+            var statusresult;
+
+            change = changeStatus();
+            if (change.status) {
+                statusresult = StatusChangeSuccessViaInquiry;
+            } else {
+                statusresult = StatusChangeFail;
+            }
+
+            writeLog(entityType, statusTypeLabel, oldStatusLabel, newStatusLabel, statusresult, "", "");
+            $("#partialViewDetail").load("/CorporateCard/CorporateCardPartial?" + params + "&statusChange=" + statusresult, " #partialView");
+        }
+        
+        function changeStatus() {
+            var change;
+            switch (statusType) {
+                case '1':
+                    change = BlockCorporateCard(cardNo, newStatus, reason);
+                    break;
+            }
+            return change;
+        }
+
+        function BlockCorporateCard(cardNo, newStatus, reason) {
+            var change = { status: false, updatetime: "", updatedbyid: "", updatedbyname: "" };
+            $.ajax({
+                url: "/CorporateCard/BlockCorporateCard",
+                data: {
+                    _cardNo: cardNo,
+                    _blockType: newStatus,
+                    _reasonCode: reason
+                },
+                dataType: 'json',
+                async: false,
+                success: function (data) {
+                    if (data.Status == 1) {
+                        change.status = true;
+                        change.updatetime = data.UpdateTime;
+                        change.updatedbyid = data.UpdatedBy.ID;
+                        change.updatedbyname = data.UpdatedBy.Name;
+                    }
+                }
+            });
+            return change;
+        }
+    </script>
+}
+else
+{ 
+    <script type="text/javascript">$("#messagebox").html(MessageText('error', 'No Record Found'));</script>
+}

@@ -1,0 +1,224 @@
+﻿
+@{
+    ViewBag.Title = "Members";
+    Layout = "~/Views/Team/_LayoutTeam.cshtml";
+    bool checkButtonDel = false;
+    bool checkButtonAdd = false;
+    if (Session["RoleID"] != null)
+    {
+        //string entity = ViewContext.Controller.ControllerContext.RouteData.Values["controller"].ToString();
+        string entity = "Team";
+        Guid roleID = new Guid(Session["RoleID"].ToString());
+        checkButtonDel = CCARE.App_Function.RoleNPrivilege.checkEntityButtonByRoleID(roleID, entity, "Delete");
+        checkButtonAdd = CCARE.App_Function.RoleNPrivilege.checkEntityButtonByRoleID(roleID, entity, "Write");
+    }
+}
+
+
+
+<div class="modal fade" id="confirm-delete" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1>Confirm Deletion</h1>
+            </div>
+            <div class="modal-body input-lg">
+                The system will delete this record. This action cannot be undone, To continue click "Delete".
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                <a id="btn_confirm_del" class="btn btn-danger btn-ok">Delete</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row" style="padding-top:0px;">
+    <div class="col-sm-12">
+        <!-- Content -->
+        <div class="container-fluid content_container">            
+            <br />
+            <!-- Table result -->
+            <div class="row">
+                <div class="col-sm-12" >
+                    
+                    <div class="col-sm-offset-8 col-sm-4">   
+                        @if (checkButtonAdd == true)
+                        {  
+                        <button id="addTeamMembers" class="btn btn-primary btn-sm col-sm-6" type="button">
+                            <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+                            &nbsp;&nbsp;&nbsp;&nbsp;Add Members
+                        </button>
+                        }
+                          
+                        @if (checkButtonDel == true)
+                        {
+                        <button id="delTeamMembers" data-toggle="modal" class="btn btn-danger btn-sm col-sm-6" type="button">
+                            <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+                            &nbsp;&nbsp;&nbsp;&nbsp;Del
+                        </button>
+                        }
+                    </div>   
+                    <div class="clearfix"></div>
+                    <br />
+                    <div class="panel panel-default">
+                        <div class="divGrid">
+                            <table id="gridTable"></table>
+                            <div id="jqGridPager"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <br />
+            @*}*@
+            
+            <div class="row">
+                <div class="col-sm-12 content_col">
+                </div>
+            </div>
+            <br />
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        var gridId = "#gridTable";
+        var entityName = '@ViewContext.RouteData.Values["Controller"].ToString()';             
+
+        function teamMemberLoadGrid() {
+            
+            var teamMemberModel = [
+                    { label: 'ID', name: 'Id', index: 'Id', key: true, width: 75, hidden: false },
+                    { label: 'Full Name', name: 'FullName', width: 200 },
+                    { label: 'Business Unit', name: 'BusinessUnit', width: 250 },
+                    { label: 'Title', name: 'Title', width: 200 },
+                    { label: 'Status', name: 'UserStatus', width: 200 }
+            ];
+
+            //------------- start test -------------
+
+            $.jgrid.gridUnload(gridId);
+            var colModels = teamMemberModel;
+            var customVal = {
+                height: 400,
+                rowNum: 20
+            }
+            var url = '@Url.Action("loadGrid", "TeamMember", new { type = "teamMember", _entity = "" })';
+            var postData = {
+                _filter: $("#inquiry_team").val(),
+                _teamId: "@ViewBag.teamId"
+            };
+
+            $(gridId).jqGrid({
+                url: url,
+                mtype: "POST",
+                datatype: "json",
+                postData: postData,
+                colModel: colModels,
+                shrinkToFit: false,
+                width: '100%',
+                autowidth: true,
+                height: '100%',
+                rowNum: customVal.rowNum,
+                rowList: [20, 30],
+                rownumbers: true,
+                pager: $("#jqGridPager"),
+                sortname: 'Id',
+                viewrecords: true,
+                sortorder: "desc",
+                loadComplete: function (data) {
+                    //Remove total page on footer
+                    $("#sp_1_jqGridPager").hide();
+                    $("#input_jqGridPager").contents().filter(function () { return this.nodeType == 3; }).remove();
+                    $("#input_jqGridPager").prepend("<text>Page  </text>");
+
+                    //Hide First and last on paging
+                    $("#first_jqGridPager").hide();
+                    $("#last_jqGridPager").hide();
+
+                    // Disabled input page number in jqgrid paging
+                    $("#input_jqGridPager").find("input").attr('disabled', 'disabled');
+
+                    /* Remove rm padding from selbox */
+                    $(".ui-pg-selbox").removeClass("rm-padding");
+
+                    //Hide records per page
+                    //$(".ui-pg-selbox").hide();
+
+                    if (data.rows.length == 0) {
+                    //if (data.records == 0) {
+                        var emptyText = '';
+                        emptyText += '<table class="ui-jqgrid-btable"><tr><td>&nbsp;&nbsp;&nbsp;</td><td><center><h2>No Records Found</h2><center></td></tr></table>';
+                        var grid = $(gridId);
+                        var container = grid.parents('.ui-jqgrid-view');
+                        container.find('.ui-jqgrid-bdiv').children("table").remove();
+                        container.find('.ui-jqgrid-bdiv').append(emptyText);
+                    }
+                },
+                beforeRequest: function () {
+                },
+                jsonreader: {
+                    root: "rows", //array containing actual data
+                    page: "page", //current page
+                    total: "total", //total pages for the query
+                    records: "records", //total number of records
+                    cell: 'cell',
+                    repeatitems: false,
+                    id: "Id" //index of the column with the pk in it
+                },
+                ondblClickRow: function (rowid, iRow, iCol) {
+                    //openWindow("Team" + '/Edit?id=' + rowid);
+                },
+                onSelectRow: function (rowid, status, e) {
+                },
+                multiselect: true,
+                multiboxonly: true,
+            }).navGrid("#jqGridPager", { edit: false, add: false, del: false, search: false });
+        }
+
+        teamMemberLoadGrid();
+
+        $("#delTeamMembers").click(function () {
+            var selRowIds = $(gridId).jqGrid('getGridParam', 'selarrrow'),
+                celValues = $(gridId).jqGrid('getCell', selRowIds, 'Id');            
+            var str = JSON.stringify(selRowIds);
+            var listId = JSON.parse(str);
+            var listParam = [];
+            $.each(listId, function (index, value) {
+                var param = {};
+                param.TeamMembershipID = value;
+                listParam.push(param);
+            });
+
+            if (listParam.length == 0) {
+                alert("Please select row first...");
+                return false;
+            }
+
+            $('#confirm-delete').modal({ backdrop: 'static', keyboard: false })
+                .one('click', '#btn_confirm_del', function () {
+                    var url = '@Url.Action("formDeleteTeamMembers", "TeamMember")';
+                    $.ajax({
+                        type: "POST",
+                        url: url,
+                        data: { data: JSON.stringify(listParam) },
+                        dataType: "JSON",
+                        beforeSend: function (jqXHR, settings) {
+                        },
+                        success: function (data) {
+                            jQuery("#gridTable").trigger("reloadGrid");
+                        },
+                        error: function (xhr, status, err) {
+                            alert("Error");
+                        }
+                    });
+                    $('#confirm-delete').modal('hide')
+                });
+            // .one() is NOT a typo of .on()
+            
+            
+        });
+        
+    });
+</script>

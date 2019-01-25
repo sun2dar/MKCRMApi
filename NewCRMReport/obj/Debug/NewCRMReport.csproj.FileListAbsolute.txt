@@ -1,0 +1,49 @@
+D:\Mitra Kreasindo\Work\BCA\NEW CRM\rewrite\Code\CCARE\NewCRMReport\obj\Debug\NewCRMReport.csprojResolveAssemblyReference.cache
+D:\Mitra Kreasindo\Work\BCA\NEW CRM\rewrite\Code\CCARE\NewCRMReport\bin\NewCRMReport.dll
+D:\Mitra Kreasindo\Work\BCA\NEW CRM\rewrite\Code\CCARE\NewCRMReport\bin\NewCRMReport.pdb
+D:\Mitra Kreasindo\Work\BCA\NEW CRM\rewrite\Code\CCARE\NewCRMReport\bin\EntityFramework.dll
+D:\Mitra Kreasindo\Work\BCA\NEW CRM\rewrite\Code\CCARE\NewCRMReport\bin\NLog.dll
+D:\Mitra Kreasindo\Work\BCA\NEW CRM\rewrite\Code\CCARE\NewCRMReport\bin\System.Linq.Dynamic.dll
+D:\Mitra Kreasindo\Work\BCA\NEW CRM\rewrite\Code\CCARE\NewCRMReport\bin\EntityFramework.xml
+D:\Mitra Kreasindo\Work\BCA\NEW CRM\rewrite\Code\CCARE\NewCRMReport\obj\Debug\NewCRMReport.dll
+D:\Mitra Kreasindo\Work\BCA\NEW CRM\rewrite\Code\CCARE\NewCRMReport\obj\Debug\NewCRMReport.pdb
+D:\BCA Work\NewCRM\BCA CODE\Code\CCARE\NewCRMReport\bin\NewCRMReport.dll
+D:\BCA Work\NewCRM\BCA CODE\Code\CCARE\NewCRMReport\bin\NewCRMReport.pdb
+D:\BCA Work\NewCRM\BCA CODE\Code\CCARE\NewCRMReport\obj\Debug\NewCRMReport.csprojResolveAssemblyReference.cache
+D:\BCA Work\NewCRM\BCA CODE\Code\CCARE\NewCRMReport\obj\Debug\NewCRMReport.dll
+D:\BCA Work\NewCRM\BCA CODE\Code\CCARE\NewCRMReport\obj\Debug\NewCRMReport.pdb
+D:\BCA Work\CCARE(Tambah Kota) Sebelum ganti Database\NewCRMReport\bin\NewCRMReport.dll
+D:\BCA Work\CCARE(Tambah Kota) Sebelum ganti Database\NewCRMReport\bin\NewCRMReport.pdb
+D:\BCA Work\CCARE(Tambah Kota) Sebelum ganti Database\NewCRMReport\obj\Debug\NewCRMReport.dll
+D:\BCA Work\CCARE(Tambah Kota) Sebelum ganti Database\NewCRMReport\obj\Debug\NewCRMReport.pdb
+D:\Code\CCARE(Tambah Kota) Sebelum ganti Database\NewCRMReport\bin\SqlServerTypes\x64\msvcr100.dll
+D:\Code\CCARE(Tambah Kota) Sebelum ganti Database\NewCRMReport\bin\SqlServerTypes\x64\SqlServerSpatial110.dll
+D:\Code\CCARE(Tambah Kota) Sebelum ganti Database\NewCRMReport\bin\SqlServerTypes\x86\msvcr100.dll
+D:\Code\CCARE(Tambah Kota) Sebelum ganti Database\NewCRMReport\bin\SqlServerTypes\x86\SqlServerSpatial110.dll
+D:\Code\CCARE(Tambah Kota) Sebelum ganti Database\NewCRMReport\bin\NewCRMReport.dll.config
+D:\Code\CCARE(Tambah Kota) Sebelum ganti Database\NewCRMReport\bin\NewCRMReport.dll
+D:\Code\CCARE(Tambah Kota) Sebelum ganti Database\NewCRMReport\bin\NewCRMReport.pdb
+D:\Code\CCARE(Tambah Kota) Sebelum ganti Database\NewCRMReport\bin\Microsoft.ReportViewer.Common.dll
+D:\Code\CCARE(Tambah Kota) Sebelum ganti Database\NewCRMReport\bin\Microsoft.ReportViewer.DataVisualization.DLL
+D:\Code\CCARE(Tambah Kota) Sebelum ganti Database\NewCRMReport\bin\Microsoft.ReportViewer.Design.DLL
+D:\Code\CCARE(Tambah Kota) Sebelum ganti Database\NewCRMReport\bin\Microsoft.ReportViewer.ProcessingObjectModel.DLL
+D:\Code\CCARE(Tambah Kota) Sebelum ganti Database\NewCRMReport\bin\Microsoft.ReportViewer.WebDesign.DLL
+D:\Code\CCARE(Tambah Kota) Sebelum ganti Database\NewCRMReport\bin\Microsoft.ReportViewer.WebForms.DLL
+D:\Code\CCARE(Tambah Kota) Sebelum ganti Database\NewCRMReport\bin\Microsoft.ReportViewer.WinForms.DLL
+D:\Code\CCARE(Tambah Kota) Sebelum ganti Database\NewCRMReport\bin\Microsoft.SqlServer.Types.dll
+D:\Code\CCARE(Tambah Kota) Sebelum ganti Database\NewCRMReport\bin\EnvDTE.dll
+D:\Code\CCARE(Tambah Kota) Sebelum ganti Database\NewCRMReport\bin\Microsoft.VisualStudio.Shell.Interop.dll
+D:\Code\CCARE(Tambah Kota) Sebelum ganti Database\NewCRMReport\bin\Microsoft.VisualStudio.Shell.Interop.8.0.dll
+D:\Code\CCARE(Tambah Kota) Sebelum ganti Database\NewCRMReport\bin\EnvDTE80.dll
+D:\Code\CCARE(Tambah Kota) Sebelum ganti Database\NewCRMReport\bin\stdole.dll
+D:\Code\CCARE(Tambah Kota) Sebelum ganti Database\NewCRMReport\bin\Microsoft.VisualStudio.OLE.Interop.dll
+D:\Code\CCARE(Tambah Kota) Sebelum ganti Database\NewCRMReport\bin\Microsoft.VisualStudio.TextManager.Interop.dll
+D:\Code\CCARE(Tambah Kota) Sebelum ganti Database\NewCRMReport\bin\Microsoft.VisualStudio.ProjectAggregator.dll
+D:\Code\CCARE(Tambah Kota) Sebelum ganti Database\NewCRMReport\bin\Microsoft.VisualStudio.VSHelp.dll
+D:\Code\CCARE(Tambah Kota) Sebelum ganti Database\NewCRMReport\bin\Microsoft.VisualStudio.TextManager.Interop.8.0.dll
+D:\Code\CCARE(Tambah Kota) Sebelum ganti Database\NewCRMReport\bin\Microsoft.MSXML.dll
+D:\Code\CCARE(Tambah Kota) Sebelum ganti Database\NewCRMReport\obj\Debug\NewCRMReport.csprojAssemblyReference.cache
+D:\Code\CCARE(Tambah Kota) Sebelum ganti Database\NewCRMReport\obj\Debug\NewCRMReport.csproj.CoreCompileInputs.cache
+D:\Code\CCARE(Tambah Kota) Sebelum ganti Database\NewCRMReport\obj\Debug\NewCRMReport.csproj.CopyComplete
+D:\Code\CCARE(Tambah Kota) Sebelum ganti Database\NewCRMReport\obj\Debug\NewCRMReport.dll
+D:\Code\CCARE(Tambah Kota) Sebelum ganti Database\NewCRMReport\obj\Debug\NewCRMReport.pdb

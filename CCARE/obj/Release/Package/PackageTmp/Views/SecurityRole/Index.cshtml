@@ -1,0 +1,72 @@
+﻿@{
+    Layout = "~/Views/Shared/_LayoutInquiry.cshtml";
+}
+
+<div class="col-lg-12 inquiry_left">
+    <div class="input-group">
+        <input type="text" class="form-control" id="inquiry_val" >
+        <span class="input-group-btn">
+            <button id="btn_search" class="btn btn-primary" type="submit"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></button>
+        </span>
+    </div>
+</div>
+
+
+@section title
+{
+    
+}
+
+@section mainmenu{ Settings }
+@section submenu{ Application Settings }
+@section menu{ Security Role }
+
+
+@section scriptExt{
+    @if(Session["RoleID"] != null){
+        string entity = ViewContext.Controller.ControllerContext.RouteData.Values["controller"].ToString();
+        Guid roleID = new Guid(Session["RoleID"].ToString());
+        bool checkButton = CCARE.App_Function.RoleNPrivilege.checkEntityButtonByRoleID(roleID, entity, "Write");
+
+        if(checkButton == false)
+        {
+            <text>
+                $('#btn_new').hide();
+            </text>
+        }
+    }
+}
+
+
+@section extraButton{
+    @if ("Y".Equals(Session["isSuperAdmin"].ToString()))
+    {
+        <li class="active float-right"><a id="btn_job" href="#"><span class="glyphicon glyphicon-transfer glyp-space" aria-hidden="true"></span>Update XML</a></li>
+        <script type="text/javascript">
+            $(document).ready(function () {
+                $("#btn_job").click(function (e) {
+                    e.preventDefault();
+                    var $btn = $(this);
+                    var url = '/SecurityRole/JobUpdateText';
+                    $.ajax({
+                        type: "POST",
+                        url: url,
+                        beforeSend: function () {
+                            $btn.button('loading');
+                        },
+                        success: function (data) {
+
+                        },
+                        error: function (xhr, textStatus, errorThrown) { },
+                        complete: function () {
+                            setTimeout(function () {
+                                $btn.button('reset');
+                            }, 1000);
+                        }
+                    });
+                });
+            });
+        </script>
+        
+    }
+}

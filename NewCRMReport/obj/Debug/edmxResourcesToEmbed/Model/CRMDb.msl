@@ -1,0 +1,206 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="BCAUAT_MSCRMModelStoreContainer" CdmEntityContainer="BCAUAT_MSCRMEntities">
+    <EntitySetMapping Name="Requests">
+      <EntityTypeMapping TypeName="BCAUAT_MSCRMModel.Request">
+        <MappingFragment StoreEntitySet="Request">
+          <ScalarProperty Name="RequestID" ColumnName="RequestID" />
+          <ScalarProperty Name="CCQRequestID" ColumnName="CCQRequestID" />
+          <ScalarProperty Name="TicketNumber" ColumnName="TicketNumber" />
+          <ScalarProperty Name="CustomerIdType" ColumnName="CustomerIdType" />
+          <ScalarProperty Name="ForCustomer" ColumnName="ForCustomer" />
+          <ScalarProperty Name="CustomerID" ColumnName="CustomerID" />
+          <ScalarProperty Name="CustomerName" ColumnName="CustomerName" />
+          <ScalarProperty Name="NonCustomerID" ColumnName="NonCustomerID" />
+          <ScalarProperty Name="NonCustomerName" ColumnName="NonCustomerName" />
+          <ScalarProperty Name="AccountNo" ColumnName="AccountNo" />
+          <ScalarProperty Name="CardNo" ColumnName="CardNo" />
+          <ScalarProperty Name="CustomerNo" ColumnName="CustomerNo" />
+          <ScalarProperty Name="LoanNo" ColumnName="LoanNo" />
+          <ScalarProperty Name="ContactMethod" ColumnName="ContactMethod" />
+          <ScalarProperty Name="ContactMethodLabel" ColumnName="ContactMethodLabel" />
+          <ScalarProperty Name="CustomerAttitude" ColumnName="CustomerAttitude" />
+          <ScalarProperty Name="CustomerAttitudeLabel" ColumnName="CustomerAttitudeLabel" />
+          <ScalarProperty Name="InteractionCount" ColumnName="InteractionCount" />
+          <ScalarProperty Name="Location" ColumnName="Location" />
+          <ScalarProperty Name="LocationLabel" ColumnName="LocationLabel" />
+          <ScalarProperty Name="Address1" ColumnName="Address1" />
+          <ScalarProperty Name="Address2" ColumnName="Address2" />
+          <ScalarProperty Name="City" ColumnName="City" />
+          <ScalarProperty Name="PostalCode" ColumnName="PostalCode" />
+          <ScalarProperty Name="CompanyName" ColumnName="CompanyName" />
+          <ScalarProperty Name="CommunicationPhone" ColumnName="CommunicationPhone" />
+          <ScalarProperty Name="CategoryID" ColumnName="CategoryID" />
+          <ScalarProperty Name="CategoryName" ColumnName="CategoryName" />
+          <ScalarProperty Name="ProductID" ColumnName="ProductID" />
+          <ScalarProperty Name="ProductName" ColumnName="ProductName" />
+          <ScalarProperty Name="WorkgroupID" ColumnName="WorkgroupID" />
+          <ScalarProperty Name="WorkgroupName" ColumnName="WorkgroupName" />
+          <ScalarProperty Name="ServiceLevel" ColumnName="ServiceLevel" />
+          <ScalarProperty Name="PriorityCode" ColumnName="PriorityCode" />
+          <ScalarProperty Name="PriorityLabel" ColumnName="PriorityLabel" />
+          <ScalarProperty Name="StatusCode" ColumnName="StatusCode" />
+          <ScalarProperty Name="StatusLabel" ColumnName="StatusLabel" />
+          <ScalarProperty Name="Title" ColumnName="Title" />
+          <ScalarProperty Name="TransactionTime" ColumnName="TransactionTime" />
+          <ScalarProperty Name="TransactionTimeZone" ColumnName="TransactionTimeZone" />
+          <ScalarProperty Name="TransactionTimeZoneLabel" ColumnName="TransactionTimeZoneLabel" />
+          <ScalarProperty Name="Currency" ColumnName="Currency" />
+          <ScalarProperty Name="CurrencyLabel" ColumnName="CurrencyLabel" />
+          <ScalarProperty Name="TransactionAmount" ColumnName="TransactionAmount" />
+          <ScalarProperty Name="TransactionAmount_txt" ColumnName="TransactionAmount_txt" />
+          <ScalarProperty Name="WsIdID" ColumnName="WsIdID" />
+          <ScalarProperty Name="WsIdName" ColumnName="WsIdName" />
+          <ScalarProperty Name="CaseOriginCode" ColumnName="CaseOriginCode" />
+          <ScalarProperty Name="CaseOriginLabel" ColumnName="CaseOriginLabel" />
+          <ScalarProperty Name="Lokasi" ColumnName="Lokasi" />
+          <ScalarProperty Name="BranchID" ColumnName="BranchID" />
+          <ScalarProperty Name="BranchName" ColumnName="BranchName" />
+          <ScalarProperty Name="UserBranchID" ColumnName="UserBranchID" />
+          <ScalarProperty Name="UserBranchName" ColumnName="UserBranchName" />
+          <ScalarProperty Name="CauseID" ColumnName="CauseID" />
+          <ScalarProperty Name="CauseName" ColumnName="CauseName" />
+          <ScalarProperty Name="Reason" ColumnName="Reason" />
+          <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+          <ScalarProperty Name="CreatedByName" ColumnName="CreatedByName" />
+          <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+          <ScalarProperty Name="ModifiedByName" ColumnName="ModifiedByName" />
+          <ScalarProperty Name="OwnerID" ColumnName="OwnerID" />
+          <ScalarProperty Name="OwnerName" ColumnName="OwnerName" />
+          <ScalarProperty Name="CreatedOn" ColumnName="CreatedOn" />
+          <ScalarProperty Name="ModifiedOn" ColumnName="ModifiedOn" />
+          <ScalarProperty Name="DueDate" ColumnName="DueDate" />
+          <ScalarProperty Name="ClosedOn" ColumnName="ClosedOn" />
+          <ScalarProperty Name="ReopenedOn" ColumnName="ReopenedOn" />
+          <ScalarProperty Name="BusinessUnitID" ColumnName="BusinessUnitID" />
+          <ScalarProperty Name="Source" ColumnName="Source" />
+          <ScalarProperty Name="DeletionStateCode" ColumnName="DeletionStateCode" />
+          <ScalarProperty Name="StateCode" ColumnName="StateCode" />
+          <ScalarProperty Name="ReferenceNumber" ColumnName="ReferenceNumber" />
+          <ScalarProperty Name="RefTicketNumber" ColumnName="RefTicketNumber" />
+          <ScalarProperty Name="IncomingPhoneNumber" ColumnName="IncomingPhoneNumber" />
+          <ScalarProperty Name="ExtraCardType" ColumnName="ExtraCardType" />
+          <ScalarProperty Name="ExtraCardLabel" ColumnName="ExtraCardLabel" />
+          <ScalarProperty Name="ExtraCardNumber" ColumnName="ExtraCardNumber" />
+          <ScalarProperty Name="Profession" ColumnName="Profession" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="SystemUsers">
+      <EntityTypeMapping TypeName="BCAUAT_MSCRMModel.SystemUser">
+        <MappingFragment StoreEntitySet="SystemUser">
+          <ScalarProperty Name="SystemUserID" ColumnName="SystemUserID" />
+          <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+          <ScalarProperty Name="DomainName" ColumnName="DomainName" />
+          <ScalarProperty Name="EmployeeID" ColumnName="EmployeeID" />
+          <ScalarProperty Name="FullName" ColumnName="FullName" />
+          <ScalarProperty Name="LastName" ColumnName="LastName" />
+          <ScalarProperty Name="HomePhone" ColumnName="HomePhone" />
+          <ScalarProperty Name="InternalEMailAddress" ColumnName="InternalEMailAddress" />
+          <ScalarProperty Name="MobilePhone" ColumnName="MobilePhone" />
+          <ScalarProperty Name="Title" ColumnName="Title" />
+          <ScalarProperty Name="DeletionStateCode" ColumnName="DeletionStateCode" />
+          <ScalarProperty Name="ActiveDirectoryGuid" ColumnName="ActiveDirectoryGuid" />
+          <ScalarProperty Name="IsActiveDirectoryUser" ColumnName="IsActiveDirectoryUser" />
+          <ScalarProperty Name="IsDisabled" ColumnName="IsDisabled" />
+          <ScalarProperty Name="CreatedOn" ColumnName="CreatedOn" />
+          <ScalarProperty Name="ModifiedOn" ColumnName="ModifiedOn" />
+          <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+          <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+          <ScalarProperty Name="DisplayInServiceViews" ColumnName="DisplayInServiceViews" />
+          <ScalarProperty Name="BranchLoginName" ColumnName="BranchLoginName" />
+          <ScalarProperty Name="CCQId" ColumnName="CCQId" />
+          <ScalarProperty Name="Department" ColumnName="Department" />
+          <ScalarProperty Name="Location" ColumnName="Location" />
+          <ScalarProperty Name="Site" ColumnName="Site" />
+          <ScalarProperty Name="TandemUserGroup" ColumnName="TandemUserGroup" />
+          <ScalarProperty Name="TandemUserNum" ColumnName="TandemUserNum" />
+          <ScalarProperty Name="InternalAddressId" ColumnName="InternalAddressId" />
+          <ScalarProperty Name="Fax" ColumnName="Fax" />
+          <ScalarProperty Name="Phone" ColumnName="Phone" />
+          <ScalarProperty Name="Phone2" ColumnName="Phone2" />
+          <ScalarProperty Name="pager" ColumnName="pager" />
+          <ScalarProperty Name="OrganizationID" ColumnName="OrganizationID" />
+          <ScalarProperty Name="BusinessUnitID" ColumnName="BusinessUnitID" />
+          <ScalarProperty Name="BusinessUnitName" ColumnName="BusinessUnitName" />
+          <ScalarProperty Name="BranchID" ColumnName="BranchID" />
+          <ScalarProperty Name="BranchName" ColumnName="BranchName" />
+          <ScalarProperty Name="PreferredPhoneCode" ColumnName="PreferredPhoneCode" />
+          <ScalarProperty Name="PreferredPhone" ColumnName="PreferredPhone" />
+          <ScalarProperty Name="CRMUserID" ColumnName="CRMUserID" />
+          <ScalarProperty Name="Config_UserID" ColumnName="Config_UserID" />
+          <ScalarProperty Name="AuthInfo" ColumnName="AuthInfo" />
+          <ScalarProperty Name="DefaultOrganizationID" ColumnName="DefaultOrganizationID" />
+          <ScalarProperty Name="SecurityRoleID" ColumnName="SecurityRoleID" />
+          <ScalarProperty Name="RoleName" ColumnName="RoleName" />
+          <ScalarProperty Name="SystemUserRoleID" ColumnName="SystemUserRoleID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Tasks">
+      <EntityTypeMapping TypeName="BCAUAT_MSCRMModel.Task">
+        <MappingFragment StoreEntitySet="Task">
+          <ScalarProperty Name="TaskID" ColumnName="TaskID" />
+          <ScalarProperty Name="PartyUserID" ColumnName="PartyUserID" />
+          <ScalarProperty Name="PartyUserName" ColumnName="PartyUserName" />
+          <ScalarProperty Name="TaskNumber" ColumnName="TaskNumber" />
+          <ScalarProperty Name="CCQID" ColumnName="CCQID" />
+          <ScalarProperty Name="RequestTicketNumber" ColumnName="RequestTicketNumber" />
+          <ScalarProperty Name="Subject" ColumnName="Subject" />
+          <ScalarProperty Name="Regarding" ColumnName="Regarding" />
+          <ScalarProperty Name="RequestStatusCode" ColumnName="RequestStatusCode" />
+          <ScalarProperty Name="RequestStatusLabel" ColumnName="RequestStatusLabel" />
+          <ScalarProperty Name="TaskStatus" ColumnName="TaskStatus" />
+          <ScalarProperty Name="TaskStatusLabel" ColumnName="TaskStatusLabel" />
+          <ScalarProperty Name="ActivityStatus" ColumnName="ActivityStatus" />
+          <ScalarProperty Name="ActivityStatusLabel" ColumnName="ActivityStatusLabel" />
+          <ScalarProperty Name="Priority" ColumnName="Priority" />
+          <ScalarProperty Name="PriorityLabel" ColumnName="PriorityLabel" />
+          <ScalarProperty Name="DueDate" ColumnName="DueDate" />
+          <ScalarProperty Name="StartDate" ColumnName="StartDate" />
+          <ScalarProperty Name="OwnerID" ColumnName="OwnerID" />
+          <ScalarProperty Name="OwnerName" ColumnName="OwnerName" />
+          <ScalarProperty Name="WorkGroupID" ColumnName="WorkGroupID" />
+          <ScalarProperty Name="WorkGroupName" ColumnName="WorkGroupName" />
+          <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+          <ScalarProperty Name="CreatedOn" ColumnName="CreatedOn" />
+          <ScalarProperty Name="CreatedByName" ColumnName="CreatedByName" />
+          <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+          <ScalarProperty Name="ModifiedOn" ColumnName="ModifiedOn" />
+          <ScalarProperty Name="ModifiedByName" ColumnName="ModifiedByName" />
+          <ScalarProperty Name="DeletionStateCode" ColumnName="DeletionStateCode" />
+          <ScalarProperty Name="BusinessUnitID" ColumnName="BusinessUnitID" />
+          <ScalarProperty Name="RequestID" ColumnName="RequestID" />
+          <ScalarProperty Name="Pointer_ActivityId" ColumnName="Pointer_ActivityId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="CallWrapUpReports">
+      <EntityTypeMapping TypeName="BCAUAT_MSCRMModel.CallWrapUpReport">
+        <MappingFragment StoreEntitySet="CallWrapUpReport">
+          <ScalarProperty Name="PhoneNo" ColumnName="PhoneNo" />
+          <ScalarProperty Name="HandphoneNo" ColumnName="HandphoneNo" />
+          <ScalarProperty Name="CategoryName" ColumnName="CategoryName" />
+          <ScalarProperty Name="StatusCode" ColumnName="StatusCode" />
+          <ScalarProperty Name="StateCode" ColumnName="StateCode" />
+          <ScalarProperty Name="DeletionStateCode" ColumnName="DeletionStateCode" />
+          <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+          <ScalarProperty Name="ModifiedByName" ColumnName="ModifiedByName" />
+          <ScalarProperty Name="ModifiedOn" ColumnName="ModifiedOn" />
+          <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+          <ScalarProperty Name="CreatedByName" ColumnName="CreatedByName" />
+          <ScalarProperty Name="CreatedOn" ColumnName="CreatedOn" />
+          <ScalarProperty Name="SourceDesc" ColumnName="SourceDesc" />
+          <ScalarProperty Name="Source" ColumnName="Source" />
+          <ScalarProperty Name="CallStartTime" ColumnName="CallStartTime" />
+          <ScalarProperty Name="CallEndTime" ColumnName="CallEndTime" />
+          <ScalarProperty Name="NonCustomerName" ColumnName="NonCustomerName" />
+          <ScalarProperty Name="NonCustomerID" ColumnName="NonCustomerID" />
+          <ScalarProperty Name="CustomerName" ColumnName="CustomerName" />
+          <ScalarProperty Name="CustomerID" ColumnName="CustomerID" />
+          <ScalarProperty Name="CallWrapUpID" ColumnName="CallWrapUpID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping>

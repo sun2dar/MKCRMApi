@@ -1,0 +1,718 @@
+﻿@*Author : SUN*@
+
+@model CCARE.Models.SystemUser
+
+@{
+    List<Guid?> buList = new List<Guid?>();
+    buList.Add(new Guid(Session["BusinessUnitID"].ToString()));
+    CCARE.App_Function.Utility.getBUChild(buList, new Guid(Session["BusinessUnitID"].ToString()));
+
+    if (Request.IsAjaxRequest())
+    {
+        Layout = null;
+    }
+    else
+    {
+        Layout = "~/Views/Shared/_LayoutEntity.cshtml";
+    }
+    string actionPage = ViewContext.Controller.ControllerContext.RouteData.Values["action"].ToString();
+}
+
+
+@section entityLogo
+{
+    <img class="crm-logo" src="~/assets/images/ico_lrg_112.gif" />
+}
+
+@section formTitle
+{
+    <div class="text_title">
+        <h1>Information</h1>
+        System User : 
+        @if (actionPage == "Create")
+        {
+            <text>Create New User</text>
+        }
+        else if (actionPage == "Edit")
+        {
+            <text>@(Model.FullName)</text>
+        }
+    </div>
+}
+
+@section title
+{
+    @if (actionPage == "Create")
+    {
+        <text>User: New</text>
+    }
+    else if (actionPage == "Edit")
+    {
+        <text>User: @Model.FullName</text>
+    }   
+}
+
+@section navHeader
+{
+    <ul class="nav navbar-nav navbar-left" id="divActionButton">
+
+        @if (actionPage == "Create")
+        {
+            <li><a id="btn_save" href="#">Save</a></li>
+            <li><a id="btn_savenclose" href="#">Save & Close</a></li>
+            <li><a id="btn_savenopen" href="#">Save & New</a></li>
+        }
+        else if (actionPage == "Edit")
+        {
+
+            if (Session["RoleID"] != null)
+            {
+                string entity = ViewContext.Controller.ControllerContext.RouteData.Values["controller"].ToString();
+                Guid roleID = new Guid(Session["RoleID"].ToString());
+                bool checkButton = CCARE.App_Function.RoleNPrivilege.checkEntityButtonByRoleID(roleID, entity, "Write");
+                bool checkButton2 = CCARE.App_Function.RoleNPrivilege.checkEntityButtonByRoleID(roleID, entity, "Delete");
+                if (checkButton == true)
+                {
+                    if (Model.IsDisabled == false)//Enable state
+                    {
+                    <text>
+                        <li><a id="btn_save" href="#">Save</a></li>
+                        <li><a id="btn_savenclose" href="#">Save & Close</a></li>
+                        <li><a id="btn_savenopen" href="#">Save & New</a></li>
+                        <li><a id="btn_disable" href="#" data-toggle="modal" data-target="#confirm-disable">Disable</a></li>
+                    </text>
+                    }
+                    else if (Model.IsDisabled == true) //Disable state
+                    {
+                    <text>
+                        <li><a id="btn_enable" href="#" data-toggle="modal" data-target="#confirm-enable">Enable</a></li>
+                    </text>
+                    }
+                }
+
+            }
+        }
+    </ul>
+}
+
+@section footerStatus
+{
+    <div class="footer_text">Status: 
+        @if (actionPage == "Create")
+        {
+            <text>New</text>
+        }
+        else if (actionPage == "Edit")
+        {
+            <text>@(Model.IsDisabled == true ? "Disable" : "Enable")</text>
+        }
+    </div>
+}
+
+@section sidebarMenu
+{
+    @if (actionPage == "Create")
+    {
+            <text><li><a href="#" >User Information</a></li></text>
+    }
+    else if (actionPage == "Edit")
+    {
+            <text><li><a data-ajax="true" data-ajax-mode="replace" data-ajax-update="#page_content" href="/SecurityRole/Edit?id=@(Model.SystemUserId)">User Information</a></li></text>
+    }
+}
+
+<div class="modal fade" id="confirm-disable" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1>Confirm Disable User</h1>
+            </div>
+            <div class="modal-body input-lg">
+                The system will change status of this record. To continue click "Disable".
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                <a class="btn btn-danger btn-ok">Disable</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="confirm-enable" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1>Confirm Enable User</h1>
+            </div>
+            <div class="modal-body input-lg">
+                The system will change status of this record. To continue click "Enable".
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                <a class="btn btn-danger btn-ok">Enable</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<div class="container-fluid">
+    <!-- tabs -->
+    <div class="row">
+        <div class="col-sm-12 panel panel-default panel_form_parent">
+            <div class="myContent_noTab">
+                @using (Html.BeginForm(actionPage, "SystemUser", FormMethod.Post, new { id = "form_systemuser" }))
+                {           
+                    @RenderBody()
+
+                    @Html.HiddenFor(model => model.SystemUserId) 
+                    @Html.HiddenFor(model => model.InternalAddressId)
+            
+                    @Html.HiddenFor(model => model.ActiveDirectoryGuid) 
+                    @Html.HiddenFor(model => model.IsActiveDirectoryUser) 
+                    @Html.HiddenFor(model => model.AuthInfo) 
+                    @Html.HiddenFor(model => model.CreatedBy)
+                    @Html.HiddenFor(model => model.SystemUserRoleID)
+            
+                    <!-- panel content -->
+                    <div class="col-sm-12">
+                        <div class="row form_text">
+                            <div class="panel panel-default panel_form_child">
+                                <div class="panel-heading">
+                                    <label class="control-label sv-header"><strong>User Information</strong></label>
+                                </div>
+                                <br />
+                                <div class="panel-body">
+                                    <div class="form-horizontal">
+
+                                        <div class="row">
+                                            <div class="col-sm-6">
+                                                <div class="form-group">
+                                                    <label class="col-sm-4 control-label mandatory">Domain Name</label>
+                                                    <div class="col-sm-8">
+                                                        @if (actionPage == "Create")
+                                                        {
+                                                            @Html.HiddenFor(model => model.DeletionStateCode, new { id = "DeletionStateCode", @class = "form-control", @Value = "0" }) 
+                                                            @Html.TextBoxFor(x => x.DomainName, new { id = "DomainName", @class = "form-control", @Value = "Yes".Equals(System.Configuration.ConfigurationManager.AppSettings["IsProduction"].ToString()) ? System.Configuration.ConfigurationManager.AppSettings["DomainName"].ToString() : System.Configuration.ConfigurationManager.AppSettings["DomainName_dev"].ToString() + "\\" })
+                                                        }
+                                                        else
+                                                        {
+                                                            @Html.HiddenFor(model => model.DeletionStateCode)
+                                                            @Html.TextBoxFor(x => x.DomainName, new { id = "DomainName", @class = "form-control" })
+                                                        }
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-6">                                        
+                                                <div class="form-group">
+                                                    <label class="col-sm-4 control-label">Fax</label>
+                                                    <div class="col-sm-8">
+                                                        @Html.TextBoxFor(x => x.Fax, new { id = "Fax", @class = "form-control" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-sm-6">
+                                                <div class="form-group">
+                                                    <label class="col-sm-4 control-label mandatory">First Name</label>
+                                                    <div class="col-sm-8">
+                                                        @Html.TextBoxFor(x => x.FirstName, new { id = "FirstName", @class = "form-control" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-6">                                        
+                                                <div class="form-group">
+                                                    <label class="col-sm-4 control-label">Pager</label>
+                                                    <div class="col-sm-8">
+                                                        @Html.TextBoxFor(x => x.pager, new { id = "Pager", @class = "form-control" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-sm-6">
+                                                <div class="form-group">
+                                                    <label class="col-sm-4 control-label mandatory">Last Name</label>
+                                                    <div class="col-sm-8">
+                                                        @Html.TextBoxFor(x => x.LastName, new { id = "LastName", @class = "form-control" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-6">                                        
+                                                <div class="form-group">
+                                                    <label class="col-sm-4 control-label">Email</label>
+                                                    <div class="col-sm-8">
+                                                        @Html.TextBoxFor(x => x.InternalEMailAddress, new { id = "InternalEMailAddress", @class = "form-control" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-sm-6">
+                                                <div class="form-group">
+                                                    <label class="col-sm-4 control-label">Full Name</label>
+                                                    <div class="col-sm-8">
+                                                        @Html.TextBoxFor(x => x.FullName, new { id = "FullName", @class = "form-control" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-6">                                        
+                                                <div class="form-group">
+                                                    <label class="col-sm-4 control-label">Phone</label>
+                                                    <div class="col-sm-8">
+                                                        @Html.TextBoxFor(x => x.Phone, new { id = "Phone", @class = "form-control" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-sm-6">
+                                                <div class="form-group">
+                                                    <label class="col-sm-4 control-label">Title</label>
+                                                    <div class="col-sm-8">
+                                                        @Html.TextBoxFor(x => x.Title, new { id = "Title", @class = "form-control" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-6">                                        
+                                                <div class="form-group">
+                                                    <label class="col-sm-4 control-label">Phone 2</label>
+                                                    <div class="col-sm-8">
+                                                        @Html.TextBoxFor(x => x.Phone2, new { id = "Phone2", @class = "form-control" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-sm-6">
+                                                <div class="form-group">
+                                                    <label class="col-sm-4 control-label">Employee ID</label>
+                                                    <div class="col-sm-8">
+                                                        @Html.TextBoxFor(x => x.EmployeeID, new { id = "EmployeeID", @class = "form-control" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-6">                                        
+                                                <div class="form-group">
+                                                    <label class="col-sm-4 control-label">Home Phone</label>
+                                                    <div class="col-sm-8">
+                                                        @Html.TextBoxFor(x => x.HomePhone, new { id = "HomePhone", @class = "form-control" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-sm-6">
+                                                <div class="form-group">
+                                                    <label class="col-sm-4 control-label">Mobile Phone</label>
+                                                    <div class="col-sm-8">
+                                                        @Html.TextBoxFor(x => x.MobilePhone, new { id = "MobilePhone", @class = "form-control" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-6">                                        
+                                                <div class="form-group">
+                                                    <label class="col-sm-4 control-label">Preferred Phone</label>
+                                                    <div class="col-sm-8">
+                                                        @Html.DropDownListFor(x => x.PreferredPhoneCode, (SelectList)ViewBag.PreferredPhoneCodeList, "", new { @class = "form-control" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-sm-6">
+                                                <div class="form-group">
+                                                    <label class="col-sm-4 control-label">Tandem User Num</label>
+                                                    <div class="col-sm-8">
+                                                        @Html.TextBoxFor(x => x.TandemUserNum, new { id = "TandemUserNum", @class = "form-control" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-6">                                        
+                                                <div class="form-group">
+                                                    <label class="col-sm-4 control-label">CCQ ID</label>
+                                                    <div class="col-sm-8">
+                                                        @Html.TextBoxFor(x => x.CCQId, new { id = "CCQId", @class = "form-control" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-sm-6">
+                                                <div class="form-group">
+                                                    <label class="col-sm-4 control-label">Tandem User Group</label>
+                                                    <div class="col-sm-8">
+                                                        @Html.TextBoxFor(x => x.TandemUserGroup, new { id = "TandemUserGroup", @class = "form-control" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-6">                                        
+                                                <div class="form-group">
+                                                    <label class="col-sm-4 control-label">Branch Login Name</label>
+                                                    <div class="col-sm-8">
+                                                        @Html.TextBoxFor(x => x.BranchLoginName, new { id = "BranchLoginName", @class = "form-control" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                            </div>
+                        </div>
+
+                        <div class="row form_text">
+                            <div class="panel panel-default panel_form_child">
+                                <div class="panel-heading">
+                                    <label class="control-label sv-header"><strong>Organization Information</strong></label>
+                                </div>
+                                <br />
+                                <div class="panel-body">
+                                    <div class="form-horizontal">
+
+                                        <div class="row">
+                                            <div class="col-sm-6">
+                                                <div class="form-group">
+                                                    <label class="col-sm-4 control-label mandatory">Business Unit</label>
+                                                    <div class="col-sm-8">
+                                                        @* ==========================================================================================================*@
+                                                        @Html.HiddenFor(x => x.BusinessUnitID, new { @id = "BusinessUnitID", @name = "BusinessUnitID", @class = "form-control" })
+                                                        <div class="input-group" id="BusinessUnit-Group">
+                                                            @Html.TextBoxFor(x => x.BusinessUnitName, new { @id = "BusinessUnitName", @name = "BusinessUnitName", @class = "form-control" })
+                                                            <div tabindex="1" id="BusinessUnitName-label" class="form-control typeahead-label hide">
+                                                            </div>
+                                                            <div tabindex="1" class="input-group-addon btn" id="BusinessUnitName-popup">
+                                                                <i class="fa fa-search"></i>
+                                                            </div>
+                                                        </div>
+                                                        @* ==========================================================================================================*@
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-6">                                        
+                                                <div class="form-group">
+                                                    <label class="col-sm-4 control-label">Location</label>
+                                                    <div class="col-sm-8">
+                                                        @Html.TextBoxFor(x => x.Location, new { id = "Location", @class = "form-control" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-sm-6">
+                                                <div class="form-group">
+                                                    <label class="col-sm-4 control-label">Department</label>
+                                                    <div class="col-sm-8">
+                                                        @Html.TextBoxFor(x => x.Department, new { id = "Department", @class = "form-control" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-6">                                        
+                                                <div class="form-group">
+                                                    <label class="col-sm-4 control-label">Site</label>
+                                                    <div class="col-sm-8">
+                                                        @Html.TextBoxFor(x => x.Site, new { id = "Site", @class = "form-control" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="row" id="rowSecurityRole">
+                                            <div class="col-sm-6">
+                                                <div class="form-group">
+                                                    <label class="col-sm-4 control-label mandatory">Role</label>
+                                                    <div class="col-sm-8">
+                                                        @* ==========================================================================================================*@
+                                                        @Html.HiddenFor(x => x.SecurityRoleID, new { id = "SecurityRoleID", @class = "form-control" })
+                                                        <div class="input-group" id="SecurityRole-Group">
+                                                            @Html.TextBoxFor(x => x.RoleName, new { id = "RoleName", @class = "form-control" })
+                                                            <div tabindex="1" id="RoleName-label" class="form-control typeahead-label hide">
+                                                            </div>
+                                                            <div tabindex="1" class="input-group-addon btn" id="RoleName-popup">
+                                                                <i class="fa fa-search"></i>
+                                                            </div>
+                                                        </div>
+                                                        @* ==========================================================================================================*@
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-6">                                        
+                                                <div class="form-group">
+                                                    <label class="col-sm-4 control-label">Branch</label>
+                                                    <div class="col-sm-8">
+                                                        @* ==========================================================================================================*@
+                                                        @Html.HiddenFor(x => x.BranchID, new { id = "BranchID", @class = "form-control" })
+                                                        <div class="input-group" id="Branch-Group">
+                                                            @Html.TextBoxFor(x => x.BranchName, new { id = "BranchName", @class = "form-control" })
+                                                            <div tabindex="1" id="BranchName-label" class="form-control typeahead-label hide">
+                                                            </div>
+                                                            <div tabindex="1" class="input-group-addon btn" id="BranchName-popup">
+                                                                <i class="fa fa-search"></i>
+                                                            </div>
+                                                        </div>
+                                                        @* ==========================================================================================================*@
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+
+                                    </div>
+                                </div>
+                        
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+
+    <div id="response-modal"></div>
+</div>
+
+
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        $('#BusinessUnitID').change(function (e) {
+            var rl = $('#RoleName-label');
+            if (!rl.hasClass('hide')) {
+                var ev = jQuery.Event('keydown');
+                ev.which = 46;
+                rl.trigger(ev);
+            }
+        });
+
+        //PopUp business unit
+        $('#BusinessUnitName-popup').on('click', function (e) {
+            urlModalPopup = '@Url.Action("_popupContent", "Popup", new { type = "businessunit", _entity = "" })';
+            colModelsName = [
+                { label: 'ID', name: 'Id', index: 'Id', key: true, width: 75, hidden: true },
+                { label: 'Name', name: 'Name', index: 'Name', width: 500 }
+
+            ];
+            var id = $(this).parent().find('input:last').attr('id');
+            $('#' + id).trigger("blur");
+            e.preventDefault();
+        });
+
+        var BusinessUnitReq = new PopupClass();
+        BusinessUnitReq.setId("BusinessUnitName");
+        BusinessUnitReq.setUrl('@Url.Action("BusinessUnit", "Popup")');
+        BusinessUnitReq.setHiddenId("BusinessUnitID");
+        BusinessUnitReq.init();
+
+
+        //PopUp Role
+        $('#RoleName-popup').on('click', function (e) {
+            urlModalPopup = '@Url.Action("_popupContent", "Popup", new { type = "securityrole", _entity = "" })' + '&dependBu=' + $('#BusinessUnitID').val();
+            colModelsName = [
+                { label: 'ID', name: 'Id', index: 'Id', key: true, width: 75, hidden: true },
+                { label: 'Name', name: 'Name', index: 'Name', width: 500 }
+            ];
+            var id = $(this).parent().find('input:last').attr('id');
+            $('#' + id).trigger("blur");
+            e.preventDefault();
+        });
+
+        var SecurityRoleReq = new PopupClass();
+        SecurityRoleReq.setId("RoleName");
+        SecurityRoleReq.setUrl('@Url.Action("SecurityRole", "Popup")');
+        SecurityRoleReq.setHiddenId("SecurityRoleID");
+        SecurityRoleReq.setDepend('BusinessUnit');
+        SecurityRoleReq.setDependId('BusinessUnitID');
+        SecurityRoleReq.init();
+
+        //Pop up Branch
+        $('#BranchName-popup').on('click', function (e) {
+            urlModalPopup = '@Url.Action("_popupContent", "Popup", new { type = "branch", _entity = "" })';
+            colModelsName = [
+                { label: 'ID', name: 'Id', index: 'Id', key: true, width: 75, hidden: true },
+                { label: 'Name', name: 'Name', index: 'Name', width: 500 }
+            ];
+            var id = $(this).parent().find('input:last').attr('id');
+            $('#' + id).trigger("blur");
+            e.preventDefault();
+        });
+
+        var Branch = new PopupClass();
+        Branch.setId("BranchName");
+        Branch.setUrl('@Url.Action("Branch", "Popup")');
+        Branch.setHiddenId("BranchID");
+        Branch.init();
+
+        //Get Attribute from domain
+        $("#DomainName").focusout(function () {
+
+            var domainNameTxt = $("#DomainName").val();
+            var pat = new RegExp("^[a-zA-Z0-9._-]+\\\\[a-zA-Z0-9.-]");
+
+            if (pat.test(domainNameTxt) == true) {
+                if (domainNameTxt != null && domainNameTxt != '') {
+                    $.getJSON('@Url.Action("checkUserAD", "SystemUser")', { userName: domainNameTxt }, function (data) {
+                        if (data.isExist == 0) {
+                            $("#FirstName").val("");
+                            $("#LastName").val("");
+                            $("#FullName").val("");
+                            $("#IsActiveDirectoryUser").val("");
+                            $("#ActiveDirectoryGuid").val("");
+                            $("#AuthInfo").val("");
+                            $("#InternalEMailAddress").val("");
+                            $("#Title").val();
+                            $("#HomePhone").val();
+                        }
+                        else {
+                            $("#FirstName").val(data.fname);
+                            $("#LastName").val(data.lname);
+                            $("#FullName").val(data.fname + ' ' + data.lname);
+                            $("#IsActiveDirectoryUser").val(true);
+                            $("#ActiveDirectoryGuid").val(data.adId);
+                            $("#AuthInfo").val(data.objSid);
+                            $("#InternalEMailAddress").val(data.email);
+                            $("#Title").val(data.title);
+                            $("#HomePhone").val(data.phone);
+                        }
+                        //$(".divFormMessage").text(data.message);
+                        if (data.message != "") {
+                            alert(data.message);
+                        }
+                    });
+                }
+            }
+            else {
+                $("#DomainName").focus();
+                alert('@Resources.NotifResource.WrongDomainNameFormat');
+            }
+        });
+
+        //Check enable and disable state
+        @if (actionPage == "Edit")
+        {
+            if (!buList.Any(x => x == Model.BusinessUnitID))
+            { 
+                <text>
+                    $("#form_systemuser :input").attr("disabled", true);
+                    $("#form_systemuser :input").addClass("readOnlyText");
+
+                    $("#btn_disable").hide();
+                    $("#btn_enable").show();
+                </text>
+            }
+            else if (@Model.IsDisabled == true)
+            {
+                <text>
+                    $("#form_systemuser :input").attr("disabled", true);
+                    $("#form_systemuser :input").addClass("readOnlyText");
+
+                    $("#btn_disable").hide();
+                    $("#btn_enable").show();
+                </text>
+            }
+            else if (@Model.IsDisabled == false)
+            {
+                <text>
+                    $("#btn_enable").hide();
+                    $("#btn_disable").show();
+                    if ("@Model.BranchID".length > 0) {
+                        popupCheckFirst("BranchName", "@Model.BranchID", "@Model.BranchName");
+                    }
+                    if ("@Model.SecurityRoleID".length > 0) {
+                        popupCheckFirst("RoleName", "@Model.SecurityRoleID", "@Model.RoleName");
+                                }
+                    if ("@Model.BusinessUnitID".length > 0) {
+                        popupCheckFirst("BusinessUnitName", "@Model.BusinessUnitID", "@Model.BusinessUnitName");
+                                }
+                </text>   
+            }
+
+            //function EnableDisable
+            <text>
+        $("#DomainName").prop("readonly", true);
+                var id = '@(Model.SystemUserId)';
+                function setEnableDisable(id, oprType) {
+                    var url = "/SystemUser/setEnableDisable";
+                    var postData = { id: id, oprType: oprType };
+
+                    $.ajax({
+                        type: "POST",
+                        url: url,
+                        data: JSON.stringify(postData),
+                        contentType: "application/json; charset=utf-8",
+                        dataType: "json",
+                        success: function (msg) {
+                            alert(msg.message);
+                            location.reload();
+                        },
+                        error: function (xhr, status, err) {
+                            alert(oprType + " tidak berhasil !!!");
+                        }
+                    });
+                }
+
+                $("#confirm-disable").on('show.bs.modal', function (e) {
+                    $(this).find('.btn-ok').click(function () {
+                        setEnableDisable(id, "Disable");
+                    });
+                });
+
+                $("#confirm-enable").on('show.bs.modal', function (e) {
+                    $(this).find('.btn-ok').click(function () {
+                        setEnableDisable(id, "Enable");
+                    });
+                });
+
+            </text> 
+        }
+
+        function validateForm(action, formName) {
+            if ($("#DomainName").val() == "") {
+                alert("@Resources.NotifResource.DomainNameEmpty");
+                return false;
+            }
+            else if ($("#FirstName").val() == "") {
+                alert("@Resources.NotifResource.FirstNameBlank");
+                return false;
+            }
+            else if ($("#LastName").val() == "") {
+                alert("@Resources.NotifResource.LastNameBlank");
+                return false;
+            }
+            else if ($("#BusinessUnitID").val() == "") {
+                alert("@Resources.NotifResource.BusinessUnitBlank");
+                return false;
+            }
+            else if ($("#SecurityRoleID").val() == "") {
+                alert("@Resources.NotifResource.RoleBlank");
+                return false;
+            }
+            else if ($("#IsActiveDirectoryUser").val() == "") {
+                alert("@Resources.NotifResource.DomainNameNotFoundAD");
+            }
+    formSubmit(action, formName);
+}
+
+        $("#btn_save").click(function () {
+            validateForm("save", $("#form_systemuser"));
+        });
+
+        $("#btn_savenclose").click(function () {
+            validateForm("saveNClose", $("#form_systemuser"));
+        });
+
+        $("#btn_savenopen").click(function () {
+            validateForm("saveNOpen", $("#form_systemuser"));
+        });
+    });
+</script>

@@ -1,0 +1,52 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-COMPATIBLE" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>@RenderSection("title", required:false)</title>
+
+    <link rel="stylesheet" href="~/dist/css/bootstrap.css" media="all">
+    <link rel="stylesheet" href="~/assets/css/Print.css" media="all">
+ 
+    <script src="~/assets/js/respond.js"></script>
+    <script src="~/assets/js/jquery.js"></script>
+    <script src="~/dist/js/bootstrap.js"></script>
+
+    @RenderSection("Stylesheets", required:false)
+</head>
+<body>
+
+<!-- Header -->
+<nav class="navbar navbar-inverse navbar-fixed-top header_color header_image no-print" style="border-bottom:1px solid #6893CF;">
+    <div class="container-fluid no-print">
+        <div class="navbar-header no-print">
+            <a class="navbar-brand no-print" href="javascript:void(0)">
+                @*<img style="max-width:100px; margin-top: -7px;"
+                 src="/assets/images/bcaCrm.gif">*@
+            </a>
+        </div>
+    
+        <div id="navbar" class="navbar-collapse collapse no-print">
+            @RenderSection("navHeader", required:false)
+        </div>
+    </div>
+</nav>
+
+<!-- start content -->
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-13 col-sm-offset mainPrint">
+            @RenderBody()
+        </div>
+    </div>
+</div>
+<!-- end content -->
+
+    @RenderSection("Javascripts", required:false)
+</body>
+</html>

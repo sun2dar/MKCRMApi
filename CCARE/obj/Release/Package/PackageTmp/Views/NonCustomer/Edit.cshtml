@@ -1,0 +1,506 @@
+﻿@model CCARE.Models.MasterData.NonCustomer
+
+@{
+    ViewBag.Title = "Edit";
+    if (Request.IsAjaxRequest())
+    {
+        Layout = null;
+    }
+    else
+    {
+        Layout = "~/Views/Shared/_LayoutEntity.cshtml";
+    }
+}
+
+@section title
+{
+    Non Customer: @Model.FullName
+}
+
+@section entityLogo
+{
+    <img class="crm-logo" src="~/assets/images/ico_lrg_112.gif" />
+}
+
+@section formTitle
+{
+    <div class="text_title">
+        <h1>Information</h1>
+        Non Customer: @Model.FullName
+    </div>
+}
+
+@section buttonRequest
+{
+    <a href="#">
+        <img id="btn_create_callwrapup" class="btn-create-request"  data-toggle="tooltip" data-placement="left"
+           title="" data-original-title="New Call Wrap Up" src="~/assets/images/cwu.png" />
+    </a>
+}
+
+@section navHeader
+{
+    <ul class="nav navbar-nav navbar- left">
+        @if (Model.StateLabel == "Active")
+        {
+            <li class="form_page"><a id="btn_save" href="#">Save</a></li>
+            <li class="form_page"><a id="btn_savenclose" href="#">Save & Close</a></li>
+        }
+
+        <li class="form_page">
+            <a id="btn_deactivate" href="#" data-toggle="modal" data-target="#confirm-changestatus">
+            @if (Model.StateLabel == "Inactive")
+            {
+                <text>Activate</text>
+            }
+            else
+            {
+                <text>Deactivate</text>
+            }
+            </a>
+        </li>
+    </ul>
+}
+
+@section footerStatus
+{
+    <div class="footer_text">Status: @Model.StateLabel</div>
+}
+
+@section sidebarMenu
+{
+    <li><a class="link_form_page" data-ajax="true" data-ajax-mode="replace" data-ajax-update="#page_content" href="/NonCustomer/Edit?id=@(Model.NonCustomerID)">Information</a></li>
+    <li><a class="link_other_page" data-ajax="true" data-ajax-mode="replace" data-ajax-update="#page_content" href="/NonCustomer/RequestList?id=@(Model.NonCustomerID)">Request</a></li>
+    <li><a class="link_other_page" data-ajax="true" data-ajax-mode="replace" data-ajax-update="#page_content" href="/NonCustomer/CallWrapUpNonCustomer?id=@Model.NonCustomerID">Call Wrap Up</a></li>
+}
+
+<div class="modal fade" id="confirm-changestatus" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+            @if (Model.StateLabel == "Inactive")
+            {
+                <h1>Confirm NonCustomer Activate Action</h1>
+            }
+            else
+            {
+                <h1>Confirm NonCustomer Deactivate Action</h1>
+            }
+            </div>
+            <div class="modal-body input-lg" style="height:70px;">
+            @if (Model.StateLabel == "Inactive")
+            {
+                <text>This action will change the status of selected NonCustomer to Active. To continue click "Ok"</text>
+            }
+            else
+            {
+                <text>This action will change the status of selected NonCustomer to Inactive. To continue click "Ok"</text>
+            }
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                <a class="btn btn-danger btn-ok">Ok</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container-fluid">
+    <!-- tabs -->
+    <div class="row">
+        <div class="col-sm-12 panel panel-default panel_form_parent">
+            <br /> 
+            <div class="tab-content myContent_NoTab">
+                <div class="tab-pane fade active in" id="general" aria-labelledby="general-tab">
+                    @using (Html.BeginForm("Edit", "NonCustomer", FormMethod.Post, new { id = "form_noncustomer" }))
+                    {
+                        @Html.Hidden("hidden_displayStatus", "", new { @id = "hidden_displayStatus" })
+                        @Html.HiddenFor(x => x.NonCustomerID)
+                    
+                        <!-- panel content -->
+                        <div class="col-sm-12">
+                            <!-- title 1 -->
+                            <div class="row form_text">
+                                <div class="panel panel-default panel_form_child">
+                                    <div class="panel-heading">
+                                        <label class="control-label sv-header"><strong>General</strong></label>
+                                    </div>
+                                    <br />
+                                    <div class="panel-body">
+                                        <div class="form-horizontal">
+                                            <div class="row">
+                                                <div class="col-sm-6">                                        
+                                                    <div class="form-group">
+                                                        <label class="col-sm-4 control-label">Salutation</label>
+                                                        <div class="col-sm-8">
+                                                            @Html.TextBoxFor(x => x.Salutation, new { @class = "form-control" })
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-6">                                                                              
+                                                    <div class="form-group">
+                                                        <label class="col-sm-4 control-label mandatory">Full Name</label>
+                                                        <div class="col-sm-8">
+                                                            @Html.TextBoxFor(x => x.FullName, new { @class = "form-control" })
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-sm-6">                                        
+                                                    <div class="form-group">
+                                                        <label class="col-sm-4 control-label">First Name</label>
+                                                        <div class="col-sm-8" >
+                                                            @Html.TextBoxFor(x => x.FirstName, new { @class = "form-control" })
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-6">                                        
+                                                    <div class="form-group">
+                                                        <label class="col-sm-4 control-label">Last Name</label>
+                                                        <div class="col-sm-8" >
+                                                            @Html.TextBoxFor(x => x.LastName, new { @class = "form-control" })
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-sm-6">                                        
+                                                    <div class="form-group">
+                                                        <label class="col-sm-4 control-label">Telephone No</label>
+                                                        <div class="col-sm-8" >
+                                                            @Html.TextBoxFor(x => x.PhoneNo, new { @class = "form-control" })
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-6">                                        
+                                                    <div class="form-group">
+                                                        <label class="col-sm-4 control-label">Handphone No</label>
+                                                        <div class="col-sm-8" >
+                                                            @Html.TextBoxFor(x => x.HandphoneNo, new { @class = "form-control" })
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-sm-6">                                        
+                                                    <div class="form-group">
+                                                        <label class="col-sm-4 control-label">Birth Date</label>
+                                                        <div class="col-sm-8" >
+                                                            <div class="input-group">
+                                                                @if (Model.BirthDate == null)
+                                                                {
+                                                                    <input type="text" id="BirthDate" name="BirthDate" class="form-control" />
+                                                                }
+                                                                else
+                                                                {
+                                                                    <input type="text" id="BirthDate" name="BirthDate" value="@(Model.BirthDate.Value.ToString("dd/MM/yyyy"))" class="form-control" />
+                                                                }
+                                                                <div tabindex="0" id="BirthDate-label" class="form-control typeahead-label hide" style="border-top-left-radius:3px;border-bottom-left-radius:3px"></div>
+                                                                <div tabindex="0" class="input-group-addon">
+                                                                    <i class="fa fa-calendar"></i>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-6">                                        
+                                                    <div class="form-group">
+                                                        <label class="col-sm-4 control-label">Fax</label>
+                                                        <div class="col-sm-8" >
+                                                            @Html.TextBoxFor(x => x.FaxNo, new { @class = "form-control" })
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-sm-6">                                        
+                                                    <div class="form-group">
+                                                        <label class="col-sm-4 control-label">Email</label>
+                                                        <div class="col-sm-8" >
+                                                            @Html.TextBoxFor(x => x.Email, new { @class = "form-control" })
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        
+                            <!-- title 2 -->
+                            <div class="row form_text">
+                                <div class="panel panel-default panel_form_child">
+                                    <div class="panel-heading">
+                                        <label class="control-label sv-header"><strong>Address</strong></label>
+                                    </div>
+                                    <br />
+                                    <div class="panel-body">
+                                        <div class="form-horizontal">
+                                            <div class="row">
+                                                <div class="col-sm-6">
+                                                    <div class="form-group">
+                                                        <label class="col-sm-4 control-label">Address Type</label>
+                                                        <div class="col-sm-8">
+                                                            @Html.DropDownListFor(x => x.AddressType, (SelectList)ViewBag.SL_AddressType, "", new { @class = "form-control" })
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-6">                                        
+                                                    <div class="form-group">
+                                                        <label class="col-sm-4 control-label">Country/Region</label>
+                                                        <div class="col-sm-8" >
+                                                            @Html.TextBoxFor(x => x.Country, new { @class = "form-control" })
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-sm-6">                                        
+                                                    <div class="form-group">
+                                                        <label class="col-sm-4 control-label">Address 1</label>
+                                                        <div class="col-sm-8">
+                                                            @Html.TextBoxFor(x => x.Address1, new { @class = "form-control" })
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-6">                                                                              
+                                                    <div class="form-group">
+                                                        <label class="col-sm-4 control-label">City</label>
+                                                        <div class="col-sm-8">
+                                                            @Html.TextBoxFor(x => x.City, new { @class = "form-control" })
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-sm-6">                                        
+                                                    <div class="form-group">
+                                                        <label class="col-sm-4 control-label">Address 2</label>
+                                                        <div class="col-sm-8">
+                                                            @Html.TextBoxFor(x => x.Address2, new { @class = "form-control" })
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-6">                                                                              
+                                                    <div class="form-group">
+                                                        <label class="col-sm-4 control-label">Zip Code</label>
+                                                        <div class="col-sm-8">
+                                                            @Html.TextBoxFor(x => x.Zipcode, new { @class = "form-control" })
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-sm-6">                                        
+                                                    <div class="form-group">
+                                                        <label class="col-sm-4 control-label">Address 3</label>
+                                                        <div class="col-sm-8">
+                                                            @Html.TextBoxFor(x => x.Address3, new { @class = "form-control" })
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- title 3 -->
+                            <div class="row form_text">
+                                <div class="panel panel-default panel_form_child">
+                                    <div class="panel-heading">
+                                        <label class="control-label sv-header"><strong>Timestamp Information</strong></label>
+                                    </div>
+                                    <br />
+                                    <div class="panel-body">
+                                        <div class="form-horizontal">
+                                            <div class="row">
+                                                <div class="col-sm-6">                                        
+                                                    <div class="form-group">
+                                                        <label class="col-sm-4 control-label">Created By</label>
+                                                        @Html.HiddenFor(model => model.CreatedBy)
+                                                        <div class="col-sm-8">
+                                                            @Html.TextBoxFor(model => model.CreatedByName, new { @class = "form-control", @disabled = "disabled" })
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-6">                                        
+                                                    <div class="form-group">
+                                                        <label class="col-sm-4 control-label">Created On</label>
+                                                        @Html.HiddenFor(model => model.CreatedOn)
+                                                        <div class="col-sm-4">
+                                                            <input type="text" class="form-control" value="@(Model.CreatedOn.Value.Date.ToShortDateString())" disabled="disabled" />
+                                                        </div>
+                                                        <div class="col-sm-4">
+                                                            @Html.TextBoxFor(x => x.CreatedOn, new { Value = @Model.CreatedOn.Value.ToString("HH:mm"), @class = "form-control", @disabled = "disabled" })
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-sm-6">                                        
+                                                    <div class="form-group">
+                                                        <label class="col-sm-4 control-label">Modified By</label>
+                                                        @Html.HiddenFor(model => model.ModifiedBy)
+                                                        <div class="col-sm-8">
+                                                            @Html.TextBoxFor(model => model.ModifiedByName, new { @class = "form-control", @disabled = "disabled" })
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-6">                                        
+                                                    <div class="form-group">
+                                                        <label class="col-sm-4 control-label">Modified On</label>
+                                                        @Html.HiddenFor(x => x.ModifiedOn)
+                                                        @if (Model.ModifiedOn != null)
+                                                        {
+                                                            <div class="col-sm-4">
+                                                                <input type="text" class="form-control" value="@(Model.ModifiedOn.Value.Date.ToShortDateString())" disabled="disabled" />
+                                                            </div>
+                                                            <div class="col-sm-4">
+                                                                @Html.TextBoxFor(x => x.ModifiedOn, new { Value = @Model.ModifiedOn.Value.ToString("HH:mm"), @class = "form-control", @disabled = "disabled" })
+                                                            </div>
+                                                        }
+                                                        else
+                                                        {
+                                                            <div class="col-sm-4">
+                                                                <input type="text" class="form-control" value="" disabled="disabled" />
+                                                            </div>
+                                                            <div class="col-sm-4">
+                                                                <input type="text" class="form-control" value="" disabled="disabled" />
+                                                            </div>
+                                                        }
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            @Html.HiddenFor(x => x.Owner)
+                                            @Html.HiddenFor(x => x.OwnerName)
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row form_text">
+        
+    </div>
+    
+    <div id="response-modal"></div>
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        //validasi kosong untuk mandatory
+        function validateForm(action, formName) {
+            if ($("#FullName").val() == "") {
+                alert("Field Full Name harus diisi");
+                // alert("@Resources.Request.RequestMandatoryCustomer");
+                return false;
+            }
+
+            if ($("#BirthDate").val() != "") {
+                $("#BirthDate").val(js_yyyy_mm_dd_hh_mm_ss(stringToDate($("#BirthDate").val(), "dd/mm/yyyy", "/")));
+            }
+                
+            formSubmit(action, formName);
+        }
+
+        $("#btn_save").click(function () {
+            validateForm("save", $("#form_noncustomer"));
+        });
+
+        $("#btn_savenclose").click(function () {
+            validateForm("saveNClose", $("#form_noncustomer"));
+        });
+
+        $("#confirm-changestatus").on('show.bs.modal', function (e) {
+            $(this).find('.btn-ok').click(function () {
+                var postData = {
+                    _resolution: "",
+                    _description: ""
+                };
+
+                otherAction($("#form_noncustomer"), "/NonCustomer/ChangeStatus", "changestatus", postData)
+            });
+        });
+
+        var StateLabel = "@(Model.StateLabel)";
+        if (StateLabel == "Inactive") {
+            $("input").attr("readonly", "readonly");
+            $("select").attr("disabled", "disabled");
+        }
+
+        $("#BirthDate").datepicker({
+            todayHighlight: true,
+            format: "dd/mm/yyyy",
+            autoclose: true,
+            clearBtn: true,
+            orientation: 'top left'
+        });
+       
+        $(".link_other_page").click(function () {
+            $(".form_page").hide();
+        });
+        $(".link_form_page").click(function () {
+            $(".form_page").show();
+        });
+
+        $("#FirstName").val(UnescapeHtml($("#FirstName").val()));
+        $("#LastName").val(UnescapeHtml($("#LastName").val()));
+        $("#FullName").val(UnescapeHtml($("#FullName").val()));
+    });
+</script>
+
+@if (Session["RoleID"] != null)
+{
+    Guid roleID = new Guid(Session["RoleID"].ToString());
+    //bool checkButton = CCARE.App_Function.RoleNPrivilege.checkEntityButtonByRoleID(roleID, "Customer", "CallWrapUp");
+    bool checkButton = CCARE.App_Function.RoleNPrivilege.isEntityChecked(roleID, "CallWrapUp");
+
+    if (checkButton == true)
+    {
+        <script type="text/javascript">
+            ////Connect to cti
+            try {
+                myobject.ConnectIC();
+            } catch (e) {
+
+            }
+
+            $(document).ready(function () {
+                if (myobject.CallStartDateTime == "") {
+                    hideNewCWU();
+                } else {
+                    showNewCWU();
+                }
+
+                $("#btn_create_callwrapup").click(function () {
+                    var nonCustomerID = '@Model.NonCustomerID';
+                    var ownerID = '@(Session["CurrentUserID"])';
+                    var url = '@Url.Action("autoCreateCwu", "CallWrapUp")';
+
+                    openWindow(url + '?customerID=' + nonCustomerID + '&ownerID=' + ownerID + '&startCallTime=' + ctiFormatDate(myobject.CallStartDateTime) + '&flag=noncustomer');
+                });
+            });
+
+            function hideNewCWU() {
+                $("#btn_create_callwrapup").hide();
+                $("#btn_create_callwrapup").tooltip('hide');
+            }
+
+            function showNewCWU() {
+                $("#btn_create_callwrapup").show();
+                $("#btn_create_callwrapup").tooltip('show');
+            }
+        </script>
+        
+    
+        <script type='text/javascript' for="myobject" event="CallConnected()">showNewCWU();</script>
+        <script type='text/javascript' for="myobject" event="CallDisconnected()">hideNewCWU();</script>
+    }
+}

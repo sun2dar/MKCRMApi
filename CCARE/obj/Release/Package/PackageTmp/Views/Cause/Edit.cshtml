@@ -1,0 +1,292 @@
+﻿@model CCARE.Models.Cause
+
+@{
+    ViewBag.Title = "Action: " + @Model.Name;
+    Layout = "~/Views/Shared/_LayoutEntity.cshtml";
+}
+
+@section title
+{
+    Action
+}
+
+@section entityLogo
+{
+    <img class="crm-logo" src="~/assets/images/ico_lrg_112.gif" />
+}
+
+@section formTitle
+{
+    <div class="text_title">
+        <h1>Information</h1>
+        Action: @Model.Name
+    </div>
+}
+
+@section navHeader
+{
+    <ul class="nav navbar-nav navbar-left">
+        @if (Session["RoleID"] != null)
+        {
+            string entity = ViewContext.Controller.ControllerContext.RouteData.Values["controller"].ToString();
+            Guid roleID = new Guid(Session["RoleID"].ToString());
+            bool checkButton = CCARE.App_Function.RoleNPrivilege.checkEntityButtonByRoleID(roleID, entity, "Write");
+            bool checkButton2 = CCARE.App_Function.RoleNPrivilege.checkEntityButtonByRoleID(roleID, entity, "Delete");
+
+            if (checkButton == true)
+            {
+                if (Model.StateCode == 0)
+                {
+                    <text>
+                        <li><a id="btn_save" href="#">Save</a></li>
+                        <li><a id="btn_savenclose" href="#">Save & Close</a></li>
+                        <li><a id="btn_savenopen" href="#">Save & New</a></li>
+                    </text>
+                }
+                <li>
+                    <a id="btn_changestatus" href="#" data-toggle="modal" data-target="#confirm-changestatus">
+                    @if (Model.StateCode == 0)
+                    {
+                        <text>Deactivate</text>
+                    }
+                    else
+                    {
+                        <text>Activate</text>
+                    }
+                    </a>
+                </li>
+            }
+
+            if (checkButton2 == true)
+            {
+            <text>
+                <li><a id="btn_delete" href="#" data-toggle="modal" data-target="#confirm-delete">Delete</a></li>
+            </text>
+            }
+        }
+        
+    </ul>
+}
+
+@section footerStatus
+{
+    <div class="footer_text">
+        Status: @Model.StateLabel
+    </div>
+}
+
+@section sidebarMenu
+{
+    <li class="active"><a href="#">Information</a></li>
+}
+
+<div class="modal fade" id="confirm-delete" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1>Confirm Deletion</h1>
+            </div>
+            <div class="modal-body input-lg">
+                The system will delete this record. This action cannot be undone, To continue click "Delete".
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                <a class="btn btn-danger btn-ok">Delete</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="confirm-changestatus" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1>Confirm @if (Model.StateCode == 0)
+                            {<text>Action Deactivation</text>}
+                            else
+                            {<text>Action Activation</text>}</h1>
+            </div>
+            <div class="modal-body input-lg confirm-change-status">
+                This action will change the status of selected Action to @if (Model.StateCode == 0)
+                                                                         {<text>Inactive</text>}
+                                                                         else
+                                                                         {<text>Active</text>}. To continue click "Ok"
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                <a class="btn btn-danger btn-ok">Ok</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container-fluid">
+    <!-- tabs -->
+    <div class="row">
+        <div class="col-sm-12 panel panel-default panel_form_parent">
+        <div class="myContent_noTab">
+        @using (Html.BeginForm("Edit", "Cause", FormMethod.Post, new { id = "form_cause" }))
+        {
+            @Html.Hidden("hidden_displayStatus", "", new { @id = "hidden_displayStatus" })
+            @Html.HiddenFor(x => x.CauseID);
+                    
+            <!-- panel content -->
+            <div class="col-sm-12">
+
+                <!-- START title 1 -->
+                <div class="row form_text">
+                    <div class="panel panel-default panel_form_child">
+                        <div class="panel-heading">
+                            <label class="control-label sv-header"><strong>General</strong></label>
+                        </div>
+                        <br />
+                        <div class="panel-body">
+                            <div class="form-horizontal">
+                                
+                                <div class="row">
+                                    <div class="col-sm-12">                                        
+                                        <div class="form-group">
+                                            <label class="col-sm-2 control-label mandatory">Kode</label>
+                                            <div class="col-sm-10">
+                                                @Html.TextBoxFor(x => x.Code, new { @class = "form-control" })
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-sm-12">                                                                              
+                                        <div class="form-group">
+                                            <label class="col-sm-2 control-label mandatory">Nama</label>
+                                            <div class="col-sm-10">
+                                                @Html.TextBoxFor(x => x.Name, new { @class = "form-control" })
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                            </div>
+                        </div>
+                                
+                    </div>
+                </div>
+                <!-- END title 1 -->        
+                <!-- START title 2 -->
+                <div class="row form_text">
+                    <div class="panel panel-default panel_form_child">
+                        <div class="panel-heading">
+                            <label class="control-label sv-header"><strong>Timestamp Information</strong></label>
+                        </div>
+                        <br />
+                        <div class="panel-body">
+                            <div class="form-horizontal">
+
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <label class="col-sm-4 control-label">Created By</label>
+                                            <div class="col-sm-8">
+                                                @Html.TextBoxFor(x => x.CreatedByName, new { @class = "form-control", @disabled = "disabled" })
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6">                                        
+                                        <div class="form-group">
+                                            <label class="col-sm-4 control-label">Created On</label>
+                                            <div class="col-sm-8">
+                                                @Html.TextBoxFor(x => x.CreatedOn, new { Value = @Model.CreatedOn.Value.ToString("dd/MM/yyyy HH:mm"), @class = "form-control", @disabled = "disabled" })
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-sm-6">                                        
+                                        <div class="form-group">
+                                            <label class="col-sm-4 control-label">Modified By</label>
+                                            <div class="col-sm-8">
+                                                @Html.TextBoxFor(x => x.ModifiedByName, new { @class = "form-control", @disabled = "disabled" })
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6">                                                                              
+                                        <div class="form-group">
+                                            <label class="col-sm-4 control-label">Modified On</label>
+                                            <div class="col-sm-8">
+                                                @Html.TextBoxFor(x => x.ModifiedOn, new { Value = @Model.ModifiedOn.Value.ToString("dd/MM/yyyy HH:mm"), @class = "form-control", @disabled = "disabled" })
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- END title 2 -->
+            </div>
+        }
+        </div>
+        </div>
+    </div>
+    <div id="response-modal"></div>
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        var entityName = '@ViewContext.RouteData.Values["Controller"].ToString()';
+       
+        var stateCode = '@(Model.StateCode)';
+        if (stateCode == 1) {
+            $("#form_cause select").attr('disabled', 'disabled');
+            $("#form_cause input").attr('readonly', true);
+        }
+
+        function validateForm(action, formName) {
+            if ($("#Code").val() == "") {
+                alert("@Resources.Cause.MandatoryCode");
+                return false;
+            }
+            if ($("#Name").val() == "") {
+                alert("@Resources.Cause.MandatoryName");
+                return false;
+            }
+            formSubmit(action, formName);
+        }
+
+        $("#btn_save").click(function () {
+            validateForm("save", $("#form_cause"));
+        });
+
+        $("#btn_savenclose").click(function () {
+            validateForm("saveNClose", $("#form_cause"));
+        });
+
+        $("#btn_savenopen").click(function () {
+            validateForm("saveNOpen", $("#form_cause"));
+        });
+
+        $("#confirm-delete").on('show.bs.modal', function (e) {
+            $(this).find('.btn-ok').click(function () {
+                var postData = {
+                    _resolution: "",
+                    _description: ""
+                };
+                
+                otherAction($("#form_cause"), "/Cause/Delete", "delete", postData)
+            });
+        });
+
+        $("#confirm-changestatus").on('show.bs.modal', function (e) {
+            $(this).find('.btn-ok').click(function () {
+                var postData = {
+                    _resolution: "",
+                    _description: ""
+                };
+                
+                otherAction($("#form_cause"), "/Cause/ChangeStatus", "changestatus", postData)
+            });
+        });
+    });
+</script>

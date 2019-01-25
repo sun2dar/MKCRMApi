@@ -1,0 +1,263 @@
+﻿@{
+    Layout = "~/Views/Shared/_LayoutEmail.cshtml";
+    bool checkButtonDel = false;
+    bool checkButtonAdd = false;
+    if (Session["RoleID"] != null)
+    {
+        string entity = ViewContext.Controller.ControllerContext.RouteData.Values["controller"].ToString();
+        Guid roleID = new Guid(Session["RoleID"].ToString());
+        checkButtonDel = CCARE.App_Function.RoleNPrivilege.checkEntityButtonByRoleID(roleID, entity, "Delete");
+        checkButtonAdd = CCARE.App_Function.RoleNPrivilege.checkEntityButtonByRoleID(roleID, entity, "Write");
+    }
+}
+
+@section title
+{
+    
+}  
+    
+
+@section scriptExt{
+ 
+}
+
+@section mainmenu{ Settings }
+@section submenu{ Application Settings }
+@section menu{ Teams }
+
+@section extraButton
+{
+    @if (checkButtonAdd == true)
+    {            
+        <li class="active float-right"><a id="btn_new" href="#"><span class="glyphicon glyphicon-pencil glyp-space" aria-hidden="true"></span>New</a></li>
+    }
+
+    @if (checkButtonDel == true)
+    {
+        <li class="active float-right"><a id="btn_delete" href="#" class="red-font"><span class="glyphicon glyphicon-remove glyp-space" aria-hidden="true"></span>Delete</a></li>
+    }
+}
+
+<div class="modal fade" id="confirm-delete" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1>Confirm Deletion</h1>
+            </div>
+            <div class="modal-body input-lg">
+                The system will delete this record. This action cannot be undone, To continue click "Delete".
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                <a id="btn_confirm_del" class="btn btn-danger btn-ok">Delete</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-sm-12">
+        <!-- Content -->
+        <div class="container-fluid content_container">             
+            <div class="row">
+                <div class="col-sm-12 content_col">
+                    <form id="form_inquiry">
+                        <div class="col-lg-3 col-lg-offset-9 inquiry_right">
+                            <div class="input-group col-lg-12">
+                                <span class="inquiry_dropdown">
+                                    <select id="inquiry_team" class="form-control">
+                                        <option value="0">All Teams</option>
+                                        <option value="1">Local Business Teams</option>
+                                        <option value="2">My Teams</option>
+                                        <option value="3">Subsidiary Team</option>
+                                    </select>
+                                </span>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <br />
+            <!-- Table result -->
+            <div class="row">
+                <div class="col-sm-12" >
+                    <div class="panel panel-default">
+                        <div class="panel-heading panel_heading">
+                            <label class="control-label sv-header">
+                                <strong>Search Result</strong>
+                            </label>
+                        </div>
+                        <div class="panel-body">
+                            <div class="divGrid">
+                                <table id="gridTable"></table>
+                                <div id="jqGridPager"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <br />
+            
+            <div class="row">
+                <div class="col-sm-12 content_col">
+                    
+                </div>
+            </div>
+            <br />
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        var gridId = "#gridTable";
+        var entityName = '@ViewContext.RouteData.Values["Controller"].ToString()';
+        
+        $("#form_inquiry").find("input").addClass("rm-padding");
+        $("#form_inquiry").find("select").addClass("rm-padding");
+        $("#form_inquiry").find(":radio").removeClass("rm-padding");
+
+        function teamLoadGrid() {
+            var teamModel = [
+                    { label: 'ID', name: 'Id', index: 'Id', key: true, width: 75, hidden: true },
+                    { label: 'Team Name', name: 'TeamName', width: 200 },
+                    { label: 'Business Unit', name: 'BusinessUnit', width: 250 }
+            ];
+
+            //------------- start test -------------
+
+            $.jgrid.gridUnload(gridId);
+            var colModels = teamModel;
+            var customVal = {
+                height: 400,
+                rowNum: 20
+            }
+            var url = '@Url.Action("loadGrid", "Team")';
+            var postData = {
+                _filter: $("#inquiry_team").val()
+            };
+
+            $(gridId).jqGrid({
+                url: url,
+                mtype: "POST",
+                datatype: "json",
+                postData: postData,
+                colModel: colModels,
+                shrinkToFit: false,
+                width: '100%',
+                autowidth: true,
+                height: '100%',
+                rowNum: customVal.rowNum,
+                rowList: [20, 30],
+                rownumbers: true,
+                pager: $("#jqGridPager"),
+                sortname: 'Id',
+                viewrecords: true,
+                sortorder: "desc",
+                loadComplete: function (data) {
+                    //Remove total page on footer
+                    $("#sp_1_jqGridPager").hide();
+                    $("#input_jqGridPager").contents().filter(function () { return this.nodeType == 3; }).remove();
+                    $("#input_jqGridPager").prepend("<text>Page  </text>");
+
+                    //Hide First and last on paging
+                    $("#first_jqGridPager").hide();
+                    $("#last_jqGridPager").hide();
+
+                    // Disabled input page number in jqgrid paging
+                    $("#input_jqGridPager").find("input").attr('disabled', 'disabled');
+
+                    /* Remove rm padding from selbox */
+                    $(".ui-pg-selbox").removeClass("rm-padding");
+
+                    //Hide records per page
+                    //$(".ui-pg-selbox").hide();
+
+                    if (data.rows.length == 0) {
+                    //if (data.records == 0) {
+                        $("#record-empty").remove();
+                        var emptyText = '';
+                        emptyText += '<table id="record-empty" class="ui-jqgrid-btable"><tr><td>&nbsp;&nbsp;&nbsp;</td><td><center><h2>No Records Found</h2><center></td></tr></table>';
+                        var grid = $(gridId);
+                        var container = grid.parents('.ui-jqgrid-view');
+                        container.find('.ui-jqgrid-bdiv').children("table").remove();
+                        container.find('.ui-jqgrid-bdiv').append(emptyText);
+                    }
+                },
+                beforeRequest: function () {
+                },
+                jsonreader: {
+                    root: "rows", //array containing actual data
+                    page: "page", //current page
+                    total: "total", //total pages for the query
+                    records: "records", //total number of records
+                    cell: 'cell',
+                    repeatitems: false,
+                    id: "Id" //index of the column with the pk in it
+                },
+                ondblClickRow: function (rowid, iRow, iCol) {                    
+                    openWindow("Team" + '/Edit?id=' + rowid);
+                },
+                onSelectRow: function (rowid, status, e) {                   
+
+                }
+            }).navGrid("#jqGridPager", { edit: false, add: false, del: false, search: false });
+        }        
+
+        $("#inquiry_team").change(function () {            
+            teamLoadGrid();
+        });
+        $("#inquiry_team").trigger("change");
+
+        $('#btn_new').click(function () {
+            var url = '@Url.Action("Create", "Team", new { type = "team", _entity = "" })';
+
+            var winFeature = [
+            'height=' + (screen.height - 74),
+            'width=' + (screen.width - 12),
+            'directories=no,titlebar=no,toolbar=no,location=no,status=no,menubar=no,scrollbars=no,resizable=yes,left=0px,top=0px' // only works in IE, but here for completeness
+            ].join(',');
+
+            var win = window.open(url, "", winFeature);
+            win.moveTo(0, 0);
+            return false;
+        });
+
+        $("#btn_delete").click(function (e) {
+            e.preventDefault();
+            var myGrid = $('#gridTable'),
+                        selRowId = myGrid.jqGrid('getGridParam', 'selrow'),
+                        celValue = myGrid.jqGrid('getCell', selRowId, 'columnName');
+            if (selRowId == null) {
+                alert("Please select row first...");
+                return false;
+            }
+            $('#confirm-delete').modal({ backdrop: 'static', keyboard: false })
+                .one('click', '#btn_confirm_del', function () {
+                    var postData = {
+                        id: selRowId
+                    };
+                    var url = '@Url.Action("Delete", "Team", new { type = "team", _entity = "" })';
+                    $.ajax({
+                        type: "POST",
+                        url: url,
+                        data: postData,
+                        dataType: "json",
+                        success: function (data) {
+                            if (data.flag == true) {
+                                teamLoadGrid();
+                            }
+                            else {
+                            }
+                        },
+                        error: function (xhr, status, err) {
+                            alert("Error");
+                        }
+                    });
+                    $('#confirm-delete').modal('hide')
+                });
+            // .one() is NOT a typo of .on()
+        });        
+
+    });
+</script>

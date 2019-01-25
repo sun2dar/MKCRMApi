@@ -1,0 +1,1202 @@
+﻿@model List<CCARE.Controllers.Filter>
+
+@{
+    ViewBag.Title = "Report";
+    Layout = "~/Views/Shared/_LayoutInquiry.cshtml";
+
+    var tempData = ViewBag.Filters;
+}
+    <div class="col-lg-12 inquiry_left">
+        <div class="input-group">
+            <input type="text" class="form-control" id="inquiry_val" >
+            <span class="input-group-btn">
+                <button id="btn_search" class="btn btn-primary" type="submit"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></button>
+            </span>
+        </div>
+    </div>
+
+@section title
+{
+    
+}
+
+@section mainmenu{ Workplace }
+@section submenu{ My Work }
+@section menu{ Reports }
+
+@section scriptExt{
+ 
+}
+
+@section ReportViewer{
+    <div class="container-fluid" id="ReportParameter">
+        <div id="response-modal"></div>
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="container-fluid content_container">
+                    <div class="row">
+                        <div class="col-sm-12" >
+                            <br />
+
+                            <ol class="breadcrumb">
+                                <li class="active"><a id="reportparameter_btn" href="#">Report Parameter</a></li>
+                                <li class="active"><a id="reportfilter_btn" href="#">Report Filter</a></li>
+                            </ol>
+
+                            <div class="form-horizontal" id="div_reportparameter">
+                                
+                                <div class="row">
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <label class="col-sm-3 control-label">Report Name</label>
+                                                <div class="col-sm-9">
+                                                    <input type="text" class="form-control" id="Selected-Report" readonly="readonly"/>
+                                                    <input type="hidden" class="form-control" id="Selected-Rdl" />
+                                                    <input type="hidden" class="form-control" id="Selected-ReportID" />
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-sm-6"></div>
+                                    </div>
+                                </div>
+
+                                <div class="row" id="Date">
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <label class="col-sm-3 control-label">Date</label>
+                                                <div class="col-sm-9">
+                                                    <div class="input-group" id="DateTP">
+                                                        <input type="text" class="form-control" id="StartDate" />
+                                                        <span class="input-group-addon">
+                                                            <i class="fa fa-calendar fa-lg"></i>
+                                                        </span>
+                                                        <span class="input-group-btn input_space"></span>
+                                                        <input type="text" class="form-control" id="EndDate" />
+                                                        <span class="input-group-addon">
+                                                            <i class="fa fa-calendar fa-lg"></i>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-sm-6">
+                                            <div class="btn-group" data-toggle="buttons">
+                                                <label class="btn btn-danger" id="DateLbl">
+                                                    <input type="checkbox" id="DateCB"> Choose
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row" id="CreatedOn">
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <label class="col-sm-3 control-label">Created On</label>
+                                                <div class="col-sm-9">
+                                                    <div class="input-group" id="CreatedOnDTP">
+                                                        <input type="text" class="form-control" id="StartCreatedOn" />
+                                                        <span class="input-group-addon">
+                                                            <i class="fa fa-calendar fa-lg"></i>
+                                                        </span>
+                                                        <span class="input-group-btn input_space"></span>
+                                                        <input type="text" class="form-control" id="EndCreatedOn" />
+                                                        <span class="input-group-addon">
+                                                            <i class="fa fa-calendar fa-lg"></i>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-sm-6">
+                                            <div class="btn-group" data-toggle="buttons">
+                                                <label class="btn btn-danger" id="CreatedOnLbl">
+                                                    <input type="checkbox" id="CreatedOnCB"> Choose
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row" id="ModifiedOn">
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <label class="col-sm-3 control-label">Modified On</label>
+                                                <div class="col-sm-9">
+                                                    <div class="input-group" id="ModifiedOnDTP">
+                                                        <input type="text" class="form-control" id="StartModifiedOn" />
+                                                        <span class="input-group-addon">
+                                                            <i class="fa fa-calendar fa-lg"></i>
+                                                        </span>
+                                                        <span class="input-group-btn input_space"></span>
+                                                        <input type="text" class="form-control" id="EndModifiedOn" />
+                                                        <span class="input-group-addon">
+                                                            <i class="fa fa-calendar fa-lg"></i>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-sm-6">
+                                            <div class="btn-group" data-toggle="buttons">
+                                                <label class="btn btn-danger" id="ModifiedOnLbl">
+                                                    <input type="checkbox" id="ModifiedOnCB"> Choose
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row" id="Actual">
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <label class="col-sm-3 control-label">Actual Date</label>
+                                                <div class="col-sm-9">
+                                                    <div class="input-group" id="ActualDTP">
+                                                        <input type="text" class="form-control" id="StartActual" />
+                                                        <span class="input-group-addon">
+                                                            <i class="fa fa-calendar fa-lg"></i>
+                                                        </span>
+                                                        <span class="input-group-btn input_space"></span>
+                                                        <input type="text" class="form-control" id="EndActual" />
+                                                        <span class="input-group-addon">
+                                                            <i class="fa fa-calendar fa-lg"></i>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-sm-6">
+                                            <div class="btn-group" data-toggle="buttons">
+                                                <label class="btn btn-danger" id="ActualLbl">
+                                                    <input type="checkbox" id="ActualCB"> Choose
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row" id="ClosedOn">
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <label class="col-sm-3 control-label">Closed On</label>
+                                                <div class="col-sm-9">
+                                                    <div class="input-group" id="ClosedOnDTP">
+                                                        <input type="text" class="form-control" id="StartClosedOn" />
+                                                        <span class="input-group-addon">
+                                                            <i class="fa fa-calendar fa-lg"></i>
+                                                        </span>
+                                                        <span class="input-group-btn input_space"></span>
+                                                        <input type="text" class="form-control" id="EndClosedOn" />
+                                                        <span class="input-group-addon">
+                                                            <i class="fa fa-calendar fa-lg"></i>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <div class="btn-group" data-toggle="buttons">
+                                                <label class="btn btn-danger" id="ClosedOnLbl">
+                                                    <input type="checkbox" id="ClosedOnCB"> Choose
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row" id="DueDate">
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <label class="col-sm-3 control-label">Due Date</label>
+                                                <div class="col-sm-9">
+                                                    <div class="input-group" id="DueDateDTP">
+                                                        <input type="text" class="form-control" id="StartDueDate" />
+                                                        <span class="input-group-addon">
+                                                            <i class="fa fa-calendar fa-lg"></i>
+                                                        </span>
+                                                        <span class="input-group-btn input_space"></span>
+                                                        <input type="text" class="form-control" id="EndDueDate" />
+                                                        <span class="input-group-addon">
+                                                            <i class="fa fa-calendar fa-lg"></i>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <div class="btn-group" data-toggle="buttons">
+                                                <label class="btn btn-danger" id="DueDateLbl">
+                                                    <input type="checkbox" id="DueDateCB"> Choose
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row" id="ReopenOn">
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <label class="col-sm-3 control-label">Reopen On</label>
+                                                <div class="col-sm-9">
+                                                    <div class="input-group" id="ReopenOnDTP">
+                                                        <input type="text" class="form-control" id="StartReopenOn" />
+                                                        <span class="input-group-addon">
+                                                            <i class="fa fa-calendar fa-lg"></i>
+                                                        </span>
+                                                        <span class="input-group-btn input_space"></span>
+                                                        <input type="text" class="form-control" id="ReopenOnEnd" />
+                                                        <span class="input-group-addon">
+                                                            <i class="fa fa-calendar fa-lg"></i>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <div class="btn-group" data-toggle="buttons">
+                                                <label class="btn btn-danger" id="ReopenOnLbl">
+                                                    <input type="checkbox" id="ReopenOnCB"> Choose
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row" id="CategoryZone">
+                                    <div class="row">
+                                        <div class="col-sm-6">                                        
+                                            <div class="form-group">
+                                                <label class="col-sm-3 control-label">Category</label>
+                                                <div class="col-sm-9">
+                                                    @* ==========================================================================================================*@
+                                                    <input type="hidden" id="CategoryID" class="form-control" />
+                                                    <div class="input-group" id="CategoryID-Group">
+                                                        <input type="text" id="CategoryIDName" class="form-control" />
+                                                        <div tabindex="1" id="CategoryIDName-label" class="form-control typeahead-label hide">
+                                                        </div>
+                                                        <div tabindex="1" class="input-group-addon btn" id="CategoryIDName-popup">
+                                                            <i class="fa fa-search"></i>
+                                                        </div>
+                                                    </div>
+                                                    @* ==========================================================================================================*@
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <div class="btn-group" data-toggle="buttons">
+                                                <label class="btn btn-danger" id="CategoryLbl">
+                                                    <input type="checkbox" id="CategoryCB"> Choose
+                                                </label>
+                                                <span class="input-group-btn">
+                                                    <button class="btn btn-success" type="button" id="CategoryBtnAdd">ADD</button>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <label class="col-sm-3 control-label">Selected Category</label>
+                                                <div class="col-sm-9">
+                                                    <input type="text" class="form-control" id="Selected-Category" readonly="readonly"/>
+                                                    <input type="hidden" class="form-control" id="Selected-CategoryID" />
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-sm-6">
+                                            <div class="btn-group" data-toggle="buttons">
+                                                <span class="input-group-btn">
+                                                    <button class="btn btn-danger" type="button" id="CategoryBtnClear">Clear</button>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row" id="ProductZone">
+                                    <div class="row">
+                                        <div class="col-sm-6">                                        
+                                            <div class="form-group">
+                                                <label class="col-sm-3 control-label">Product</label>
+                                                <div class="col-sm-9">
+                                                    @* ==========================================================================================================*@
+                                                    <input type="hidden" id="ProductID" class="form-control" />
+                                                    <div class="input-group" id="ProductID-Group">
+                                                        <input type="text" id="ProductIDName" class="form-control" />
+                                                        <div tabindex="0" id="ProductIDName-label" class="form-control typeahead-label hide">
+                                                        </div>
+                                                        <div tabindex="0" class="input-group-addon btn" id="ProductIDName-popup">
+                                                            <i class="fa fa-search"></i>
+                                                        </div>
+                                                    </div>
+                                                    @* ==========================================================================================================*@
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <div class="btn-group" data-toggle="buttons">
+                                                <label class="btn btn-danger" id="ProductLbl">
+                                                    <input type="checkbox" id="ProductCB"> Choose
+                                                </label>
+                                                <span class="input-group-btn">
+                                                    <button class="btn btn-success" type="button" id="ProductBtnAdd">ADD</button>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <label class="col-sm-3 control-label">Selected Product</label>
+                                                <div class="col-sm-9">
+                                                    <input type="text" class="form-control" id="Selected-Product" readonly="readonly"/>
+                                                    <input type="hidden" class="form-control" id="Selected-ProductID" />
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-sm-6">
+                                            <div class="btn-group" data-toggle="buttons">
+                                                <span class="input-group-btn">
+                                                    <button class="btn btn-danger" type="button" id="ProductBtnClear">Clear</button>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row" id="WorkgroupZone">
+                                    <div class="row">
+                                        <div class="col-sm-6">                                                                              
+                                            <div class="form-group">
+                                                <label class="col-sm-3 control-label">Workgroup</label>
+                                                <div class="col-sm-9">
+                                                    @* ==========================================================================================================*@
+                                                    <input type="hidden" id="WorkgroupID" class="form-control" />
+                                                    <div class="input-group" id="WorkgroupID-Group">
+                                                        <input type="text" id="WorkgroupIDName" class="form-control" />
+                                                        <div tabindex="2" id="WorkgroupIDName-label" class="form-control typeahead-label hide">
+                                                        </div>
+                                                        <div tabindex="2" class="input-group-addon btn" id="WorkgroupIDName-popup">
+                                                            <i class="fa fa-search"></i>
+                                                        </div>
+                                                    </div>
+                                                    @* ==========================================================================================================*@
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <div class="btn-group" data-toggle="buttons">
+                                                <label class="btn btn-danger" id="WorkgroupLbl">
+                                                    <input type="checkbox" id="WorkgroupCB"> Choose
+                                                </label>
+                                                <span class="input-group-btn">
+                                                    <button class="btn btn-success" type="button" id="WorkgroupBtnAdd">ADD</button>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <label class="col-sm-3 control-label">Selected Workgroup</label>
+                                                <div class="col-sm-9">
+                                                    <input type="text" class="form-control" id="Selected-Workgroup" readonly="readonly"/>
+                                                    <input type="hidden" class="form-control" id="Selected-WorkgroupID" />
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-sm-6">
+                                            <div class="btn-group" data-toggle="buttons">
+                                                <span class="input-group-btn">
+                                                    <button class="btn btn-danger" type="button" id="WorkgroupBtnClear">Clear</button>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row" id="ActionZone">
+                                    <div class="row">
+                                        <div class="col-sm-6">                                        
+                                            <div class="form-group">
+                                                <label class="col-sm-3 control-label">Action</label>
+                                                <div class="col-sm-9">
+                                                    @* ==========================================================================================================*@
+                                                    <input type="hidden" id="ActionID" class="form-control" />
+                                                    <div class="input-group" id="ActionID-Group">
+                                                        <input type="text" id="ActionIDName" class="form-control" />
+                                                        <div tabindex="0" id="ActionIDName-label" class="form-control typeahead-label hide">
+                                                        </div>
+                                                        <div tabindex="0" class="input-group-addon btn" id="ActionIDName-popup">
+                                                            <i class="fa fa-search"></i>
+                                                        </div>
+                                                    </div>
+                                                    @* ==========================================================================================================*@
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <div class="btn-group" data-toggle="buttons">
+                                                <label class="btn btn-danger" id="ActionLbl">
+                                                    <input type="checkbox" id="ActionCB"> Choose
+                                                </label>
+                                                <span class="input-group-btn">
+                                                    <button class="btn btn-success" type="button" id="ActionBtnAdd">ADD</button>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <label class="col-sm-3 control-label">Selected Action</label>
+                                                <div class="col-sm-9">
+                                                    <input type="text" class="form-control" id="Selected-Action" readonly="readonly"/>
+                                                    <input type="hidden" class="form-control" id="Selected-ActionID" />
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-sm-6">
+                                            <div class="btn-group" data-toggle="buttons">
+                                                <span class="input-group-btn">
+                                                    <button class="btn btn-danger" type="button" id="ActionBtnClear">Clear</button>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row" id="StatusZone">
+                                    <div class="row">
+                                        <div class="col-sm-6">                                                                              
+                                            <div class="form-group">
+                                                <label class="col-sm-3 control-label">Status</label>
+                                                <div class="col-sm-9">
+                                                    <select id="statusDd" class="form-control">
+                                                        <option value="">- Pilih -</option>
+                                                        <option value="1">New</option>
+                                                        <option value="2">Assigned</option>
+                                                        <option value="3">Owned</option>
+                                                        <option value="4">Incomplete</option>
+                                                        <option value="5">Closed</option>
+                                                        <option value="6">Canceled</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <div class="btn-group" data-toggle="buttons">
+                                                <label class="btn btn-danger" id="StatusLbl">
+                                                    <input type="checkbox" id="StatusCB"> Choose
+                                                </label>
+                                                <span class="input-group-btn">
+                                                    <button class="btn btn-success" type="button" id="StatusBtnAdd">ADD</button>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <label class="col-sm-3 control-label">Selected Status</label>
+                                                <div class="col-sm-9">
+                                                    <input type="text" class="form-control" id="Selected-Status" readonly="readonly"/>
+                                                    <input type="hidden" class="form-control" id="Selected-StatusID" />
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-sm-6">
+                                            <div class="btn-group" data-toggle="buttons">
+                                                <span class="input-group-btn">
+                                                    <button class="btn btn-danger" type="button" id="StatusBtnClear">Clear</button>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row" id="StateZone">
+                                    <div class="row">
+                                        <div class="col-sm-6">                                                                              
+                                            <div class="form-group">
+                                                <label class="col-sm-3 control-label">State</label>
+                                                <div class="col-sm-9">
+                                                    <select id="StateDd" class="form-control">
+                                                        <option value="">- Pilih -</option>
+                                                        <option value="0">Open</option>
+                                                        <option value="1">Completed</option>
+                                                        <option value="2">Canceled</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <div class="btn-group" data-toggle="buttons">
+                                                <label class="btn btn-danger" id="StateLbl">
+                                                    <input type="checkbox" id="StateCB"> Choose
+                                                </label>
+                                                <span class="input-group-btn">
+                                                    <button class="btn btn-success" type="button" id="StateBtnAdd">ADD</button>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <label class="col-sm-3 control-label">Selected State</label>
+                                                <div class="col-sm-9">
+                                                    <input type="text" class="form-control" id="Selected-State" readonly="readonly"/>
+                                                    <input type="hidden" class="form-control" id="Selected-StateID" />
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-sm-6">
+                                            <div class="btn-group" data-toggle="buttons">
+                                                <span class="input-group-btn">
+                                                    <button class="btn btn-danger" type="button" id="StateBtnClear">Clear</button>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row" id="IsDisabledStatusZone">
+                                    <div class="row">
+                                        <div class="col-sm-6">                                                                              
+                                            <div class="form-group">
+                                                <label class="col-sm-3 control-label">IsDisabled Status</label>
+                                                <div class="col-sm-9">
+                                                    <select id="IsDisabledStatusDd" class="form-control">
+                                                        <option value="">- Pilih -</option>
+                                                        <option value="0">Active</option>
+                                                        <option value="1">Inactive</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <div class="btn-group" data-toggle="buttons">
+                                                <label class="btn btn-danger" id="IsDisabledStatusLbl">
+                                                    <input type="checkbox" id="IsDisabledStatusCB"> Choose
+                                                </label>
+                                                <span class="input-group-btn">
+                                                    <button class="btn btn-success" type="button" id="IsDisabledStatusBtnAdd">ADD</button>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <label class="col-sm-3 control-label">Selected IsDisabled Status</label>
+                                                <div class="col-sm-9">
+                                                    <input type="text" class="form-control" id="Selected-IsDisabledStatus" readonly="readonly"/>
+                                                    <input type="hidden" class="form-control" id="Selected-IsDisabledStatusID" />
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-sm-6">
+                                            <div class="btn-group" data-toggle="buttons">
+                                                <span class="input-group-btn">
+                                                    <button class="btn btn-danger" type="button" id="IsDisabledStatusBtnClear">Clear</button>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row" id="ContactMethodZone">
+                                    <div class="row">
+                                        <div class="col-sm-6">                                                                              
+                                            <div class="form-group">
+                                                <label class="col-sm-3 control-label">Contact Method</label>
+                                                <div class="col-sm-9">
+                                                    <select id="ContactMethodDd" class="form-control">
+                                                        <option value="">- Pilih -</option>
+                                                        <option value="1">Phone</option>
+                                                        <option value="2">Mail</option>
+                                                        <option value="3">Fax</option>
+                                                        <option value="4">Email</option>
+                                                        <option value="5">Web Chat</option>
+                                                        <option value="6">Media Cetak</option>
+                                                        <option value="7">Media Elektronik</option>
+                                                        <option value="8">Walk-in</option>
+                                                        <option value="9">Cabang</option>
+                                                        <option value="10">Video Banking</option>
+                                                        <option value="11">Video Calls</option>
+                                                        <option value="12">Social Media</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <div class="btn-group" data-toggle="buttons">
+                                                <label class="btn btn-danger" id="ContactMethodLbl">
+                                                    <input type="checkbox" id="ContactMethodCB"> Choose
+                                                </label>
+                                                <span class="input-group-btn">
+                                                    <button class="btn btn-success" type="button" id="ContactMethodBtnAdd">ADD</button>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <label class="col-sm-3 control-label">Selected Contact Method</label>
+                                                <div class="col-sm-9">
+                                                    <input type="text" class="form-control" id="Selected-ContactMethod" readonly="readonly"/>
+                                                    <input type="hidden" class="form-control" id="Selected-ContactMethodID" />
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-sm-6">
+                                            <div class="btn-group" data-toggle="buttons">
+                                                <span class="input-group-btn">
+                                                    <button class="btn btn-danger" type="button" id="ContactMethodBtnClear">Clear</button>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row" id="UserZone">
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <label class="col-sm-3 control-label"><span class="userlabel">User</span></label>
+                                                <div class="col-sm-9">
+                                                    @* ==========================================================================================================*@
+                                                    <input type="hidden" id="UserID" class="form-control" />
+                                                    <div class="input-group" id="UserID-Group">
+                                                        <input type="text" id="UserIDName" class="form-control" />
+                                                        <div tabindex="0" id="UserIDName-label" class="form-control typeahead-label hide">
+                                                        </div>
+                                                        <div tabindex="0" class="input-group-addon btn" id="UserIDName-popup">
+                                                            <i class="fa fa-search"></i>
+                                                        </div>
+                                                    </div>
+                                                    @* ==========================================================================================================*@
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <div class="btn-group" data-toggle="buttons">
+                                                <label class="btn btn-danger" id="UserLbl">
+                                                    <input type="checkbox" id="UserCB"> Choose
+                                                </label>
+                                                <span class="input-group-btn">
+                                                    <button class="btn btn-success" type="button" id="UserBtnAdd">ADD</button>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <label class="col-sm-3 control-label">Selected <span class="userlabel">User</span></label>
+                                                <div class="col-sm-9">
+                                                    <input type="text" class="form-control" id="Selected-User" readonly="readonly"/>
+                                                    <input type="hidden" class="form-control" id="Selected-UserID" />
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-sm-6">
+                                            <div class="btn-group" data-toggle="buttons">
+                                                <span class="input-group-btn">
+                                                    <button class="btn btn-danger" type="button" id="UserBtnClear">Clear</button>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row" id="BranchZone">
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <label class="col-sm-3 control-label">Branch</label>
+                                                <div class="col-sm-9">
+                                                    @* ==========================================================================================================*@
+                                                    <input type="hidden" id="BranchID" class="form-control" />
+                                                    <div class="input-group" id="BranchID-Group">
+                                                        <input type="text" id="BranchIDName" class="form-control" />
+                                                        <div tabindex="0" id="BranchIDName-label" class="form-control typeahead-label hide">
+                                                        </div>
+                                                        <div tabindex="0" class="input-group-addon btn" id="BranchIDName-popup">
+                                                            <i class="fa fa-search"></i>
+                                                        </div>
+                                                    </div>
+                                                    @* ==========================================================================================================*@
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <div class="btn-group" data-toggle="buttons">
+                                                <label class="btn btn-danger" id="BranchLbl">
+                                                    <input type="checkbox" id="BranchCB"> Choose
+                                                </label>
+                                                <span class="input-group-btn">
+                                                    <button class="btn btn-success" type="button" id="BranchBtnAdd">ADD</button>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <label class="col-sm-3 control-label">Selected Branch</label>
+                                                <div class="col-sm-9">
+                                                    <input type="text" class="form-control" id="Selected-Branch" readonly="readonly"/>
+                                                    <input type="hidden" class="form-control" id="Selected-BranchID" />
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-sm-6">
+                                            <div class="btn-group" data-toggle="buttons">
+                                                <span class="input-group-btn">
+                                                    <button class="btn btn-danger" type="button" id="BranchBtnClear">Clear</button>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row" id="SecurityRoleZone">
+                                    <div class="row">
+                                        <div class="col-sm-6">                                        
+                                            <div class="form-group">
+                                                <label class="col-sm-3 control-label">SecurityRole</label>
+                                                <div class="col-sm-9">
+                                                    @* ==========================================================================================================*@
+                                                    <input type="hidden" id="SecurityRoleID" class="form-control" />
+                                                    <div class="input-group" id="SecurityRoleID-Group">
+                                                        <input type="text" id="SecurityRoleIDName" class="form-control" />
+                                                        <div tabindex="1" id="SecurityRoleIDName-label" class="form-control typeahead-label hide">
+                                                        </div>
+                                                        <div tabindex="1" class="input-group-addon btn" id="SecurityRoleIDName-popup">
+                                                            <i class="fa fa-search"></i>
+                                                        </div>
+                                                    </div>
+                                                    @* ==========================================================================================================*@
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <div class="btn-group" data-toggle="buttons">
+                                                <label class="btn btn-danger" id="SecurityRoleLbl">
+                                                    <input type="checkbox" id="SecurityRoleCB"> Choose
+                                                </label>
+                                                <span class="input-group-btn">
+                                                    <button class="btn btn-success" type="button" id="SecurityRoleBtnAdd">ADD</button>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <label class="col-sm-3 control-label">Selected SecurityRole</label>
+                                                <div class="col-sm-9">
+                                                    <input type="text" class="form-control" id="Selected-SecurityRole" readonly="readonly"/>
+                                                    <input type="hidden" class="form-control" id="Selected-SecurityRoleID" />
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-sm-6">
+                                            <div class="btn-group" data-toggle="buttons">
+                                                <span class="input-group-btn">
+                                                    <button class="btn btn-danger" type="button" id="SecurityRoleBtnClear">Clear</button>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row" id="BusinessUnitZone">
+                                    <div class="row">
+                                        <div class="col-sm-6">                                        
+                                            <div class="form-group">
+                                                <label class="col-sm-3 control-label">Business Unit</label>
+                                                <div class="col-sm-9">
+                                                    @* ==========================================================================================================*@
+                                                    <input type="hidden" id="BusinessUnitID" class="form-control" />
+                                                    <div class="input-group" id="BusinessUnitID-Group">
+                                                        <input type="text" id="BusinessUnitIDName" class="form-control" />
+                                                        <div tabindex="1" id="BusinessUnitIDName-label" class="form-control typeahead-label hide">
+                                                        </div>
+                                                        <div tabindex="1" class="input-group-addon btn" id="BusinessUnitIDName-popup">
+                                                            <i class="fa fa-search"></i>
+                                                        </div>
+                                                    </div>
+                                                    @* ==========================================================================================================*@
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <div class="btn-group" data-toggle="buttons">
+                                                <label class="btn btn-danger" id="BusinessUnitLbl">
+                                                    <input type="checkbox" id="BusinessUnitCB"> Choose
+                                                </label>
+                                                <span class="input-group-btn">
+                                                    <button class="btn btn-success" type="button" id="BusinessUnitBtnAdd">ADD</button>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <label class="col-sm-3 control-label">Selected Business Unit</label>
+                                                <div class="col-sm-9">
+                                                    <input type="text" class="form-control" id="Selected-BusinessUnit" readonly="readonly"/>
+                                                    <input type="hidden" class="form-control" id="Selected-BusinessUnitID" />
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-sm-6">
+                                            <div class="btn-group" data-toggle="buttons">
+                                                <span class="input-group-btn">
+                                                    <button class="btn btn-danger" type="button" id="BusinessUnitBtnClear">Clear</button>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row" id="CustomerNoZone">
+                                    <div class="row">
+                                        <div class="col-sm-6">                                        
+                                            <div class="form-group">
+                                                <label class="col-sm-3 control-label">Customer No</label>
+                                                <div class="col-sm-9">
+                                                    <input type="text" id="CustNo" class="form-control" maxlength="16"/>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <div class="btn-group" data-toggle="buttons">
+                                                <label class="btn btn-danger" id="CustomerNoLbl">
+                                                    <input type="checkbox" id="CustomerNoCB"> Choose
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row" id="AccountNoZone">
+                                    <div class="row">
+                                        <div class="col-sm-6">                                        
+                                            <div class="form-group">
+                                                <label class="col-sm-3 control-label">Account No</label>
+                                                <div class="col-sm-9">
+                                                    <input type="text" id="AcctNo" class="form-control" maxlength="16"/>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <div class="btn-group" data-toggle="buttons">
+                                                <label class="btn btn-danger" id="AccountNoLbl">
+                                                    <input type="checkbox" id="AccountNoCB"> Choose
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                       
+                                <div class="row" id="Action">
+                                    <div class="row">
+                                        <div class="col-sm-offset-5 col-sm-1">
+                                            <div class="input-group">
+                                                <span class="input-group-btn">
+                                                    <button class="btn btn-primary" type="button" id="btnRunReport">Run Report</button>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="form-horizontal" id="div_reportfilter">
+                                
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container-fluid" id="ReportViewer">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="container-fluid content_container">
+                    <div class="row">
+                        <div class="col-sm-12 content_col" id="root">
+                            <div id="Reports-Location"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="text/javascript">
+
+        $("#reportparameter_btn").click(function () {
+            $("#div_reportparameter").show();
+            $("#ReportViewer").show();
+            $("#div_reportfilter").hide();
+        });
+
+        $("#reportfilter_btn").click(function () {
+            $("#div_reportparameter").hide();
+            $("#ReportViewer").hide();
+            $("#div_reportfilter").show();
+        });
+
+
+        function appendTextbox(div, name, label) {
+            $("#" + div).append("<div class='row' id='TextboxDiv" + name + "'><div class='row'><div class='col-sm-6'><div class='form-group'><label class='col-sm-3 control-label'>" + label + "</label><div class='col-sm-9'><input type='text' id='" + name + "' name='" + name + "' class='form-control' maxlength='16'/></div></div></div><div class='col-sm-6'><div class='btn-group' data-toggle='buttons'><label class='btn btn-danger' id='CustomerNoLbl'><input type='checkbox' id='CustomerNoCB'> Choose</label></div></div></div></div>");
+        }
+
+        $(document).ready(function () {
+            var data = '@ViewBag.Filters';
+            var filter = @Html.Raw(ViewBag.Filters);
+
+            //var filter = @Html.Raw(Json.Encode(Model));
+            //alert(filter[2].Name);
+
+            for(var i = 0 ; i < filter.length ; i++)
+            {
+                switch (filter[i].FieldType)
+                {
+                    case "text":
+                        appendTextbox("div_reportfilter", filter[i].Name, filter[i].Label)
+                }
+            }
+
+            @* ==========================================================================================================*@
+            @* ============================================ POP UP SECTION ============================================= *@
+            @* ==========================================================================================================*@
+
+            $('#CategoryIDName-popup').on('click', function (e) {
+                if($(this).attr('disabled') == 'disabled') return false;
+                urlModalPopup = '@Url.Action("_popupContent", "Popup", new { type = "categories", _entity = "" })';
+                colModelsName = [
+                    { label: 'ID', name: 'Id', index: 'Id', key: true, width: 75, hidden: true },
+                    { label: 'Category Name', name: 'Name', index: 'Name', width: 250 },
+                    { label: 'Parent Name', name: 'ParentName', width: 250 },
+                    { label: 'Description Tree', name: 'Description', width: 400 }
+                ];
+                var id = $(this).parent().find('input:last').attr('id');
+                $('#' + id).trigger("blur");
+                e.preventDefault();
+            });
+
+            var categories = new PopupClass();
+            categories.setId("CategoryIDName");
+            categories.setUrl('@Url.Action("Category", "Popup")');
+            categories.setHiddenId("CategoryID");
+            categories.init();
+            
+            @* ==========================================================================================================*@
+
+            $('#ProductIDName-popup').on('click', function (e) {
+                if($(this).attr('disabled') == 'disabled') return false;
+                urlModalPopup = '@Url.Action("_popupContent", "Popup", new { type = "products", _entity = "" })';
+                colModelsName = [
+                    { label: 'ID', name: 'Id', index: 'Id', key: true, width: 75, hidden: true },
+                    { label: 'Product Name', name: 'Name', index: 'Name', width: 250 },
+                    { label: 'Parent Name', name: 'ParentName', width: 250 },
+                    { label: 'Description Tree', name: 'Description', width: 400 }
+                ];
+                var id = $(this).parent().find('input:last').attr('id');
+                $('#' + id).trigger("blur");
+                e.preventDefault();
+            });
+
+            var products = new PopupClass();
+            products.setId("ProductIDName");
+            products.setUrl('@Url.Action("Product", "Popup")');
+            products.setHiddenId("ProductID");
+            products.init();
+           
+            @* ==========================================================================================================*@
+
+            $('#WorkgroupIDName-popup').on('click', function (e) {
+                if($(this).attr('disabled') == 'disabled') return false;
+                urlModalPopup = '@Url.Action("_popupContent", "Popup", new { type = "workgroup", _entity = "" })';
+                colModelsName = [
+                    { label: 'ID', name: 'Id', index: 'Id', key: true, width: 75, hidden: true },
+                    { label: 'Name', name: 'Name', width: 300 },
+                    { label: 'E-Mail', name: 'EMailAddress', width: 300 },
+                    { label: 'Business Unit', name: 'BusinessUnitName', width: 300 }
+                ];
+                var id = $(this).parent().find('input:last').attr('id');
+                $('#' + id).trigger("blur");
+                e.preventDefault();
+            });
+
+            var workgroup = new PopupClass();
+            workgroup.setId("WorkgroupIDName");
+            workgroup.setUrl('@Url.Action("WorkGroup", "Popup")');
+            workgroup.setHiddenId("WorkgroupID");
+            workgroup.init();
+
+            @* ==========================================================================================================*@
+
+            $('#ActionIDName-popup').on('click', function (e) {
+                if ($(this).attr('disabled') == 'disabled') return false;
+                urlModalPopup = '@Url.Action("_popupContent", "Popup", new { type = "cause", _entity = "" })';
+                colModelsName = [
+                    { label: 'ID', name: 'Id', index: 'Id', key: true, width: 75, hidden: true },
+                    { label: 'Name', name: 'Name', width: 250 },
+                    { label: 'Created On', name: 'CreatedOn', width: 150, formatter: "date", formatoptions: { srcformat: "ISO8601Long", newformat: "d/m/Y H:i" } }
+                ];
+                var id = $(this).parent().find('input:last').attr('id');
+                $('#' + id).trigger("blur");
+                e.preventDefault();
+            });
+
+            var Actions = new PopupClass();
+            Actions.setId("ActionIDName");
+            Actions.setUrl('@Url.Action("Cause", "Popup")');
+            Actions.setHiddenId("ActionID");
+            Actions.init();
+
+            @* ==========================================================================================================*@
+
+            $('#UserIDName-popup').on('click', function (e) {
+                if($(this).attr('disabled') == 'disabled') return false;
+                urlModalPopup = '@Url.Action("_popupContent", "Popup", new { type = "User", _entity = "" })';
+                colModelsName = [
+                    { label: 'ID', name: 'Id', index: 'Id', key: true, width: 75, hidden: true },
+                    { label: 'Name', name: 'Name', width: 100 },
+                    { label: 'Phone', name: 'Phone', width: 100 },
+                    { label: 'Business Unit', name: 'BusinessUnitName', width: 150 }
+                ];
+                var id = $(this).parent().find('input:last').attr('id');
+                $('#' + id).trigger("blur");
+                e.preventDefault();
+            });
+
+            var user = new PopupClass();
+            user.setId("UserIDName");
+            user.setUrl('@Url.Action("SystemUser", "Popup")');
+            user.setHiddenId("UserID");
+            user.init();
+
+            @* ==========================================================================================================*@
+
+            $('#BranchIDName-popup').on('click', function (e) {
+                if($(this).attr('disabled') == 'disabled') return false;
+                urlModalPopup = '@Url.Action("_popupContent", "Popup", new { type = "branch", _entity = "" })';
+                colModelsName = [
+                    { label: 'ID', name: 'Id', index: 'Id', key: true, width: 75, hidden: true },
+                    { label: 'Nama Kantor', name: 'Name', width: 250 },
+                    { label: 'Kode Kantor', name: 'OfficeCode', width: 250 },
+                    { label: 'Alamat', name: 'Address', width: 250 },
+                    { label: 'Fax', name: 'Fax', width: 250 },
+                    { label: 'Inisial', name: 'Initials', width: 60 },
+                    { label: 'Kode Pos', name: 'Zipcode', width: 60 },
+                    { label: 'Kota', name: 'City', width: 60 },
+                    { label: 'Telephone 1', name: 'Telephone1', width: 60 },
+                    { label: 'Telephone 2', name: 'Telephone2', width: 60 },
+                    { label: 'Kanwil', name: 'RegionName', width: 60 }
+                ];
+                var id = $(this).parent().find('input:last').attr('id');
+                $('#' + id).trigger("blur");
+                e.preventDefault();
+            });
+
+            var branch = new PopupClass();
+            branch.setId("BranchIDName");
+            branch.setUrl('@Url.Action("Branch", "Popup")');
+            branch.setHiddenId("BranchID");
+            branch.init();
+
+            @* ==========================================================================================================*@
+
+            $('#SecurityRoleIDName-popup').on('click', function (e) {
+                urlModalPopup = '@Url.Action("_popupContent", "Popup", new { type = "securityrole", _entity = "" })';
+                colModelsName = [
+                    { label: 'ID', name: 'Id', index: 'Id', key: true, width: 75, hidden: true },
+                    { label: 'Name', name: 'Name', index: 'Name', width: 500 }
+                ];
+                var id = $(this).parent().find('input:last').attr('id');
+                $('#' + id).trigger("blur");
+                e.preventDefault();
+            });
+
+            var SecurityRole = new PopupClass();
+            SecurityRole.setId("SecurityRoleIDName");
+            SecurityRole.setUrl('@Url.Action("SecurityRole", "Popup")');
+            SecurityRole.setHiddenId("SecurityRoleID");
+            SecurityRole.init();
+           
+            @* ==========================================================================================================*@
+
+            $('#BusinessUnitIDName-popup').on('click', function (e) {
+                urlModalPopup = '@Url.Action("_popupContent", "Popup", new { type = "businessunit", _entity = "" })';
+                colModelsName = [
+                    { label: 'ID', name: 'Id', index: 'Id', key: true, width: 75, hidden: true },
+                    { label: 'Name', name: 'Name', index: 'Name', width: 500 }
+
+                ];
+                var id = $(this).parent().find('input:last').attr('id');
+                $('#' + id).trigger("blur");
+                e.preventDefault();
+            });
+
+            var BusinessUnit = new PopupClass();
+            BusinessUnit.setId("BusinessUnitIDName");
+            BusinessUnit.setUrl('@Url.Action("BusinessUnit", "Popup")');
+            BusinessUnit.setHiddenId("BusinessUnitID");
+            BusinessUnit.init();
+
+            @* ==========================================================================================================*@
+
+        });
+    </script>
+}

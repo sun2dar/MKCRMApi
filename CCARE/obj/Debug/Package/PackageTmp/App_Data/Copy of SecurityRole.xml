@@ -1,0 +1,208 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Root>
+  <Menu name="Workplace" text="Workplace" check="0">
+    <Submenu name="MyWork" text="My Work" check="0">
+      <Entity name="BroadcastMessage" text="Broadcast Message" path="" check="0">
+      </Entity>
+      <Entity name="QueueItem" text="Queue" path="" check="0">
+      </Entity>
+      <Entity name="Task" text="Task" path="" check="0">
+        <Action name="Write" text="Write" check="0"></Action>
+        <Action name="FilterAllTask" text="Filter All Task Option" check="0"></Action>
+      </Entity>
+      <Entity name="Report" text="Reports" path="" check="0">
+        <Action name="Write" text="Write" check="0"></Action>
+        <Action name="Delete" text="Delete" check="0"></Action>
+      </Entity>
+    </Submenu>
+    <Submenu name="Reports" text="Reports" check="0">
+      <Entity name="ReportView" text="Run Reports" path="" check="0">
+      </Entity>
+      <Entity name="ReportNew" text="Report Configuration" path="" check="0">
+        <Action name="Write" text="Write" check="0"></Action>
+        <Action name="Delete" text="Delete" check="0"></Action>
+        <Action name="Duplicate" text="Duplicate" check="0"></Action>
+      </Entity>
+    </Submenu>
+    <Submenu name="KlikBCAEmails" text="KlikBCA Emails" check="0">
+      <Entity name="EmailSend" text="Kirim Email" path="" check="0">
+        <Action name="Write" text="Write" check="0"></Action>
+        <Action name="Delete" text="Delete" check="0"></Action>
+        <Action name="Approve" text="Approve" check="0"></Action>
+        <Action name="SPV" text="Role for SPV" check="0"></Action>
+      </Entity>
+      <Entity name="EmailInbox" text="Inbox" path="" check="0">
+        <Action name="Write" text="Write" check="0"></Action>
+        <Action name="Delete" text="Delete" check="0"></Action>
+        <Action name="SPV" text="Role for SPV" check="0"></Action>
+      </Entity>
+      <Entity name="EmailOutbox" text="Outbox" path="" check="0">
+        <Action name="Write" text="Write" check="0"></Action>
+        <Action name="SPV" text="Role for SPV" check="0"></Action>
+      </Entity>
+    </Submenu>
+  </Menu>
+  <Menu name="Service" text="Service" check="0">
+    <Submenu name="CustomerManagement" text="Customer Management" check="0">
+      <Entity name="Customer" text="Customer" path="" check="0">
+        <Action name="FinancialTransaction" text="Financial Transaction" check="0"></Action>
+        <Action name="CreateCallWrapUp" text="Create CallWrapUp" check="0"></Action>
+      </Entity>
+      <Entity name="NonCustomer" text="Non Customer" path="" check="0">
+        <Action name="Write" text="Write" check="0"></Action>
+      </Entity>
+    </Submenu>
+    <Submenu name="RequestManagement" text="Request Management" check="0">
+      <Entity name="Request" text="Request" path="" check="0">
+        <Action name="Create" text="Create" check="0"></Action>
+        <Action name="Update" text="Update" check="0"></Action>
+        <Action name="Reopen" text="Reopen" check="0"></Action>
+        <Action name="CloseMultiple" text="Close Multiple" check="0"></Action>
+        <Action name="DeleteDoc" text="Delete Document" check="0"></Action>
+        <Action name="AssignMultiple" text="Assign Multiple" check="0"></Action>
+        <Action name="AssignMultipleAnother" text="Assign Multiple to Another User" check="0"></Action>
+      </Entity>
+      <Entity name="LetterEntry" text="Letter Entries" path="" check="0">
+        <Action name="Write" text="Write" check="0"></Action>
+        <Action name="MultiAttach" text="Multiple Attachment" check="0"></Action>
+      </Entity>
+      <Entity name="CallWrapUp" text="Call Wrap Up" path="" check="0">
+        <Action name="Write" text="Write" check="0"></Action>
+      </Entity>
+    </Submenu>
+  </Menu>
+  <Menu name="Search" text="Search" check="0">
+    <Submenu name="KnowledgeBase" text="Knowledge Base" check="0">
+      <Entity name="Branch" text="Branch" path="" check="0">
+        <Action name="Write" text="Write" check="0"></Action>
+        <Action name="Delete" text="Delete" check="0"></Action>
+      </Entity>
+      <Entity name="WSID" text="WSID" path="" check="0">
+        <Action name="Write" text="Write" check="0"></Action>
+        <Action name="Delete" text="Delete" check="0"></Action>
+      </Entity>
+      <Entity name="AccountPayment" text="Company Partner" path="" check="0">
+        <Action name="Write" text="Write" check="0"></Action>
+        <Action name="Delete" text="Delete" check="0"></Action>
+      </Entity>
+      <Entity name="Merchant" text="Merchant Inquiry" path="" check="0">
+      </Entity>
+    </Submenu>
+    <Submenu name="I_Products" text="Inquiry" check="0">
+      <Entity name="SearchInquiry" text="E-Banking &amp; Products" path="" check="0">
+        <Action name="Product" text="Product" check="0"></Action>
+        <Action name="eBanking" text="eBanking" check="0"></Action>
+        <Action name="KeyBCA" text="Key BCA" check="0"></Action>
+      </Entity>
+      <Entity name="CCMS" text="CCMS" path="" check="0">
+      </Entity>
+      <Entity name="CorporateCard" text="Corporate Debit Card" path="" check="0">
+      </Entity>
+    </Submenu>
+    <Submenu name="EBankingTransactions" text="E-Banking Transactions" check="0">
+      <Entity name="KBITransaction" text="KlikBCA Individu" path="" check="0">
+      </Entity>
+      <Entity name="MBCATransaction" text="m-BCA" path="" check="0">
+      </Entity>
+      <Entity name="SMSTopUpTransaction" text="SMS Top Up" path="" check="0">
+      </Entity>
+      <Entity name="SMSBCATransaction" text="SMS BCA" path="" check="0">
+      </Entity>
+      <Entity name="BCAByPhoneTransaction" text="BCA By Phone" path="" check="0">
+      </Entity>
+    </Submenu>
+    <Submenu name="ProductTransactions" text="Product Transactions" check="0">
+      <Entity name="ATMTransaction" text="ATM" path="" check="0">
+      </Entity>
+      <Entity name="DebitTransaction" text="Debit" path="" check="0">
+      </Entity>
+      <Entity name="CirrusTransaction" text="Cirrus Maestro" path="" check="0">
+      </Entity>
+      <Entity name="ATMSwitchingTransaction" text="ATM Switching" path="" check="0">
+      </Entity>
+      <Entity name="CorrectionTransaction" text="Koreksi" path="" check="0">
+      </Entity>
+      <Entity name="AccountStatement" text="Mutasi Rekening" path="" check="0">
+      </Entity>
+      <Entity name="CreditCardTransaction" text="Credit Card" path="" check="0">
+      </Entity>
+    </Submenu>
+  </Menu>
+  <Menu name="Administration" text="Administration" check="0">
+    <Submenu name="MasterDataApplication" text="Master Data Application" check="0">
+      <Entity name="CallWrapUpCategory" text="Call Wrap Up Category" path="" check="0">
+        <Action name="Write" text="Write" check="0"></Action>
+        <Action name="Delete" text="Delete" check="0"></Action>
+      </Entity>
+      <Entity name="Product" text="Products" path="" check="0">
+        <Action name="Write" text="Write" check="0"></Action>
+        <Action name="Delete" text="Delete" check="0"></Action>
+      </Entity>
+      <Entity name="Category" text="Categories" path="" check="0">
+        <Action name="Write" text="Write" check="0"></Action>
+        <Action name="Delete" text="Delete" check="0"></Action>
+      </Entity>
+      <Entity name="ServiceLevel" text="Service Level" path="" check="0">
+        <Action name="Write" text="Write" check="0"></Action>
+        <Action name="Delete" text="Delete" check="0"></Action>
+      </Entity>
+      <Entity name="LetterTemplate" text="Letter Template" path="" check="0">
+        <Action name="Write" text="Write" check="0"></Action>
+        <Action name="Delete" text="Delete" check="0"></Action>
+      </Entity>
+      <Entity name="RequestCreationMatrix" text="Request Creation Matrix" path="" check="0">
+        <Action name="Write" text="Write" check="0"></Action>
+        <Action name="Delete" text="Delete" check="0"></Action>
+      </Entity>
+      <Entity name="StatusChange" text="Change Status Settings" path="" check="0">
+        <Action name="Write" text="Write" check="0"></Action>
+        <Action name="Delete" text="Delete" check="0"></Action>
+      </Entity>
+      <Entity name="Cause" text="Action" path="" check="0">
+        <Action name="Write" text="Write" check="0"></Action>
+        <Action name="Delete" text="Delete" check="0"></Action>
+      </Entity>
+    </Submenu>
+    <Submenu name="AdministrationApplication" text="Administration Application" check="0">
+      <Entity name="Queue" text="Workgroup Settings" path="" check="0">
+        <Action name="Write" text="Write" check="0"></Action>
+        <Action name="Delete" text="Delete" check="0"></Action>
+      </Entity>
+      <Entity name="OrganizationClosure" text="Organization Closures (Holiday Structure)" path="" check="0">
+        <Action name="Write" text="Write" check="0"></Action>
+        <Action name="Delete" text="Delete" check="0"></Action>
+      </Entity>
+    </Submenu>
+    <Submenu name="CodeMapper" text="Mapping" check="0">
+      <Entity name="Mapping" text="Codes and Mapper" path="" check="0">
+        <Action name="Write" text="Write" check="0"></Action>
+      </Entity>
+      <Entity name="ReportMapping" text="Report Filter" path="" check="0">
+        <Action name="Write" text="Write" check="0"></Action>
+        <Action name="Delete" text="Delete" check="0"></Action>
+      </Entity>
+    </Submenu>
+  </Menu>
+  <Menu name="Settings" text="Settings" check="0">
+    <Submenu name="SubmenuSettings" text="Application Settings" check="0">
+      <Entity name="BusinessUnit" text="Business Units" path="" check="0">
+        <Action name="Write" text="Write" check="0"></Action>
+      </Entity>
+      <Entity name="SecurityRole" text="Security Roles" path="" check="0">
+        <Action name="Write" text="Write" check="0"></Action>
+        <Action name="Delete" text="Delete" check="0"></Action>
+      </Entity>
+      <Entity name="SystemUser" text="User" path="" check="0">
+        <Action name="Write" text="Write" check="0"></Action>
+      </Entity>
+      <Entity name="Team" text="Team" path="" check="0">
+        <Action name="Write" text="Write" check="0"></Action>
+        <Action name="Delete" text="Delete" check="0"></Action>
+      </Entity>
+      <Entity name="MasterReport" text="Master Reports" path="" check="0">
+        <Action name="Write" text="Write" check="0"></Action>
+        <Action name="Delete" text="Delete" check="0"></Action>
+      </Entity>
+    </Submenu>
+  </Menu>
+</Root>

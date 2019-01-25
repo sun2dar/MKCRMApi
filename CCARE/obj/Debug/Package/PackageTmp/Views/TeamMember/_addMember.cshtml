@@ -1,0 +1,371 @@
+﻿
+<style type="text/css">
+    /*td
+    {
+        background-color: white;
+        cursor: pointer;
+    }
+
+    td.selected
+    {
+        background-color: #ff0000;
+    }*/
+</style>
+
+<!-- Modal -->
+<div class="modal fade bs-example-modal-lg" id="myBroadcastModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Add Members</h4>
+      </div>
+      <div class="modal-body">
+        <div class="row">     
+            <div class="col-lg-1">
+                <label class="pull-right" style="white-space:nowrap;">Look For:</label>
+            </div>            
+            <div class="col-lg-5">
+                <select id="lookFor" name="lookFor" class="form-control">
+                    <option value="user">User</option>
+                </select>
+            </div>            
+            <div class="col-lg-6">              
+                <div class="input-group">
+                    <input type="text" id="searchText" name="" class="form-control" value="">
+                    <div class="input-group-addon btn" id="searchBtn">
+                        <i class="fa fa-search"></i>
+                    </div>
+                </div>   
+            </div>        
+        </div>
+          <hr />
+        <div class="row" style="height:400px;overflow-y:scroll;">
+            <div class="col-lg-12" style="overflow-x:auto">
+                <div class="col-lg-5" style="height:300px;overflow-y:scroll;">
+                    <div class="col-lg-12" id="available-records">
+                        <ul class="nav nav-pills nav-stacked">
+                          <li class="">
+                              <input type="hidden" value="home" />
+                              <a href="#">
+                                  <i class="fa fa-user"></i> Home
+                              </a>
+                          </li>
+                          <li>
+                              <input type="hidden" value="profile" />
+                              <a href="#">
+                                  <i class="fa fa-user"></i> Profile
+                              </a>
+                          </li>
+                          <li>
+                              <input type="hidden" value="messages" />
+                              <a href="#">
+                                  <i class="fa fa-user"></i> Messages
+                              </a>
+                          </li>
+                        </ul>
+                    </div> 
+                </div>
+                <div class="col-lg-2">
+					<button type="button" id="undo_redo_rightAll" class="btn btn-default btn-block"><i class="glyphicon glyphicon-forward"></i></button>
+					<button type="button" id="undo_redo_leftAll" class="btn btn-default btn-block"><i class="glyphicon glyphicon-backward"></i></button>					
+                </div>
+                <div class="col-lg-5" style="height:300px;overflow-y:scroll;">
+                    <div class="col-lg-12" id="select-records">
+                        <ul class="nav nav-pills nav-stacked" style="max-width: 300px;">                          
+                        </ul>
+                    </div>
+                </div>  
+                
+                <div class="row">
+                </div>               
+            </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button id="popupDelete" type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+        <button id="popupSave" type="button" class="btn btn-primary">OK</button>
+      </div>
+    </div>
+  </div>
+    <input type="hidden" id="jTeam" name="jTeam" value="@ViewBag.Team" />
+    <input type="hidden" id="jUser" name="jUser" value="@ViewBag.User" />
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        if (!Array.prototype.indexOf) {
+            Array.prototype.indexOf = function (elt /*, from*/) {
+                var len = this.length >>> 0;
+
+                var from = Number(arguments[1]) || 0;
+                from = (from < 0) ? Math.ceil(from) : Math.floor(from);
+                if (from < 0)
+                    from += len;
+
+                for (; from < len; from++) {
+                    if (from in this && this[from] === elt)
+                        return from;
+                }
+                return -1;
+            };
+        }
+
+
+        @{
+            var jss = new System.Web.Script.Serialization.JavaScriptSerializer() { MaxJsonLength = 2147483644 };
+            var teamJson = jss.Serialize(ViewBag.Team);
+            var userJson = jss.Serialize(ViewBag.User);
+            var javascriptJson = Newtonsoft.Json.JsonConvert.DeserializeObject(ViewBag.Team);
+        }
+
+        var team = JSON.parse(@(Html.Raw(teamJson)));
+        var user = JSON.parse(@(Html.Raw(userJson)));
+
+        function changeType(type) {
+            switch (type) {
+                case "user":
+                    $('#available-records>ul').html("");
+                    $.each(user, function (index, element) {
+                        var content = '<input type="hidden" value="' + element.SystemUserId + '" data-type="b-user" />' +
+                                '<a href="#">' +
+                                '<i class="fa fa-user"></i> <label>' + element.FullName +
+                                '</label></a>';
+                        $('#available-records>ul').append($("<li>").html(content));
+                    });
+                    break;
+            }
+        }
+        var type = $("#lookFor").val();
+        changeType(type);
+
+        $("#lookFor").change(function () {
+            changeType($(this).val());
+        });
+
+        $.expr[":"].contains = $.expr.createPseudo(function (arg) {
+            return function (elem) {
+                return $(elem).text().toUpperCase().indexOf(arg.toUpperCase()) >= 0;
+            };
+        });
+        $.extend($.expr[":"], {
+            "containsNC": function (elem, i, match, array) {
+                return (elem.textContent || elem.innerText || "").toLowerCase().indexOf((match[3] || "").toLowerCase()) >= 0;
+            }
+        });
+        
+        //----------------------Updated by Gio 17 may 2016------------------------------ [START]
+        //$("#searchText").bind('keyup input', function (e) {
+        //    var searchText = $(this).val();
+        //    var avr = $('#available-records>ul>li').find("label:containsNC(" + searchText + ")");
+        //    $('#available-records>ul').html("");
+
+        //    var type = $("#lookFor").val()
+        //    switch (type) {
+        //        case "user":
+        //            $.each(user, function (index, element) {
+        //                var r = element.FullName;
+        //                var t = r.toUpperCase().indexOf(searchText.toUpperCase()) >= 0;
+        //                if (t) {
+        //                    var content = '<input type="hidden" value="' + element.SystemUserId + '" data-type="b-user" />' +
+        //                                '<a href="#">' +
+        //                                '<i class="fa fa-user"></i> <label>' + element.FullName +
+        //                                '</label></a>';
+        //                    $('#available-records>ul').append($("<li>").html(content));
+        //                }
+        //            });
+        //            break;
+        //    }            
+        //});
+
+        $('#searchText').keydown(function (event) {
+            if (event.keyCode == 13) {
+                $('#searchBtn').trigger('click');
+            }
+        });
+
+        $("#searchBtn").click(function () {
+            var type = $("#lookFor").val()
+            var searchText = $("#searchText").val();
+            if (searchText.length >= 3) {
+                switch (type) {
+                    case "user":
+
+                        var searchUserUrl = '@Url.Action("searchUser", "TeamMember", new { _searchText = "_searchText_" })';
+                        searchUserUrl = searchUserUrl.replace("_searchText_", searchText);
+                        var userResult = "";
+                        $.post(searchUserUrl, function (result) {
+                            userResult = result;
+                            $('#available-records>ul').html("");
+
+                            $.each(userResult, function (index, element) {
+                                var content = '<input type="hidden" value="' + element.SystemUserId + '" data-type="b-user" />' +
+                                        '<a href="#">' +
+                                        '<i class="fa fa-user"></i> <label>' + element.FullName +
+                                        '</label></a>';
+                                $('#available-records>ul').append($("<li>").html(content));
+                            });
+                        });
+                        break;
+                }
+            }
+            else
+                alert("Pencarian minimal menggunakan 3 karakter");
+        });
+        //----------------------Updated by Gio 17 may 2016------------------------------ [END]
+
+        $("#popupSave").click(function () {
+            var checkActive = $('#select-records>ul>li');
+            var listParam = [];
+            $.each(checkActive, function (index, element) {
+                var param = {};
+                var dataType = $(element).find("input:first").data("type");
+                switch (dataType) {
+                    case "b-user":
+                        param.SystemUserId = $(this).find("input:first").val();
+                        param.TeamId = "@ViewBag.teamId";
+                        break;
+                }
+                listParam.push(param);
+            });
+            $.ajax({
+                url: '@Url.Action("formSubmitAddMembers", "TeamMember")',
+                data: { data: JSON.stringify(listParam) },
+                type: 'POST',
+                dataType: 'JSON',
+                beforeSend: function (jqXHR, settings) {
+                },
+                success: function (data, textStatus, jqXHR) {
+                    $('#myBroadcastModal').modal('hide');
+
+                    $("#record-empty").remove();
+                    jQuery("#gridTable").trigger("reloadGrid");
+                    //reloadGrid("#gridTable");
+                },
+                error: function (xhr, status, err) {
+                    alert("Error");
+                }
+            });
+        });
+
+        var modalOptions = {
+            backdrop: 'static',
+            keyboard: false
+        };
+        $('#myBroadcastModal').modal(modalOptions);        
+
+        
+        $('#available-records>ul').delegate("li", "click", function (e) {
+            e.preventDefault();
+            var $this = $(this);
+
+            // Detecting ctrl (windows) / meta (mac) key.
+            if (e.ctrlKey || e.metaKey) {
+                if ($this.hasClass('active')) {
+                    $this.removeClass('active');
+                }
+                else {
+                    $this.addClass('active')
+                }
+            }
+                // Detecting shift key
+            else if (e.shiftKey) {
+                var currentSelectedIndex = $('#available-records>ul>li.active').eq(0).index();
+                var selectedElementIndex = $('#available-records>ul>li').index($this);
+
+                // Mark selected between them
+
+                if (currentSelectedIndex < selectedElementIndex) {
+                    for (var indexOfRows = currentSelectedIndex; indexOfRows <= selectedElementIndex; indexOfRows++) {
+                        $('#available-records>ul>li').eq(indexOfRows).addClass('active');
+                    }
+                }
+                else {
+                    for (var indexOfRows = selectedElementIndex; indexOfRows <= currentSelectedIndex; indexOfRows++) {
+                        $('#available-records>ul>li').eq(indexOfRows).addClass('active');
+                    }
+                }
+            }
+            else {
+                $('#available-records>ul>li').removeClass('active');
+                $this.addClass('active');
+            }
+        });
+
+        $('#undo_redo_rightAll').click(function () {
+            var listSelectRecords = [];
+
+            var selectRecords = $('#select-records>ul>li>input');
+            $.each(selectRecords, function () {
+                listSelectRecords.push($(this).val());
+            });
+            var x = $('#available-records>ul>li.active>input');
+            $.each(x, function () {
+                var checkList = listSelectRecords.indexOf($(this).val());
+                if (checkList == -1) {
+                    $('#select-records>ul').append($("<li>").html($(this).parent().html()));
+                }
+            });
+            var checkActive = $('#select-records>ul>li.active');
+            if (checkActive.length == 1) {
+                return;
+            }
+            var currentSelect = $('#select-records>ul>li').eq(0);
+            currentSelect.trigger("click");
+        });
+
+        $("#undo_redo_leftAll").click(function () {
+            var listSelect = $('#select-records>ul>li.active');
+            $.each(listSelect, function () {
+                $(this).remove();
+            });
+            var checkActive = $('#select-records>ul>li.active');
+            if (checkActive.length == 1) {
+                return;
+            }
+            var currentSelect = $('#select-records>ul>li').eq(0);
+            currentSelect.trigger("click");
+        });
+
+        $('#select-records>ul').delegate("li", "click", function (e) {
+            e.preventDefault();
+            var $this = $(this);
+
+            // Detecting ctrl (windows) / meta (mac) key.
+            if (e.ctrlKey || e.metaKey) {
+                if ($this.hasClass('active')) {
+                    $this.removeClass('active');
+                }
+                else {
+                    $this.addClass('active')
+                }
+            }
+                // Detecting shift key
+            else if (e.shiftKey) {
+
+                var currentSelectedIndex = $('#select-records>ul>li.active').eq(0).index();
+
+                var selectedElementIndex = $('#select-records>ul>li').index($this);
+
+                // Mark selected between them
+
+                if (currentSelectedIndex < selectedElementIndex) {
+                    for (var indexOfRows = currentSelectedIndex; indexOfRows <= selectedElementIndex; indexOfRows++) {
+                        $('#select-records>ul>li').eq(indexOfRows).addClass('active');
+                    }
+                }
+                else {
+                    for (var indexOfRows = selectedElementIndex; indexOfRows <= currentSelectedIndex; indexOfRows++) {
+                        $('#select-records>ul>li').eq(indexOfRows).addClass('active');
+                    }
+                }
+            }
+            else {
+                $('#select-records>ul>li').removeClass('active');
+                $this.addClass('active');
+            }
+        });
+        
+    });
+</script>

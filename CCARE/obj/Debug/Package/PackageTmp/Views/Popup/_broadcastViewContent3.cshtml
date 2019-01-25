@@ -1,0 +1,151 @@
+﻿@model List<CCARE.Models.BroadcastMessageDetail>
+
+@{
+    string lastDateBroadcast = "";
+}
+
+<style>
+    #myBroadcastModal {
+        display:none;
+    }
+
+    .myTarget {
+        font-weight:bold;
+        font-style:italic;
+        color:red;
+    }
+</style>
+
+@*<script type="text/javascript" src="~/assets/js/jquery-ui.js"></script>*@
+<!-- Dialog -->
+<div id="myBroadcastModal" title="Broadcast Message">
+    <div class="row" style="overflow-y:scroll;">
+        <div class="col-lg-12" style="overflow-x:auto">
+            <table class="table">
+                <thead>
+                <tr>
+                    <th></th>
+                    <th>Title</th>
+                    <th>                        
+                    <label class="checkbox-inline">
+                        <input type="checkbox" id="inlineRead" value="" style="margin-top:-1px;"> Read
+                    </label>
+                    </th>
+                    <th>Severity</th>
+                </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <th scope="row">
+                                <input type="hidden" name="guid" value="@item.BroadcastMessageDetailID" />
+                            </th>
+                            <td>
+                                <blockquote>
+                                    <p>Message sent by @item.CreatedByName On @item.CreatedOn</p>
+                                    <footer>@item.Content</footer>
+                                </blockquote>
+                            </td>
+                            <td>
+                                <div class="checkbox">
+                                    <label>
+                                        <input type="checkbox" name="checkboxBroadcast" value="">
+                                    </label>
+                                </div>
+                            </td>
+                            <td>
+                                @item.SeverityLabel
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+
+
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        var modalOptions = {
+            backdrop: 'static',
+            keyboard: false
+        };
+
+        $("#myBroadcastModal").dialog({
+            autoOpen: false,
+            show: {
+                effect: "blind",
+                duration: 1000
+            },
+            hide: {
+                effect: "explode",
+                duration: 1000
+            }
+        });
+        
+        $("#inlineRead").change(function () {
+            $("input:checkbox").prop('checked', $(this).prop("checked"));
+        });
+
+        $("#popupSave1").click(function () {
+            saveAction();
+        });
+
+        function saveAction()
+        {
+            var listParam = [];
+            $('.checkbox input:checked').each(function () {
+                var guid = $(this).parent().parent().parent().parent().find("input:first").val();
+                var param = {
+                    "BroadcastMessageDetailID": guid,
+                };
+                listParam.push(param);
+            });
+            $.ajax({
+                url: '@Url.Action("formSubmitBroadcastMessage", "Popup")',
+                data: { data: JSON.stringify(listParam) },
+                type: 'POST',
+                dataType: 'JSON',
+                beforeSend: function (jqXHR, settings) {
+                },
+                success: function (data, textStatus, jqXHR) {
+                    $('#myBroadcastModal').modal('hide');
+                },
+                error: function (xhr, status, err) {
+                    alert("Error");
+                }
+            });
+        }
+
+        $('.modal-content').resizable({
+            //alsoResize: ".modal-dialog",
+            minHeight: 550,
+            minWidth: 770
+        });
+        $('.modal-dialog').draggable();
+
+        $("#myBroadcastModal").on('shown.bs.modal', function () {
+            var ember = $("#entityname").val();
+            switch (ember) {
+                case "request":
+                    $('#OwnerName-popup').attr('disabled', 'disabled');
+                    break;
+            }
+        });
+        
+        @if (Model.Count > 0) {         
+            lastDateBroadcast = Model.OrderByDescending(x => x.CreatedOn).Take(1).FirstOrDefault().CreatedOn.Value.ToString("MM/dd/yyyy HH:mm:ss");
+        }
+
+        if ("@lastDateBroadcast".length > 0) {
+            var crId = "@Session["CurrentUserID"].ToString()";
+            localStorage.setItem("lastBroadcast-" + crId, "@lastDateBroadcast");
+        }
+        
+        $("#dialog").dialog("open");
+    });
+</script>

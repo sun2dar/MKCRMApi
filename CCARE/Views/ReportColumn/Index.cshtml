@@ -1,0 +1,205 @@
+﻿@model CCARE.Models.Report
+
+@{
+    ViewBag.Title = "Report Column";
+    string actionPage = ViewContext.Controller.ControllerContext.RouteData.Values["action"].ToString();
+    
+    if (Request.IsAjaxRequest())
+    {
+        Layout = null;
+    }
+    else{
+        Layout = "~/Views/Shared/_LayoutEntity.cshtml";
+    }
+}
+
+@section entityLogo
+{
+    <img class="crm-logo" src="~/assets/images/ico_lrg_112.gif" />
+}
+
+@section formTitle
+{
+    <div class="text_title">
+        <h1>Report Mapping</h1>
+        @*Report : @(Model.FirstOrDefault().masterReport.ReportName)*@
+    </div>
+}
+
+@section navHeader
+{
+
+}
+
+@section footerStatus
+{
+    <div class="footer_text"></div>
+}
+
+@section sidebarMenu
+{
+
+}
+
+@using (Html.BeginForm("Create", "ReportColumn", FormMethod.Post, new { id = "form_reportcolumn" }))
+{
+    <div class="container-fluid">
+        <!-- tabs -->
+        <div class="row">
+            <div class="col-sm-12 panel panel-default panel_form_parent">
+                
+                <!-- Tab panes -->
+                <div class="tab-content myContent_noTab">
+
+                    <!-- panel content -->
+                    <div class="col-sm-12">
+
+                        <!-- START title 1 -->
+                        <div class="row form_text">
+
+                            <div class="panel panel-default panel_form_child">
+                                <div class="panel-heading">
+                                    <label class="control-label sv-header"><strong>Report Coloumn</strong></label>
+                                </div>
+                                <br />
+                                <div class="panel-body">
+                                    <div class="form-horizontal crm-padding-top-10">
+                                        <div class="row">
+                                            <div class="col-sm-6">
+                                        
+                                                <input type="hidden" id="enthid" value="@ViewBag.entityname" />
+                                                <input type="hidden" id="hiddenname" name="hiddenname" value="" />
+                                                <input type="hidden" id="hiddentype" name="hiddentype" value="" />
+                                                <input type="hidden" id="reportid" name="reportid" value="@Model.ID" />
+                                                <input type="hidden" id="entitycolumnid" name="entitycolumnid" value="" />
+                                                <input type="hidden" id="hiddenlabel" name="hiddenlabel" value="" />  
+                                                <input type="hidden" id="hiddenrow" name="hiddenrow" value="" />
+                                                                
+                                                <div class="form-group">
+                                                    <label class="col-sm-3 control-label">Column Type</label>
+                                                    <div class="col-sm-9">
+                                                        <select id="ColumnType" name="ColumnType" class="form-control">
+                                                           <option value="">- Pilih Column -</option>
+                                                            @foreach(var x in ViewBag.entity){
+                                                                <option value="@x.Name" title="@x.FieldType" id="@x.ID" label="@x.Label"></option>
+                                                            }                                                      
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>                                  
+                                        </div>
+                                    </div>
+                                </div>
+                                <br />
+                                <!--Button div-->
+                                <div class="panel-body">
+                                    <div class="row">
+                                        <span class="col-sm-12" style="text-align:center" id="ReportColumnGroupButton">
+                                            <button id="btnAddColumn" class="btn btn-primary" type="button"><span class="glyphicon glyphicon-ok-sign glyp-space" aria-hidden="true"></span>Add Column</button>
+                                            <button id="btnDeleteColumn" class="btn btn-primary" type="button"><span class="glyphicon glyphicon-remove-sign glyp-space" aria-hidden="true"></span>Delete Column</button>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div id="messagebox"></div>
+
+                            <div class="panel panel-default panel_form_child">
+                                <div class="panel-heading submenuStyle">
+                                    <label class="control-label sv-header"><strong>Report Column List</strong></label>
+                                </div>
+                                <div class="panel-body">
+                                    <div class="divGrid">
+                                        <table id="gridTable"></table>
+                                        <div id="jqGridPager"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="response-modal"></div>
+    </div>
+}
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        var gridId = "#gridTable";
+        var entityName = 'ReportColumn';
+        var ReportID = $('#reportid').val();
+        var postData = {
+            _val: function () { return ReportID; }
+        };
+
+        loadJqgrid(gridId, postData, entityName);
+
+        $("#btnAddColumn").attr('disabled', 'disabled');
+        $("#btnDeleteColumn").attr('disabled', 'disabled');
+        $(".btn_information").hide();
+       
+        $('#btnAddColumn').click(function () {
+            var dropid = $("#ColumnType :selected").attr("id");
+
+            $.ajax({
+                type: "POST",
+                url: "/ReportColumn/Create?ID="+dropid+"&ReportID="+ReportID,
+                // data: $("#form_reportcolumn").serialize(),
+                dataType: "json",
+                success: function (data) {
+                    if (data.flag == false) {
+                        $("#messagebox").html(MessageText('alert', data.Message));
+                    }
+                    else {
+                        $("#messagebox").html(MessageText('info', data.Message));
+                        loadJqgrid(gridId, postData, entityName);
+                    }
+                },
+                error: function (xhr, status, err) {
+                    alert("Error");
+                }
+            });
+        });
+
+        $('#btnDeleteColumn').click(function () {
+            var rowval = $("#hiddenrow").val();
+            $.ajax({
+                type: "POST",
+                url: "/ReportColumn/Delete?ID=" + rowval+"&ReportID="+ReportID,//?eBanking=" + eBanking + "&StatusType=" + StatusType + "CurrentStatus=" + CurrentStatus,
+                dataType: "json",
+                success: function (data) {
+                    if (data.flag == false) {
+                        $("#messagebox").html(MessageText('alert', data.Message));
+                    }
+                    else {
+                        $("#messagebox").html(MessageText('info', data.Message));
+                        loadJqgrid(gridId, postData, entityName);
+                        $("#btnDeleteColumn").attr('disabled', 'disabled');
+                    }
+                },
+                error: function (xhr, status, err) {
+                    alert("Error");
+                }
+            });
+        });
+
+        $('#ColumnType').change(function () {
+            var val = $(this).val();
+            var text = $('#ColumnType :selected').text();
+            var type = $('#ColumnType :selected').attr('title');
+            var entitycolumnid = $('#ColumnType :selected').attr('id');
+            var hidlabel = $("");
+
+            if (val == "")
+                $("#btnAddColumn").attr('disabled', 'disabled');
+            else
+                $("#btnAddColumn").attr('disabled', false);
+           
+            //empty columnvalue
+            $('#div_columnvalue').empty();
+
+            $("#entitycolumnid").val(entitycolumnid);
+        });
+    });
+</script>

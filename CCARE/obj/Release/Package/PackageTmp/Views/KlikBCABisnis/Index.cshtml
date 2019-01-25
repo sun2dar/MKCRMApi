@@ -1,0 +1,343 @@
+﻿@model CCARE.Models.Channel
+
+@{
+    ViewBag.Title = "e-Banking: ";
+    if (Request.IsAjaxRequest())
+    {
+        Layout = null;
+    }
+    else
+    {
+        Layout = "~/Views/Shared/_LayoutEntity.cshtml";
+    }
+}
+
+@section title
+{
+    KlikBCA Bisnis
+}
+
+@section entityLogo
+{
+    <img class="crm-logo" src="~/assets/images/ico_lrg_112.gif" />
+}
+
+@section formTitle
+{
+    <div class="text_title">
+        <h1>Information</h1>
+        KlikBCA Bisnis: @Model.CorpId - @Model.UserId
+    </div>
+}
+
+@section navHeader
+{
+
+}
+
+@section footerStatus
+{
+    <div class="footer_text">Status: Active</div>
+}
+
+@section sidebarMenu
+{
+    <li><a data-ajax="true" data-ajax-mode="replace" data-ajax-update="#page_content" href="/KlikBCABisnis/Index?Id=@Model.Id&CustomerId=@Model.CustomerId&CustomerIdName=@Model.CustomerIdName&ChannelTypeId=@Model.ChannelTypeId&ChannelType=@Model.ChannelType&CardNo=@Model.CardNo&UserId=@Model.UserId&EmailAddress=@Model.EmailAddress&HpNo=@Model.HpNo&CorpId=@Model.CorpId&AccountNo=@Model.AccountNo&CustomerNo=@Model.CustomerNo&SNKeyBCA=@Model.SNKeyBCA&Category=@Model.Category">Information</a></li>
+}
+
+<div id="page_content" class="container-fluid">
+    <!-- tabs -->
+    <div class="row">
+        <div class="col-sm-12 panel panel-default panel_form_parent">
+            <br />
+            <div class="tab-content myTabContent tab-content-custom1">
+                <div class="tab-pane fade active in" id="general" aria-labelledby="general-tab">
+                    <!-- panel content -->
+                    <div class="col-sm-12">
+                        <!-- title 1 -->
+                        <div class="row form_text">
+                            <div class="panel panel-default panel_form_child">
+                                <div class="panel-heading">
+                                    <label class="control-label sv-header">
+                                        <strong>General</strong>
+                                    </label>
+                                </div>
+                                <div class="panel-body">
+                                    <form class="form-horizontal">
+                                        <br />
+                                        <div class="row">
+                                            <div class="col-sm-6">
+                                                <div class="form-group">
+                                                    <label class="col-sm-4 control-label">e-Banking Type</label>
+                                                    <div class="col-sm-8">
+                                                        @Html.HiddenFor(x => x.ChannelTypeId)
+                                                        @Html.TextBoxFor(x => x.ChannelType, new { @class = "form-control" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <div class="form-group">
+                                                    <label class="col-sm-4 control-label">Customer</label>
+                                                    <div class="col-sm-8">
+                                                        @Html.HiddenFor(x => x.CustomerId)
+                                                        @Html.TextBoxFor(x => x.CustomerIdName, new { @class = "form-control" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-6">
+                                                <div class="form-group">
+                                                    <label class="col-sm-4 control-label">Corp ID</label>
+                                                    <div class="col-sm-8">
+                                                        @Html.TextBoxFor(x => x.CorpId, new { @class = "form-control" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-6">
+                                                <div class="form-group">
+                                                    <label class="col-sm-4 control-label">E-Mail Address</label>
+                                                    <div class="col-sm-8">
+                                                        @Html.TextBoxFor(x => x.EmailAddress, new { @class = "form-control" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-6">
+                                                <div class="form-group">
+                                                    <label class="col-sm-4 control-label">S/N KeyBCA</label>
+                                                    <div class="col-sm-8">
+                                                        @Html.TextBoxFor(x => x.SNKeyBCA, new { @class = "form-control" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- partial view -->
+                        <div class="form-horizontal">
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="form-group">
+                                        <label class="col-sm-2 control-label">Inquiry Status</label>
+                                        <div class="col-sm-4">
+                                            <select id="inquiryDdl" name="inquiryDdl" class="form-control">
+                                                <option value="kbblogin">Login</option>
+                                                <option value="kbbkeybcaconnection">Koneksi KeyBCA Bisnis</option>
+                                                <option value="kbbkeybcaapplication">Status Permohonan KeyBCA Bisnis</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row" id="inquiryInput">
+                                <div class="col-sm-12">
+                                    <div class="form-group">
+                                        <label class="col-sm-2 control-label">User ID</label>
+                                        <div class="col-sm-4">
+                                            <input id="userIdTxt" type="text" class = "form-control"/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="form-group">
+                                        <div class="col-sm-2"></div>
+                                        <div class="col-sm-4">
+                                            <input type="button" class="btn btn-primary" value="Inquiry" id="inquiryBtn" disabled="disabled" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="partialView"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row form_text">
+
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#myTab a').click(function (e) {
+            e.preventDefault()
+            $(this).tab('show')
+        })
+
+        $(".form-horizontal").find("input").attr("disabled", "disabled");//.css('background-color', 'white');
+        $("#userIdTxt").removeAttr("disabled");
+    });
+
+    var postData = {
+        channelTypeId: function () { return "@Model.ChannelTypeId"; },
+            channelType: function () { return "@Model.ChannelType"; },
+            customerId: function () { return "@Model.CustomerId"; },
+            customerIdName: function () { return "@Model.CustomerIdName"; },
+            cardNo: function () { return "@Model.CardNo"; },
+            userId: function () { return "@Model.UserId"; },
+            emailAddress: function () { return "@Model.EmailAddress"; },
+            hpNo: function () { return "@Model.HpNo"; },
+            corpId: function () { return "@Model.CorpId"; },
+            accountNo: function () { return "@Model.AccountNo"; },
+            customerNo: function () { return "@Model.CustomerNo"; },
+            snKeyBCA: function () { return "@Model.SNKeyBCA"; },
+            category: function () { return "@Model.Category"; }
+        };
+
+    $("#inquiryDdl").change(function () {
+        $("#inquiryInput").hide();
+        $("#userIdTxt").val('');
+        $("#inquiryBtn").attr('disabled', 'disabled');
+
+        var selected = $(this).val();
+
+        if (selected == 'kbblogin') {
+            $("#inquiryInput").show(); 
+            $("#inquiryBtn").show();
+            $("#partialView").html("");
+            $("#userIdTxt").removeAttr("disabled");
+        }
+        else if (selected == 'kbbkeybcaconnection') {
+            $("#inquiryInput").show();
+            $("#inquiryBtn").show();
+            $.ajax({
+                type: "GET",
+                url: "/KlikBCABisnis/KBBKeyBCAConnectionPartial/",
+                data: postData,
+                cache: false,
+                contentType: "application/html; charset=utf-8",
+                dataType: "html",
+                beforeSend: function () {
+                    $.blockUI({ message: 'Loading...' });
+                },
+                success: function (viewHTML) {
+                    $("#partialView").html(viewHTML);
+                },
+                error: function (errorData) {
+                    //onError(errorData);
+                },
+                complete: function () {
+                    $.unblockUI();
+                    $("#userIdTxt").removeAttr("disabled");
+                }
+            });
+        }
+        else if (selected == 'kbbkeybcaapplication') {
+            $("#inquiryInput").hide();
+            $("#inquiryBtn").hide();
+            $.ajax({
+                type: "GET",
+                url: "/KlikBCABisnis/KBBKeyBCAApplicationPartial",
+                data: postData,
+                cache: false,
+                contentType: "application/html; charset=utf-8",
+                dataType: "html",
+                beforeSend: function () {
+                    $.blockUI({ message: 'Loading...' });
+                },
+                success: function (viewHTML) {
+                    $("#partialView").html(viewHTML);
+                },
+                error: function (errorData) {
+                    //onError(errorData);
+                },
+                complete: function () {
+                    $.unblockUI();
+                }
+            });
+        }
+        
+    });
+
+    $('#inquiryBtn').click(function () {
+        var userIdInput = $("#userIdTxt").val();
+        var selected = $("#inquiryDdl").val();
+        if (selected == 'kbblogin') {
+            $.ajax({
+                type: "GET",
+                url: "/KlikBCABisnis/KBBKlikBCABisnisPartial?userIdInput=" + userIdInput,
+                data: postData,
+                cache: false,
+                contentType: "application/html; charset=utf-8",
+                dataType: "html",
+                beforeSend: function () {
+                    $.blockUI({ message: 'Loading...' });
+                    $("#inquiryBtn").attr('disabled', 'disabled');
+                },
+                success: function (viewHTML) {
+                    $("#partialView").html(viewHTML);
+                    $("#inquiryBtn").removeAttr('disabled');
+                },
+                error: function (errorData) {
+                    //onError(errorData);
+                },
+                complete: function () {
+                    $.unblockUI();
+                    $("#userIdTxt").removeAttr("disabled");
+                }
+            });
+        }
+        else if (selected == 'kbbkeybcaconnection') {
+            $.ajax({
+                type: "GET",
+                url: "/KlikBCABisnis/KBBKeyBCAConnectionPartial?userIdInput=" + userIdInput,
+                data: postData,
+                cache: false,
+                contentType: "application/html; charset=utf-8",
+                dataType: "html",
+                beforeSend: function () {
+                    $.blockUI({ message: 'Loading...' });
+                    $("#inquiryBtn").attr('disabled', 'disabled');
+                },
+                success: function (viewHTML) {
+                    $("#partialView").html(viewHTML);
+                    $("#inquiryBtn").removeAttr('disabled');
+                },
+                error: function (errorData) {
+                    //onError(errorData);
+                },
+                complete: function () {
+                    $.unblockUI();
+                    $("#userIdTxt").removeAttr("disabled");
+                }
+            });
+        }
+    });
+
+    function cekInputtxtUserID() {
+        var theText = $("#userIdTxt").val();
+        if (theText.length > 0) {
+            $("#inquiryBtn").removeAttr('disabled');
+        }
+        else {
+            $("#inquiryBtn").attr('disabled', 'disabled');
+        }
+    };
+
+    //Check input has value
+    $("#userIdTxt").keydown(function () {
+        //jQuery('#txtUserID').on('input', function () {
+        setTimeout(function () {
+            cekInputtxtUserID();
+        }, 1000);
+    });
+
+    //Check enter on textbox to submit value
+    $('#userIdTxt').keyup(function (event) {
+        if (event.keyCode == 13) {
+            $("#inquiryBtn").click();
+        }
+    });
+
+</script>

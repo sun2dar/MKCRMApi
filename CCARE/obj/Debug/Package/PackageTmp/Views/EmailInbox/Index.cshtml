@@ -1,0 +1,379 @@
+﻿@{
+    Layout = "~/Views/Shared/_LayoutEmail.cshtml";
+    bool checkButtonSPV = false;
+    bool checkButtonDel = false;
+    bool checkButtonWrite = false;
+    if (Session["RoleID"] != null)
+    {
+        string entity = ViewContext.Controller.ControllerContext.RouteData.Values["controller"].ToString();
+        Guid roleID = new Guid(Session["RoleID"].ToString());
+        checkButtonSPV = CCARE.App_Function.RoleNPrivilege.checkEntityButtonByRoleID(roleID, entity, "SPV");
+        checkButtonDel = CCARE.App_Function.RoleNPrivilege.checkEntityButtonByRoleID(roleID, entity, "Delete");
+        checkButtonWrite = CCARE.App_Function.RoleNPrivilege.checkEntityButtonByRoleID(roleID, entity, "Write"); 
+    }
+}
+
+@section title
+{
+    
+}  
+
+@section mainmenu{ Workplace }
+@section submenu{ KlikBCA Emails }
+@section menu{ Inbox }  
+    
+<div class="row">
+    <div class="col-sm-12">
+        <div class="panel panel-default">            
+            <div class="panel-body auto-width">
+                <div class="divGrid auto-width over-x-hide">
+                    <table id="gridTable"></table>
+                    <div id="jqGridPager"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="row">
+    <div class="col-sm-12 content_col">
+        <div id="form_inquiry" class="form-horizontal">
+            <div class="row hide" id="contentBerita">      
+
+                <div class="col-lg-12">
+                    <ol class="breadcrumb">
+                        <li class="active"><a href="#">Isi Berita</a></li>
+                    </ol>
+                </div>             
+
+                <div class="col-lg-12">
+                    <div class="form-group">
+                        <label for="inputPengirim" class="control-label col-lg-1">Pengirim</label>
+                        <div class="col-lg-3">
+                            <input type="text" class="form-control" id="inputPengirim" placeholder="">
+                        </div>       
+                        <label for="inputTanggal" class="control-label col-lg-1 col-lg-offset-2">Tanggal</label>
+                        <div class="col-lg-3">
+                            <input type="text" class="form-control" id="inputTanggal" placeholder="">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-12">
+                    <div class="form-group">
+                        <label for="inputTujuan" class="control-label col-lg-1">Tujuan</label>
+                        <div class="col-lg-3">
+                            <input type="text" class="form-control" id="inputTujuan" placeholder="">
+                            <input type="text" class="form-control hide" id="inputTujuanDomainUserName" placeholder="">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-12">
+                    <div class="form-group">
+                        <div class="">
+                            <label for="inputSubject" class="control-label col-lg-1">Subject</label>
+                        </div> 
+                        <div class="col-lg-3">
+                            <input type="text" class="form-control" id="inputSubject" placeholder="">
+                        </div>                            
+                        <label for="inputNoReferensi" class="control-label col-lg-1 col-lg-offset-2">No Referensi</label>
+                        <div class="col-lg-3">
+                            <input type="text" class="form-control" id="inputNoReferensi" placeholder="">
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-lg-12">
+                    <div class="form-group">
+                        <label for="inputIsiBerita" class="control-label col-lg-1">Isi Berita</label>
+                        <div class="col-lg-9">
+                            <textarea id="inputIsiBerita" placeholder="" class="form-control" style="height:200px; min-height:200px; max-height:200px;"></textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-12">
+                    <div class="form-group">
+                        <div class="col-lg-4"></div>
+                        @if (checkButtonWrite == true)
+                        { 
+                            <div class="col-lg-2">
+                                <button type="button" id="Reply" class="btn btn-primary btn-crm-layout">
+                                    <span class="glyphicon glyphicon-share-alt glyp-space" aria-hidden="true"></span>
+                                    Reply
+                                </button>
+                            </div>
+                            <div class="col-lg-2">
+                                <button type="button" id="Kirim" class="btn btn-primary btn-crm-layout">
+                                    <span class="glyphicon glyphicon-send glyp-space" aria-hidden="true"></span>
+                                    Kirim
+                                </button>
+                            </div>
+                        }
+                        @if (checkButtonDel == true)
+                        {
+                            <div class="col-lg-2">        
+                                <button type="button" id="Hapus" class="btn btn-danger btn-crm-layout">
+                                    <span class="glyphicon glyphicon-remove-sign glyp-space" aria-hidden="true"></span>
+                                    Hapus
+                                </button>
+                            </div>
+                        }
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+@section scriptExt{
+    
+}
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        var gridId = "#gridTable";
+        var entityName = '@ViewContext.RouteData.Values["Controller"].ToString()';
+
+        $('.input-group.date').datepicker({
+            format: "dd/mm/yyyy",
+            todayBtn: "linked",
+            autoclose: true
+        });
+        function js_dd_mm_yyyy(xdate) {
+            now = new Date(xdate);
+            year = "" + now.getFullYear();
+            month = "" + (now.getMonth() + 1); if (month.length == 1) { month = "0" + month; }
+            day = "" + now.getDate(); if (day.length == 1) { day = "0" + day; }
+            hour = "" + now.getHours(); if (hour.length == 1) { hour = "0" + hour; }
+            minute = "" + now.getMinutes(); if (minute.length == 1) { minute = "0" + minute; }
+            second = "" + now.getSeconds(); if (second.length == 1) { second = "0" + second; }
+            //return day + "/" + month + "/" + year + " " + hour + ":" + minute + ":" + second;
+            return day + "/" + month + "/" + year;
+        }
+
+        $('#searchTglAkhir').val(js_dd_mm_yyyy(new Date()));
+        $('#searchTglAwal').val(js_dd_mm_yyyy(new Date()));
+
+        function inboxLoadGrid() {
+            var inboxModel = [
+                    { label: 'ID', name: 'Id', index: 'Id', key: true, width: 75, hidden: true },
+                    { label: 'No Referensi', name: 'NoReferensi', width: 200 },
+                    { label: 'Pengirim', name: 'Pengirim', width: 250 },
+                    { label: 'Subject', name: 'Subject', width: 250 },                    
+                    { label: 'Tanggal', name: 'Tanggal', width: 250 },
+                    { label: 'Status Terakhir', name: 'StatusTerakhir', width: 200 },
+            ];
+
+            //------------- start test -------------
+
+            $.jgrid.gridUnload(gridId);
+            var colModels = inboxModel;
+            var customVal = {
+                height: 200,
+                rowNum: 20
+            }
+            var url = '@Url.Action("loadGrid", "EmailInbox")';
+            var postData = {
+                _type: "inbox",
+                _val: "inboxFindByPKID",
+                _filter: function () { return $("#inquiry_filter").val(); }
+            };
+
+            $(gridId).jqGrid({
+                url: url,
+                mtype: "POST",
+                datatype: "json",
+                postData: postData,
+                colModel: colModels,
+                shrinkToFit: false,
+                width: '100%',
+                autowidth: true,
+                height: '100%',
+                rowNum: customVal.rowNum,
+                rowList: [20, 30],
+                rownumbers: true,
+                pager: $("#jqGridPager"),
+                sortname: 'Id',
+                viewrecords: true,
+                sortorder: "desc",
+                loadComplete: function (data) {
+                    if (data.records == 0) {
+                        var emptyText = '';
+                        emptyText += '<table class="ui-jqgrid-btable"><tr><td>&nbsp;&nbsp;&nbsp;</td><td><center><h2>No Records Found</h2><center></td></tr></table>';
+                        var grid = $(gridId);
+                        var container = grid.parents('.ui-jqgrid-view');
+                        container.find('.ui-jqgrid-bdiv').children("table").remove();
+                        container.find('.ui-jqgrid-bdiv').append(emptyText);
+                    }
+                    /* Remove rm padding from selbox */
+                    $(".ui-pg-selbox").removeClass("rm-padding");
+                },
+                beforeRequest: function () {
+                },
+                jsonreader: {
+                    root: "rows", //array containing actual data
+                    page: "page", //current page
+                    total: "total", //total pages for the query
+                    records: "records", //total number of records
+                    cell: 'cell',
+                    repeatitems: false,
+                    id: "Id" //index of the column with the pk in it
+                },
+                ondblClickRow: function (rowid, iRow, iCol) {
+                    //openWindow(entityname + '/Edit?id=' + rowid);
+                },
+                onSelectRow: function (rowid, status, e) {
+                    $('#contentBerita').find('input, textarea').attr('readonly', 'readonly');
+                    $("#Kirim").attr("disabled", "disabled");
+                    $("#Reply").removeAttr("disabled");
+                    var checkHide = $("#contentBerita").hasClass("hide");
+                    if (checkHide) {
+                        $("#contentBerita").removeClass("hide");
+                    }
+                    var rowData = jQuery(this).getRowData(rowid);
+                    var postData = {
+                        _type: "inboxFindByPKID",
+                        _val: rowData["NoReferensi"],
+                        _filter: function () { return $("#inquiry_filter").val(); }
+                    };
+                    $.ajax({
+                        url: '@Url.Action("EmailDetail", "Email")',
+                            data: postData,
+                            type: 'POST',
+                            dataType: 'JSON',
+                            beforeSend: function (jqXHR, settings) {
+                            },
+                            success: function (data, textStatus, jqXHR) {
+                                if (data.Data.length > 0) {
+                                    $("#inputPengirim").val(data.Data[0]["Pengirim"]);
+                                    $("#inputTujuanDomainUserName").val(data.Data[0]["Tujuan"]);
+                                    $("#inputTujuan").val(data.Data[0]["TujuanFullName"]);
+                                    $("#inputSubject").val(data.Data[0]["Subject"]);
+                                    $("#inputNoReferensi").val(data.Data[0]["NoReferensi"]);
+                                    $("#inputTanggal").val(data.Data[0]["Tanggal"]);
+                                    $("#inputIsiBerita").val(data.Data[0]["Content"]);
+                                } else {
+                                    alert("Detail email failed!");
+                                }
+                            },
+                            error: function (xhr, status, err) {
+                                alert("Error");
+                            }
+                        });
+
+                    }
+                })
+                .navGrid("#jqGridPager", { edit: false, add: false, del: false, search: false });
+            }
+
+        inboxLoadGrid();
+
+        var EmailUtility = {
+            subjectChange: function (subject) {
+                return "RE: [" + subject + "]";
+            },
+            contentChange: function (data) {
+                return "\n----- RE: Original Title -----" +
+                    "\nDari: " + data.pengirim +
+                    "\nSubject: " + data.subject +
+                    "\nTanggal: " + data.tanggal +
+                    "\n----- Isi Berita -----" +
+                    "\n" + data.content;
+            },
+        };
+        
+        $("#Hapus").click(function () {
+            var postData = {
+                _type: "inbox",
+                _noReferensi: $("#inputNoReferensi").val()
+            };
+            $.ajax({
+                url: '@Url.Action("EmailDelete", "Email")',
+                data: postData,
+                type: 'POST',
+                dataType: 'JSON',
+                beforeSend: function (jqXHR, settings) {
+                },
+                success: function (data, textStatus, jqXHR) {
+                    if (data.Response == 1) {
+                        alert(data.Value.Message);
+                        var checkHide = $("#contentBerita").hasClass("hide");
+                        if (!checkHide) {
+                            $("#contentBerita").addClass("hide");
+                        }
+                        inboxLoadGrid();
+                    } else {
+                        alert("Delete email failed!");
+                    }
+                },
+                error: function (xhr, status, err) {
+                    alert("Error");
+                }
+            });
+        });
+
+        $("#Kirim").click(function () {
+            var postData = {
+                _type: "inbox",
+                _val: "",
+                _pengirim: $("#inputPengirim").val(),
+                _tujuan: $("#inputTujuanDomainUserName").val(),
+                _subject: $("#inputSubject").val(),
+                _isiBerita: $("#inputIsiBerita").val(),
+                _tanggal: $("#inputTanggal").val(),
+                _noReferensi: $("#inputNoReferensi").val()
+            };
+            $.ajax({
+                url: '@Url.Action("EmailSend", "Email")',
+                data: postData,
+                type: 'POST',
+                dataType: 'JSON',
+                beforeSend: function (jqXHR, settings) {
+                },
+                success: function (data, textStatus, jqXHR) {
+                    if (data.Response == 1) {
+                        alert(data.Value.Message);
+                        var checkHide = $("#contentBerita").hasClass("hide");
+                        if (!checkHide) {
+                            $("#contentBerita").addClass("hide");
+                        }
+                    } else {
+                        alert("Send email Failed!");
+                    }
+                },
+                error: function (xhr, status, err) {
+                    alert("Error");
+                }
+            });
+        });
+
+        $("#Reply").click(function () {
+            //$('#contentBerita').find('input, textarea').removeAttr("readonly");
+            $('#inputSubject').removeAttr("readonly");
+            $('#inputIsiBerita').removeAttr("readonly");
+            var pengirim = $("#inputPengirim").val();
+            var tujuan = $("#inputTujuanDomainUserName").val();
+            var subject = $("#inputSubject").val();
+            var isiBerita = $("#inputIsiBerita").val();
+            var tanggal = $("#inputTanggal").val();
+            $("#inputTujuan").val(pengirim);
+            $("#inputPengirim").val(tujuan);
+            $("#inputTujuanDomainUserName").val(pengirim);
+            $("#Kirim").removeAttr("disabled");
+            $(this).attr("disabled", "disabled");
+            $("#inputSubject").val(EmailUtility.subjectChange(subject));
+            var data = {
+                pengirim: pengirim,
+                subject: subject,
+                content: isiBerita,
+                tanggal: tanggal
+            };
+            $("#inputIsiBerita").val(EmailUtility.contentChange(data));
+        });
+
+    });
+</script>

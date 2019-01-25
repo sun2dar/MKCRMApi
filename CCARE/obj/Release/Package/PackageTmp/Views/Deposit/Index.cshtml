@@ -1,0 +1,246 @@
+﻿@model CCARE.Models.Deposit
+
+@{
+    ViewBag.Title = "Deposit: " + Model.AccountNo;
+    if (Request.IsAjaxRequest())
+    {
+        Layout = null;
+    }
+    else
+    {
+        Layout = "~/Views/Shared/_LayoutEntity.cshtml";
+    }
+}
+
+@section title
+{
+    Deposit: @Model.AccountNo
+}
+
+@section entityLogo
+{
+    <img class="crm-logo" src="~/assets/images/ico_lrg_112.gif" />
+}
+
+
+@section formTitle
+{
+    <div class="text_title">
+        <h1>Information</h1>
+        Deposit: @Model.AccountNo
+    </div>
+}
+
+@section buttonRequest
+{
+    <a href="#">
+        <img id="btn_create_request" class="btn-create-request"  data-toggle="tooltip" data-placement="left"
+           title="" data-original-title="Create Request" src="~/assets/images/request.png" />
+    </a>
+    
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#btn_create_request").tooltip('show');
+            $('#btn_create_request').click(function () {
+                var CustomerId = '@Model.CustomerId';
+                var CustomerIdName = '@Model.CustomerIdName';
+                var AccountNo = '@Model.AccountNo';
+                var CardNo = '@Model.CardNo';
+                var url = '@Url.Action("Create", "Request")';
+
+                openWindow(url + "?customerID=" + CustomerId + "&customerName=" + CustomerIdName + "&accountNo=" + AccountNo + "&cardNo=" + CardNo + "&customerType=customer_deposit");
+            });
+        });
+    </script>
+}
+
+@section navHeader
+{
+
+}
+
+@section footerStatus
+{
+    <div class="footer_text">Status: Active</div>
+}
+
+@section sidebarMenu
+{
+    <li><a data-ajax="true" data-ajax-mode="replace" data-ajax-update="#page_content" href="/Deposit/Index?Id=@Model.Id&AccountNo=@Model.AccountNo&CardNo=@Model.CardNo&OwnerTypeLabel=@Model.OwnerTypeLabel&RelationType=@Model.RelationType&CustomerId=@Model.CustomerId&CustomerIdName=@Model.CustomerIdName&RelationshipWith=@Model.RelationshipWith">Information</a></li>
+}
+
+<div id="page_content" class="container-fluid">
+    <!-- tabs -->
+    <div class="row">
+        <div class="col-sm-12 panel panel-default panel_form_parent">
+            <br />
+            <div class="tab-content myTabContent tab-content-custom1">
+                <div class="tab-pane fade active in" id="general" aria-labelledby="general-tab">
+
+                    <!-- panel content -->
+                    <div class="col-sm-12">
+
+                        <!-- title 1 -->
+                        <div class="row form_text">
+                            <div class="panel panel-default panel_form_child">
+                                
+                                <div class="panel-heading">
+                                    <label class="control-label sv-header">
+                                        <strong>General</strong>
+                                    </label>
+                                </div>
+                                
+                                <br />
+                                
+                                <div class="panel-body">
+                                    <form class="form-horizontal">
+                                        <div class="row">
+                                            <div class="col-sm-6">
+                                                <div class="form-group">
+                                                    <label class="col-sm-4 control-label">Account Number</label>
+                                                    <div class="col-sm-8">
+                                                        @Html.HiddenFor(x => x.AccountNo)
+                                                        @Html.TextBoxFor(x => x.AccountNo, new { @class = "form-control" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <div class="form-group">
+                                                    <label class="col-sm-4 control-label">Card No</label>
+                                                    <div class="col-sm-8">
+                                                        @Html.TextBoxFor(x => x.CardNo, new { @class = "form-control" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-6">
+                                                <div class="form-group">
+                                                    <label class="col-sm-4 control-label">Owner Type</label>
+                                                    <div class="col-sm-8">
+                                                        @Html.TextBoxFor(x => x.OwnerTypeLabel, new { @class = "form-control" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <div class="form-group">
+                                                    <label class="col-sm-4 control-label">Relation Type</label>
+                                                    <div class="col-sm-8">
+                                                        @Html.TextBoxFor(x => x.RelationType, new { @class = "form-control" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-6">
+                                                <div class="form-group">
+                                                    <label class="col-sm-4 control-label">Customer</label>
+                                                    <div class="col-sm-8">
+                                                        @Html.TextBoxFor(x => x.CustomerIdName, new { @class = "form-control" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <div class="form-group">
+                                                    <label class="col-sm-4 control-label">Relationship With</label>
+                                                    <div class="col-sm-8">
+                                                        @Html.TextBoxFor(x => x.RelationshipWith, new { @class = "form-control" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            
+                            </div>
+                        </div>
+
+                        <!-- partial view -->
+                        <div class="row form-horizontal">
+                            <div class="col-sm-12">
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label">Inquiry Status</label>
+                                    <div class="col-sm-2">
+                                        <select id="inquiryDdl" name="inquiryDdl" class="form-control">
+                                            <option value="accountno">Account No</option>
+                                            @if (!string.IsNullOrEmpty(@Model.CardNo))
+                                            {
+                                                <option value="atmcard">ATM Card</option>
+                                            }
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="partialView"></div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#myTab a').click(function (e) {
+            e.preventDefault()
+            $(this).tab('show')
+        })
+
+        $("#btn_save").click(function () {
+            formSubmit("save", $("#form_customer"));
+        });
+
+    });
+
+    $("#inquiryDdl").change(function () {
+        var postData = {
+            Id: function () { return "@Model.Id"; },
+            AccountNo: function () { return "@Model.AccountNo"; },
+            CardNo: function () { return "@Model.CardNo"; },
+            OwnerTypeLabel: function () { return "@Model.OwnerTypeLabel"; },
+            RelationType: function () { return "@Model.RelationType"; },
+            CustomerId: function () { return "@Model.CustomerId"; },
+            CustomerIdName: function () { return "@Model.CustomerIdName"; },
+            RelationshipWith: function () { return "@Model.RelationshipWith"; }
+        };
+
+        var selected = $(this).val();
+        if (selected == 'accountno') {
+            $.ajax({
+                type: "GET",
+                url: "/Deposit/DepositInfoPartial/",
+                data: postData,
+                cache: false,
+                contentType: "application/html; charset=utf-8",
+                dataType: "html",
+                success: function (viewHTML) {
+                    $("#partialView").html(viewHTML);
+                },
+                error: function (errorData) {
+                    //onError(errorData);
+                }
+            });
+        }
+        else if (selected == 'atmcard') {
+            $.ajax({
+                type: "GET",
+                url: "/Deposit/DepositCardNoPartial/",
+                data: postData,
+                cache: false,
+                contentType: "application/html; charset=utf-8",
+                dataType: "html",
+                success: function (viewHTML) {
+                    $("#partialView").html(viewHTML);
+                },
+                error: function (errorData) {
+                    //onError(errorData);
+                }
+            });
+        }
+    });
+
+    $("#inquiryDdl").trigger("change");
+
+</script>

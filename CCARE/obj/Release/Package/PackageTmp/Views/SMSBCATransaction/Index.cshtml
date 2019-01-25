@@ -1,0 +1,274 @@
+﻿@{
+    if (Request.IsAjaxRequest())
+    {
+        Layout = null;
+    }
+}
+
+<ul class="nav nav-stacked nav-pills">
+    <li class="titleBar font-crm4"><a></a></li>
+</ul>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-12">
+            <!-- Content -->
+            <div class="container-fluid content_container">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <form id="form_inquiry">
+                            <br />
+                            <div class="tab-content myContent_Tab">
+                                <div class="tab-pane fade active in" id="history" aria-labelledby="history-tab">
+                                    
+                                    <ol class="breadcrumb">
+                                        <li class="active">Search</li>
+                                        <li class="active">E-Banking Transactions</li>
+                                        <li class="active"><a href="#">SMS BCA</a></li>
+                                    </ol>
+
+                                    <div class="form-horizontal pad-eb-trx">
+                                        <div class="row">
+                                            <div class="col-sm-4">                                        
+                                                <div class="form-group">
+                                                    <label class="col-sm-4 control-label">E-Banking</label>
+                                                    <div class="col-sm-8">
+                                                        <input type="text" id="entity" class="form-control" readonly="readonly" value="SMS BCA"/>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-sm-4">                                                                              
+                                                <div class="form-group">
+                                                    <label class="col-sm-4 control-label">Parameter</label>
+                                                    <div class="col-sm-8">
+                                                        <select id="inquiry_searchby" class="form-control">
+                                                            <option value="mobileNo">No HP</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-sm-4">                                                                              
+                                                <div class="form-group">
+                                                    <label class="col-sm-4 control-label mandatory"><span id="lblparam">No HP</span></label>
+                                                    <div class="col-sm-8">
+                                                        <input type="text" id="inquiry_val" class="form-control" maxlength="12" value=""/>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-sm-4">                                        
+                                                <div class="form-group">
+                                                    <label class="col-sm-4 control-label mandatory">Tgl Awal</label>
+                                                    <div class="col-sm-8">
+                                                        <div class="input-group date">
+                                                            <input type="text" id="StartDate" class="form-control" value="" />
+                                                            <span class="input-group-addon">
+                                                                <i class="fa fa-calendar fa-lg"></i>
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-sm-4">                                                                              
+                                                <div class="form-group">
+                                                    <label class="col-sm-4 control-label mandatory">Tgl Akhir</label>
+                                                    <div class="col-sm-8">
+                                                        <div class="input-group date">
+                                                            <input type="text" id="EndDate" class="form-control" value="" />
+                                                            <span class="input-group-addon">
+                                                                <i class="fa fa-calendar fa-lg"></i>
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-sm-4">                                                                              
+                                                <div class="form-group">
+                                                    <label class="col-sm-4 control-label">Jenis Transaksi</label>
+                                                    <div class="col-sm-8">
+                                                        <select id="inquiry_trxType" class="form-control">
+                                                            <option value="all">All</option>
+                                                            <option value="saldo">Info Saldo</option>
+                                                            <option value="mutasi">Info Mutasi</option>
+                                                            <option value="kupon">Info No Kupon Undian</option>
+                                                            <option value="payment">Pembayaran</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-sm-4"></div>
+                                            <div class="col-sm-4">
+                                                <div class="form-group">
+                                                    <div class="col-sm-12">
+                                                        <div class="input-group">
+                                                            <button id="btn_search" class="btn btn-primary btn-crm-layout" type="submit">
+                                                                <span class="glyphicon glyphicon-search glyp-space" aria-hidden="true"></span>
+                                                                Search
+                                                            </button>
+                                                            <button id="btn_clear" class="btn btn-danger btn-crm-layout" type="button">
+                                                                <span class="glyphicon glyphicon-erase glyp-space" aria-hidden="true"></span>
+                                                                Clear
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-4"></div>
+                                        </div>
+
+                                    </div>
+                                </div>                                
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <br /><br />
+                
+                <!-- Table result -->
+                <div class="row">
+                    <div class="col-sm-12" >
+                        <div class="panel panel-default">
+                            
+                            <div class="panel-heading panel_heading">
+                                <label class="control-label sv-header">
+                                    <strong>Search Result</strong>
+                                </label>
+                            </div>
+
+                            <div class="panel-body" id="information">
+                                <div class="form-horizontal pad-eb-trx">
+                                    <div class="row">
+                                        <div class="col-sm-4">                                        
+                                            <div class="form-group">
+                                                <label class="col-sm-3 control-label">Pemilik Kartu</label>
+                                                <div class="col-sm-9">
+                                                    <input type="text" class="form-control" id="additionalName" readonly="readonly" />
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-sm-4">                                                                              
+                                            <div class="form-group">
+                                                <label class="col-sm-3 control-label">No Kartu</label>
+                                                <div class="col-sm-9">
+                                                    <input type="text" class="form-control" id="additionalCard" readonly="readonly" />
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-sm-4">                                                                              
+                                            <div class="form-group">
+                                                <label class="col-sm-3 control-label">Status</label>
+                                                <div class="col-sm-9">
+                                                    <input type="text" class="form-control"  id="additionalStatus"  readonly="readonly" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="panel-body">
+                                <div class="divGrid">
+                                    <table id="gridTable"></table>
+                                    <div id="jqGridPager"></div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        var gridId = "#gridTable";
+        var entityName = '@ViewContext.RouteData.Values["Controller"].ToString()';
+
+        $("#form_inquiry").find("input").addClass("rm-padding");
+        $("#form_inquiry").find("select").addClass("rm-padding");
+        $("#form_inquiry").find(":radio").removeClass("rm-padding");
+
+        $("#information").hide();
+
+        //$("#inquiry_val").val('081316095502');
+        //$("#StartDate").val('01/09/2016');
+        //$("#EndDate").val('01/10/2016');
+
+        $("#btn_search").click(function () {
+            (event.preventDefault) ? event.preventDefault() : event.returnValue = false;
+            
+            
+            var StartDate = $("#StartDate").val();
+            var EndDate = $("#EndDate").val();
+
+            if ($("#inquiry_val").val() == '') {
+                alert("Nomor HP harus diisi");
+                return false;
+            }
+            else if ($("#StartDate").val() == '') {
+                alert("Tanggal Awal harus diisi");
+                return false;
+            }
+            else if ($("#EndDate").val() == '') {
+                alert("Tanggal Akhir harus diisi");
+                return false;
+            }
+            
+            if (DateDDMMYYYY(StartDate) > DateDDMMYYYY(EndDate))
+            {
+                alert("Tanggal Awal > Tanggal Akhir");
+                return false;
+            }
+
+            var eName = $("#inquiry_trxType").val() == 'all' ? "SMSBCATransactionall"
+                : $("#inquiry_trxType").val() == 'payment' ? "SMSBCATransactionPayment"
+                : entityName;
+
+            var postData = {
+                _searchby: function () { return $("#inquiry_searchby").val(); },
+                _val: function () { return $("#inquiry_val").val(); },
+                _startDate: StartDate,
+                _endDate: EndDate,
+                _grid: eName,
+                _trxType: function () { return $("#inquiry_trxType").val(); }
+            };
+            loadJqgrid(gridId, postData, entityName);
+        });
+
+
+        $("#StartDate").datepicker({
+            format: 'dd/mm/yyyy',
+            todayHighlight: true,
+            orientation: "top auto",
+            autoclose: true
+        })
+
+        $("#EndDate").datepicker({
+            format: 'dd/mm/yyyy',
+            todayHighlight: true,
+            orientation: "top auto",
+            autoclose: true
+        })
+
+        $("#btn_clear").click(function () {
+            $("input[type=text]").val('');
+            $("#entity").val('SMS BCA');
+            $("#information").hide();
+            $.jgrid.gridUnload(gridId);
+        });
+    });
+</script>

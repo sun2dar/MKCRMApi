@@ -1,0 +1,49 @@
+﻿@{
+    if (Request.IsAjaxRequest())
+    {
+        Layout = null;
+    }
+    else{
+        Layout = "~/Views/Shared/_Layout.cshtml";
+    }
+}
+
+<ul class="nav nav-stacked nav-pills">
+    <li class="titleBar font-crm4"><a>
+        @RenderSection("title", required: false)
+        <span class="sr-only">(current)</span></a></li>
+</ul>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-12">
+            <!-- Content -->
+            <div class="container-fluid content_container">
+                <div class="row">
+                    <div class="col-sm-12 content_col">
+                        <ol class="breadcrumb">
+                            <li class="active">@RenderSection("mainmenu", required: false)</li>
+                            <li class="active">@RenderSection("submenu", required: false)</li>
+                            <li class="active"><a href="#">@RenderSection("menu", required: false)</a></li>
+                            @RenderSection("extraButton", required: false)
+                        </ol>
+                        <form id="form_inquiry">
+                            @RenderBody()
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        $("#form_inquiry").find("input").addClass("rm-padding");
+        $("#form_inquiry").find("select").addClass("rm-padding");
+        $("#form_inquiry").find(":radio").removeClass("rm-padding");
+
+        @RenderSection("scriptExt", required:false)
+    });
+</script>

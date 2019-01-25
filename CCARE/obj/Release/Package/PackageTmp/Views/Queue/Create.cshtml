@@ -1,0 +1,226 @@
+﻿@model CCARE.Models.Queue
+
+@{
+    ViewBag.Title = "Create";
+    Layout = "~/Views/Shared/_LayoutEntity.cshtml";
+}
+
+@section title
+{
+    Workgroup
+}
+
+@section entityLogo
+{
+    <img class="crm-logo" src="~/assets/images/ico_lrg_112.gif" />
+}
+
+@section formTitle
+{
+    <div class="text_title">
+        <h1>Information</h1>
+        Workgroup: New
+    </div>
+}
+
+@section navHeader
+{
+    <ul class="nav navbar-nav navbar-left">
+        <li><a id="btn_save" href="#">Save</a></li>
+        <li><a id="btn_savenclose" href="#">Save & Close</a></li>
+        <li><a id="btn_savenopen" href="#">Save & New</a></li>
+    </ul>
+}
+
+@section footerStatus
+{
+    <div class="footer_text">Status : New</div>
+}
+
+@section sidebarMenu
+{
+    <li class="active"><a href="#">Information</a></li>
+}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-12 panel panel-default panel_form_parent">
+            <div class="myContent_noTab">
+                @using (Html.BeginForm("Create", "Queue", FormMethod.Post, new { id = "form_Queue" }))
+                {
+                    @Html.Hidden("hidden_displayStatus", "", new { @id = "hidden_displayStatus" })
+                    <!-- panel content -->
+                    <div class="col-sm-12">
+                        <!-- START title 1 -->
+                        <div class="row form_text">
+                            <div class="panel panel-default panel_form_child">
+                                <div class="panel-heading">
+                                    <label class="control-label sv-header"><strong>General</strong></label>
+                                </div>
+                                <br />
+                                 <div class="panel-body">
+                                    <div class="form-horizontal">                                
+                                        <div class="row">
+                                            <div class="col-sm-6">                                        
+                                                <div class="form-group">
+                                                    <label class="col-sm-4 control-label mandatory">Workgroup Name</label>
+                                                    <div class="col-sm-8">
+                                                        @Html.TextBoxFor(x => x.Name, new { @class = "form-control" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-6">   
+                                                <div class="form-group">
+                                                    <label class="col-sm-4 control-label mandatory">Business Unit</label>
+                                                    <div class="col-sm-8">
+                                                        @* ==========================================================================================================*@
+                                                        @Html.HiddenFor(x => x.BusinessUnitID_ORG, new {  @class = "form-control" })
+                                                        <div class="input-group" id="BusinessUnit-Group">
+                                                            @Html.TextBoxFor(x => x.BusinessUnitName_ORG, new { @class = "form-control" })
+                                                            <div tabindex="1" id="BusinessUnitName-label" class="form-control typeahead-label hide">
+                                                            </div>
+                                                            <div tabindex="1" class="input-group-addon btn" id="BusinessUnitName-popup">
+                                                                <i class="fa fa-search"></i>
+                                                            </div>
+                                                        </div>
+                                                        @* ==========================================================================================================*@
+                                                    </div>
+                                                </div>
+                                            </div>
+                                           
+                                        </div>
+                                        <div class="row">                                            
+                                            <div class="col-sm-6">                                                                              
+                                                <div class="form-group">
+                                                    <label class="col-sm-4 control-label">Email</label>
+                                                    <div class="col-sm-8">
+                                                        @Html.TextBoxFor(x => x.EMailAddress, new { @class = "form-control" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-6">                                                                              
+                                                <div class="form-group">
+                                                    <label class="col-sm-4 control-label mandatory">Owner</label>
+                                                    <div class="col-sm-8">
+                                                        @* ==========================================================================================================*@
+                                                        @Html.HiddenFor(x => x.OwnerId, new {  @class = "form-control" })
+                                                        <div class="input-group" id="Owner-Group">
+                                                            @Html.TextBoxFor(x => x.OwnerName, new { @class = "form-control" })
+                                                            <div tabindex="1" id="OwnerName-label" class="form-control typeahead-label hide">
+                                                            </div>
+                                                            <div tabindex="1" class="input-group-addon btn" id="OwnerName-popup">
+                                                                <i class="fa fa-search"></i>
+                                                            </div>
+                                                        </div>
+                                                        @* ==========================================================================================================*@
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-12">                                                                              
+                                                <div class="form-group">
+                                                    <label class="col-sm-2 control-label">Description</label>
+                                                    <div class="col-sm-10">
+                                                        <textarea id="Description" class="form-control branch-notes" name="Description" rows="50">@Model.Description</textarea>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- END title 1 -->
+                    </div>
+                }
+            </div>
+        </div>        
+    </div>    
+</div>
+<div id="response-modal"></div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        var entityName = '@ViewContext.RouteData.Values["Controller"].ToString()';
+
+        function validateForm(action, formName) {
+            if ($("#Name").val() == "") {
+                alert("@Resources.Queue.MandatoryQueueName");
+                return false;
+            }
+            if ($("#BusinessUnitID_ORG").val() == "") {
+                if ($("#BusinessUnitName_ORG").val() == "") {
+                    alert("@Resources.Queue.MandatoryQueueBU");
+                    $("#BusinessUnitID_ORG").focus();
+                }
+                else
+                    alert("@Resources.Queue.MandatoryQueueBU2");
+                return false;
+            }
+            if ($("#OwnerId").val() == "") {
+                if ($("#OwnerName").val() == "") {
+                    alert("@Resources.Queue.MandatoryQueueOwner");
+                    $("#OwnerId").focus();
+                }
+                else
+                    alert("@Resources.Queue.MandatoryQueueOwner2");
+                return false;
+            }
+            formSubmit(action, formName);
+        }
+
+        $("#btn_save").click(function () {
+            validateForm("save", $("#form_Queue"));
+        });
+
+        $("#btn_savenclose").click(function () {
+            validateForm("saveNClose", $("#form_Queue"));
+        });
+
+        $("#btn_savenopen").click(function () {
+            validateForm("saveNOpen", $("#form_Queue"));
+        });
+              
+        $('#BusinessUnitName-popup').on('click', function (e) {
+            urlModalPopup = '@Url.Action("_popupContent", "Popup", new { type = "businessunit" })';
+             colModelsName = [
+                 { label: 'ID', name: 'Id', index: 'Id', key: true, width: 75, hidden: true },
+                 { label: 'Name', name: 'Name', index: 'Name', width: 500 },
+                 { lable: 'IsDisabled', name: 'isDisabled', width: 300 }
+             ];
+             var id = $(this).parent().find('input:last').attr('id');
+             $('#' + id).trigger("blur");
+             e.preventDefault();
+        });
+
+        var BusinessUnitReq = new PopupClass();
+        BusinessUnitReq.setId("BusinessUnitName_ORG");
+        BusinessUnitReq.setUrl('@Url.Action("BusinessUnitQueue", "Popup")');
+        BusinessUnitReq.setHiddenId("BusinessUnitID_ORG");
+        BusinessUnitReq.init();
+
+        $('#OwnerName-popup').on('click', function (e) {
+            urlModalPopup = '@Url.Action("_popupContent", "Popup", new { type = "owner_queue" })';
+              colModelsName = [
+                   { label: 'ID', name: 'Id', index: 'Id', key: true, width: 75, hidden: true },
+                   { label: 'Name', name: 'Name', index: 'Name', width: 100 },
+                   { label: 'Phone', name: 'phone', width: 100 },
+                   { label: 'Business Unit', name: 'businessunit', width: 100 },
+                   { label: 'Site', name: 'site', width: 100 },
+                   { label: 'Title', name: 'title', width: 100 },
+                   { label: 'E-Mail', name: 'email', width: 100 }
+              ];
+              var id = $(this).parent().find('input:last').attr('id');
+              $('#' + id).trigger("blur");
+              e.preventDefault();
+        });
+
+        var OwnerReq = new PopupClass();
+        OwnerReq.setId("OwnerName");
+        OwnerReq.setUrl('@Url.Action("Owner", "Popup")');
+        OwnerReq.setHiddenId("OwnerId");
+        OwnerReq.init();
+    });
+</script>

@@ -1,0 +1,188 @@
+﻿@model CCARE.Models.Customer
+
+@{
+    ViewBag.Title = "Archive";
+    if (Request.IsAjaxRequest())
+    {
+        Layout = null;
+    }
+    else
+    {
+        Layout = "~/Views/Shared/_LayoutEntity.cshtml";
+    }
+}
+
+
+@section title
+{
+    
+    
+}
+
+@section entityLogo
+{
+    <img class="crm-logo" src="~/assets/images/ico_lrg_112.gif" />
+}
+
+@section formTitle
+{
+    <div class="text_title">
+        <h1 id="Archive-Page">Information</h1>
+        Customer: @Model.FullName
+    </div>
+}
+
+@section sidebarMenu
+{
+   @* <li><a class="link_from_page" href="#" id="linkInfo">Information</a></li>
+    <li><a class="link_other_page" data-ajax="true" data-ajax-mode="replace" data-ajax-update="#page_content" href="/Customer/ArchiveTasks?id=@Model.RequestID">Task</a></li>
+    <li><a class="link_other_page" data-ajax="true" data-ajax-mode="replace" data-ajax-update="#page_content" href="/Customer/ArchiveLetterEntries?id=@Model.RequestID">Letter Entries</a></li>
+
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('ul.nav-pills li a').click(function (e) {
+                $("#Archive-Page").html($(this).html());
+            });
+
+            $('#linkInfo').click(function () {
+                location.reload();
+            });
+        });
+    </script>*@
+}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-12 panel panel-default panel_form_parent scroll-y">
+            <br />
+            <!-- Content -->
+            <div class="col-sm-12">
+                <div class="row form_text">
+                    <form id="form_inquiry">
+                        <div class="col-lg-12 inquiry_left">
+                            <div class="input-group">
+                                <span class="input-group-btn inquiry_dropdown">
+                                    <select id="inquiry_param" class="form-control">
+                                        <option value="searchRequestId">Request Id</option>
+                                        <option value="searchCIS">CIS</option>
+                                        <option value="searchYear">Year</option>
+              
+                                    </select>
+
+                                </span>
+                                <span class="input-group-btn inquiry_dropdown year1">
+                                    <select id="inquiry_filter" class="form-control">
+                                        @*<option value="2013">2013</option>
+                                        <option value="2014">2014</option>
+                                        <option value="2015">2015</option>       *@ 
+                                        <option value="">-Select Year-</option>                                      
+                                       @foreach(var y in ViewBag.years){
+                                        <option value="@y">@y</option>
+                                        
+                                        }
+                                   
+                                    </select>
+                                </span>
+                             
+                                <span class="input-group-btn input_space"></span>
+                                <input type="text" class="form-control" id="inquiry_val" >                                
+                                <input type="hidden" id="hidden_val" value="@Model.CustomerID">
+                                <span class="input-group-btn">
+                                    <button id="btn_search" class="btn btn-primary" type="submit"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></button>
+                                </span>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <br />
+
+                <!-- Table result -->
+
+                <div class="row form_text">
+                    <div class="panel panel-default panel_form_child">
+                        
+                        <div class="panel-heading">
+                            <label class="control-label sv-header">
+                                <strong>Search Result</strong>
+                            </label>
+                        </div>
+                        
+                        <br />
+
+                        <div class="panel-body">
+                            <form class="form-horizontal">
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <div class="divGrid">
+                                            <table id="gridTable"></table>
+                                            <div id="jqGridPager"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            
+            </div>
+        </div>
+    </div>
+</div>
+
+   
+<script type="text/javascript">
+    $(document).ready(function () {
+     
+
+
+
+        var gridId = "#gridTable";
+        var entityName = 'Requesta';
+
+       // $('#form_inquiry').submit(function (event) {
+            (event.preventDefault) ? event.preventDefault() : event.returnValue = false;
+            
+                var postData = {
+                    _param: function () { return $("#inquiry_param").val(); },
+                    _val: function () { return $("#inquiry_val").val(); },
+                    _hid: function () { return $("#hidden_val").val(); },
+                    _year: function () {return $("#inquiry_filter").val();}
+                };
+                loadJqgrid(gridId, postData, entityName);
+
+        //});
+        $('#form_inquiry').submit(function (event) {
+            (event.preventDefault) ? event.preventDefault() : event.returnValue = false;
+            
+            var postData = {
+                _param: function () { return $("#inquiry_param").val(); },
+                _val: function () { return $("#inquiry_val").val(); },
+                _hid: function () { return $("#hidden_val").val(); },
+                _year: function () { return $("#inquiry_filter").val(); }
+            };
+            loadJqgrid(gridId, postData, entityName);
+
+        });
+        $(".year1").hide();
+        $("#inquiry_param").change(function () {
+
+            if ($("#inquiry_param").val() == "searchYear") {
+                $(".year1").show();
+               
+            } else {
+                $(".year1").hide();
+            }
+         
+
+        });
+        
+        $(".link_other_page").click(function () {
+            $(".form_page").hide();
+        });
+        $(".link_form_page").click(function () {
+            $(".form_page").show();
+        });
+
+    });
+</script>

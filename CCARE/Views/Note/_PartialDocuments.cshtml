@@ -1,0 +1,240 @@
+﻿@model IEnumerable<CCARE.Models.Annotation>
+
+<div class="modal fade bs-example-modal-lg" id="attach-file" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Add Attachment</h4>
+      </div>
+      <div class="modal-body">
+          <div class="form-horizontal">
+            <div class="row">
+                <form id="form_attachment" name="form_attachment" action="@(Url.Action("UploadFile", "Note"))" method="POST" enctype="multipart/form-data" >
+                    <input type="hidden" id="parentEntityName" name="parentEntityName" value="" />
+                    <div class="col-sm-8">                                        
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label text-left"><strong>Filename:</strong></label>
+                            <input type="file" id="import_filepath" name="import_filepath" class="col-sm-10 form-control" />
+                            <iframe id="my_iframe" name="my_iframe" style="display:none"></iframe>
+                        </div>
+                    </div>
+                    <div class="col-sm-8">                                        
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label text-left"><strong>Notes:</strong></label>
+                            <textarea class="col-sm-10 form-control" style="height:200px; min-height:200px; max-height:200px;" id="NoteText" name="NoteText"></textarea>
+                        </div>
+                    </div>
+                    <div class="col-sm-2">                                        
+                        <div class="form-group">
+                            <div class="col-sm-12">
+                                <input name="ObjectID" id="ObjectID" type="hidden" value="" />
+                                <input name="ModifiedBy" id="ModifiedBy" type="hidden" value="" />
+                                <input name="BusinessUnitID" id="BusinessUnitID" type="hidden" value="" />
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button id="popupCancel" type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+        <button id="popupAttach" type="button" class="btn btn-primary" onclick="submitAttachment();">Attach</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- START title 3 -->
+@if (Model.First() != null)
+{
+    <div class="row form_text">
+        <div class="panel panel-default panel_form_child">
+            <div class="panel-body">
+            @foreach (var x in Model.Where(note => note.IsDocument == true))
+            {
+                <div class="form-horizontal">
+                    <div class="row">
+                        <div class="col-sm-6">                                        
+                            <div class="form-group">
+                                @Html.HiddenFor(a => x.AnnotationID)
+                                <label class="col-sm-12 control-label text-left-i">Title: @x.Subject</label>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                            @*@if (x.CreatedByID == new Guid(Session["CurrentUserID"].ToString()))
+                            {
+                                <button type="button" class="col-sm-offset-11 btn btn-danger btn_deleteDocument" onclick="deleteDocument('@(x.AnnotationID)');"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></button>
+                            }*@
+
+                            @if(Session["RoleID"] != null){
+                                Guid roleID = new Guid(Session["RoleID"].ToString());
+                                bool checkButton = CCARE.App_Function.RoleNPrivilege.checkEntityButtonByRoleID(roleID, "Request", "DeleteDoc");
+                    
+                                if(checkButton == true)
+                                {
+                                    <text>
+                                        <button type="button" class="col-sm-offset-11 btn btn-danger btn_deleteDocument" onclick="deleteDocument('@(x.AnnotationID)');"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></button>
+                                    </text>
+                                }
+                            }
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-6">                                        
+                            <div class="form-group">
+                                <label class="col-sm-12 control-label text-left-i">Note created on @x.CreatedOn.Value.ToString("dd/MM/yyyy HH:mm")</label>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">                                        
+                            <div class="form-group">
+                                <label class="col-sm-12 control-label">Note modified on @x.ModifiedOn.Value.ToString("dd/MM/yyyy HH:mm")</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-6">                                        
+                            <div class="form-group">
+                                <label class="col-sm-12 control-label text-left-i">By @x.CreatedBy</label>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">                                        
+                            <div class="form-group">
+                                <label class="col-sm-12 control-label">By @x.ModifiedBy</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12">                                        
+                            <div class="form-group">
+                                <label class="col-sm-12 control-label text-left-i">@x.NoteText</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-6">                                        
+                            <div class="form-group">
+                                <a href="javascript:void(0)" class="col-sm-12 control-label text-left-i btnDownload" id="@x.AnnotationID"><b>@x.FileName (@x.FileSize.Value.ToString("#,###0") Byte(s))</b></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+            </div>
+        </div>
+    </div>
+}
+<!-- END title 3 -->
+<script src="~/Scripts/jquery.signalR-1.1.4.js"></script>
+<script src="~/signalr/hubs"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#ObjectID").val($("#ObjectId").val());
+        $("#parentEntityName").val($("#entityname").val());
+
+       
+
+        $("#import_filepath").change(function () {
+            var inputFile = $("#import_filepath");
+            var filepath = inputFile.val();
+            var result = true;
+
+            if (filepath) {
+                try {
+                    var myFSO = new ActiveXObject("Scripting.FileSystemObject");
+                    var file = myFSO.getFile(filepath);
+                    var size = file.size;
+                    if (size > 5242880) {
+                        alert("@Resources.LetterTemplate.Alert_MaxUploadFiles");
+                        inputFile.replaceWith(inputFile = inputFile.clone(true));
+                        result = false;
+                    } else {
+                        result = true;
+                    }
+
+                } catch (err) {
+                    alert("@Resources.LetterTemplate.Alert_PleaseActivateActiveX");
+                    inputFile.replaceWith(inputFile = inputFile.clone(true));
+                    result = false;
+                }
+            }
+
+            return result;
+        });
+
+        $(".btnDownload").click(function () {
+            var form = document.createElement("form");
+            form.action = '@(Url.Action("DownloadFile", "Note"))';
+            form.method = 'POST';
+            form.target = '_blank';
+            var input = document.createElement("textarea");
+            input.name = 'annotationID';
+            input.value = $(this).attr('id');
+            form.appendChild(input);
+            form.style.display = 'none';
+            document.body.appendChild(form);
+            form.submit();
+        });
+    });
+
+    function submissionSuccess() {
+        var result = $('#my_iframe').contents().find('body').html();
+        var data = JSON.parse(result);
+
+        if (data.Value) {
+            window.location.replace(data.Response);
+        } else {
+            alert(data.Response);
+        }
+        jQuery.unblockUI();
+    }
+
+    function submitAttachment() {
+        var filepath = $("#import_filepath").val();
+        if (filepath) {
+            var ext = ".docx";
+            var fileExt = filepath.substr(filepath.length - ext.length, ext.length);
+            jQuery.blockUI({ message: '<h4>Submitting attachment...</h4>' });
+            document.getElementById('form_attachment').target = 'my_iframe';
+
+            var callback = function () {
+                if (submissionSuccess)
+                    submissionSuccess();
+                $('#my_iframe').unbind('load', callback);
+            };
+
+            $('#my_iframe').bind('load', callback);
+            $('#form_attachment').submit();
+
+        } else {
+            alert('@Resources.LetterTemplate.Alert_NoFileAttached');
+        }
+    }
+
+    function deleteDocument(annotationID) {
+        var serializedForm = $("#form_incident").serialize();
+        var entityName = $("#entityname").val()
+        $.ajax({
+            type: "POST",
+            url: "/Note/DeleteDocument",
+            data: 'annotationId=' + annotationID + '&entityname=' + entityName,
+            dataType: "json",
+            success: function (data) {
+                if (data.Value == true) {
+                    window.location.replace(data.Response);
+                }
+                else {
+                    alert("Delete Failed");
+                }
+            },
+            error: function (xhr, status, err) {
+                alert("Error");
+            }
+        });
+        return;
+    }
+</script>

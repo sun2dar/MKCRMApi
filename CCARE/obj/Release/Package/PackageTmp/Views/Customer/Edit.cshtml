@@ -1,0 +1,530 @@
+﻿@model CCARE.Models.Customer
+
+@{
+    ViewBag.Title = "Edit";
+    if (Request.IsAjaxRequest())
+    {
+        Layout = null;
+    }
+    else
+    {
+        Layout = "~/Views/Shared/_LayoutEntity.cshtml";
+    }
+}
+
+@section title
+{
+    Customer: @Model.FullName
+}
+
+@section entityLogo
+{
+    <img class="crm-logo" src="~/assets/images/ico_lrg_112.gif" />
+}
+
+@section formTitle
+{
+    <div class="text_title">
+        <h1 id="Customer-Page">Information</h1>
+        Customer: @Model.FullName
+    </div>
+}
+
+
+@section buttonRequest
+{
+    <a href="#">
+        <img id="btn_create_request" class="btn-create-request"  data-toggle="tooltip" data-placement="left"
+           title="" data-original-title="New Request" src="~/assets/images/request.png" />
+    </a>
+}
+
+@section navHeader
+{
+    <ul class="nav navbar-nav navbar- left">
+        @*<li id="btn_FinancialTransaction" role="presentation" class="dropdown">
+            <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+                Layanan Prioritas <span class="caret"></span>
+            </a>
+            <ul class="dropdown-menu">
+                <li><a id="btn_fundtransfer" href="#">Fund Transfer</a></li>
+                <li><a id="btn_payment" class="btn_assignto" href="#">Payment</a></li>
+                <li><a id="btn_purchase" class="btn_assignto" href="#">Purchase</a></li>
+                <li><a id="btn_transferlist" class="btn_assignto" href="#">Transfer List</a></li>
+            </ul>
+        </li>*@
+    </ul>
+}
+
+
+@section footerStatus
+{
+    <div class="footer_text">Status: @{ if (Model.StateCode == 0)
+                                        { <text>Active</text> }
+                                        else
+                                        { <text>Inactive</text> } }</div>
+}
+
+@section sidebarMenu
+{
+    <li><a href="#" id="linkInfo">Information</a></li>
+    <li><a data-ajax="true" data-ajax-mode="replace" data-ajax-update="#page_content" href="/Customer/MoreAddress?id=@Model.CustomerID">More Addresses</a></li>
+    <li><a data-ajax="true" data-ajax-mode="replace" data-ajax-update="#page_content" href="/Customer/SingleView?id=@Model.CustomerID">Single View</a></li>
+    <li><a data-ajax="true" data-ajax-mode="replace" data-ajax-update="#page_content" href="/Customer/RequestList?CustomerId=@Model.CustomerID&CustomerIdName=@Model.FullName">Request</a></li>
+    <li><a data-ajax="true" data-ajax-mode="replace" data-ajax-update="#page_content" href="/Customer/CallWrapUpCustomer?id=@Model.CustomerID">Call Wrap Up</a></li>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('ul.nav-pills li a').click(function (e) {
+                $("#Customer-Page").html($(this).html());
+            });
+
+            $('#linkInfo').click(function () {
+                location.reload();
+            });
+        });
+    </script>
+}
+
+    <div id="page_content" class="container-fluid">
+        <!-- tabs -->
+        <div class="row">
+            <div class="col-sm-12 panel panel-default panel_form_parent scroll-y">
+                <br />
+                <div class="col-sm-12">
+                    <!-- Title 1 -->
+                    <div class="row form_text">
+                        <div class="panel panel-default panel_form_child">
+                            
+                            <div class="panel-heading">
+                                <label class="control-label sv-header">
+                                    <strong>General</strong>
+                                </label>
+                            </div>
+
+                            <br />
+
+                            <div class="panel-body">
+                                <form class="form-horizontal">
+                                    <div class="row">
+                                        <div class="col-sm-6">                                        
+                                            <div class="form-group">
+                                                <label class="col-sm-4 control-label">CIS Number</label>
+                                                <div class="col-sm-8">
+                                                    @Html.TextBoxFor(x => x.CISNumber, new { @class = "form-control" })
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6">                                                                              
+                                            <div class="form-group">
+                                                <label class="col-sm-4 control-label">Segmentation</label>
+                                                <div class="col-sm-8">
+                                                    <input type="text" id="cust-segmentation" class="form-control" value="@ViewBag.Segmentation" />
+                                                    @*@Html.TextBoxFor(x => x.CustomerTypeLabel, new { @class = "form-control" })*@
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                     <div class="row">
+                                        <div class="col-sm-6">                                        
+                                            <div class="form-group">
+                                                <label class="col-sm-4 control-label">Salutation</label>
+                                                <div class="col-sm-8">
+                                                    @Html.TextBoxFor(x => x.Salutation, new { @class = "form-control" })
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6">                                                                              
+                                            <div class="form-group">
+                                                <label class="col-sm-4 control-label">Membership</label>
+                                                <div class="col-sm-8">
+                                                    <input type="text" id="cust-membership" class="form-control" value="@ViewBag.Membership" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    
+                                    <div class="row">
+                                        <div class="col-sm-6">                                        
+                                            <div class="form-group">
+                                                <label class="col-sm-4 control-label">First Name</label>
+                                                <div class="col-sm-8">
+                                                    @Html.TextBoxFor(x => x.FirstName, new { @class = "form-control" })
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6">                                                                              
+                                            <div class="form-group">
+                                                <label class="col-sm-4 control-label">Last Name</label>
+                                                <div class="col-sm-8">
+                                                    @Html.TextBoxFor(x => x.LastName, new { @class = "form-control" })
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-sm-6">                                        
+                                            <div class="form-group">
+                                                <label class="col-sm-4 control-label">Full Name</label>
+                                                <div class="col-sm-8">
+                                                    @Html.TextBoxFor(x => x.FullName, new { @class = "form-control" })
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6">      
+                                            <div class="form-group">
+                                                <label class="col-sm-4 control-label">Birth Place</label>
+                                                <div class="col-sm-8">
+                                                    @Html.TextBoxFor(x => x.BirthPlace, new { @class = "form-control" })
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-sm-6">                                        
+                                            <div class="form-group">
+                                                <label class="col-sm-4 control-label">Alias Name</label>
+                                                <div class="col-sm-8">
+                                                    @Html.TextBoxFor(x => x.AliasName, new { @class = "form-control" })
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6">                                                                              
+                                            <div class="form-group">
+                                                <label class="col-sm-4 control-label">Birth Date</label>
+                                                <div class="col-sm-8">
+                                                    <div class="input-group date z-idx-0">
+                                                        <input type="text" class="form-control" value="@(Model.BirthDate == null ? String.Empty : Model.BirthDate.Value.Date.ToString("dd/MM/yyyy"))">
+                                                        <span class="input-group-addon">
+                                                            <i class="fa fa-calendar fa-lg"></i>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-sm-6">                                        
+                                           <div class="form-group">
+                                                <label class="col-sm-4 control-label">Mother's Maiden Name</label>
+                                                <div class="col-sm-8">
+                                                    @Html.TextBoxFor(x => x.MothersMaidenName, new { @class = "form-control" })
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6">                                                                              
+                                            <div class="form-group">
+                                                <label class="col-sm-4 control-label">Gender</label>
+                                                <div class="col-sm-8">
+                                                    @Html.TextBoxFor(x => x.GenderLabel, new { @class = "form-control" })
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-sm-6">                                        
+                                           
+                                        </div>
+                                        <div class="col-sm-6">                                                                              
+                                            <div class="form-group">
+                                                <label class="col-sm-4 control-label">ID Number</label>
+                                                <div class="col-sm-8">
+                                                    @Html.TextBoxFor(x => x.IdentityNo, new { @class = "form-control" })
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                                
+                        </div>
+                    </div>
+                        
+                    <!-- Title 2 -->
+                    <div class="row form_text">
+                        <div class="panel panel-default panel_form_child">
+                            
+                            <div class="panel-heading">
+                                <label class="control-label sv-header">
+                                    <strong>Information</strong>
+                                </label>
+                            </div>
+
+                            <br />
+
+                            <div class="panel-body">
+                                <form class="form-horizontal">
+                                    <div class="row">
+                                        <div class="col-sm-6">                                        
+                                            <div class="form-group">
+                                                <label class="col-sm-4 control-label">Address Type</label>
+                                                <div class="col-sm-8">
+                                                    @Html.TextBoxFor(x => x.AddressTypeLabel, new { @class = "form-control" })
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6">                                                                              
+                                            <div class="form-group">
+                                                <label class="col-sm-4 control-label">City</label>
+                                                <div class="col-sm-8">
+                                                    @Html.TextBoxFor(x => x.City, new { @class = "form-control" })
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-sm-6">                                        
+                                            <div class="form-group">
+                                                <label class="col-sm-4 control-label">Address Line 1</label>
+                                                <div class="col-sm-8">
+                                                    @Html.TextBoxFor(x => x.Line1, new { @class = "form-control" })
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6">                                                                              
+                                            <div class="form-group">
+                                                <label class="col-sm-4 control-label">State/Province</label>
+                                                <div class="col-sm-8">
+                                                    @Html.TextBoxFor(x => x.StateOrProvince, new { @class = "form-control" })
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-sm-6">                                        
+                                            <div class="form-group">
+                                                <label class="col-sm-4 control-label">Address Line 2</label>
+                                                <div class="col-sm-8">
+                                                    @Html.TextBoxFor(x => x.Line2, new { @class = "form-control" })
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6">                                                                              
+                                            <div class="form-group">
+                                                <label class="col-sm-4 control-label">ZIP/Postal Code</label>
+                                                <div class="col-sm-8">
+                                                    @Html.TextBoxFor(x => x.PostalCode, new { @class = "form-control" })
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-sm-6">                                        
+                                            <div class="form-group">
+                                                <label class="col-sm-4 control-label">Address Line 3</label>
+                                                <div class="col-sm-8">
+                                                    @Html.TextBoxFor(x => x.Line3, new { @class = "form-control" })
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6">                                                                              
+                                            <div class="form-group">
+                                                <label class="col-sm-4 control-label">Country/Region</label>
+                                                <div class="col-sm-8">
+                                                    @Html.TextBoxFor(x => x.Country, new { @class = "form-control" })
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-sm-6">                                        
+                                            <div class="form-group">
+                                                <label class="col-sm-4 control-label">Telephone No.</label>
+                                                <div class="col-sm-8">
+                                                    @Html.TextBoxFor(x => x.Telephone2, new { @class = "form-control" })
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6">                                                                              
+                                            <div class="form-group">
+                                                <label class="col-sm-4 control-label">Business No.</label>
+                                                <div class="col-sm-8">
+                                                    @Html.TextBoxFor(x => x.Telephone1, new { @class = "form-control" })
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-sm-6">                                        
+                                            <div class="form-group">
+                                                <label class="col-sm-4 control-label">Handphone No.</label>
+                                                <div class="col-sm-8">
+                                                    @Html.TextBoxFor(x => x.MobilePhone, new { @class = "form-control" })
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6">                                                                              
+                                            <div class="form-group">
+                                                <label class="col-sm-4 control-label">Fax No.</label>
+                                                <div class="col-sm-8">
+                                                    @Html.TextBoxFor(x => x.Fax, new { @class = "form-control" })
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-sm-6">                                        
+                                            <div class="form-group">
+                                                <label class="col-sm-4 control-label">E-mail</label>
+                                                <div class="col-sm-8">
+                                                    @Html.TextBoxFor(x => x.EMailAddress1, new { @class = "form-control" })
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="blockbbp"></div>
+        <div id="containerbbp">
+            <div class="rowiframe">
+                <div class="iframeContainer">
+                    <iframe id="iframebbp" scrolling="yes"></iframe>
+                    <span id="closebtn">Close</span>
+                    <a class="boxclose" id="boxclose"></a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+
+            $('#btn_create_request').click(function () {
+                var CustomerId = '@Model.CustomerID';
+                var CustomerIdName = '@Model.FullName';
+                var url = '@Url.Action("Create", "Request")';
+
+                openWindow(url + "?customerID=" + CustomerId + "&customerName=" + CustomerIdName + "&customerType=customer");
+            });
+
+            $('#myTab a').click(function (e) {
+                e.preventDefault()
+                $(this).tab('show')
+            })
+
+            $("#btn_save").click(function () {
+                formSubmit("save", $("#form_customer"));
+            });
+
+            $(".form-horizontal").find("input, select").attr("readonly", "readonly");
+            $(".form-horizontal").find("select").attr("disabled", "disabled");
+
+            var url = "@System.Configuration.ConfigurationManager.AppSettings["EndPointUrlBBPPrioritas"]";
+            var username = ".html?userid=" + "@Session["DomainUserName"]";
+            var path;
+
+            $('#closebtn').click(function () { CloseBBP(); })
+
+            $("#btn_fundtransfer").click(function () {
+                path = url + "transfer" + username;
+                OpenBBP(path);
+            });
+            $("#btn_payment").click(function () {
+                path = url + "payment" + username;
+                OpenBBP(path);
+            });
+            $("#btn_purchase").click(function () {
+                path = url + "purchase" + username;
+                OpenBBP(path);
+            });
+            $("#btn_transferlist").click(function () {
+                path = url + "transfer_list" + username;
+                OpenBBP(path);
+            });
+
+            var startCallTime = "";
+
+            function setLocalStorageCti() {
+                startCallTime = ctiFormatDate(myobject.CallStartDateTime);
+            }
+
+            $("#btn_create_callwrapup").click(function () {
+                $("#btn_create_callwrapup").die('click');
+
+                var customerID = '@Model.CustomerID';
+                var ownerID = '@(Session["CurrentUserID"])';
+                var url = '@Url.Action("autoCreateCwu", "CallWrapUp")';
+
+                openWindow(url + '?customerID=' + customerID + '&ownerID=' + ownerID + '&startCallTime=' + ctiFormatDate(myobject.CallStartDateTime) + '&flag=customer');
+            });
+
+            $("#FirstName").val(UnescapeHtml($("#FirstName").val()));
+            $("#LastName").val(UnescapeHtml($("#LastName").val()));
+            $("#FullName").val(UnescapeHtml($("#FullName").val()));
+            $("#AliasName").val(UnescapeHtml($("#AliasName").val()));
+        });
+    </script>
+
+
+@if (Session["RoleID"] != null)
+{
+    Guid roleID = new Guid(Session["RoleID"].ToString());
+    bool checkButton = CCARE.App_Function.RoleNPrivilege.isEntityChecked(roleID, "CallWrapUp");
+    bool isPrioAgent = CCARE.App_Function.RoleNPrivilege.checkEntityButtonByRoleID(roleID, "Customer", "FinancialTransaction");
+
+    if (isPrioAgent)
+    { 
+        <script type="text/javascript">$("#btn_FinancialTransaction").show();</script>
+    }
+    else
+    { 
+        <script type="text/javascript">$("#btn_FinancialTransaction").hide();</script>
+    }
+
+    if (checkButton == true)
+    {
+        <script type="text/javascript">
+            ////Connect to cti
+            try {
+                myobject.ConnectIC();
+            } catch (e) {
+
+            }
+
+            $(document).ready(function () {
+                @*var sessionCustomerSearch = '@Session["customerSearchGuid"]';*@
+
+                //William hideshowcwu
+                //if (localStorage.flagCWU == "1") {
+                //    hideNewCWU();
+                //}
+                if (myobject.CallStartDateTime == "" || myobject.CallStartDateTime == undefined) {
+                    hideNewCWU();
+                }
+                    //else if (sessionCustomerSearch == "") {
+                    //    hideNewCWU();
+                    //}
+                @*else if (sessionCustomerSearch != "" && sessionCustomerSearch != '@Model.CustomerID') {
+                    hideNewCWU();
+                }*@
+                else {
+                    showNewCWU();
+                }
+            });
+        </script>
+        <script type="text/javascript">
+            function hideNewCWU() {
+                $("#btn_create_callwrapup").hide();
+                $("#btn_create_callwrapup").tooltip('hide');
+            }
+
+            function showNewCWU() {
+                $("#btn_create_callwrapup").show();
+                $("#btn_create_callwrapup").tooltip('show');
+            }
+        </script>
+    
+        <script type='text/javascript' for="myobject" event="CallConnected()"></script>
+        <script type='text/javascript' for="myobject" event="CallDisconnected()">
+            if (myobject.CallEndDateTime != "") {
+                hideNewCWU();
+            }
+        </script>
+    }
+}
+</div>

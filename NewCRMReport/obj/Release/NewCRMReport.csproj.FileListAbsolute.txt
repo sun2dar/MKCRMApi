@@ -1,0 +1,5 @@
+D:\BCA Work\NewCRM\BCA CODE\Code\CCARE\NewCRMReport\bin\NewCRMReport.dll
+D:\BCA Work\NewCRM\BCA CODE\Code\CCARE\NewCRMReport\bin\NewCRMReport.pdb
+D:\BCA Work\NewCRM\BCA CODE\Code\CCARE\NewCRMReport\obj\Release\NewCRMReport.csprojResolveAssemblyReference.cache
+D:\BCA Work\NewCRM\BCA CODE\Code\CCARE\NewCRMReport\obj\Release\NewCRMReport.dll
+D:\BCA Work\NewCRM\BCA CODE\Code\CCARE\NewCRMReport\obj\Release\NewCRMReport.pdb

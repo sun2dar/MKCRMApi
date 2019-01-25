@@ -1,0 +1,344 @@
+﻿@model CCARE.Models.ServiceLevel
+
+<div class="row form_text">
+    @*Author : SUN*@
+    @using (Html.BeginForm("executeWorkflow", "Workflow", FormMethod.Post, new { id = "form_workflow" }))
+    {       
+        <input type="hidden" id="ID" name="ID" />
+        <input type="hidden" id="SeqNo" name="SeqNo" />
+        <input type="hidden" id="SLID" name="SLID" value="@Model.ServiceLevelID" />
+        <input type="hidden" id="SLParentID" name="SLParentID" value="@Model.ParentID" />
+
+        <div class="panel panel-default panel_form_child">
+            <div class="panel-heading">
+                <label class="control-label sv-header"><strong>Workflow Information</strong></label>
+            </div>
+            <br />
+            <div class="panel-body">
+                <div class="form-horizontal">
+
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label class="col-sm-4 control-label mandatory">Workgroup</label>
+                                <div class="col-sm-8">
+                                    @* ==========================================================================================================*@
+                                    <input type="hidden" id="WgID" name="WgID" />
+                                    <div class="input-group" id="WgID-Group">
+                                        <input type="text" class="form-control" id="WgName" name="WgName" />
+                                        <div tabindex="0" id="WgName-label" class="form-control typeahead-label hide">
+                                        </div>
+                                        <div tabindex="0" class="input-group-addon btn" id="WgName-popup">
+                                            <i class="fa fa-search"></i>
+                                        </div>
+                                    </div>
+                                    @* ==========================================================================================================*@
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">                                        
+                            <div class="form-group">
+                                <label class="col-sm-4 control-label">Keterangan</label>
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control" id="Keterangan" name="Keterangan" />                                                
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-sm-6">                                        
+                            <div class="form-group">
+                                <label class="col-sm-4 control-label mandatory">SLA Days</label>
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control" id="WorkflowSLADays" name="WorkflowSLADays" maxlength="3" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6"></div>
+                    </div>
+
+                </div>
+            </div>
+
+            <br />
+            <!--Button div-->
+            <div class="panel-body">
+                <div class="row">
+                    <span class="col-sm-12" style="text-align:center" id="workflowGroupButton">
+                        <button id="btnSaveChange" type="button" class="btn btn-primary btn-crm-layout deactivate"><span class="glyphicon glyphicon-ok-sign glyp-space" aria-hidden="true"></span>Save</button>
+                        <button id="btnDeleteWorkflow" type="button" class="btn btn-primary btn-crm-layout deactivate"><span class="glyphicon glyphicon-remove-sign glyp-space" aria-hidden="true"></span>Delete</button>
+                        <button id="btnReset" type="reset"  class="btn btn-danger btn-crm-layout deactivate"><span class="glyphicon glyphicon-erase glyp-space" aria-hidden="true"></span>Clear</button>
+                    </span>
+                </div>
+            </div>
+        </div>
+    }
+
+    <div id="messagebox"></div>
+
+    <!-- END title 3 -->
+    <div class="panel panel-default panel_form_child">
+        <div class="panel-heading submenuStyle">
+            <label class="control-label sv-header"><strong>Workgroup List</strong></label>
+        </div>
+        <div class="panel-body">
+            <div class="divGrid">
+                <table id="gridTable"></table>
+                <div id="jqGridPager"></div>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="response-modal"></div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        var stateCode = '@(Model.StateCode)';
+        if (stateCode == 1) {
+            $(".deactivate").hide();
+        }
+
+        @* ==========================================================================================================*@
+        $('#WgName-popup').on('click', function (e) {
+            if ($(this).attr('disabled') == "disabled") return false;
+            urlModalPopup = '@Url.Action("_popupContent", "Popup", new { type = "workgroup", _entity = "" })';
+            colModelsName = [
+                { label: 'ID', name: 'Id', index: 'Id', key: true, width: 75, hidden: true },
+                { label: 'Name', name: 'Name', width: 300 },
+                { label: 'E-Mail', name: 'EMailAddress', width: 300 },
+                { label: 'Business Unit', name: 'BusinessUnitName', width: 300 }
+            ];
+            var id = $(this).parent().find('input:last').attr('id');
+            $('#' + id).trigger("blur");
+            e.preventDefault();
+        });
+
+        var workgroup = new PopupClass();
+        workgroup.setId("WgName");
+        workgroup.setUrl('@Url.Action("WorkGroup", "Popup")');
+        workgroup.setHiddenId("WgID");
+        workgroup.init();
+
+
+        @* ==========================================================================================================*@
+        $("#WorkflowSLADays").keyup(function () {
+            isNumber($(this).val(), "#WorkflowSLADays");
+        });
+
+
+        @*=========================================Workflow related==============================*@
+        @*===========Load Workflow Grid=====Asun======*@
+        var gridId = "#gridTable";
+
+        function loadWorkflowGrid() {
+            var entityName = 'Workflow';
+            var serviceLevelID = '@Model.ServiceLevelID';
+            var postData = {
+                _val: function () { return serviceLevelID; },
+            };
+
+            loadJqgrid(gridId, postData, entityName);
+
+            $(gridId).jqGrid('setGridParam', {
+                ondblClickRow: function (rowid, iRow, iCol) {
+                    //do nothing on double click
+                },
+                onCellSelect: function (rowid, iCol, cellContent, e) {
+                    var rowData = jQuery(gridId).getRowData(rowid);
+                    var gridLength = jQuery(gridId).find('tr').length - 1;
+                    var iRowReal = rowData['SeqNo'];
+
+                    //Reorder Workflow by up and down button
+                    if (iCol == 8) {
+                        if (iRowReal == 0) { }
+                        else {
+                            $.ajax({
+                                type: "POST",
+                                url: "/ServiceLevel/Swap?ID=" + rowid + "&Direction=Up",
+                                contentType: "application/json; charset=utf-8",
+                                dataType: "json",
+                                success: function (data) {
+                                    $("#messagebox").html(MessageText('info', data.Message));
+                                    loadWorkflowGrid();
+                                    $('#btnReset').trigger("click");
+
+                                    if (data.flag == true) {
+                                        //location.reload();
+                                        $("#WorkgroupID").val(data.newWGID);
+                                        $("#WorkgroupIDName").val(data.newWGName);
+                                        $("#SLADays").val(data.newsldays);
+                                        $('#btnReset').trigger("click");
+                                    }
+                                },
+                                error: function (xhr, status, err) {
+                                    alert("Error");
+                                }
+                            });
+                        }
+                    }
+                    if (iCol == 9) {
+                        if (iRowReal == gridLength - 1) { }
+                        else {
+                            $.ajax({
+                                type: "POST",
+                                url: "/ServiceLevel/Swap?ID=" + rowid + "&Direction=Down",
+                                contentType: "application/json; charset=utf-8",
+                                dataType: "json",
+                                success: function (data) {
+                                    loadWorkflowGrid();
+                                    $("#messagebox").html(MessageText('info', data.Message));
+                                    $('#btnReset').trigger("click");
+
+                                    if (data.flag == true) {
+                                        //location.reload();
+                                        $("#WorkgroupID").val(data.newWGID);
+                                        $("#WorkgroupIDName").val(data.newWGName);
+                                        $("#SLADays").val(data.newsldays);
+                                        $('#btnReset').trigger("click");
+                                    }
+                                },
+                                error: function (xhr, status, err) {
+                                    alert("Error");
+                                }
+                            });
+                        }
+                    }
+                    //End reorder
+                },
+                onSelectRow: function (rowid, iRow, iCol, e) {
+                    if (stateCode == 1) {
+                        $(".deactivate").hide();
+                    }
+                    else {
+                        var rowData = jQuery(gridId).getRowData(rowid);
+                        var gridLength = jQuery(gridId).find('tr').length - 1;
+                        var iRowReal = rowData['SeqNo'];
+
+                        $('#ID').val(rowData['ID']);
+                        $('#SLID').val(rowData['ServiceLevelID']);
+                        $('#WgID').val(rowData['WgID']);
+                        $('#WgName').val(rowData['WgName']);
+                        $('#WorkflowSLADays').val(rowData['WorkflowSLADays']);
+                        $('#SeqNo').val(rowData['SeqNo']);
+                        $('#Keterangan').val(rowData['Keterangan']);
+
+                        displayOperation('UpDel');
+                    }
+                }
+            });
+        }
+
+        //run load grid on load
+        loadWorkflowGrid();
+        displayOperation('Cr');
+
+
+        function displayOperation(operation) {
+            //Load page or Createing new record
+            if (operation == 'Cr') {
+                $('#btnDeleteWorkflow').hide();
+            }
+            else if (operation == 'UpDel') {
+                $('#btnDeleteWorkflow').show();
+            }
+        }
+
+        function clearPopup(fieldName) {
+            var rl = $(fieldName);
+            if (!rl.hasClass('hide')) {
+                var ev = jQuery.Event('keydown');
+                ev.which = 46;
+                rl.trigger(ev);
+            }
+        }
+
+        //Action on reset button
+        $('#btnReset').click(function () {
+            displayOperation('Cr');
+            clearPopup('#WgName-label');
+            $("#WorkflowSLADays").val('');
+            $("#Keterangan").val('');
+            $(gridId).jqGrid('resetSelection');
+            $('#ID').val('');
+            $('#WgID').val('');
+            $('#WgName').val('');
+            $('#SeqNo').val('');
+
+            $("#workflowGroupButton").focus();
+
+            // $("#messagebox").html('');
+        });
+
+        //Action CRUD on form Workflow
+        function executeWorkflow(actionString) {
+            var postData = JSON.stringify({ model: $('#form_workflow').serializeObject(), actionString: actionString });
+            var url = '/ServiceLevel/executeWorkflow';
+
+            $.ajax({
+                type: "POST",
+                url: url,
+                data: postData,
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (msg) {
+                    if (msg.flag == true) {
+                        switch (actionString) {
+                            case 'Create':
+                                $('#btnReset').trigger('click');
+                                break;
+
+                            case 'Edit':
+                                $('#btnReset').trigger('click');
+                                break;
+
+                            case 'Delete':
+                                $('#btnReset').trigger('click');
+                                break;
+                        }
+                    }
+
+                    $("#messagebox").html(MessageText(msg.Message.includes("pernah") ? "alert" : "info", msg.Message));
+
+                    if (msg.flag == true) {
+                        //location.reload();
+                        $("#WorkgroupID").val(msg.newWGID);
+                        $("#WorkgroupIDName").val(msg.newWGName);
+                        $("#SLADays").val(msg.newsldays);
+                        $('#btnReset').trigger("click");
+                        loadWorkflowGrid();
+                    }
+
+                },
+                error: function (xhr, status, err) {
+                    //$(selectID).get(0).options.length = 0;
+                    $("#messagebox").html(MessageText('error', "Workflow tidak berhasil disimpan"));
+                    //                    alert("Workflow tidak berhasil disimpan");
+                }
+            });
+        }
+
+        $('#btnSaveChange').click(function () {
+            //Check if any selectbox is not selected
+            if ($('#WgID').val() == '') {
+                $("#messagebox").html(MessageText('alert', '@Resources.ServiceLevel.SLAMandatroyWG'));
+            }
+            else if ($('#WorkflowSLADays').val() == '' || $('#WorkflowSLADays').val() < '1') {
+                $("#messagebox").html(MessageText('alert', '@Resources.ServiceLevel.SLAMandatoryDays'));
+            }
+            else {
+                if ($('#ID').val() != '') {
+                    executeWorkflow("Edit");
+                }
+                else {
+                    executeWorkflow("Create");
+                }
+            }
+        });
+
+        $('#btnDeleteWorkflow').click(function () {
+            executeWorkflow("Delete");
+        });
+    });
+</script>

@@ -1,0 +1,404 @@
+﻿@{
+    if (Request.IsAjaxRequest())
+    {
+        Layout = null;
+    }
+}
+
+<ul class="nav nav-stacked nav-pills">
+    <li class="titleBar font-crm4"><a></a></li>
+</ul>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-12">
+            <!-- Content -->
+            <div class="container-fluid content_container">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <form id="form_inquiry">
+                            <br />
+                            <div class="tab-content myContent_Tab">
+                                <div class="tab-pane fade active in" id="history" aria-labelledby="history-tab">
+                                    
+                                    <ol class="breadcrumb">
+                                        <li class="active">Search</li>
+                                        <li class="active">Inquiry</li>
+                                        <li class="active"><a href="#">CCMS</a></li>
+                                    </ol>
+
+                                    <div class="form-horizontal">
+                                        
+                                        <div class="row">
+                                            <div class="col-sm-4">                                        
+                                                <div class="form-group">
+                                                    <label class="col-sm-4 control-label">Name</label>
+                                                    <div class="col-sm-8">
+                                                        <input type="text" id="inquiry_name" class="form-control" />
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-sm-4">                                                                              
+                                                <div class="form-group">
+                                                    <label class="col-sm-4 control-label">Birth Date</label>
+                                                    <div class="col-sm-8">
+                                                        <div class="input-group date">
+                                                            <input type="text" id="dob" class="form-control" value="" />
+                                                            <span class="input-group-addon">
+                                                                <i class="fa fa-calendar fa-lg"></i>
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-sm-4">                                                                              
+                                                <div class="form-group">
+                                                    <label class="col-sm-4 control-label">Cust No</label>
+                                                    <div class="col-sm-8">
+                                                        <input type="text" id="inquiry_custNo" class="form-control" />
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-4"></div>
+                                            <div class="col-sm-4">
+                                                <div class="form-group">
+                                                    <div class="col-sm-12">
+                                                        <div class="input-group">
+                                                            <button id="btn_search" class="btn btn-primary btn-crm-layout" type="submit">
+                                                                <span class="glyphicon glyphicon-search glyp-space" aria-hidden="true"></span>
+                                                                Search
+                                                            </button>
+                                                            <button id="btn_clear" class="btn btn-danger btn-crm-layout" type="button">
+                                                                <span class="glyphicon glyphicon-erase glyp-space" aria-hidden="true"></span>
+                                                                Clear
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-4"></div>
+                                        </div>
+
+                                    </div>
+                                </div>                                
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                
+                <br />
+
+                <!-- Table result -->
+                <div class="row">
+                    <div class="col-sm-12" >
+                        <div class="panel panel-default">
+                            
+                            <div class="panel-heading panel_heading">
+                                <label class="control-label sv-header">
+                                    <strong>Search Result</strong>
+                                </label>
+                            </div>
+                            
+                            <div class="panel-body">
+                                <div class="divGrid">
+                                    <table id="gridTable"></table>
+                                    <div id="jqGridPager"></div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-sm-12" >
+                        <div class="panel panel-default" id="information">
+                            <div class="panel-heading panel_heading">
+                                <div class="container-fluid">
+                                    <div class="row">
+                                        <div class="col-sm-11 text_title">
+                                            <strong>Details New Customer Credit Card Application</strong>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="panel-body">
+                                <div class="form-horizontal pad-eb-trx">
+
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <label class="col-sm-3 control-label">Full Name</label>
+                                                <div class="col-sm-9">
+                                                    <input type="text" class="form-control" id="fullname" readonly="readonly" />
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <label class="col-sm-3 control-label">Birth Date</label>
+                                                <div class="col-sm-9">
+                                                    <input type="text" class="form-control" id="dobDetails" readonly="readonly" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <label class="col-sm-3 control-label">Birth Place</label>
+                                                <div class="col-sm-9">
+                                                    <input type="text" class="form-control" id="birthplace" readonly="readonly" />
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <label class="col-sm-3 control-label">Customer No</label>
+                                                <div class="col-sm-9">
+                                                    <input type="text" class="form-control" id="custNo" readonly="readonly" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <label class="col-sm-3 control-label">Application ID</label>
+                                                <div class="col-sm-9">
+                                                    <input type="text" class="form-control" id="appID" readonly="readonly" />
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <label class="col-sm-3 control-label">Reference No</label>
+                                                <div class="col-sm-9">
+                                                    <input type="text" class="form-control" id="refNo" readonly="readonly" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <label class="col-sm-3 control-label">Purpose of Application</label>
+                                                <div class="col-sm-9">
+                                                    <input type="text" class="form-control" id="purpose" readonly="readonly" />
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <label class="col-sm-3 control-label">Status</label>
+                                                <div class="col-sm-9">
+                                                    <input type="text" class="form-control" id="status" readonly="readonly" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <label class="col-sm-3 control-label">Current Holder</label>
+                                                <div class="col-sm-9">
+                                                    <input type="text" class="form-control" id="currentHolder" readonly="readonly" />
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <label class="col-sm-3 control-label">Date Received</label>
+                                                <div class="col-sm-9">
+                                                    <input type="text" class="form-control" id="dateReceived" readonly="readonly" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <label class="col-sm-3 control-label">Original Branch</label>
+                                                <div class="col-sm-9">
+                                                    <input type="text" class="form-control" id="origBranch" readonly="readonly" />
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <label class="col-sm-3 control-label">Remark</label>
+                                                <div class="col-sm-9">
+                                                    <input type="text" class="form-control" id="remark" readonly="readonly" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <label class="col-sm-3 control-label">Bussiness Source</label>
+                                                <div class="col-sm-9">
+                                                    <input type="text" class="form-control" id="sourcecode" readonly="readonly" />
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <label class="col-sm-3 control-label">Date Created</label>
+                                                <div class="col-sm-9">
+                                                    <input type="text" class="form-control" id="dateCreated" readonly="readonly" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <label class="col-sm-3 control-label">Date Recommended</label>
+                                                <div class="col-sm-9">
+                                                    <input type="text" class="form-control" id="dateRecommended" readonly="readonly" />
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <label class="col-sm-3 control-label">Date Canceled</label>
+                                                <div class="col-sm-9">
+                                                    <input type="text" class="form-control" id="dateCanceled" readonly="readonly" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <label class="col-sm-3 control-label">Date Verified</label>
+                                                <div class="col-sm-9">
+                                                    <input type="text" class="form-control" id="dateVerified" readonly="readonly" />
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <label class="col-sm-3 control-label">Date Approved</label>
+                                                <div class="col-sm-9">
+                                                    <input type="text" class="form-control" id="dateApproved" readonly="readonly" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <label class="col-sm-3 control-label">Date Rejected</label>
+                                                <div class="col-sm-9">
+                                                    <input type="text" class="form-control" id="dateRejected" readonly="readonly" />
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <label class="col-sm-3 control-label">Comment</label>
+                                                <div class="col-sm-9">
+                                                    <input type="text" class="form-control" id="comment" readonly="readonly" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <label class="col-sm-3 control-label">Creator</label>
+                                                <div class="col-sm-9">
+                                                    <input type="text" class="form-control" id="Creator" readonly="readonly" />
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-sm-6"></div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        var gridId = "#gridTable";
+        var entityName = '@ViewContext.RouteData.Values["Controller"].ToString()';
+
+        $("#information").hide();
+
+        $("#btn_search").click(function () {
+            (event.preventDefault) ? event.preventDefault() : event.returnValue = false;
+            var dob = $("#dob").val();
+            
+            if ($("#inquiry_custNo").val() == '') {
+                if($("#inquiry_name").val() == ''){
+                    alert("Isikan Name dan Birth Date atau Customer No");
+                    return false;
+                }
+                else if($("#dob").val() == ''){
+                    alert("Isikan Name dan Birth Date atau Customer No");
+                    return false;
+                }
+            }
+
+            var postData = {
+                _name: function () { return $("#inquiry_name").val(); },
+                _dob: dob,
+                _custNo: function () { return $("#inquiry_custNo").val(); }
+            };
+
+            loadJqgrid(gridId, postData, entityName);
+
+            
+        });
+
+        $("#dob").datepicker({
+            format: 'dd/mm/yyyy',
+            todayHighlight: true,
+            orientation: "top auto",
+            autoclose: true
+        })
+
+        $("#btn_clear").click(function () {
+            $("input[type=text]").val('');
+            $.jgrid.gridUnload(gridId);
+            $("#information").hide();
+        });
+    });
+</script>

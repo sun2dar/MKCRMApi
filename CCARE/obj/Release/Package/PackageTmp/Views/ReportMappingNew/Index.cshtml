@@ -1,0 +1,26 @@
+﻿@{
+    ViewBag.Title = "System User";
+    Layout = "~/Views/Shared/_LayoutInquiry.cshtml";
+}
+
+<div class="col-lg-12 inquiry_left">
+    <div class="input-group">
+        <input type="text" class="form-control" id="inquiry_val" >
+        <span class="input-group-btn">
+            <button id="btn_search" class="btn btn-primary" type="submit"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></button>
+        </span>
+    </div>
+</div>
+
+@section title
+{
+    
+}
+
+@section mainmenu{ Administration }
+@section submenu{ Mapping }
+@section menu{ Report Filters }
+
+@section scriptExt{
+    $("#btn_new_link").hide();
+}

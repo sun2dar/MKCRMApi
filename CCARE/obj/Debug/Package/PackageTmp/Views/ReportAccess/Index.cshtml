@@ -1,0 +1,219 @@
+﻿@model CCARE.Models.Report
+
+@{
+    ViewBag.Title = "Report Access";
+    string actionPage = ViewContext.Controller.ControllerContext.RouteData.Values["action"].ToString();
+    
+    if (Request.IsAjaxRequest())
+    {
+        Layout = null;
+    }
+    else
+    {
+        Layout = "~/Views/Shared/_LayoutEntity.cshtml";
+    }
+}
+
+@section entityLogo
+{
+    <img class="crm-logo" src="~/assets/images/ico_lrg_112.gif" />
+}
+
+@section formTitle
+{
+    <div class="text_title">
+        <h1>Report Mapping</h1>
+        Report : @(Model.Name)
+    </div>
+}
+
+@section navHeader
+{
+    
+}
+
+@section footerStatus
+{
+    <div class="footer_text"></div>
+}
+
+@section sidebarMenu
+{
+
+}
+
+    <div class="container-fluid">
+        <!-- tabs -->
+        <div class="row">
+            <div class="col-sm-12 panel panel-default panel_form_parent">
+                <!-- Tab panes -->
+                <div class="tab-content myContent_noTab">
+
+                    <!-- panel content -->
+                    <div class="col-sm-12">
+
+                        <!-- START title 1 -->
+                        <div class="row form_text">
+                            <div class="panel panel-default panel_form_child">
+                                <div class="panel-heading">
+                                    <label class="control-label sv-header"><strong>Report Access    </strong></label>
+                                </div>
+                                <br />
+                                <div class="panel-body">
+                                    <div class="form-horizontal">
+                                        <div class="row">
+                                            <div class="col-sm-6">
+                                                <input type="hidden" id="reportid" name="reportid" value="@Model.ID" />
+                                                <input type="hidden" id="BusinessUnitID" name="BusinessUnitID" value="@ViewBag.businessUnitId" />
+                                                <input type="hidden" id="hiddenrow" name="hiddenrow" value="" />
+                                                <div class="form-group">
+                                                    <label class="col-sm-3 control-label">Role</label>
+                                                    <div class="col-sm-8">
+                                                        @* ==========================================================================================================*@
+                                                        <input type="hidden" id="SecurityRoleID" name="SecurityRoleID" class="form-control" />
+                                                        <div class="input-group" id="SecurityRole-Group">
+                                                            <input type="text" id="RoleName" name="RoleName" class="form-control" />
+                                                            <div tabindex="1" id="RoleName-label" class="form-control typeahead-label hide">
+                                                            </div>
+                                                            <div tabindex="1" class="input-group-addon btn" id="RoleName-popup">
+                                                                <i class="fa fa-search"></i>
+                                                            </div>
+                                                        </div>
+                                                        @* ==========================================================================================================*@
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <br />
+                                <div class="panel-body">
+                                    <div class="row">
+                                        <span class="col-sm-12" style="text-align:center" id="ReportFilterGroupButton">
+                                            <button id="btnAddRole" class="btn btn-primary" type="button"><span class="glyphicon glyphicon-ok-sign glyp-space" aria-hidden="true"></span>Add Access</button>
+                                            <button id="btnDeleteRole" class="btn btn-primary" type="button"><span class="glyphicon glyphicon-remove-sign glyp-space" aria-hidden="true"></span>Delete Access</button>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div id="messagebox"></div>
+
+                            <div class="panel panel-default panel_form_child">
+                                <div class="panel-heading submenuStyle">
+                                    <label class="control-label sv-header"><strong>Report Column List</strong></label>
+                                </div>
+                                <div class="panel-body">
+                                    <div class="divGrid">
+                                        <table id="gridTable"></table>
+                                        <div id="jqGridPager"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="response-modal"></div>
+    </div>
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        var gridId = "#gridTable";
+        var entityName = 'ReportAccess';
+        var ReportID = $('#reportid').val();
+        $("#btnAddRole").attr('disabled', 'disabled');
+        $("#btnDeleteRole").attr('disabled', 'disabled');
+
+        var postData = {
+            _val: function () { return ReportID; }
+        };
+
+        loadJqgrid(gridId, postData, entityName);
+
+        $('#btnAddRole').click(function () {
+            var dropid = $("#SecurityRoleID").val();
+
+            $.ajax({
+                type: "POST",
+                url: "/ReportAccess/Create?ID=" + dropid + "&ReportID=" + ReportID,
+                dataType: "json",
+                success: function (data) {
+                    if (data.flag == false) {
+                        $("#messagebox").html(MessageText('alert', data.Message));
+                    }
+                    else {
+                        $("#messagebox").html(MessageText('info', data.Message));
+                        clearField();
+                        loadJqgrid(gridId, postData, entityName);
+                    }
+                },
+                error: function (xhr, status, err) {
+                    alert("Error");
+                }
+            });
+        });
+
+        function clearField() {
+            var del = $.Event('keydown');
+            var label = $('#RoleName-label');
+            del.which = 46;
+            label.focus();
+            label.trigger(del);
+            $("#btnAddRole").attr('disabled', 'disabled');
+        }
+        
+        $('#btnDeleteRole').click(function () {
+            var rowval = $("#hiddenrow").val();
+            $.ajax({
+                type: "POST",
+                url: "/ReportAccess/Delete?ID=" + rowval + "&ReportID=" + ReportID,
+                dataType: "json",
+                success: function (data) {
+                    if (data.flag == false) {
+                        $("#messagebox").html(MessageText('alert', data.Message));
+                    }
+                    else {
+                        $("#messagebox").html(MessageText('info', data.Message));
+                        loadJqgrid(gridId, postData, entityName);
+                        $("#btnDeleteRole").attr('disabled', 'disabled');
+                    }
+                },
+                error: function (xhr, status, err) {
+                    alert("Error");
+                }
+            });
+        });
+
+        $('#RoleName-popup').on('click', function (e) {
+            urlModalPopup = '@Url.Action("_popupContent", "Popup", new { type = "securityrole", _entity = "" })' + '&dependBu=' + $('#BusinessUnitID').val();
+            colModelsName = [
+                { label: 'ID', name: 'Id', index: 'Id', key: true, width: 75, hidden: true },
+                { label: 'Name', name: 'Name', index: 'Name', width: 500 }
+            ];
+            var id = $(this).parent().find('input:last').attr('id');
+            $('#' + id).trigger("blur");
+            e.preventDefault();
+        });
+
+        $('#SecurityRoleID').change(function () {
+            var val = $(this).val();
+            if (val == "")
+                $("#btnAddRole").attr('disabled', 'disabled');
+            else
+                $("#btnAddRole").attr('disabled', false);
+        });
+
+        var SecurityRoleReq = new PopupClass();
+        SecurityRoleReq.setId("RoleName");
+        SecurityRoleReq.setUrl('@Url.Action("SecurityRole", "Popup")');
+        SecurityRoleReq.setHiddenId("SecurityRoleID");
+        SecurityRoleReq.setDepend('BusinessUnit');
+        SecurityRoleReq.setDependId('BusinessUnitID');
+        SecurityRoleReq.init();
+
+
+    });
+</script>

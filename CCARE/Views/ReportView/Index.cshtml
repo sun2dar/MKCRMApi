@@ -1,0 +1,889 @@
+﻿@{
+    ViewBag.Title = "Report View";
+    Layout = "~/Views/Shared/_LayoutInquiry.cshtml";
+
+    var tempData = ViewBag.Filters;
+}
+    <div class="col-lg-12 inquiry_left">
+        <div class="input-group">
+            <input type="text" class="form-control" id="inquiry_val" >
+            <span class="input-group-btn">
+                <button id="btn_search" class="btn btn-primary" type="submit"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></button>
+            </span>
+        </div>
+    </div>
+
+@section title
+{
+    
+}
+
+@section mainmenu{ Workplace }
+@section submenu{ My Work }
+@section menu{ All Reports }
+
+@section scriptExt{
+ 
+}
+
+@section ReportViewer{
+    <div class="container-fluid" id="ReportParameter">
+        <div id="response-modal"></div>
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="container-fluid content_container">
+                    <div class="row">
+                        <div class="col-sm-12" >
+                            <br />
+
+                            <ol class="breadcrumb">
+                                <li class="active"><a id="reportfilter_btn" href="#">Report Filter</a></li>
+                            </ol>
+
+                            <div class="form-horizontal" id="div_reportparameter">
+                                <div class="row">
+                                    <div class="row">
+                                        <div class="col-sm-9">
+                                            <div class="form-group">
+                                                <label class="col-sm-3 control-label">Report Name</label>
+                                                <div class="col-sm-9">
+                                                    <input type="text" class="form-control" id="Selected-Report" readonly="readonly"/>
+                                                    <input type="hidden" class="form-control" id="Selected-ReportID" />
+                                                    <input type="hidden" class="form-control" id="Selected-Report-Hyperlink" />
+                                                    <input type="hidden" class="form-control" id="ReportEntity" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row" id="Action">
+                                <div class="row">
+                                    <div class="col-sm-offset-5 col-sm-1">
+                                        <div class="input-group">
+                                            <span class="input-group-btn">
+                                                <button class="btn btn-primary" type="button" id="btnRunReport">Run Report</button>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-12">&nbsp;</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container-fluid" id="ReportViewer">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="container-fluid content_container">
+                    <div class="row">
+                        <div class="col-sm-12 content_col" id="root">
+                            <div id="Reports-Location">
+                                <iframe id="report_iframe" src="" width="100%"></iframe>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="text/javascript">
+        var arrName = [];
+        var arrFieldType = [];
+        var arrDataType = [];
+        var reportColumnTemp = "";
+        
+        function generateReportFilters(reportData) {
+            if (reportData.reportFilters.length > 0) {
+                
+                $("#Selected-Report").val(reportData.reportFilters[0].ReportName);
+                $("#Selected-ReportID").val(reportData.reportFilters[0].ReportID);
+                $("#Selected-Report-Hyperlink").val(reportData.Hyperlink);
+                var selectedText = "";
+                var selectedID = "";
+                var lastFilter = "";
+                for (var i = 0 ; i < reportData.reportFilters.length ; i++) {
+                    var currentFilter = "";
+                    var nextFilter = "";
+                    var dataCount = reportData.reportFilters.length;
+                    switch (reportData.reportFilters[i].FieldType) {
+                        case "text":
+                            appendTextbox("div_reportparameter", reportData.reportFilters[i].Name, reportData.reportFilters[i].Label, reportData.reportFilters[i].FieldType, reportData.reportFilters[i].DataType, reportData.reportFilters[i].IsEditable, reportData.reportFilters[i].ValueID, reportData.reportFilters[i].ValueCode, reportData.reportFilters[i].ValueText);
+                            break;
+                        case "datetime":
+                            appendDatepicker("div_reportparameter", reportData.reportFilters[i].Name, reportData.reportFilters[i].Label, reportData.reportFilters[i].FieldType, reportData.reportFilters[i].DataType, reportData.reportFilters[i].IsEditable, reportData.reportFilters[i].ValueID, reportData.reportFilters[i].ValueCode, reportData.reportFilters[i].ValueText);
+                            break;
+                        case "popup":
+                            if (reportData.reportFilters[i].Name != lastFilter) {
+                                selectedID = reportData.reportFilters[i].ValueID;
+                                selectedText = reportData.reportFilters[i].ValueText;
+                                if (i < dataCount - 1) {
+                                    if (reportData.reportFilters[i + 1].Name != reportData.reportFilters[i].Name)
+                                        appendPopup("div_reportparameter", reportData.reportFilters[i].Name, reportData.reportFilters[i].Label, reportData.reportFilters[i].FieldType, reportData.reportFilters[i].DataType, reportData.reportFilters[i].IsEditable, selectedID, reportData.reportFilters[i].ValueCode, selectedText);
+                                }
+                                if (i == dataCount - 1)
+                                    appendPopup("div_reportparameter", reportData.reportFilters[i].Name, reportData.reportFilters[i].Label, reportData.reportFilters[i].FieldType, reportData.reportFilters[i].DataType, reportData.reportFilters[i].IsEditable, selectedID, reportData.reportFilters[i].ValueCode, selectedText);
+                            }
+                            else {
+                                if (selectedID != null || selectedText) {
+                                    selectedID += "," + reportData.reportFilters[i].ValueID;
+                                    selectedText += "," + reportData.reportFilters[i].ValueText;
+                                }
+                                else {
+                                    selectedID = reportData.reportFilters[i].ValueID;
+                                    selectedText = reportData.reportFilters[i].ValueText;
+                                }
+                                if (i < dataCount - 1) {
+                                    if (reportData.reportFilters[i + 1].Name != reportData.reportFilters[i].Name)
+                                        appendPopup("div_reportparameter", reportData.reportFilters[i].Name, reportData.reportFilters[i].Label, reportData.reportFilters[i].FieldType, reportData.reportFilters[i].DataType, reportData.reportFilters[i].IsEditable, selectedID, reportData.reportFilters[i].ValueCode, selectedText);
+                                }
+                                if (i == dataCount - 1)
+                                    appendPopup("div_reportparameter", reportData.reportFilters[i].Name, reportData.reportFilters[i].Label, reportData.reportFilters[i].FieldType, reportData.reportFilters[i].DataType, reportData.reportFilters[i].IsEditable, selectedID, reportData.reportFilters[i].ValueCode, selectedText);
+                            }
+                            break;
+                        case "select":
+                            if (reportData.reportFilters[i].Name != lastFilter) {
+                                selectedID = reportData.reportFilters[i].ValueCode;
+                                selectedText = reportData.reportFilters[i].ValueText;
+                                if (i < dataCount - 1) {
+                                    if (reportData.reportFilters[i + 1].Name != reportData.reportFilters[i].Name)
+                                        appendDropdown("div_reportparameter", reportData.reportFilters[i].Name, reportData.reportFilters[i].Label, reportData.reportFilters[i].FieldType, reportData.reportFilters[i].DataType, reportData.reportFilters[i].IsEditable, "", selectedID, selectedText);
+                                }
+                                if (i == dataCount - 1)
+                                    appendDropdown("div_reportparameter", reportData.reportFilters[i].Name, reportData.reportFilters[i].Label, reportData.reportFilters[i].FieldType, reportData.reportFilters[i].DataType, reportData.reportFilters[i].IsEditable, "", selectedID, selectedText);
+                            }
+                            else {
+                                if (selectedID != null || selectedText) {
+                                    selectedID += "," + reportData.reportFilters[i].ValueCode;
+                                    selectedText += "," + reportData.reportFilters[i].ValueText;
+                                }
+                                else {
+                                    selectedID = reportData.reportFilters[i].ValueCode;
+                                    selectedText = reportData.reportFilters[i].ValueText;
+                                }
+                                if (i < dataCount - 1) {
+                                    if (reportData.reportFilters[i + 1].Name != reportData.reportFilters[i].Name)
+                                        appendDropdown("div_reportparameter", reportData.reportFilters[i].Name, reportData.reportFilters[i].Label, reportData.reportFilters[i].FieldType, reportData.reportFilters[i].DataType, reportData.reportFilters[i].IsEditable, "", selectedID, selectedText);
+                                }
+                                if (i == dataCount - 1)
+                                    appendDropdown("div_reportparameter", reportData.reportFilters[i].Name, reportData.reportFilters[i].Label, reportData.reportFilters[i].FieldType, reportData.reportFilters[i].DataType, reportData.reportFilters[i].IsEditable, "", selectedID, selectedText);
+                            }
+                            break;
+                    }
+
+                    lastFilter = reportData.reportFilters[i].Name;
+                }
+            }
+            else {
+                $("#btnRunReport").attr('disabled', 'disabled');
+            }
+        }
+
+        function getReportColumn(reportData) {
+            for (var i = 0 ; i < reportData.reportColumns.length ; i++) {
+                reportColumnTemp += "," + reportData.reportColumns[i].Label + "=" + reportData.reportColumns[i].Name;
+            }
+            reportColumnTemp = reportColumnTemp.substring(1);
+        }
+
+        function getReportData(reportId) {
+            $.ajax({
+                url: "/ReportView/getReportData",
+                type: "POST",
+                data: {
+                    _reportId: reportId
+                },
+                dataType: 'json',
+                success: function (result) {
+                    $("#ReportEntity").val(result.entity);
+                    generateReportFilters(result);
+                    getReportColumn(result);
+                    bindEventListener();
+                }
+            });
+        }
+
+        @* ====================================== Dynamic HTML Event Listener  ======================================*@
+        function bindEventListener() {
+            $(".BtnClear").bind("click", function () {
+                var popupname = event.target.id.substring(9);
+                $("#Selected-ID-" + popupname).val('');
+                $("#Selected-Text-" + popupname).val('');
+            });
+
+            $(".BtnAddPopup").bind("click", function () {
+                var popupname = event.target.id.substring(7);
+
+                var id = $("#" + popupname).val();
+                var name = $("#" + popupname + "Name").val();
+                var sid = $("#Selected-ID-" + popupname).val();
+                var sname = $("#Selected-Text-" + popupname).val();
+                var label = $("#" + popupname + "Name-label");
+                var del = $.Event('keydown');
+                del.which = 46;
+
+                var popupnamelabel = popupname.substring(0, popupname.indexOf("ID"));
+                if (id == "") {
+                    alert(popupnamelabel + " belum dipilih");
+                    return false;
+                }
+                else if (sid.indexOf(id) > -1) {
+                    alert(popupnamelabel + " telah dipilih");
+                    label.focus();
+                    label.trigger(del);
+                    return false;
+                }
+                else {
+                    sid = sid == "" ? sid : sid + ",";
+                    sname = sname == "" ? sname : sname + ",";
+
+                    sid += id;
+                    sname += name;
+
+                    $("#Selected-ID-" + popupname).val(sid);
+                    $("#Selected-Text-" + popupname).val(sname);
+
+                    label.focus();
+                    label.trigger(del);
+                }
+            });
+
+            $(".BtnAddDropdown").bind("click", function () {
+                var dropdownname = event.target.id.substring(7);
+
+                var id = $("#" + dropdownname).val();
+                var name = $("#" + dropdownname + " option:selected").text();
+                var sid = $("#Selected-ID-" + dropdownname).val();
+                var sname = $("#Selected-Text-" + dropdownname).val();
+                var del = $.Event('keydown');
+                del.which = 46;
+
+                if (id == "") {
+                    alert(dropdownname + " belum dipilih");
+                    return false;
+                }
+                else if (sid.indexOf(id) > -1) {
+                    alert(dropdownname + " telah dipilih");
+                    $("#" + dropdownname).val('');
+                    //$("#" + dropdownname + " option:selected").text("- Pilih -");
+                    return false;
+                }
+                else {
+                    sid = sid == "" ? sid : sid + ",";
+                    sname = sname == "" ? sname : sname + ",";
+
+                    sid += id;
+                    sname += name;
+
+                    $("#Selected-ID-" + dropdownname).val(sid);
+                    $("#Selected-Text-" + dropdownname).val(sname);
+                    $("#" + dropdownname).val('');
+                    //$("#ContactMethodDd option:selected").text("- Pilih -");
+                }
+            });
+
+            $(".datepicker").datepicker({ format: "dd/mm/yyyy", autoclose: true });
+            //$(".datepicker").prop("disabled", true);
+            $("#DateCB").change(function () {
+                var check = true;
+                if ($(this).is(":checked")) {
+                    check = false;
+                    $("#DateLbl").removeClass("btn-danger").addClass("btn-primary");
+                } else {
+                    $("#DateLbl").removeClass("btn-primary").addClass("btn-danger");
+                }
+                $("#StartDate").prop("disabled", check);
+                $("#EndDate").prop("disabled", check);
+            });
+
+            @* ==========================================================================================================*@
+            @* ============================================ POP UP SECTION ============================================= *@
+            @* ==========================================================================================================*@
+
+            $('#CategoryIDName-popup').bind("click", function (e) {
+                if ($(this).attr('disabled') == 'disabled') return false;
+                urlModalPopup = '@Url.Action("_popupContent", "Popup", new { type = "categories", _entity = "" })';
+                colModelsName = [
+                    { label: 'ID', name: 'Id', index: 'Id', key: true, width: 75, hidden: true },
+                    { label: 'Category Name', name: 'Name', index: 'Name', width: 250 },
+                    { label: 'Parent Name', name: 'ParentName', width: 250 },
+                    { label: 'Description Tree', name: 'Description', width: 400 }
+                ];
+                var id = $(this).parent().find('input:last').attr('id');
+                $('#' + id).trigger("blur");
+                e.preventDefault();
+            });
+
+            var categories = new PopupClass();
+            categories.setId("CategoryIDName");
+            categories.setUrl('@Url.Action("Category", "Popup")');
+            categories.setHiddenId("CategoryID");
+            categories.init();
+
+            @* ==========================================================================================================*@
+
+            $('#ProductIDName-popup').bind("click", function (e) {
+                if ($(this).attr('disabled') == 'disabled') return false;
+                urlModalPopup = '@Url.Action("_popupContent", "Popup", new { type = "products", _entity = "" })';
+                colModelsName = [
+                    { label: 'ID', name: 'Id', index: 'Id', key: true, width: 75, hidden: true },
+                    { label: 'Product Name', name: 'Name', index: 'Name', width: 250 },
+                    { label: 'Parent Name', name: 'ParentName', width: 250 },
+                    { label: 'Description Tree', name: 'Description', width: 400 }
+                ];
+                var id = $(this).parent().find('input:last').attr('id');
+                $('#' + id).trigger("blur");
+                e.preventDefault();
+            });
+
+            var products = new PopupClass();
+            products.setId("ProductIDName");
+            products.setUrl('@Url.Action("Product", "Popup")');
+            products.setHiddenId("ProductID");
+            products.init();
+
+            @* ==========================================================================================================*@
+
+            $('#WorkgroupIDName-popup').bind("click", function (e) {
+                if ($(this).attr('disabled') == 'disabled') return false;
+                urlModalPopup = '@Url.Action("_popupContent", "Popup", new { type = "workgroup", _entity = "" })';
+                colModelsName = [
+                    { label: 'ID', name: 'Id', index: 'Id', key: true, width: 75, hidden: true },
+                    { label: 'Name', name: 'Name', width: 300 },
+                    { label: 'E-Mail', name: 'EMailAddress', width: 300 },
+                    { label: 'Business Unit', name: 'BusinessUnitName', width: 300 }
+                ];
+                var id = $(this).parent().find('input:last').attr('id');
+                $('#' + id).trigger("blur");
+                e.preventDefault();
+            });
+
+            var workgroup = new PopupClass();
+            workgroup.setId("WorkgroupIDName");
+            workgroup.setUrl('@Url.Action("WorkGroup", "Popup")');
+            workgroup.setHiddenId("WorkgroupID");
+            workgroup.init();
+
+            @* ==========================================================================================================*@
+
+            $('#WorkGroupIDName-popup').bind("click", function (e) {
+                if ($(this).attr('disabled') == 'disabled') return false;
+                urlModalPopup = '@Url.Action("_popupContent", "Popup", new { type = "workgroup", _entity = "" })';
+                colModelsName = [
+                    { label: 'ID', name: 'Id', index: 'Id', key: true, width: 75, hidden: true },
+                    { label: 'Name', name: 'Name', width: 300 },
+                    { label: 'E-Mail', name: 'EMailAddress', width: 300 },
+                    { label: 'Business Unit', name: 'BusinessUnitName', width: 300 }
+                ];
+                var id = $(this).parent().find('input:last').attr('id');
+                $('#' + id).trigger("blur");
+                e.preventDefault();
+            });
+
+            var workgroup2 = new PopupClass();
+            workgroup2.setId("WorkGroupIDName");
+            workgroup2.setUrl('@Url.Action("WorkGroup", "Popup")');
+            workgroup2.setHiddenId("WorkGroupID");
+            workgroup2.init();
+
+            @* ==========================================================================================================*@
+
+            $('#CauseIDName-popup').bind("click", function (e) {
+                if ($(this).attr('disabled') == 'disabled') return false;
+                urlModalPopup = '@Url.Action("_popupContent", "Popup", new { type = "cause", _entity = "" })';
+                colModelsName = [
+                    { label: 'ID', name: 'Id', index: 'Id', key: true, width: 75, hidden: true },
+                    { label: 'Name', name: 'Name', width: 250 },
+                    { label: 'Created On', name: 'CreatedOn', width: 150, formatter: "date", formatoptions: { srcformat: "ISO8601Long", newformat: "d/m/Y H:i" } }
+                ];
+                var id = $(this).parent().find('input:last').attr('id');
+                $('#' + id).trigger("blur");
+                e.preventDefault();
+            });
+
+            var Cause = new PopupClass();
+            Cause.setId("CauseIDName");
+            Cause.setUrl('@Url.Action("Cause", "Popup")');
+            Cause.setHiddenId("CauseID");
+            Cause.init();
+
+            @* ==========================================================================================================*@
+
+            $('#CreatedByName-popup').bind("click", function (e) {
+                if ($(this).attr('disabled') == 'disabled') return false;
+                urlModalPopup = '@Url.Action("_popupContent", "Popup", new { type = "User", _entity = "" })';
+                colModelsName = [
+                    { label: 'ID', name: 'Id', index: 'Id', key: true, width: 75, hidden: true },
+                    { label: 'Name', name: 'Name', width: 100 },
+                    { label: 'Phone', name: 'Phone', width: 100 },
+                    { label: 'Business Unit', name: 'BusinessUnitName', width: 150 }
+                ];
+                var id = $(this).parent().find('input:last').attr('id');
+                $('#' + id).trigger("blur");
+                e.preventDefault();
+            });
+
+            var user = new PopupClass();
+            user.setId("CreatedByName");
+            user.setUrl('@Url.Action("SystemUser", "Popup")');
+            user.setHiddenId("CreatedBy");
+            user.init();
+
+            @* ==========================================================================================================*@
+
+            $('#BranchIDName-popup').bind("click", function (e) {
+                if ($(this).attr('disabled') == 'disabled') return false;
+                urlModalPopup = '@Url.Action("_popupContent", "Popup", new { type = "branch", _entity = "" })';
+                colModelsName = [
+                    { label: 'ID', name: 'Id', index: 'Id', key: true, width: 75, hidden: true },
+                    { label: 'Nama Kantor', name: 'Name', width: 250 },
+                    { label: 'Kode Kantor', name: 'OfficeCode', width: 250 },
+                    { label: 'Alamat', name: 'Address', width: 250 },
+                    { label: 'Fax', name: 'Fax', width: 250 },
+                    { label: 'Inisial', name: 'Initials', width: 60 },
+                    { label: 'Kode Pos', name: 'Zipcode', width: 60 },
+                    { label: 'Kota', name: 'City', width: 60 },
+                    { label: 'Telephone 1', name: 'Telephone1', width: 60 },
+                    { label: 'Telephone 2', name: 'Telephone2', width: 60 },
+                    { label: 'Kanwil', name: 'RegionName', width: 60 }
+                ];
+                var id = $(this).parent().find('input:last').attr('id');
+                $('#' + id).trigger("blur");
+                e.preventDefault();
+            });
+
+            var branch = new PopupClass();
+            branch.setId("BranchIDName");
+            branch.setUrl('@Url.Action("Branch", "Popup")');
+            branch.setHiddenId("BranchID");
+            branch.init();
+
+            @* ==========================================================================================================*@
+
+            $('#SecurityRoleIDName-popup').bind("click", function (e) {
+                urlModalPopup = '@Url.Action("_popupContent", "Popup", new { type = "securityrole", _entity = "" })';
+                colModelsName = [
+                    { label: 'ID', name: 'Id', index: 'Id', key: true, width: 75, hidden: true },
+                    { label: 'Name', name: 'Name', index: 'Name', width: 500 }
+                ];
+                var id = $(this).parent().find('input:last').attr('id');
+                $('#' + id).trigger("blur");
+                e.preventDefault();
+            });
+
+            var SecurityRole = new PopupClass();
+            SecurityRole.setId("SecurityRoleIDName");
+            SecurityRole.setUrl('@Url.Action("SecurityRole", "Popup")');
+            SecurityRole.setHiddenId("SecurityRoleID");
+            SecurityRole.init();
+
+            @* ==========================================================================================================*@
+
+            $('#BusinessUnitIDName-popup').bind("click", function (e) {
+                urlModalPopup = '@Url.Action("_popupContent", "Popup", new { type = "businessunit", _entity = "" })';
+                colModelsName = [
+                    { label: 'ID', name: 'Id', index: 'Id', key: true, width: 75, hidden: true },
+                    { label: 'Name', name: 'Name', index: 'Name', width: 500 }
+
+                ];
+                var id = $(this).parent().find('input:last').attr('id');
+                $('#' + id).trigger("blur");
+                e.preventDefault();
+            });
+
+            var BusinessUnit = new PopupClass();
+            BusinessUnit.setId("BusinessUnitIDName");
+            BusinessUnit.setUrl('@Url.Action("BusinessUnit", "Popup")');
+            BusinessUnit.setHiddenId("BusinessUnitID");
+            BusinessUnit.init();
+
+            @* ==========================================================================================================*@
+
+            $('#OwnerIDName-popup').bind("click", function (e) {
+                urlModalPopup = '@Url.Action("_popupContent", "Popup", new { type = "owner", _entity = "" })';
+                colModelsName = [
+                    { label: 'ID', name: 'Id', index: 'Id', key: true, width: 75, hidden: true },
+                    { label: 'Name', name: 'name', width: 100 },
+                    { label: 'Phone', name: 'phone', width: 100 },
+                    { label: 'Business Unit', name: 'businessunit', width: 150 }
+                ];
+                var id = $(this).parent().find('input:last').attr('id');
+                $('#' + id).trigger("blur");
+                e.preventDefault();
+            });
+
+            var workgroupTypeahead = new PopupClass();
+            workgroupTypeahead.setId("OwnerIDName");
+            workgroupTypeahead.setUrl('@Url.Action("Workgroup", "Popup")');
+            workgroupTypeahead.setHiddenId("OwnerID");
+            workgroupTypeahead.init();
+
+            @* ==========================================================================================================*@
+
+            $('#RequestIDName-popup').bind("click", function (e) {
+                urlModalPopup = '@Url.Action("_popupContent", "Popup", new { type = "request", _entity = "" })';
+                colModelsName = [
+                    { label: 'ID', name: 'Id', index: 'Id', key: true, width: 75, hidden: true },
+                    { label: 'Summary', name: 'Name', width: 100 },
+                    { label: 'CCQ Request ID', name: 'ccqreqid', width: 100 },
+                    { label: 'Category', name: 'category', width: 150 },
+                    { label: 'Product', name: 'product', width: 150 },
+                    { label: 'Status', name: 'status', width: 70 },
+                    { label: 'Created On', name: 'createdon', width: 150, formatter: 'date', formatoptions: { srcformat: "ISO8601Long", newformat: "m/d/Y h:i A" } },
+                    { label: 'Due Date', name: 'duedate', width: 150, formatter: 'date', formatoptions: { srcformat: "ISO8601Long", newformat: "m/d/Y h:i A" } }
+                ];
+                var id = $(this).parent().find('input:last').attr('id');
+                $('#' + id).trigger("blur");
+                e.preventDefault();
+            });
+
+            var requestTypeahead = new PopupClass();
+            requestTypeahead.setId("RequestIDName");
+            requestTypeahead.setUrl('@Url.Action("RequestLookUp", "Popup")');
+            requestTypeahead.setHiddenId("RequestID");
+            requestTypeahead.init();
+
+            @* ==========================================================================================================*@
+
+            $('#WsIdIDName-popup').bind("click", function (e) {
+                urlModalPopup = '@Url.Action("_popupContent", "Popup", new { type = "wsid", _entity = "" })';
+                colModelsName = [
+                    { label: 'ID', name: 'Id', index: 'Id', key: true, width: 75, hidden: true },
+                    { label: 'Name', name: 'name', width: 100 },
+                    { label: 'Address', name: 'address', width: 100 },
+                    { label: 'City', name: 'city', width: 150 },
+                    { label: 'Lok', name: 'lok', width: 150 },
+                    { label: 'Location', name: 'location', width: 150 }
+                ];
+                var id = $(this).parent().find('input:last').attr('id');
+                $('#' + id).trigger("blur");
+                e.preventDefault();
+            });
+
+            var wsidTypeahead = new PopupClass();
+            wsidTypeahead.setId("WsIdIDName");
+            wsidTypeahead.setUrl('@Url.Action("WSID", "Popup")');
+            wsidTypeahead.setHiddenId("WsIdID");
+            wsidTypeahead.init();
+
+            @* ==========================================================================================================*@
+
+            $('#NonCustomerIDName-popup').bind("click", function (e) {
+                urlModalPopup = '@Url.Action("_popupContent", "Popup", new { type = "noncustomer", _entity = "" })';
+                colModelsName = [
+                    { label: 'ID', name: 'Id', index: 'Id', key: true, width: 75, hidden: true },
+                    { label: 'Name', name: 'name', width: 100 },
+                    { label: 'Phone', name: 'phone', width: 100 }
+                ];
+                var id = $(this).parent().find('input:last').attr('id');
+                $('#' + id).trigger("blur");
+                e.preventDefault();
+            });
+
+            var noncustomerTypeahead = new PopupClass();
+            noncustomerTypeahead.setId("NonCustomerIDName");
+            noncustomerTypeahead.setUrl('@Url.Action("NonCustomer", "Popup")');
+            noncustomerTypeahead.setHiddenId("NonCustomerID");
+            noncustomerTypeahead.init();
+
+            @* ==========================================================================================================*@
+
+            $('#ModifiedByName-popup').bind("click", function (e) {
+                if ($(this).attr('disabled') == 'disabled') return false;
+                urlModalPopup = '@Url.Action("_popupContent", "Popup", new { type = "User", _entity = "" })';
+                colModelsName = [
+                    { label: 'ID', name: 'Id', index: 'Id', key: true, width: 75, hidden: true },
+                    { label: 'Name', name: 'Name', width: 100 },
+                    { label: 'Phone', name: 'Phone', width: 100 },
+                    { label: 'Business Unit', name: 'BusinessUnitName', width: 150 }
+                ];
+                var id = $(this).parent().find('input:last').attr('id');
+                $('#' + id).trigger("blur");
+                e.preventDefault();
+            });
+
+            var user2 = new PopupClass();
+            user2.setId("ModifiedByName");
+            user2.setUrl('@Url.Action("SystemUser", "Popup")');
+            user2.setHiddenId("ModifiedBy");
+            user2.init();
+
+            @* ==========================================================================================================*@
+
+            $('#CustomerIDName-popup').bind("click", function (e) {
+                if ($(this).attr('disabled') == 'disabled') return false;
+                urlModalPopup = '@Url.Action("_popupContent", "Popup", new { type = "customer", _entity = "" })';
+                colModelsName = [
+                    { label: 'ID', name: 'Id', index: 'Id', key: true, width: 75, hidden: true },
+                    { label: 'Name', name: 'Name', width: 100 },
+                    { label: 'Phone', name: 'Phone', width: 100 },
+                    { label: 'Business Unit', name: 'BusinessUnitName', width: 150 }
+                ];
+                var id = $(this).parent().find('input:last').attr('id');
+                $('#' + id).trigger("blur");
+                e.preventDefault();
+            });
+
+            var customer = new PopupClass();
+            customer.setId("CustomerIDName");
+            customer.setUrl('@Url.Action("Customer", "Popup")');
+            customer.setHiddenId("CustomerID");
+            customer.init();
+
+            @* ==========================================================================================================*@
+        }
+
+        @* ==========================================================================================================*@
+        @* ===================================== DYNAMIC HTML ELEMENT FUNCTION  =====================================*@
+        @* ==========================================================================================================*@
+
+        @* ====================================== Append HTML Element Function ======================================*@
+
+        function appendTextbox(div, name, label, fieldtype, datatype, iseditable, valueid, valuecode, valuetext) {
+            $("#" + div).append("<div class='row' id='DivTextbox_" + name + "'><div class='row'><div class='col-sm-9'><div class='form-group'><label class='col-sm-3 control-label'>" + label + "</label><div class='col-sm-9'><input type='text' id='" + name + "' name='" + name + "' class='form-control' maxlength='16'/></div></div></div><div class='col-sm-3'><div class='btn-group' data-toggle='buttons'></div></div></div></div>");
+            $("#" + name).val(valuetext);
+            arrName.push(name);
+            arrFieldType.push(fieldtype);
+            arrDataType.push(datatype);
+        }
+
+        function appendDatepicker(div, name, label, fieldtype, datatype, iseditable, valueid, valuecode, valuetext) {
+            $("#" + div).append("<div class='row' id='DivDatepicker_" + name + "'><div class='row'><div class='col-sm-9'><div class='form-group'><label class='col-sm-3 control-label'>" + label + "</label><div class='col-sm-9'><div class='input-group' id='DateGroup" + name + "'><input type='text' class='form-control datepicker' id='Start" + name + "' /><span class='input-group-addon'><i class='fa fa-calendar fa-lg'></i></span><span class='input-group-btn input_space'></span><input type='text' class='form-control datepicker' id='End" + name + "' /><span class='input-group-addon'><i class='fa fa-calendar fa-lg'></i></span></div></div></div></div><div class='col-sm-3'><div class='btn-group' data-toggle='buttons'></div></div></div></div>");
+            arrName.push(name);
+            arrFieldType.push(fieldtype);
+            arrDataType.push(datatype);
+        }
+
+        function appendPopup(div, name, label, fieldtype, datatype, iseditable, valueid, valuecode, valuetext) {
+            $("#" + div).append("<div class='row' id='DivPopup_" + name + "'><div class='row'><div class='col-sm-9'><div class='form-group'><label class='col-sm-3 control-label'>" + label + "</label><div class='col-sm-9'><input type='hidden' id='" + name + "' class='form-control' /><div class='input-group' id='" + name + "-Group'><input type='text' id='" + name + "Name' class='form-control' /><div tabindex='0' id='" + name + "Name-label' class='form-control typeahead-label hide'></div><div tabindex='0' class='input-group-addon btn' id='" + name + "Name-popup'><i class='fa fa-search'></i></div></div></div></div></div><div class='col-sm-3'><div class='btn-group' data-toggle='buttons'><span class='input-group-btn'><button class='btn btn-success BtnAddPopup' type='button' id='BtnAdd_" + name + "'>ADD</button></span></div></div></div><div class='row'><div class='col-sm-9'><div class='form-group'><label class='col-sm-3 control-label'>Selected " + label + "</label><div class='col-sm-9'><input type='text' class='form-control' id='Selected-Text-" + name + "' readonly='readonly'/><input type='hidden' class='form-control' id='Selected-ID-" + name + "' /></div></div></div><div class='col-sm-3'><div class='btn-group' data-toggle='buttons'><span class='input-group-btn'><button class='btn btn-danger BtnClear' type='button' id='BtnClear_" + name + "'>Clear</button></span></div></div></div></div>");
+            $("#Selected-ID-" + name).val(valueid);
+            $("#Selected-Text-" + name).val(valuetext);
+            arrName.push(name);
+            arrFieldType.push(fieldtype);
+            arrDataType.push(datatype);
+        }
+
+        function appendDropdown(div, name, label, fieldtype, datatype, iseditable, valueid, valuecode, valuetext) {
+            $("#" + div).append("<div class='row' id='DivDropdown'" + name + "><div class='row'><div class='col-sm-9'><div class='form-group'><label class='col-sm-3 control-label'>" + label + "</label><div class='col-sm-9'><select id='" + name + "' class='form-control'></select></div></div></div><div class='col-sm-3'><div class='btn-group' data-toggle='buttons'><span class='input-group-btn'><button class='btn btn-success BtnAddDropdown' type='button' id='BtnAdd_" + name + "'>ADD</button></span></div></div></div><div class='row'><div class='col-sm-9'><div class='form-group'><label class='col-sm-3 control-label'>Selected " + label + "</label><div class='col-sm-9'><input type='text' class='form-control' id='Selected-Text-" + name + "' readonly='readonly'/><input type='hidden' class='form-control' id='Selected-ID-" + name + "' /></div></div></div><div class='col-sm-3'><div class='btn-group' data-toggle='buttons'><span class='input-group-btn'><button class='btn btn-danger BtnClear' type='button' id='BtnClear_" + name + "'>Clear</button></span></div></div></div></div>");
+            fillDropdownitem(div, name, label);
+            $("#Selected-ID-" + name).val(valuecode);
+            $("#Selected-Text-" + name).val(valuetext);
+            arrName.push(name);
+            arrFieldType.push(fieldtype);
+            arrDataType.push(datatype);
+        }
+
+        function fillDropdownitem(div, name, label) {
+            var entity = "Incident";
+
+            $.ajax({
+                url: "/ReportView/setDropdownItem",
+                data: {
+                    entity: entity,
+                    name: name
+                },
+                dataType: 'json',
+                success: function (data) {
+                    $("#" + name).empty();
+                    $.each(data, function (i, value) {
+                        $("#" + name).append($('<option>').text(value.Text).attr('value', value.Value));
+                    });
+                }
+            });
+        }
+
+        $(document).ready(function () {
+            $("#btn_new_link").hide();
+            $("#ReportParameter").hide();
+            $("#ReportViewer").hide();
+
+            $(".BtnAddPopup").click(function(event){
+                var popupname = event.target.id.substring(7);
+
+                var id = $("#" + popupname).val();
+                var name = $("#" + popupname + "Name").val();
+                var sid = $("#Selected-ID-" + popupname).val();
+                var sname = $("#Selected-Text-" + popupname).val();
+                var label = $("#" + popupname + "Name-label");
+                var del = $.Event('keydown');
+                del.which = 46;
+
+                var popupnamelabel = popupname.substring(0, popupname.indexOf("ID"));
+                if(id == "")
+                {
+                    alert(popupnamelabel + " belum dipilih");
+                    return false;
+                }
+                else if(sid.indexOf(id) > -1)
+                {
+                    alert(popupnamelabel + " telah dipilih");
+                    label.focus();
+                    label.trigger(del);
+                    return false;
+                }
+                else
+                {
+                    sid = sid == ""? sid : sid + ",";
+                    sname = sname == ""? sname : sname + ",";
+                    
+                    sid += id;
+                    sname += name;
+
+                    $("#Selected-ID-" + popupname).val(sid);
+                    $("#Selected-Text-" + popupname).val(sname);
+
+                    label.focus();
+                    label.trigger(del);
+                }
+            });
+
+            $(".BtnAddDropdown").click(function () {
+                var dropdownname = event.target.id.substring(7);
+
+                var id = $("#" + dropdownname).val();
+                var name = $("#" + dropdownname + " option:selected").text();
+                var sid = $("#Selected-ID-" + dropdownname).val();
+                var sname = $("#Selected-Text-" + dropdownname).val();
+                var del = $.Event('keydown');
+                del.which = 46;
+
+                if (id == "") {
+                    alert(dropdownname + " belum dipilih");
+                    return false;
+                }
+                else if (sid.indexOf(id) > -1) {
+                    alert(dropdownname + " telah dipilih");
+                    $("#" + dropdownname).val('');
+                    //$("#" + dropdownname + " option:selected").text("- Pilih -");
+                    return false;
+                }
+                else {
+                    sid = sid == "" ? sid : sid + ",";
+                    sname = sname == "" ? sname : sname + ",";
+
+                    sid += id;
+                    sname += name;
+
+                    $("#Selected-ID-" + dropdownname).val(sid);
+                    $("#Selected-Text-" + dropdownname).val(sname);
+                    $("#" + dropdownname).val('');
+                    //$("#ContactMethodDd option:selected").text("- Pilih -");
+                }
+            });
+
+            $(".BtnClear").click(function (event) {
+                var popupname = event.target.id.substring(9);
+                $("#Selected-ID-" + popupname).val('');
+                $("#Selected-Text-" + popupname).val('');
+            });
+            
+            $("#btnRunReport").click(function () {
+                var params = $("#ReportEntity").val() + "&";
+                var flagCount = 0;
+                var limitdate = '@System.Configuration.ConfigurationManager.AppSettings["LimitRangeDate"]';
+
+                for (var i = 0 ; i < arrName.length ; i++)
+                {
+                    if (arrFieldType[i] == "text")
+                    { 
+                        var value = $("#" + arrName[i]).val();
+                        if (value.length < 3) {
+                            alert (arrName[i] + " minimal 3 karakter");
+                            break;
+                        }
+                        else {
+                            params += arrName[i] + "=" + arrDataType[i] + "=" + value + "&";
+                            flagCount++;
+                        }
+                    }
+                    else if (arrFieldType[i] == "datetime")
+                    { 
+                        var startValue = $("#Start" + arrName[i]).val();
+                        var endValue = $("#End" + arrName[i]).val();
+                        if (IsEmptyOrSpaces(startValue)) {
+                            alert (arrName[i] + " harus diisi");
+                            break;
+                        }
+                        else if (IsEmptyOrSpaces(endValue)) {
+                            alert (arrName[i] + " harus diisi");
+                            break;
+                        }
+                        else {
+                            if (!CheckRangeDate(startValue, endValue)) {
+
+                                if (LimitRangeDate(limitdate, startValue, endValue)) {
+                                    params += arrName[i] + "=start" + arrDataType[i] + "=" + startValue + "&" + arrName[i] + "=end" + arrDataType[i] + "=" + endValue + "&";
+                                    flagCount++;
+                                } else {
+                                    alert("Range Tanggal MAX " + limitdate + " Hari!");
+                                    return false;
+                                }
+                            }
+                            else {
+                                alert("Start Date Harus Lebih Kecil dari pada End Date!");
+                                return false;
+                            }
+                            //params += arrName[i] + "=start" + arrDataType[i] + "=" + startValue + "&" + arrName[i] + "=end" + arrDataType[i] + "=" + endValue + "&";
+                            //flagCount++;
+                        }
+                    }
+                    else if (arrFieldType[i] == "popup")
+                    { 
+                        var value = $("#Selected-ID-" + arrName[i]).val();
+                        //if (IsEmptyOrSpaces(value)) {
+                        //    alert (arrName[i] + " harus dipilih");
+                        //    break;
+                        //}
+                        //else {
+                        //    params += arrName[i] + "=" + arrDataType[i] + "=" + value + "&";
+                        //    flagCount++;
+                        //}
+                        params += arrName[i] + "=" + arrDataType[i] + "=" + value + "&";
+                        flagCount++;
+                    }
+                    else if (arrFieldType[i] == "select")
+                    { 
+                        var value = $("#Selected-ID-" + arrName[i]).val();
+                        if (IsEmptyOrSpaces(value)) {
+                            alert (arrName[i] + " harus dipilih");
+                            break;
+                        }
+                        else {
+                            params += arrName[i] + "=" + arrDataType[i] + "=" + value + "&";
+                            flagCount++;
+                        }
+                    }
+                }
+                alert(params);
+                if (flagCount == arrName.length) {
+                    params += reportColumnTemp + "&";
+                    params += "ReportName=name=" + $("#Selected-Report").val() + "&" + $("#Selected-Report-Hyperlink").val() + "&";
+                    openWindow("@System.Configuration.ConfigurationManager.AppSettings["ReportRDLC"]" + params);
+                }
+            });
+            
+            @* ==========================================================================================================*@
+
+            $(".datepicker").datepicker({ format: "dd/mm/yyyy", autoclose: true });
+            //$(".datepicker").prop("disabled", true);
+            $("#DateCB").change(function () {
+                var check = true;
+                if ($(this).is(":checked")) {
+                    check = false;
+                    $("#DateLbl").removeClass("btn-danger").addClass("btn-primary");
+                } else {
+                    $("#DateLbl").removeClass("btn-primary").addClass("btn-danger");
+                }
+                $("#StartDate").prop("disabled", check);
+                $("#EndDate").prop("disabled", check);
+            });
+        });
+    </script>
+}

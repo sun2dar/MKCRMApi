@@ -1,0 +1,62 @@
+﻿@model CCARE.Models.Customer
+
+@{
+    ViewBag.Title = "More Addresses";
+    Layout = null;
+}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-12 panel panel-default panel_form_parent scroll-y">
+            <br />
+            <div class="col-sm-12">
+                <!-- title 1 -->
+                <div class="row form_text">
+                    <div class="panel panel-default panel_form_child">
+                        
+                        <div class="panel-heading">
+                            <label class="control-label sv-header">
+                                <strong>Address</strong>
+                            </label>
+                        </div>
+
+                        <br />
+
+                        <div class="panel-body">
+                            <form class="form-horizontal">
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <div class="divGrid">
+                                            <table id="gridAddress"></table>
+                                            <div id="jqGridPager"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    
+                    </div>
+                </div>
+            
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    var gridId = "#gridAddress";
+    var entityname = "CustomerAddress";
+
+    $(document).ready(function () {
+        var parentId = set(@Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(@Model.CustomerID)));
+
+        (event.preventDefault) ? event.preventDefault() : event.returnValue = false;
+        var postData = {
+            _parentid: function () { return parentId ; }
+        };
+
+        loadJqgrid(gridId, postData, entityname);
+
+    });
+
+</script>

@@ -1,0 +1,126 @@
+﻿@model List<CCARE.Models.BroadcastMessageDetail>
+
+@{
+    string lastDateBroadcast = "";
+}
+
+<!-- Modal -->
+<div class="modal fade bs-example-modal-lg" id="myBroadcastModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h2 class="modal-title broadcast-title" id="myModalLabel">Broadcast Message</h2>
+      </div>
+      <div class="modal-body">
+        <div class="row" style="height:400px;overflow-y:scroll;">
+            <div class="col-lg-12" style="overflow-x:auto">
+                <table id="broadcast-view-table" class="table table-striped table-hover">
+                  <thead>
+                    <tr>
+                      <th></th>
+                      <th>Title</th>
+                      <th>                        
+                        <label class="checkbox-inline">
+                          <input type="checkbox" id="inlineRead" value=""> <b>Read</b>
+                        </label>
+                      </th>
+                      <th>Severity</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td scope="row">
+                                    <input type="hidden" name="guid" value="@item.BroadcastMessageDetailID" />
+                                </td>
+                                <td>
+                                    <blockquote>
+                                        <p>Message sent by @item.CreatedByName On @item.CreatedOn</p>
+                                        <footer>@item.Content</footer>
+                                    </blockquote>
+                                </td>
+                                <td>
+                                    <div class="checkbox">
+                                        <label>
+                                            <input type="checkbox" name="checkboxBroadcast" value="">
+                                        </label>
+                                    </div>
+                                </td>
+                                <td>
+                                    @item.SeverityLabel
+                                </td>
+                            </tr>
+                        }
+                  </tbody>
+                </table>
+            </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button id="popupDelete1" type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+        <button id="popupSave1" type="button" class="btn btn-primary">OK</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        var modalOptions = {
+            backdrop: 'static',
+            keyboard: false
+        };
+        $('#myBroadcastModal').modal(modalOptions);
+
+        $("#inlineRead").change(function () {
+            $("input:checkbox").prop('checked', $(this).prop("checked"));
+        });
+
+        $("#popupSave1").click(function () {
+            var listParam = [];
+            $('.checkbox input:checked').each(function () {
+                var guid = $(this).parent().parent().parent().parent().find("input:first").val();
+                var param = {
+                    "BroadcastMessageDetailID": guid,
+                };
+                listParam.push(param);
+            });
+            $.ajax({
+                url: '@Url.Action("formSubmitBroadcastMessage", "Popup")',
+                data: { data: JSON.stringify(listParam) },
+                type: 'POST',
+                dataType: 'JSON',
+                beforeSend: function (jqXHR, settings) {
+                },
+                success: function (data, textStatus, jqXHR) {
+                    $('#myBroadcastModal').modal('hide');
+                },
+                error: function (xhr, status, err) {
+                    alert("Error");
+                }
+            });
+        });
+
+        $("#myBroadcastModal").on('shown.bs.modal', function () {
+            var ember = $("#entityname").val();
+            switch (ember) {
+                case "request":
+                    $('#OwnerName-popup').attr('disabled', 'disabled');
+                    break;
+            }
+        });
+
+        @if (Model.Count > 0) {         
+            lastDateBroadcast = Model.OrderByDescending(x => x.CreatedOn).Take(1).FirstOrDefault().CreatedOn.Value.ToString("MM/dd/yyyy HH:mm:ss");
+        }
+
+        if ("@lastDateBroadcast".length > 0) {
+            var crId = "@Session["CurrentUserID"].ToString()";
+            localStorage.setItem("lastBroadcast-" + crId, "@lastDateBroadcast");
+        }
+
+    });
+</script>

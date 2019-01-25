@@ -1,0 +1,441 @@
+﻿@model CCARE.Models.Team
+
+@{
+    ViewBag.Title = "Edit";
+    Layout = "~/Views/Team/_LayoutTeam.cshtml";
+
+    bool checkButtonDel = false;
+    bool checkButtonAdd = false;
+    if (Session["RoleID"] != null)
+    {
+        string entity = "Team";
+        Guid roleID = new Guid(Session["RoleID"].ToString());
+        checkButtonDel = CCARE.App_Function.RoleNPrivilege.checkEntityButtonByRoleID(roleID, entity, "Write");
+        checkButtonAdd = CCARE.App_Function.RoleNPrivilege.checkEntityButtonByRoleID(roleID, entity, "Write");
+    }
+}
+
+<div class="modal fade" id="confirm-delete" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1>Confirm Deletion</h1>
+            </div>
+            <div class="modal-body input-lg">
+                The system will delete this record. This action cannot be undone, To continue click "Delete".
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                <a id="btn_confirm_del" class="btn btn-danger btn-ok">Delete</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="tm-information">
+    <div class="myContent_noTab">
+        <div class="tab-content">
+            <div class="tab-pane fade active in" id="general" aria-labelledby="general-tab">
+            @using (Html.BeginForm("Edit", "Team", FormMethod.Post, new { id = "form_team" }))
+            {
+                @Html.Hidden("hidden_displayStatus", "", new { @id = "hidden_displayStatus" })
+
+                <div class="col-sm-12">
+                    <div class="row form_text">
+                        <div class="panel panel-default panel_form_child">
+                            <div class="panel-heading">
+                                <label class="control-label sv-header"><strong>General</strong></label>
+                            </div>
+                            <br />
+                            <div class="panel-body">
+                                <div class="form-horizontal">
+                                    <div class="row">
+                                        <div class="col-sm-6">                                        
+                                            <div class="form-group">
+                                                <label class="col-sm-4 control-label mandatory">Team Name</label>
+                                                <div class="col-sm-8">
+                                                    @Html.TextBoxFor(x => x.Name, new { @class = "form-control" })
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6">                                                                              
+                                            <div class="form-group">
+                                                <label class="col-sm-4 control-label">Business Unit</label>
+                                                <div class="col-sm-8">
+                                                    <input type="hidden" id="BusinessUnitID" name="BusinessUnitID" class="form-control" data-val-notnull="1" data-key="Business Unit" style="margin-bottom:-50px;" />
+                                                    <div class="input-group" id="BusinessUnitID-Group">
+                                                        <input type="text" id="BusinessUnitName" name="BusinessUnitName" class="form-control" value="">
+                                                        <div tabindex="0" id="BusinessUnitName-label" class="form-control typeahead-label hide" style="border-top-left-radius:3px;border-bottom-left-radius:3px">
+                                                        </div>
+                                                        <div tabindex="0" class="input-group-addon btn" id="BusinessUnitName-popup">
+                                                            <i class="fa fa-search"></i>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <br />
+                                    <div class="row">
+                                        <div class="col-sm-12">                                        
+                                            <div class="form-group">
+                                                <label class="col-sm-2 control-label mandatory">Description</label>
+                                                <div class="col-sm-10">
+                                                    @Html.TextBoxFor(x => x.Description, new { @class = "form-control" })
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                        
+            }
+            </div>                
+                
+        </div>
+    </div>
+</div>
+
+
+<div id="tm-members" class="hide">
+    <div class="myContent_noTab">
+        <div class="tab-content">
+            <div class="tab-pane fade active in" id="general-team-member" aria-labelledby="general-tab">
+                <div class="col-sm-12">
+                    <div class="row form_text">
+                        <div class="panel panel-default panel_form_child rm-padding-bottom">
+                            <div class="panel-heading">
+                                <label class="control-label sv-header"><strong>Manage Member</strong></label>
+                            </div>
+                            <br />
+                            <div class="panel-body">
+                                <div class="row">
+                                    <div class="col-sm-12" >
+                                        <div class="row">
+                                            <div class="col-sm-4">   
+                                                @if (checkButtonAdd == true)
+                                                {  
+                                                    <button id="addTeamMembers" class="btn btn-primary btn-crm-layout btn-sm col-sm-4" type="button">
+                                                        <span class="glyphicon glyphicon-plus glyp-space" aria-hidden="true"></span>
+                                                        Add Members
+                                                    </button>
+                                                }
+                                          
+                                                @if (checkButtonDel == true)
+                                                {
+                                                    <button id="delTeamMembers" data-toggle="modal" class="btn btn-danger btn-crm-layout glubtn-sm col-sm-4" type="button">
+                                                        <span class="glyphicon glyphicon-trash glyp-space" aria-hidden="true"></span>
+                                                        &nbsp;&nbsp;Del
+                                                    </button>
+                                                }
+                                            </div>
+                                            <div class="clearfix"></div>
+                                            <br />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <br />
+                        <div class="panel panel-default panel_form_child">
+                            <div class="panel-heading">
+                                <label class="control-label sv-header"><strong>Team Member</strong></label>
+                            </div>
+                            <br />
+                            <div class="panel-body">
+                                <div class="divGrid">
+                                    <table id="gridTable"></table>
+                                    <div id="jqGridPager"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        var gridId = "#gridTable";
+
+        $("#teamMemberInformation").click(function (e) {
+            //show save button
+            $("#btn_save").show();
+            $("#btn_savenclose").show();
+            $("#btn_savenopen").show();
+            
+            $("#t-information").html("<h1>Information</h1>")
+            var checkHide = $("#tm-information").hasClass("hide");
+            if (checkHide) {
+                $("#tm-information").removeClass("hide");
+            }
+            var checkHide = $("#tm-members").hasClass("hide");
+            if (!checkHide) {
+                $("#tm-members").addClass("hide");
+            }
+            e.preventDefault();
+        });
+
+        $("#teamMemberView").click(function (e) {
+            //hide save button
+            $("#btn_save").hide();
+            $("#btn_savenclose").hide();
+            $("#btn_savenopen").hide();
+
+            $("#t-information").html("<h1>Members</h1>")
+            var checkHide = $("#tm-members").hasClass("hide");
+            if (checkHide) {
+                $("#tm-members").removeClass("hide");
+            }
+
+            var checkHide = $("#tm-information").hasClass("hide");
+            if (!checkHide) {
+                $("#tm-information").addClass("hide");
+            }
+            e.preventDefault();
+        });
+
+        $('#BusinessUnitName-popup').on('click', function (e) {
+            urlModalPopup = '@Url.Action("_popupContent", "Popup", new { type = "businessunit", _entity = "" })';
+            colModelsName = [
+                { label: 'ID', name: 'Id', index: 'Id', key: true, width: 75, hidden: true },
+                { label: 'Name', name: 'Name', width: 100 },
+                { label: 'IsDisabled', name: 'isDisabled', width: 100 }
+            ];
+            var id = $(this).parent().find('input:last').attr('id');
+            $('#' + id).trigger("blur");
+            e.preventDefault();
+        });
+
+        var businessUnitTypeahead = new PopupClass();
+        businessUnitTypeahead.setId("BusinessUnitName");
+        businessUnitTypeahead.setUrl('@Url.Action("BusinessUnit", "Popup")');
+        businessUnitTypeahead.setHiddenId("BusinessUnitID");
+        businessUnitTypeahead.init();
+
+        $("#BusinessUnitName-popup, #BusinessUnitName-label").attr("disabled", "disabled");
+
+        function formSubmit(type, formName, gridId) {
+            disabledId($("#btn_save"));
+            var action = formName.attr("action");
+            var serializedForm = formName.serialize();
+            //alert(action);
+            $.ajax({
+                type: "POST",
+                url: action,
+                data: serializedForm,
+                dataType: "json",
+                success: function (data) {
+                    if (data.flag == true) {
+
+                        if (window.opener) {
+                            window.opener.ParentPopup.reloadGridParent('gridTable');
+                        }
+
+                        if (type == "save") {
+                            window.location.replace(data.Message);
+                        }
+                        else if (type == "saveNClose") {
+                            window.close();
+                        }
+                        else if (type == "saveNOpen") {
+                            window.location.replace(data.urlNew);
+                        }
+                    }
+                    else {
+                        alert(data.Message);
+                        //setTimeout(function () { $(".divFormMessage").text(data.Message); }, 1000);
+                        $(".divFormMessage").text(data.Message);
+                    }
+                },
+                error: function (xhr, status, err) {
+                    alert("Action Failed");
+                    alert(xhr);
+                }
+            });
+            return false;
+        }
+
+        function validateForm(type, formName) {
+            var fields = $("form").find("[data-val-notnull='1']");
+            var listError = [];
+            $.each(fields, function (index, element) {
+                if ($(element).val() == "") {
+                    var error = {};
+                    error["key"] = $("#" + element.id).data("key");
+                    error["value"] = "You must provide value for " + error["key"] + ".";
+                    listError.push(error);
+                }
+            });
+            $.each(listError, function (index, element) {
+                alert(element["value"]);
+                return false;
+            });
+            if (listError.length > 0) {
+                return false;
+            }
+            formSubmit(type, formName);
+        }
+
+        $("#btn_save").click(function (e) {
+            validateForm("save", $("#form_team"));
+        });
+
+        $("#btn_savenclose").click(function () {
+            validateForm("saveNClose", $("#form_team"));
+        });
+
+        $("#btn_savenopen").click(function () {
+            validateForm("saveNOpen", $("#form_team"));
+        });
+
+        if ("@Model.BusinessUnitID".length > 0) {
+            popupCheckFirst("BusinessUnitName", "@Model.BusinessUnitID", "@Model.BusinessUnitName");
+        }
+
+        //---------------------------------- start Team Members ---------------------------        
+
+        function teamMemberLoadGrid() {
+
+            var teamMemberModel = [
+                    { label: 'ID', name: 'Id', index: 'Id', key: true, width: 75, hidden: true },
+                    { label: 'Full Name', name: 'FullName', width: 200 },
+                    { label: 'Business Unit', name: 'BusinessUnit', width: 250 },
+                    { label: 'Title', name: 'Title', width: 200 },
+                    { label: 'Status', name: 'UserStatus', width: 200 }
+            ];
+
+            //------------- start test -------------
+
+            $.jgrid.gridUnload(gridId);
+            var colModels = teamMemberModel;
+            var customVal = {
+                height: 400,
+                rowNum: 20
+            }
+            var url = '@Url.Action("loadGrid", "TeamMember", new { type = "teamMember", _entity = "" })';
+            var postData = {
+                _filter: $("#inquiry_team").val(),
+                _teamId: "@Model.TeamID"
+            };
+
+            $(gridId).jqGrid({
+                url: url,
+                mtype: "POST",
+                datatype: "json",
+                postData: postData,
+                colModel: colModels,
+                shrinkToFit: false,
+                width: '100%',
+                autowidth: true,
+                height: '100%',
+                rowNum: customVal.rowNum,
+                rowList: [20, 30],
+                rownumbers: true,
+                pager: $("#jqGridPager"),
+                sortname: 'Id',
+                viewrecords: true,
+                sortorder: "desc",
+                loadComplete: function (data) {
+                    //Remove total page on footer
+                    $("#sp_1_jqGridPager").hide();
+                    $("#input_jqGridPager").contents().filter(function () { return this.nodeType == 3; }).remove();
+                    $("#input_jqGridPager").prepend("<text>Page  </text>");
+
+                    //Hide First and last on paging
+                    $("#first_jqGridPager").hide();
+                    $("#last_jqGridPager").hide();
+
+                    // Disabled input page number in jqgrid paging
+                    $("#input_jqGridPager").find("input").attr('disabled', 'disabled');
+
+                    /* Remove rm padding from selbox */
+                    $(".ui-pg-selbox").removeClass("rm-padding");
+
+                    //Hide records per page
+                    //$(".ui-pg-selbox").hide();
+
+                    if (data.rows.length == 0) {
+                    //if (data.records == 0) {
+                        $("#record-empty").remove();
+                        var emptyText = '';
+                        emptyText += '<table id="record-empty" class="ui-jqgrid-btable"><tr><td>&nbsp;&nbsp;&nbsp;</td><td><center><h2>No Records Found</h2><center></td></tr></table>';
+                        var grid = $(gridId);
+                        var container = grid.parents('.ui-jqgrid-view');
+                        container.find('.ui-jqgrid-bdiv').children("table").remove();
+                        container.find('.ui-jqgrid-bdiv').append(emptyText);
+                    }
+                },
+                beforeRequest: function () {
+                },
+                jsonreader: {
+                    root: "rows", //array containing actual data
+                    page: "page", //current page
+                    total: "total", //total pages for the query
+                    records: "records", //total number of records
+                    cell: 'cell',
+                    repeatitems: false,
+                    id: "Id" //index of the column with the pk in it
+                },
+                ondblClickRow: function (rowid, iRow, iCol) {
+                    //openWindow("Team" + '/Edit?id=' + rowid);
+                },
+                onSelectRow: function (rowid, status, e) {
+                },
+                multiselect: true,
+                multiboxonly: true,
+            }).navGrid("#jqGridPager", { edit: false, add: false, del: false, search: false });
+        }
+
+        teamMemberLoadGrid();
+
+        $("#delTeamMembers").click(function () {
+            var selRowIds = $(gridId).jqGrid('getGridParam', 'selarrrow'),
+                celValues = $(gridId).jqGrid('getCell', selRowIds, 'Id');
+            var str = JSON.stringify(selRowIds);
+            var listId = JSON.parse(str);
+            var listParam = [];
+            $.each(listId, function (index, value) {
+                var param = {};
+                param.TeamMembershipID = value;
+                listParam.push(param);
+            });
+
+            if (listParam.length == 0) {
+                alert("Please select row first...");
+                return false;
+            }
+
+            $('#confirm-delete').modal({ backdrop: 'static', keyboard: false })
+                .one('click', '#btn_confirm_del', function () {
+                    var url = '@Url.Action("formDeleteTeamMembers", "TeamMember")';
+                    $.ajax({
+                        type: "POST",
+                        url: url,
+                        data: { data: JSON.stringify(listParam) },
+                        dataType: "JSON",
+                        beforeSend: function (jqXHR, settings) {
+                        },
+                        success: function (data) {
+                            jQuery("#gridTable").trigger("reloadGrid");
+                        },
+                        error: function (xhr, status, err) {
+                            alert("Error");
+                        }
+                    });
+                    $('#confirm-delete').modal('hide')
+                });
+            // .one() is NOT a typo of .on()
+
+
+        });
+
+        //---------------------------------- end Team Members ---------------------------
+    });
+</script>

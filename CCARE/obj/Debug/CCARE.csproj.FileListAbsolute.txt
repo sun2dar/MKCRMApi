@@ -1,0 +1,142 @@
+D:\BCA Work\rewrite\Code\CCARE\CCARE\bin\CCARE.dll
+D:\BCA Work\rewrite\Code\CCARE\CCARE\bin\CCARE.pdb
+D:\BCA Work\rewrite\Code\CCARE\CCARE\obj\Debug\CCARE.dll
+D:\BCA Work\rewrite\Code\CCARE\CCARE\obj\Debug\CCARE.pdb
+D:\BCA Work\rewrite\Code\CCARE\CCARE\bin\BCA.CRM.EAI.REST.pdb
+D:\BCA Work\rewrite\Code\CCARE\CCARE\bin\BCA.CRM.OSB.pdb
+D:\BCA Work\rewrite\Code\CCARE\CCARE\obj\Debug\CCARE.csprojResolveAssemblyReference.cache
+D:\BCA Work\CCARE(Tambah Kota)\CCARE\bin\CCARE.dll
+D:\BCA Work\CCARE(Tambah Kota)\CCARE\bin\CCARE.pdb
+D:\BCA Work\CCARE(Tambah Kota)\CCARE\obj\Debug\CCARE.csprojResolveAssemblyReference.cache
+D:\BCA Work\CCARE(Tambah Kota)\CCARE\obj\Debug\CCARE.dll
+D:\BCA Work\CCARE(Tambah Kota)\CCARE\obj\Debug\CCARE.pdb
+C:\Users\u055584\Documents\kamashwanee\2017\Workflow Kota Segmentasi\CCARE(Tambah Kota)\CCARE\bin\CCARE.dll
+C:\Users\u055584\Documents\kamashwanee\2017\Workflow Kota Segmentasi\CCARE(Tambah Kota)\CCARE\bin\CCARE.pdb
+C:\Users\u055584\Documents\kamashwanee\2017\Workflow Kota Segmentasi\CCARE(Tambah Kota)\CCARE\bin\DevTrends.MvcDonutCaching.dll
+C:\Users\u055584\Documents\kamashwanee\2017\Workflow Kota Segmentasi\CCARE(Tambah Kota)\CCARE\bin\Microsoft.AspNet.SignalR.Core.dll
+C:\Users\u055584\Documents\kamashwanee\2017\Workflow Kota Segmentasi\CCARE(Tambah Kota)\CCARE\bin\Microsoft.AspNet.SignalR.Owin.dll
+C:\Users\u055584\Documents\kamashwanee\2017\Workflow Kota Segmentasi\CCARE(Tambah Kota)\CCARE\bin\Microsoft.AspNet.SignalR.SystemWeb.dll
+C:\Users\u055584\Documents\kamashwanee\2017\Workflow Kota Segmentasi\CCARE(Tambah Kota)\CCARE\bin\Microsoft.Owin.Host.SystemWeb.dll
+C:\Users\u055584\Documents\kamashwanee\2017\Workflow Kota Segmentasi\CCARE(Tambah Kota)\CCARE\bin\Owin.dll
+C:\Users\u055584\Documents\kamashwanee\2017\Workflow Kota Segmentasi\CCARE(Tambah Kota)\CCARE\bin\System.Linq.Dynamic.dll
+C:\Users\u055584\Documents\kamashwanee\2017\Workflow Kota Segmentasi\CCARE(Tambah Kota)\CCARE\bin\BCA.CRM.EAI.REST.pdb
+C:\Users\u055584\Documents\kamashwanee\2017\Workflow Kota Segmentasi\CCARE(Tambah Kota)\CCARE\bin\BCA.CRM.OSB.pdb
+C:\Users\u055584\Documents\kamashwanee\2017\Workflow Kota Segmentasi\CCARE(Tambah Kota)\CCARE\bin\DevTrends.MvcDonutCaching.pdb
+C:\Users\u055584\Documents\kamashwanee\2017\Workflow Kota Segmentasi\CCARE(Tambah Kota)\CCARE\bin\DevTrends.MvcDonutCaching.xml
+C:\Users\u055584\Documents\kamashwanee\2017\Workflow Kota Segmentasi\CCARE(Tambah Kota)\CCARE\bin\Microsoft.AspNet.SignalR.Core.xml
+C:\Users\u055584\Documents\kamashwanee\2017\Workflow Kota Segmentasi\CCARE(Tambah Kota)\CCARE\bin\Microsoft.AspNet.SignalR.Owin.xml
+C:\Users\u055584\Documents\kamashwanee\2017\Workflow Kota Segmentasi\CCARE(Tambah Kota)\CCARE\bin\Microsoft.AspNet.SignalR.SystemWeb.xml
+C:\Users\u055584\Documents\kamashwanee\2017\Workflow Kota Segmentasi\CCARE(Tambah Kota)\CCARE\bin\Microsoft.Owin.Host.SystemWeb.xml
+C:\Users\u055584\Documents\kamashwanee\2017\Workflow Kota Segmentasi\CCARE(Tambah Kota)\CCARE\obj\Debug\CCARE.csprojResolveAssemblyReference.cache
+C:\Users\u055584\Documents\kamashwanee\2017\Workflow Kota Segmentasi\CCARE(Tambah Kota)\CCARE\obj\Debug\CCARE.dll
+C:\Users\u055584\Documents\kamashwanee\2017\Workflow Kota Segmentasi\CCARE(Tambah Kota)\CCARE\obj\Debug\CCARE.pdb
+D:\BCA Work\CCARE(Tambah Kota)\CCARE\bin\DevTrends.MvcDonutCaching.dll
+D:\BCA Work\CCARE(Tambah Kota)\CCARE\bin\Microsoft.AspNet.SignalR.Core.dll
+D:\BCA Work\CCARE(Tambah Kota)\CCARE\bin\Microsoft.AspNet.SignalR.Owin.dll
+D:\BCA Work\CCARE(Tambah Kota)\CCARE\bin\Microsoft.AspNet.SignalR.SystemWeb.dll
+D:\BCA Work\CCARE(Tambah Kota)\CCARE\bin\Microsoft.Owin.Host.SystemWeb.dll
+D:\BCA Work\CCARE(Tambah Kota)\CCARE\bin\Owin.dll
+D:\BCA Work\CCARE(Tambah Kota)\CCARE\bin\System.Linq.Dynamic.dll
+D:\BCA Work\CCARE(Tambah Kota)\CCARE\bin\DevTrends.MvcDonutCaching.pdb
+D:\BCA Work\CCARE(Tambah Kota)\CCARE\bin\DevTrends.MvcDonutCaching.xml
+D:\BCA Work\CCARE(Tambah Kota)\CCARE\bin\Microsoft.AspNet.SignalR.Core.xml
+D:\BCA Work\CCARE(Tambah Kota)\CCARE\bin\Microsoft.AspNet.SignalR.Owin.xml
+D:\BCA Work\CCARE(Tambah Kota)\CCARE\bin\Microsoft.AspNet.SignalR.SystemWeb.xml
+D:\BCA Work\CCARE(Tambah Kota)\CCARE\bin\Microsoft.Owin.Host.SystemWeb.xml
+D:\BCA Work\CCARE(Tambah Kota) - Copy\CCARE\bin\CCARE.dll
+D:\BCA Work\CCARE(Tambah Kota) - Copy\CCARE\bin\CCARE.pdb
+D:\BCA Work\CCARE(Tambah Kota) - Copy\CCARE\bin\DevTrends.MvcDonutCaching.dll
+D:\BCA Work\CCARE(Tambah Kota) - Copy\CCARE\bin\Microsoft.AspNet.SignalR.Core.dll
+D:\BCA Work\CCARE(Tambah Kota) - Copy\CCARE\bin\Microsoft.AspNet.SignalR.Owin.dll
+D:\BCA Work\CCARE(Tambah Kota) - Copy\CCARE\bin\Microsoft.AspNet.SignalR.SystemWeb.dll
+D:\BCA Work\CCARE(Tambah Kota) - Copy\CCARE\bin\Microsoft.Owin.Host.SystemWeb.dll
+D:\BCA Work\CCARE(Tambah Kota) - Copy\CCARE\bin\Owin.dll
+D:\BCA Work\CCARE(Tambah Kota) - Copy\CCARE\bin\System.Linq.Dynamic.dll
+D:\BCA Work\CCARE(Tambah Kota) - Copy\CCARE\bin\DevTrends.MvcDonutCaching.pdb
+D:\BCA Work\CCARE(Tambah Kota) - Copy\CCARE\bin\DevTrends.MvcDonutCaching.xml
+D:\BCA Work\CCARE(Tambah Kota) - Copy\CCARE\bin\Microsoft.AspNet.SignalR.Core.xml
+D:\BCA Work\CCARE(Tambah Kota) - Copy\CCARE\bin\Microsoft.AspNet.SignalR.Owin.xml
+D:\BCA Work\CCARE(Tambah Kota) - Copy\CCARE\bin\Microsoft.AspNet.SignalR.SystemWeb.xml
+D:\BCA Work\CCARE(Tambah Kota) - Copy\CCARE\bin\Microsoft.Owin.Host.SystemWeb.xml
+D:\BCA Work\CCARE(Tambah Kota) - Copy\CCARE\obj\Debug\CCARE.dll
+D:\BCA Work\CCARE(Tambah Kota) - Copy\CCARE\obj\Debug\CCARE.pdb
+D:\BCA Work\CCARE(Tambah Kota) - Copy\CCARE\obj\Debug\CCARE.csprojResolveAssemblyReference.cache
+D:\BCA Work\CCARE(Tambah Kota) - Latest\CCARE\obj\Debug\CCARE.dll
+D:\BCA Work\CCARE(Tambah Kota) - Latest\CCARE\obj\Debug\CCARE.pdb
+D:\BCA Work\CCARE(Tambah Kota) - Latest\CCARE\bin\CCARE.dll
+D:\BCA Work\CCARE(Tambah Kota) - Latest\CCARE\bin\CCARE.pdb
+D:\BCA Work\CCARE(Tambah Kota) - Latest\CCARE\bin\DevTrends.MvcDonutCaching.dll
+D:\BCA Work\CCARE(Tambah Kota) - Latest\CCARE\bin\Microsoft.AspNet.SignalR.Core.dll
+D:\BCA Work\CCARE(Tambah Kota) - Latest\CCARE\bin\Microsoft.AspNet.SignalR.Owin.dll
+D:\BCA Work\CCARE(Tambah Kota) - Latest\CCARE\bin\Microsoft.AspNet.SignalR.SystemWeb.dll
+D:\BCA Work\CCARE(Tambah Kota) - Latest\CCARE\bin\Microsoft.Owin.Host.SystemWeb.dll
+D:\BCA Work\CCARE(Tambah Kota) - Latest\CCARE\bin\Owin.dll
+D:\BCA Work\CCARE(Tambah Kota) - Latest\CCARE\bin\System.Linq.Dynamic.dll
+D:\BCA Work\CCARE(Tambah Kota) - Latest\CCARE\bin\DevTrends.MvcDonutCaching.pdb
+D:\BCA Work\CCARE(Tambah Kota) - Latest\CCARE\bin\DevTrends.MvcDonutCaching.xml
+D:\BCA Work\CCARE(Tambah Kota) - Latest\CCARE\bin\Microsoft.AspNet.SignalR.Core.xml
+D:\BCA Work\CCARE(Tambah Kota) - Latest\CCARE\bin\Microsoft.AspNet.SignalR.Owin.xml
+D:\BCA Work\CCARE(Tambah Kota) - Latest\CCARE\bin\Microsoft.AspNet.SignalR.SystemWeb.xml
+D:\BCA Work\CCARE(Tambah Kota) - Latest\CCARE\bin\Microsoft.Owin.Host.SystemWeb.xml
+D:\BCA Work\CCARE(Tambah Kota) - Latest\CCARE\obj\Debug\CCARE.csprojResolveAssemblyReference.cache
+D:\BCA Work\CCARE(Tambah Kota) Sebelum ganti Database\CCARE\bin\CCARE.dll
+D:\BCA Work\CCARE(Tambah Kota) Sebelum ganti Database\CCARE\bin\CCARE.pdb
+D:\BCA Work\CCARE(Tambah Kota) Sebelum ganti Database\CCARE\bin\DevTrends.MvcDonutCaching.dll
+D:\BCA Work\CCARE(Tambah Kota) Sebelum ganti Database\CCARE\bin\Microsoft.AspNet.SignalR.Core.dll
+D:\BCA Work\CCARE(Tambah Kota) Sebelum ganti Database\CCARE\bin\Microsoft.AspNet.SignalR.Owin.dll
+D:\BCA Work\CCARE(Tambah Kota) Sebelum ganti Database\CCARE\bin\Microsoft.AspNet.SignalR.SystemWeb.dll
+D:\BCA Work\CCARE(Tambah Kota) Sebelum ganti Database\CCARE\bin\Microsoft.Owin.Host.SystemWeb.dll
+D:\BCA Work\CCARE(Tambah Kota) Sebelum ganti Database\CCARE\bin\Owin.dll
+D:\BCA Work\CCARE(Tambah Kota) Sebelum ganti Database\CCARE\bin\System.Linq.Dynamic.dll
+D:\BCA Work\CCARE(Tambah Kota) Sebelum ganti Database\CCARE\bin\DevTrends.MvcDonutCaching.pdb
+D:\BCA Work\CCARE(Tambah Kota) Sebelum ganti Database\CCARE\bin\DevTrends.MvcDonutCaching.xml
+D:\BCA Work\CCARE(Tambah Kota) Sebelum ganti Database\CCARE\bin\Microsoft.AspNet.SignalR.Core.xml
+D:\BCA Work\CCARE(Tambah Kota) Sebelum ganti Database\CCARE\bin\Microsoft.AspNet.SignalR.Owin.xml
+D:\BCA Work\CCARE(Tambah Kota) Sebelum ganti Database\CCARE\bin\Microsoft.AspNet.SignalR.SystemWeb.xml
+D:\BCA Work\CCARE(Tambah Kota) Sebelum ganti Database\CCARE\bin\Microsoft.Owin.Host.SystemWeb.xml
+D:\BCA Work\CCARE(Tambah Kota) Sebelum ganti Database\CCARE\obj\Debug\CCARE.dll
+D:\BCA Work\CCARE(Tambah Kota) Sebelum ganti Database\CCARE\obj\Debug\CCARE.pdb
+D:\Code\CCARE(Tambah Kota) Sebelum ganti Database\CCARE\obj\Debug\CCARE.csproj.CoreCompileInputs.cache
+D:\Code\CCARE(Tambah Kota) Sebelum ganti Database\CCARE\obj\Debug\CCARE.dll
+D:\Code\CCARE(Tambah Kota) Sebelum ganti Database\CCARE\obj\Debug\CCARE.pdb
+D:\Code\CCARE(Tambah Kota) Sebelum ganti Database\CCARE\bin\SqlServerTypes\x64\msvcr100.dll
+D:\Code\CCARE(Tambah Kota) Sebelum ganti Database\CCARE\bin\SqlServerTypes\x64\SqlServerSpatial110.dll
+D:\Code\CCARE(Tambah Kota) Sebelum ganti Database\CCARE\bin\SqlServerTypes\x86\msvcr100.dll
+D:\Code\CCARE(Tambah Kota) Sebelum ganti Database\CCARE\bin\SqlServerTypes\x86\SqlServerSpatial110.dll
+D:\Code\CCARE(Tambah Kota) Sebelum ganti Database\CCARE\bin\CCARE.dll.config
+D:\Code\CCARE(Tambah Kota) Sebelum ganti Database\CCARE\bin\CCARE.dll
+D:\Code\CCARE(Tambah Kota) Sebelum ganti Database\CCARE\bin\CCARE.pdb
+D:\Code\CCARE(Tambah Kota) Sebelum ganti Database\CCARE\bin\DevTrends.MvcDonutCaching.dll
+D:\Code\CCARE(Tambah Kota) Sebelum ganti Database\CCARE\bin\Microsoft.AspNet.SignalR.Core.dll
+D:\Code\CCARE(Tambah Kota) Sebelum ganti Database\CCARE\bin\Microsoft.AspNet.SignalR.Owin.dll
+D:\Code\CCARE(Tambah Kota) Sebelum ganti Database\CCARE\bin\Microsoft.AspNet.SignalR.SystemWeb.dll
+D:\Code\CCARE(Tambah Kota) Sebelum ganti Database\CCARE\bin\Microsoft.Owin.Host.SystemWeb.dll
+D:\Code\CCARE(Tambah Kota) Sebelum ganti Database\CCARE\bin\Microsoft.ReportViewer.Common.dll
+D:\Code\CCARE(Tambah Kota) Sebelum ganti Database\CCARE\bin\Microsoft.ReportViewer.DataVisualization.DLL
+D:\Code\CCARE(Tambah Kota) Sebelum ganti Database\CCARE\bin\Microsoft.ReportViewer.Design.DLL
+D:\Code\CCARE(Tambah Kota) Sebelum ganti Database\CCARE\bin\Microsoft.ReportViewer.ProcessingObjectModel.DLL
+D:\Code\CCARE(Tambah Kota) Sebelum ganti Database\CCARE\bin\Microsoft.ReportViewer.WebDesign.DLL
+D:\Code\CCARE(Tambah Kota) Sebelum ganti Database\CCARE\bin\Microsoft.ReportViewer.WebForms.DLL
+D:\Code\CCARE(Tambah Kota) Sebelum ganti Database\CCARE\bin\Microsoft.ReportViewer.WinForms.DLL
+D:\Code\CCARE(Tambah Kota) Sebelum ganti Database\CCARE\bin\Microsoft.SqlServer.Types.dll
+D:\Code\CCARE(Tambah Kota) Sebelum ganti Database\CCARE\bin\Owin.dll
+D:\Code\CCARE(Tambah Kota) Sebelum ganti Database\CCARE\bin\System.Linq.Dynamic.dll
+D:\Code\CCARE(Tambah Kota) Sebelum ganti Database\CCARE\bin\EnvDTE.dll
+D:\Code\CCARE(Tambah Kota) Sebelum ganti Database\CCARE\bin\Microsoft.VisualStudio.Shell.Interop.dll
+D:\Code\CCARE(Tambah Kota) Sebelum ganti Database\CCARE\bin\Microsoft.VisualStudio.Shell.Interop.8.0.dll
+D:\Code\CCARE(Tambah Kota) Sebelum ganti Database\CCARE\bin\EnvDTE80.dll
+D:\Code\CCARE(Tambah Kota) Sebelum ganti Database\CCARE\bin\stdole.dll
+D:\Code\CCARE(Tambah Kota) Sebelum ganti Database\CCARE\bin\Microsoft.VisualStudio.OLE.Interop.dll
+D:\Code\CCARE(Tambah Kota) Sebelum ganti Database\CCARE\bin\Microsoft.VisualStudio.TextManager.Interop.dll
+D:\Code\CCARE(Tambah Kota) Sebelum ganti Database\CCARE\bin\Microsoft.VisualStudio.ProjectAggregator.dll
+D:\Code\CCARE(Tambah Kota) Sebelum ganti Database\CCARE\bin\Microsoft.VisualStudio.VSHelp.dll
+D:\Code\CCARE(Tambah Kota) Sebelum ganti Database\CCARE\bin\Microsoft.VisualStudio.TextManager.Interop.8.0.dll
+D:\Code\CCARE(Tambah Kota) Sebelum ganti Database\CCARE\bin\Microsoft.MSXML.dll
+D:\Code\CCARE(Tambah Kota) Sebelum ganti Database\CCARE\bin\DevTrends.MvcDonutCaching.pdb
+D:\Code\CCARE(Tambah Kota) Sebelum ganti Database\CCARE\bin\DevTrends.MvcDonutCaching.xml
+D:\Code\CCARE(Tambah Kota) Sebelum ganti Database\CCARE\bin\Microsoft.AspNet.SignalR.Core.xml
+D:\Code\CCARE(Tambah Kota) Sebelum ganti Database\CCARE\bin\Microsoft.AspNet.SignalR.Owin.xml
+D:\Code\CCARE(Tambah Kota) Sebelum ganti Database\CCARE\bin\Microsoft.AspNet.SignalR.SystemWeb.xml
+D:\Code\CCARE(Tambah Kota) Sebelum ganti Database\CCARE\bin\Microsoft.Owin.Host.SystemWeb.xml
+D:\Code\CCARE(Tambah Kota) Sebelum ganti Database\CCARE\obj\Debug\CCARE.csproj.CopyComplete
+D:\Code\CCARE(Tambah Kota) Sebelum ganti Database\CCARE\obj\Debug\CCARE.csprojAssemblyReference.cache

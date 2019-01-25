@@ -1,0 +1,642 @@
+﻿<!-- Modal -->
+<div class="modal fade bs-example-modal-lg" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title sv-header" id="myModalLabel">Look Up Records</h4>
+      </div>
+
+      <div class="modal-body">
+        <div class="row">
+
+            <div class="col-sm-12">
+                <div class="form-horizontal">
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">Look For :</label>
+                                <div class="col-sm-9">
+                                    <select id="lookFor" name="lookFor" class="form-control" disabled="disabled">
+                                        <option id="optionType" value="@ViewBag.type">
+                                            @{
+                                                string type = ViewBag.type;
+                                                switch (type)
+                                                {
+                                                    case "requestTransaction": <text>Request</text>
+                                                    break;
+                                    
+                                                    case "wsid": <text>WSID</text>
+                                                    break;
+                                
+                                                    case "branch": <text>Branch</text>
+                                                    break;
+                                
+                                                    case "action": <text>Action</text>
+                                                    break;
+
+                                                    case "owner_request": <text>User</text>
+                                                    break;
+
+                                                    default: <text>@ViewBag.type</text>
+                                                    break;
+                                                }
+                                            }
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="input-group">
+                                <input type="text" id="searchText" name="" class="form-control" value="@ViewBag.searchText">
+                                <div class="input-group-addon btn" id="searchBtn">
+                                    <i class="fa fa-search"></i>
+                                </div>
+                            </div>   
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="row pop-up-content">
+            <div class="col-lg-12 x-of-auto">
+                <div id="tree"></div>
+                <table id="jqGrid"></table>
+                <div id="jqGridPagerPopUp"></div>
+            </div>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button id="popupDelete" type="button" class="btn btn-default btn-crm-layout" data-dismiss="modal">Cancel</button>
+        <button id="popupSave" type="button" class="btn btn-primary btn-crm-layout">OK</button>
+      </div>
+
+    </div>
+  </div>
+</div>
+<input type="hidden" id="colModels" name="colModels" value="@ViewBag.colModels" />
+<input type="hidden" id="hiddenInputId" name="hiddenInputId" value="@ViewBag.hiddenInputId" />
+<input type="hidden" id="hiddenParentId" name="hiddenParentId" value="@ViewBag.hiddenParentId" />
+<input type="hidden" id="dependVal" name="dependVal" value="@ViewBag.dependVal" />
+
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        $(".form-horizontal").find("input").addClass("rm-padding");
+        $(".form-horizontal").find("select").addClass("rm-padding");
+        $(".form-horizontal").find(":radio").removeClass("rm-padding");
+
+        var vbCm = $("#colModels").val();
+        var hiddenInputId = $("#hiddenInputId").val();
+        var colModels = JSON.parse(vbCm);
+        var type = '@ViewBag.type';
+        var popupType = type;
+        if (type == "owner_queue") {
+            popupType = "owner";
+            $("#optionType").val(popupType);
+            $("#optionType").text(popupType);
+        }
+
+        if (type == "owner_request")
+            popupType = "user_request";
+
+        if (!Array.prototype.indexOf) {
+            Array.prototype.indexOf = function (val) {
+                return jQuery.inArray(val, this);
+            };
+        }
+        if (!Array.indexOf) {
+            Array.prototype.indexOf = function (obj, start) {
+                for (var i = (start || 0) ; i < this.length; i++) {
+                    if (this[i] == obj) {
+                        return i;
+                    }
+                }
+                return -1;
+            }
+        }
+
+        $("#searchText").keydown(function (e) {
+            if (e.which == 13) {
+                // the code you want to run 
+                $("#searchBtn").trigger("click");
+            }
+        });
+
+        function ddlOnChange() {
+            type = $("#lookFor").val();
+            popupType = type;
+            switch (type) {
+                case "user":
+                    colModels = [
+                        { label: 'ID', name: 'Id', index: 'Id', key: true, width: 75, hidden: true },
+                        { label: 'Name', name: 'Name', width: 180 },
+                        { label: 'Phone', name: 'Phone', width: 100 },
+                        { label: 'Business Unit', name: 'BusinessUnitName', width: 80 },
+                        { label: 'Site', name: 'Site', width: 80 },
+                        { label: 'Title', name: 'Title', width: 80 },
+                        { label: 'E-mail', name: 'EMail', width: 200 }
+                    ];
+                    break;
+                case "queue":
+                    colModels = [
+                        { label: 'ID', name: 'Id', index: 'Id', key: true, width: 75, hidden: true },
+                        { label: 'Name', name: 'Name', width: 600 }
+                    ];
+                    break;
+            }
+            $("#searchBtn").trigger("click");
+        }
+        
+        switch (type) {
+            case "owner":
+                var lookForSelect = $("#lookFor");
+                lookForSelect.removeAttr("disabled");
+                lookForSelect.empty();
+                var newOptions = {
+                    'user': 'User',
+                    'queue': 'Queue'
+                };
+                for (var key in newOptions) {
+                    var opt = document.createElement('option');
+                    opt.value = key;
+                    opt.innerHTML = newOptions[key];
+                    lookForSelect.append(opt);
+                }
+                type = "user";
+                ddlOnChange();
+                break;
+        }
+
+        $("#lookFor").change(function () {
+            ddlOnChange();
+        });
+
+        if ($("#assign_type").val() == "user") {
+            $("#lookFor").val("user");
+            $("#lookFor").change();
+        }
+        else if ($("#assign_type").val() == "workgroup") {
+            $("#lookFor").val("queue");
+            $("#lookFor").change();
+        }
+
+        function getTreeView() {
+            var dataTree = null;
+            var dependVal;
+            switch (type) {
+                case "category":
+                    dependVal = $("#ProductID").val();
+                    break;
+                case "product":
+                    dependVal = $("#CategoryID").val();
+                    break;
+            }
+            $.ajax({
+                type: "GET",
+                url: '@Url.Action("TreeView", "Popup")',
+                data: {
+                    'type': type,
+                    'searchText': $("#searchText").val(),
+                    'hiddenInputId': hiddenInputId,
+                    'dependVal': dependVal
+                },
+                cache: false,
+                beforeSend: function (jqXHR, settings) {
+
+                },
+                success: function (data, textStatus, jqXHR) {
+                    (function filter(obj) {
+                        $.each(obj, function (key, value) {
+                            if (value === "" || value === null || value.length == 0) {
+                                delete obj[key];
+                            } else if (Object.prototype.toString.call(value) === '[object Object]') {
+                                filter(value);
+                            } else if (jQuery.isArray(value)) {
+                                var i = 0, len = value.length;
+                                for (i; i < len; i++) {
+                                    //do something with >>> myArray[i] <<<
+                                    filter(value[i]);
+                                }
+                            }
+                        });
+                    })(data);
+                    generateTreeView(data);
+                }
+            });
+        }
+
+        function generateTreeView(data) {
+            var $tree = $('#tree').treeview({
+                data: data,
+                levels: 5,
+                selectable: true,
+                state: {
+                    checked: false,
+                    disabled: true,
+                    expanded: true,
+                    selected: true
+                },
+            });
+
+            var selectedNode = null;
+            $(".node-tree").click(function (e) {
+                e.preventDefault();
+            });
+            //$tree.treeview('disableAll', { silent: true });
+            //$(".node-tree").each(function (index) {
+            //    //alert($(this).attr("data-nodeid"));
+            //    if ($(this).text() == $("#searchText").val()) {
+            //        selectedNode = $(this).attr("data-nodeid");
+            //        return false;
+            //    }
+            //    //var getNode = $tree.treeview('getNode', $(this).attr("data-nodeid"));
+            //    //if (getNode["isBold"] == 0) {
+            //    //    $tree.treeview('disableNode', [parseInt($(this).attr("data-nodeid")), { silent: false }]);
+            //    //}
+            //});
+
+            if (hiddenInputId != "" && selectedNode != null) {
+                $tree.treeview('selectNode', [parseInt(selectedNode), { silent: true }]);
+            }
+        }
+
+        function getLoadGrid() {
+            $.jgrid.gridUnload("#jqGrid");
+
+            var postData = {
+                _param: function () { return $("#searchText").val(); },
+                _val: function () { return $("#searchText").val(); },
+                _searchText: function () { return $("#searchText").val(); },
+                _hiddenInputId: function () { return $("#hiddenInputId").val(); },
+                _dependId: function () { return $("#dependId").val(); },
+                _dependBu: function () { return $("#dependVal").val(); },
+                _entity: popupType
+            };
+
+            $("#jqGrid").jqGrid({
+                url: '@Url.Action("LoadGrid", "Popup")',
+                mtype: "POST",
+                datatype: "json",
+                postData: postData,
+                colModel: colModels,
+                shrinkToFit: false,
+                width: null,
+                height: 250,
+                rowNum: 20,
+                rowList: [20, 30],
+                pager: "#jqGridPagerPopUp",
+                sortname: 'Id',
+                viewrecords: true,
+                sortorder: "desc",
+                loadComplete: function (data) {
+                    //Remove total page on footer
+                    $("#sp_1_jqGridPagerPopUp").hide();
+                    $("#input_jqGridPagerPopUp").contents().filter(function () { return this.nodeType == 3; }).remove();
+                    $("#input_jqGridPagerPopUp").prepend("<text>Page  </text>");
+
+                    //Hide First and last on paging
+                    $("#first_jqGridPagerPopUp").hide();
+                    $("#last_jqGridPagerPopUp").hide();
+
+                    // Disabled input page number in jqgrid paging
+                    $("#input_jqGridPagerPopUp").find("input").attr('disabled', 'disabled');
+
+                    /* Remove rm padding from selbox */
+                    $(".ui-pg-selbox").removeClass("rm-padding");
+
+                    //Hide records per page
+                    //$(".ui-pg-selbox").hide();
+                    if (data.rows.length == 0) {
+                    //if (data.records == 0) {
+                        var emptyText = '';
+                        emptyText += '<table class="ui-jqgrid-btable" id="tableNoRecordFound"><tr><td>&nbsp;&nbsp;&nbsp;</td><td><center><h2>No Records Found</h2><center></td></tr></table>';
+                        var grid = $("#jqGrid");
+                        var container = grid.parents('.ui-jqgrid-view');
+
+                        container.find('.ui-jqgrid-bdiv').children("table").remove();
+                        container.find('.ui-jqgrid-bdiv').append(emptyText);
+                    }
+                },
+                jsonreader: {
+                    root: "rows", //array containing actual data
+                    page: "page", //current page
+                    total: "total", //total pages for the query
+                    records: "records", //total number of records
+                    cell: 'cell',
+                    repeatitems: false,
+                    id: "Id" //index of the column with the pk in it
+                },
+                ondblClickRow: function (id) {
+                    popupOnDblClickOrSave();
+                }
+            })
+            .navGrid("#jqGridPagerPopUp", { edit: false, add: false, del: false, search: false });
+        }
+
+        switch (type) {
+            case "category":
+                getTreeView();
+                break;
+            case "product":
+                getTreeView();
+                break;
+            default:
+                getLoadGrid();
+                break;
+        }
+
+        var modalOptions = {
+            backdrop: 'static',
+            keyboard: false
+        };
+
+        $('#myModal').modal(modalOptions);
+
+        $("#searchBtn").click(function () {
+            $("#hiddenInputId").val("");
+            switch (type) {
+                case "category":
+                    getTreeView();
+                    break;
+                case "product":
+                    getTreeView();
+                    break;
+                default:
+                    getLoadGrid();
+                    break;
+            }
+
+            $("#jqGrid").trigger("reloadGrid");
+
+        });
+
+        function popupOnDblClickOrSave() {
+            if (type == "category" || type == "product") {
+                var nodeSelected = $('#tree').treeview('getSelected', 'nodeid');
+                if (nodeSelected.length == 1) {
+                    var ret = (nodeSelected[0]);
+                    var parentId = $("#hiddenParentId").val();
+                    var focusedInputParentId = $('#' + parentId);
+                    var focusedGroupParent = focusedInputParentId.closest('input').next('div.input-group');
+                    var focusedInputParentName = focusedGroupParent.find('input.form-control');
+                    var focusedLabelParent = focusedInputParentId.closest('input').next('div.input-group').find('div.typeahead-label:first');
+                    focusedInputParentId.val(ret['id']);
+                    focusedInputParentName.val(ret['text']);
+                    focusedLabelParent.text(ret['text']);
+                    $('#myModal').modal('hide');
+                    focusedInputParentName.focusin();
+
+                    var data = {
+                        "input": $('#' + this.id),
+                        "classInputGroup": "has-success"
+                    };
+                    focusedLabelParent.text(ret['text']);
+
+                    /* Wrap Contennt Text Box */
+                    if (ret['text'] != '') focusedLabelParent.addClass("wrap-pop");
+                    else focusedLabelParent.removeClass("wrap-pop");
+
+                    focusedInputParentId.val(ret['id']);
+                    focusedInputParentId.trigger('change');
+                    //alert('content1');
+                    var input = focusedInputParentName;
+                    var label = input.parent().next('div.form-control');
+                    var inputGroup = label.parent();
+                    input.typeahead('destroy');
+                    input.hide();
+                    if (label.hasClass("hide")) {
+                        label.removeClass("hide");
+                    }
+                    if (focusedGroupParent.hasClass("has-success")) {
+                        focusedGroupParent.removeClass("has-success");
+                    }
+                    if (focusedGroupParent.hasClass("has-warning")) {
+                        focusedGroupParent.removeClass("has-warning");
+                    }
+                    if (focusedGroupParent.hasClass("has-error")) {
+                        focusedGroupParent.removeClass("has-error");
+                    }
+                    focusedGroupParent.addClass("has-success");
+                    return;
+                }
+            }
+            else if (type == "user" || type == "queue") {
+                if ($("#form_incident").length > 0) {
+                    SaveRequest($("#form_incident"));
+                }
+                
+
+                var id = jQuery("#jqGrid").jqGrid('getGridParam', 'selrow');
+                if (id) {
+                    var ret = jQuery("#jqGrid").jqGrid('getRowData', id);
+                    $("#OwnerID").val(ret.Id);
+                    $('#myModal').modal('hide');
+
+                    var temp = "";
+                    if ($("#entityname").val() == "queueitem") {
+                        temp = "#form_QueueItem";
+                    } else if ($("#entityname").val() == "task") {
+                        temp = "#form_Task_gen";
+                    } else if ($("#entityname").val() == "request") {
+                        temp = "#form_incident";
+                    } else if ($("#entityname").val() == "queue") {
+                        temp = "#form_Queue";
+                    }
+                    var serializedForm = $(temp).serialize();
+
+                    $.ajax({
+                        type: "POST",
+                        url: "/Assign/AssignToWG",
+                        data: serializedForm + '&type=' + type,
+                        dataType: "json",
+                        success: function (data) {
+                            if (data.flag == true) {
+                                window.location.replace(data.Message);
+                            }
+                            else {
+                                alert(data.Message);
+                                $(".divFormMessage").text(data.Message);
+                            }
+                        },
+                        error: function (xhr, status, err) {
+                            alert("Error");
+                        }
+                    });
+                    return;
+                }
+            }
+            else if (type == "templates") {
+                var id = jQuery("#jqGrid").jqGrid('getGridParam', 'selrow');
+                if (id) {
+                    var ret = jQuery("#jqGrid").jqGrid('getRowData', id);
+                    var parentId = $("#hiddenParentId").val();
+                    var focusedInputParentId = $('#' + parentId);
+                    var focusedGroupParent = focusedInputParentId.closest('input').next('div.input-group');
+                    var focusedInputParentName = focusedGroupParent.find('input.form-control');
+                    var focusedLabelParent = focusedInputParentId.closest('input').next('div.input-group').find('div.typeahead-label:first');
+                    focusedInputParentId.val(ret.Id);
+                    focusedInputParentName.val(ret.Name);
+                    focusedLabelParent.text(ret.Name);
+                    $('#myModal').modal('hide');
+                    focusedInputParentName.focusin();
+
+                    var data = {
+                        "input": $('#' + this.id),
+                        "classInputGroup": "has-success"
+                    };
+                    focusedLabelParent.text(ret.Name);
+
+                    /* Wrap Contennt Text Box */
+                    if (ret.Name != '') focusedLabelParent.addClass("wrap-pop");
+                    else focusedLabelParent.removeClass("wrap-pop");
+
+                    focusedInputParentId.val(ret.Id);
+                    focusedInputParentId.trigger('change');
+                    //alert('content2');
+                    var input = focusedInputParentName;
+                    var label = input.parent().next('div.form-control');
+                    var inputGroup = label.parent();
+                    input.typeahead('destroy');
+                    input.hide();
+
+                    var UNIT = ret.TypeLabel.toUpperCase();
+                    if (UNIT == "SPC") {
+                        document.getElementById("LetterNo-div").style.visibility = "visible";
+                        document.getElementById("LetterNo-label").style.visibility = "visible";
+                    } else {
+                        document.getElementById("LetterNo-div").style.visibility = "hidden";
+                        document.getElementById("LetterNo-label").style.visibility = "hidden";
+                    }
+
+                    $("#lblDesc1").text(ret.Desc1 == "" ? "Description 1" : $.trim(ret.Desc1));
+                    $("#lblDesc2").text(ret.Desc2 == "" ? "Description 2" : $.trim(ret.Desc2));
+                    $("#lblDesc3").text(ret.Desc3 == "" ? "Description 3" : $.trim(ret.Desc3));
+                    $("#lblDesc4").text(ret.Desc4 == "" ? "Description 4" : $.trim(ret.Desc4));
+
+                    if (label.hasClass("hide")) {
+                        label.removeClass("hide");
+                    }
+                    if (focusedGroupParent.hasClass("has-success")) {
+                        focusedGroupParent.removeClass("has-success");
+                    }
+                    if (focusedGroupParent.hasClass("has-warning")) {
+                        focusedGroupParent.removeClass("has-warning");
+                    }
+                    if (focusedGroupParent.hasClass("has-error")) {
+                        focusedGroupParent.removeClass("has-error");
+                    }
+                    focusedGroupParent.addClass("has-success");
+
+                    if (type == "request") {
+                        $("#TicketNumber").val(ret.Name);
+                        //$("#TicketNumber").show();
+                        $("#TicketNumber").prop("disabled", true);
+                    }
+                    return;
+                }
+            }
+            else {
+                var id = jQuery("#jqGrid").jqGrid('getGridParam', 'selrow');
+                if (id) {
+                    var ret = jQuery("#jqGrid").jqGrid('getRowData', id);
+                    var parentId = $("#hiddenParentId").val();
+                    var focusedInputParentId = $('#' + parentId);
+                    var focusedGroupParent = focusedInputParentId.closest('input').next('div.input-group');
+                    var focusedInputParentName = focusedGroupParent.find('input.form-control');
+                    var focusedLabelParent = focusedInputParentId.closest('input').next('div.input-group').find('div.typeahead-label:first');
+                    focusedInputParentId.val(ret.Id);
+                    focusedInputParentName.val(ret.Name);
+                    focusedLabelParent.text(ret.Name);
+                    $('#myModal').modal('hide');
+                    focusedInputParentName.focusin();
+
+                    var data = {
+                        "input": $('#' + this.id),
+                        "classInputGroup": "has-success"
+                    };
+                    focusedLabelParent.text(ret.Name);
+
+                    /* Wrap Contennt Text Box */
+                    if (ret.Name != '') focusedLabelParent.addClass("wrap-pop");
+                    else focusedLabelParent.removeClass("wrap-pop");
+
+                    focusedInputParentId.val(ret.Id);
+                    focusedInputParentId.trigger('change');
+                    //alert('content3');
+                    var input = focusedInputParentName;
+                    var label = input.parent().next('div.form-control');
+                    var inputGroup = label.parent();
+                    input.typeahead('destroy');
+                    input.hide();
+                    if (label.hasClass("hide")) {
+                        label.removeClass("hide");
+                    }
+                    if (focusedGroupParent.hasClass("has-success")) {
+                        focusedGroupParent.removeClass("has-success");
+                    }
+                    if (focusedGroupParent.hasClass("has-warning")) {
+                        focusedGroupParent.removeClass("has-warning");
+                    }
+                    if (focusedGroupParent.hasClass("has-error")) {
+                        focusedGroupParent.removeClass("has-error");
+                    }
+                    focusedGroupParent.addClass("has-success");
+                    return;
+                }
+            }
+        };
+
+        $("#popupSave").click(function () {
+            popupOnDblClickOrSave();
+        });
+
+        $("#popupDelete").bind('click', function (e) {
+            var parentId = $("#hiddenParentId").val();
+            var focusedInputParentId = $('#' + parentId);
+            var focusedGroupParent = focusedInputParentId.closest('input').next('div.input-group');
+            var focusedInputParentName = focusedInputParentId.closest('input').next('div.input-group').find('input:first');
+            var focusedLabelParent = focusedInputParentId.closest('input').next('div.input-group').find('div.typeahead-label:first');
+
+            
+            /* Wrap / Unwrap Contennt Text Box */
+            if (focusedLabelParent.is(':empty')) focusedLabelParent.removeClass("wrap-pop");
+
+            /*Added By Ardi, for Letter Entry (20151110)*/
+            if (type == "templates") {
+                for (var i = 1; i <= 4; i++) {
+                    $("#lblDesc" + i).text("Description " + i);
+                }
+            }
+            
+            //if (focusedInputParentName.val() == "") {
+            //    $('#myModal').modal('hide');
+            //    return false;
+            //}
+
+            var e = jQuery.Event("keydown");
+            e.which = 46; //choose the one you want
+            e.keyCode = 46;
+            //focusedLabelParent.trigger(e);
+            $('#myModal').modal('hide');
+        });
+
+        $("#myModal").on('hidden.bs.modal', function () {
+            var ember = $("#entityname").val();
+            switch (ember) {
+                case "request":
+                    $('#OwnerName-popup').attr('disabled', 'disabled');
+                    break;
+            }
+        });
+
+        $("#myModal").on('hide.bs.modal', function () {
+            if ($("#spv-assign-to").length > 0) $("#spv-assign-to").hide();
+        });
+    });
+</script>
